@@ -166,14 +166,14 @@ namespace MiNET.Blocks
 						BlockPalette.Add(record);
 					} while (stream.Position < stream.Length);
 				}
-				
-				/*using (var stream = assembly.GetManifestResourceStream(typeof(Block).Namespace + ".blockstates.json"))
+
+				using (var stream = assembly.GetManifestResourceStream(typeof(Block).Namespace + ".blockstates.json"))
 				using (var reader = new StreamReader(stream))
 				{
 					BlockPalette = BlockPalette.FromJson(reader.ReadToEnd());
-				}*/
+				}
 
-				foreach(var record in BlockPalette)
+				foreach (var record in BlockPalette)
 				{
 					var states = new List<NbtTag>();
 					foreach (IBlockState state in record.States)

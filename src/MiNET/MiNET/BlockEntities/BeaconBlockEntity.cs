@@ -70,8 +70,8 @@ namespace MiNET.BlockEntities
 		public override void SetCompound(NbtCompound compound)
 		{
 			Compound = compound;
-			Primary = Compound["primary"].IntValue;
-			Secondary = Compound["secondary"].IntValue;
+			Primary = Compound["primary"]?.IntValue ?? Compound["Primary"].IntValue;
+			Secondary = Compound["secondary"]?.IntValue ?? Compound["Secondary"].IntValue;
 			_nextUpdate = 0;
 		}
 

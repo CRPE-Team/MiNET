@@ -1757,6 +1757,7 @@ namespace MiNET
 			mobEquipment.runtimeEntityId = EntityManager.EntityIdSelf;
 			mobEquipment.item = Inventory.GetItemInHand();
 			mobEquipment.slot = (byte) Inventory.InHandSlot;
+			mobEquipment.selectedSlot = (byte) Inventory.InHandSlot;
 			SendPacket(mobEquipment);
 		}
 
@@ -2601,6 +2602,11 @@ namespace MiNET
 			return itemEntity;
 		}
 
+		public virtual bool PickUpItem(ItemEntity item)
+		{
+			return Inventory.SetFirstEmptySlot(item.Item, true);
+		}
+
 		private bool VerifyRecipe(List<Item> craftingInput, Item result)
 		{
 			Log.Debug($"Looking for matching recipes with the result {result}");
@@ -2710,7 +2716,7 @@ namespace MiNET
 
 					var closePacket = McpeContainerClose.CreateObject();
 					closePacket.windowId = inventory.WindowsId;
-					closePacket.server = true;
+					closePacket.server = message == null ? true : false;
 					SendPacket(closePacket);
 				}
 				else if (_openInventory is HorseInventory horseInventory)
