@@ -1,5 +1,4 @@
-﻿#region LICENSE
-
+#region LICENSE
 // The contents of this file are subject to the Common Public Attribution
 // License Version 1.0. (the "License"); you may not use this file except in
 // compliance with the License. You may obtain a copy of the License at
@@ -18,52 +17,43 @@
 // The Original Developer is the Initial Developer.  The Initial Developer of
 // the Original Code is Niclas Olofsson.
 // 
-// All portions of the code written by Niclas Olofsson are Copyright (c) 2014-2020 Niclas Olofsson.
+// All portions of the code written by Niclas Olofsson are Copyright (c) 2014-2021 Niclas Olofsson.
 // All Rights Reserved.
-
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
+using MiNET.Utils;
 
-namespace MiNET
+namespace MiNET.Net
 {
-	public class PlayerAttributes : Dictionary<string, PlayerAttribute>
+	public enum CommandOriginType
 	{
+		Player = 0,
+		Block = 1,
+		MinecartBlock = 2,
+		DevConsole = 3,
+		Test = 4,
+		AutomationPlayer = 5,
+		ClientAutomation = 6,
+		DedicatedServer = 7,
+		Entity = 8,
+		Virtual = 9,
+		GameArgument = 10,
+		EntityServer = 11
 	}
-
-	public class EntityAttributes : Dictionary<string, EntityAttribute>
+	
+	public class CommandOriginData
 	{
-	}
+		public CommandOriginType Type { get; set; }
+		public UUID UUID { get; set; }
+		public string RequestId { get; set; }
+		public long EntityUniqueId { get; set; }
 
-	public class Links : List<Tuple<long, long>>
-	{
-	}
-
-	public class GameRules : HashSet<GameRule>
-	{
-	}
-
-	public class Itemstates : List<Itemstate>
-	{
-		public static Itemstates FromJson(string json)
+		public CommandOriginData(CommandOriginType type, UUID uuid, string requestId, long entityUniqueId)
 		{
-			return JsonConvert.DeserializeObject<Itemstates>(json);
+			Type = type;
+			UUID = uuid;
+			RequestId = requestId;
+			EntityUniqueId = entityUniqueId;
 		}
-	}
-
-	public class Itemstate
-	{
-		[JsonProperty("runtime_id")]
-		public short Id { get; set; }
-
-		[JsonProperty("name")]
-		public string Name { get; set; }
-
-		[JsonProperty("component_based")]
-		public bool ComponentBased { get; set; } = false; 
-		//public int RuntimeId { get; set; }
 	}
 }

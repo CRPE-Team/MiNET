@@ -123,7 +123,7 @@ namespace MiNET.Net
 					command.Versions = new Version[1];
 					string commandName = ReadString();
 					string description = ReadString();
-					int flags = ReadByte();
+					int flags = ReadShort();
 					int permissions = ReadByte();
 
 					command.Name = commandName;
@@ -195,11 +195,15 @@ namespace MiNET.Net
 							{
 								var paramEnum = enums[paramType & 0xffff];
 								parameter.EnumValues = paramEnum.Values;
+								parameter.EnumType = paramEnum.Name;
+								parameter.Type = "stringenum";
 							}
 							else if ((paramType & 0x1000000) != 0) //Postfix
 							{
 								var paramEnum = enums[paramType & 0xffff];
 								parameter.EnumValues = paramEnum.Values;
+								parameter.EnumType = paramEnum.Name;
+								parameter.Type = "stringenum";
 							}
 							
 							//Log.Debug($"\t{commandParamName}, 0x{tmp:X4}, 0x{tmp1:X4}, {isEnum}, {isSoftEnum}, {(GetParameterTypeName(commandParamType))}, {commandParamEnumIndex}, {commandParamSoftEnumIndex}, {commandParamPostfixIndex}, {optional}, {unknown}");
@@ -420,7 +424,7 @@ namespace MiNET.Net
 				{
 					Write(command.Name);
 					Write(command.Versions[0].Description);
-					Write((byte) 0); // flags
+					Write((short) 0); // flags
 					Write((byte) command.Versions[0].CommandPermission); // permissions
 
 					if (command.Versions[0].Aliases.Length > 0)

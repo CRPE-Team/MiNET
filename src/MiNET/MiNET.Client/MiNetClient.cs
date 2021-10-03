@@ -57,8 +57,11 @@ using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Agreement;
+using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
+using SicStream;
 
 //[assembly: XmlConfigurator(Watch = true)]
 // This will cause log4net to look for a configuration file
@@ -207,11 +210,10 @@ namespace MiNET.Client
 				Log.Debug($"SECRET KEY (raw):\n{Encoding.UTF8.GetString(secret)}");
 
 				// Create a decrytor to perform the stream transform.
-				IBufferedCipher decryptor = CipherUtilities.GetCipher("AES/CFB8/NoPadding");
-				decryptor.Init(false, new ParametersWithIV(new KeyParameter(secret), secret.Take(16).ToArray()));
-
-				IBufferedCipher encryptor = CipherUtilities.GetCipher("AES/CFB8/NoPadding");
-				encryptor.Init(true, new ParametersWithIV(new KeyParameter(secret), secret.Take(16).ToArray()));
+				var encryptor = new StreamingSicBlockCipher(new SicBlockCipher(new AesEngine()));
+				var decryptor = new StreamingSicBlockCipher(new SicBlockCipher(new AesEngine()));
+				decryptor.Init(false, new ParametersWithIV(new KeyParameter(secret), secret.Take(12).Concat(new byte[] {0, 0, 0, 2}).ToArray()));
+				encryptor.Init(true, new ParametersWithIV(new KeyParameter(secret), secret.Take(12).Concat(new byte[] {0, 0, 0, 2}).ToArray()));
 
 				bedrockHandler.CryptoContext = new CryptoContext
 				{
@@ -374,7 +376,7 @@ namespace MiNET.Client
 
 		public void WriteInventoryToFile(string fileName, ItemStacks slots)
 		{
-			Log.Info($"Writing inventory to filename: {fileName}");
+			Log.Warn($"Writing inventory to filename: {fileName}");
 			FileStream file = File.OpenWrite(fileName);
 
 			IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(file));
@@ -392,7 +394,7 @@ namespace MiNET.Client
 				NbtCompound extraData = slot.ExtraData;
 				if (extraData == null)
 				{
-					writer.WriteLine($"new Item({slot.Id}, {slot.Metadata}, {slot.Count}){{UniqueId={slot.UniqueId}}},");
+					writer.WriteLine($"new Item({slot.Id}, {slot.Metadata}, {slot.Count}){{ NetworkId={slot.NetworkId} }}, /*{slot.Name}*/");
 				}
 				else
 				{
@@ -404,7 +406,7 @@ namespace MiNET.Client
 						NbtCompound enchComp = (NbtCompound) ench[0];
 						var id = enchComp["id"].ShortValue;
 						var lvl = enchComp["lvl"].ShortValue;
-						writer.WriteLine($"new Item({slot.Id}, {slot.Metadata}, {slot.Count}){{UniqueId={slot.UniqueId}, ExtraData = new NbtCompound {{new NbtList(\"ench\") {{new NbtCompound {{new NbtShort(\"id\", {id}), new NbtShort(\"lvl\", {lvl}) }} }} }} }},");
+						writer.WriteLine($"new Item({slot.Id}, {slot.Metadata}, {slot.Count}){{ NetworkId={slot.NetworkId}, ExtraData = new NbtCompound {{new NbtList(\"ench\") {{new NbtCompound {{new NbtShort(\"id\", {id}), new NbtShort(\"lvl\", {lvl}) }} }} }} }},/*{slot.Name}*/");
 					}
 					else if (extraData.Contains("Fireworks"))
 					{
@@ -420,11 +422,11 @@ namespace MiNET.Client
 							byte fireworkTrail = compound["FireworkTrail"].ByteValue;
 							byte fireworkType = compound["FireworkType"].ByteValue;
 
-							writer.WriteLine($"new Item({slot.Id}, {slot.Metadata}, {slot.Count}){{UniqueId={slot.UniqueId}, ExtraData = new NbtCompound {{ new NbtCompound(\"Fireworks\") {{ new NbtList(\"Explosions\") {{ new NbtCompound {{ new NbtByteArray(\"FireworkColor\", new byte[]{{{fireworkColor[0]}}}), new NbtByteArray(\"FireworkFade\", new byte[0]), new NbtByte(\"FireworkFlicker\", {fireworkFlicker}), new NbtByte(\"FireworkTrail\", {fireworkTrail}), new NbtByte(\"FireworkType\", {fireworkType})  }} }}, new NbtByte(\"Flight\", {flight}) }} }} }},");
+							writer.WriteLine($"new Item({slot.Id}, {slot.Metadata}, {slot.Count}){{ NetworkId={slot.NetworkId}, ExtraData = new NbtCompound {{ new NbtCompound(\"Fireworks\") {{ new NbtList(\"Explosions\") {{ new NbtCompound {{ new NbtByteArray(\"FireworkColor\", new byte[]{{{fireworkColor[0]}}}), new NbtByteArray(\"FireworkFade\", new byte[0]), new NbtByte(\"FireworkFlicker\", {fireworkFlicker}), new NbtByte(\"FireworkTrail\", {fireworkTrail}), new NbtByte(\"FireworkType\", {fireworkType})  }} }}, new NbtByte(\"Flight\", {flight}) }} }} }},/*{slot.Name}*/");
 						}
 						else
 						{
-							writer.WriteLine($"new Item({slot.Id}, {slot.Metadata}, {slot.Count}){{UniqueId={slot.UniqueId}, ExtraData = new NbtCompound {{new NbtCompound(\"Fireworks\") {{new NbtList(\"Explosions\", NbtTagType.Compound), new NbtByte(\"Flight\", {flight}) }} }} }},");
+							writer.WriteLine($"new Item({slot.Id}, {slot.Metadata}, {slot.Count}){{ NetworkId={slot.NetworkId}, ExtraData = new NbtCompound {{new NbtCompound(\"Fireworks\") {{new NbtList(\"Explosions\", NbtTagType.Compound), new NbtByte(\"Flight\", {flight}) }} }} }},/*{slot.Name}*/");
 						}
 					}
 				}

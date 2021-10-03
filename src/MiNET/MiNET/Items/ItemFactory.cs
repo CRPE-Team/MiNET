@@ -26,9 +26,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using log4net;
 using MiNET.Blocks;
+using MiNET.Net.Items;
+using MiNET.Utils;
+using Newtonsoft.Json;
 
 namespace MiNET.Items
 {
@@ -51,17 +55,14 @@ namespace MiNET.Items
 
 		public static Dictionary<string, short> NameToId { get; private set; }
 		public static Itemstates Itemstates { get; internal set; } = new Itemstates();
-
+		
+		public static ItemTranslator Translator { get; }
 		static ItemFactory()
 		{
 			NameToId = BuildNameToId();
 
-			var assembly = Assembly.GetAssembly(typeof(Item));
-			using (var stream = assembly.GetManifestResourceStream(typeof(Item).Namespace + ".itemstates.json"))
-			using (var reader = new StreamReader(stream))
-			{
-				Itemstates = Itemstates.FromJson(reader.ReadToEnd());
-			}
+			Itemstates = ResourceUtil.ReadResource<Itemstates>("itemstates.json", typeof(Item));
+			Translator = new ItemTranslator(Itemstates);
 		}
 
 		private static Dictionary<string, short> BuildNameToId()
@@ -69,6 +70,7 @@ namespace MiNET.Items
 			//TODO: Refactor to use the Item.Name in hashed set instead.
 
 			var nameToId = new Dictionary<string, short>();
+
 			for (short idx = -600; idx < 800; idx++)
 			{
 				Item item = GetItem(idx);
@@ -84,10 +86,12 @@ namespace MiNET.Items
 				if (name.Equals("itemblock"))
 				{
 					ItemBlock itemBlock = item as ItemBlock;
+
 					if (itemBlock != null)
 					{
 						Block block = itemBlock.Block;
 						name = block?.GetType().Name.ToLowerInvariant();
+
 						if (name == null || name.Equals("block"))
 						{
 							continue;
@@ -103,6 +107,14 @@ namespace MiNET.Items
 				{
 					nameToId.Remove(name); // This is in case a block was added that have item that should be used.
 					nameToId.Add(name, idx);
+
+					if (!string.IsNullOrWhiteSpace(item?.Name))
+					{
+						if (!nameToId.TryAdd(item.Name, idx))
+						{
+							
+						}
+					}
 				}
 				catch (Exception e)
 				{
@@ -206,7 +218,7 @@ namespace MiNET.Items
 			else if (id == 317) item = new ItemGoldenBoots();
 			else if (id == 318) item = new ItemFlint();
 			else if (id == 319) item = new ItemPorkchop();
-			else if (id == 320) item = new ItemCookedPorkshop();
+			else if (id == 320) item = new ItemCookedPorkchop();
 			else if (id == 321) item = new ItemPainting();
 			else if (id == 322) item = new ItemGoldenApple();
 			else if (id == 323) item = new ItemSign();
@@ -232,8 +244,8 @@ namespace MiNET.Items
 			else if (id == 346) item = new ItemFishingRod();
 			else if (id == 347) item = new ItemClock();
 			else if (id == 348) item = new ItemGlowstoneDust();
-			else if (id == 349) item = new ItemFish();
-			else if (id == 350) item = new ItemCookedFish();
+			else if (id == 349) item = new ItemCod();
+			else if (id == 350) item = new ItemCookedCod();
 			else if (id == 351) item = new ItemDye();
 			else if (id == 352) item = new ItemBone();
 			else if (id == 353) item = new ItemSugar();
@@ -265,11 +277,11 @@ namespace MiNET.Items
 			else if (id == 379) item = new ItemBrewingStand();
 			else if (id == 380) item = new ItemCauldron();
 			else if (id == 381) item = new ItemEnderEye();
-			else if (id == 382) item = new ItemSpeckledMelon();
+			else if (id == 382) item = new ItemGlisteningMelonSlice();
 			else if (id == 383) item = new ItemSpawnEgg(metadata);
 			else if (id == 389) item = new ItemFrame();
 			else if (id == 384) item = new ItemExperienceBottle();
-			else if (id == 385) item = new ItemFireball();
+			else if (id == 385) item = new ItemFireCharge();
 			else if (id == 386) item = new ItemWritableBook();
 			else if (id == 387) item = new ItemWrittenBook();
 			else if (id == 388) item = new ItemEmerald();
@@ -284,8 +296,8 @@ namespace MiNET.Items
 			else if (id == 398) item = new ItemCarrotonastick();
 			else if (id == 399) item = new ItemNetherstar();
 			else if (id == 400) item = new ItemPumpkinPie();
-			else if (id == 401) item = new ItemFireworks();
-			else if (id == 402) item = new ItemFireworkscharge();
+			else if (id == 401) item = new ItemFireworkRocket();
+			else if (id == 402) item = new ItemFireworkStar();
 			else if (id == 403) item = new ItemEnchantedBook();
 			else if (id == 404) item = new ItemComparator();
 			else if (id == 405) item = new ItemNetherbrick();
@@ -299,10 +311,10 @@ namespace MiNET.Items
 			else if (id == 413) item = new ItemRabbitStew();
 			else if (id == 414) item = new ItemRabbitFoot();
 			else if (id == 415) item = new ItemRabbitHide();
-			else if (id == 416) item = new ItemHorseArmorLeather();
-			else if (id == 417) item = new ItemHorseArmorIron();
-			else if (id == 418) item = new ItemHorseArmorGold();
-			else if (id == 419) item = new ItemHorseArmorDiamond();
+			else if (id == 416) item = new ItemLeatherHorseArmor();
+			else if (id == 417) item = new ItemIronHorseArmor();
+			else if (id == 418) item = new ItemGoldenHorseArmor();
+			else if (id == 419) item = new ItemDiamondHorseArmor();
 			else if (id == 420) item = new ItemLead();
 			else if (id == 421) item = new ItemNameTag();
 			else if (id == 422) item = new ItemPrismarineCrystals();
@@ -316,7 +328,7 @@ namespace MiNET.Items
 			else if (id == 430) item = new ItemAcaciaDoor();
 			else if (id == 431) item = new ItemDarkOakDoor();
 			else if (id == 432) item = new ItemChorusFruit();
-			else if (id == 433) item = new ItemChorusFruitPopped();
+			else if (id == 433) item = new ItemPoppedChorusFruit();
 			else if (id == 434) item = new ItemBannerPattern();
 			else if (id == 437) item = new ItemDragonBreath();
 			else if (id == 438) item = new ItemSplashPotion();
@@ -329,7 +341,7 @@ namespace MiNET.Items
 			else if (id == 447) item = new ItemMedicine();
 			else if (id == 448) item = new ItemBalloon();
 			else if (id == 449) item = new ItemRapidFertilizer();
-			else if (id == 450) item = new ItemTotem();
+			else if (id == 450) item = new ItemTotemOfUndying();
 			else if (id == 451) item = new ItemBleach();
 			else if (id == 452) item = new ItemIronNugget();
 			else if (id == 453) item = new ItemIceBomb();
@@ -341,12 +353,12 @@ namespace MiNET.Items
 			else if (id == 458) item = new ItemBeetrootSeeds();
 			else if (id == 459) item = new ItemBeetrootSoup();
 			else if (id == 460) item = new ItemSalmon();
-			else if (id == 461) item = new ItemClownfish();
+			else if (id == 461) item = new ItemTropicalFish();
 			else if (id == 462) item = new ItemPufferfish();
 			else if (id == 463) item = new ItemCookedSalmon();
 			else if (id == 464) item = new ItemDriedKelp();
 			else if (id == 465) item = new ItemNautilusShell();
-			else if (id == 466) item = new ItemAppleenchanted();
+			else if (id == 466) item = new ItemEnchantedApple();
 			else if (id == 467) item = new ItemHeartOfTheSea();
 			else if (id == 468) item = new ItemTurtleShellPiece();
 			else if (id == 469) item = new ItemTurtleHelmet();
@@ -360,18 +372,20 @@ namespace MiNET.Items
 			else if (id == 477) item = new ItemSweetBerries();
 			else if (id == 498) item = new ItemCamera(metadata);
 			else if (id == 499) item = new ItemCompound();
-			else if (id == 500) item = new ItemRecord13();
-			else if (id == 501) item = new ItemRecordCat();
-			else if (id == 502) item = new ItemRecordBlocks();
-			else if (id == 503) item = new ItemRecordChirp();
-			else if (id == 504) item = new ItemRecordFar();
-			else if (id == 505) item = new ItemRecordMall();
-			else if (id == 506) item = new ItemRecordMellohi();
-			else if (id == 507) item = new ItemRecordStal();
-			else if (id == 508) item = new ItemRecordStrad();
-			else if (id == 509) item = new ItemRecordWard();
-			else if (id == 510) item = new ItemRecord11();
-			else if (id == 511) item = new ItemRecordWait();
+			
+			else if (id == 500) item = new ItemMusicDisc13();
+			else if (id == 501) item = new ItemMusicDiscCat();
+			else if (id == 502) item = new ItemMusicDiscBlocks();
+			else if (id == 503) item = new ItemMusicDiscChirp();
+			else if (id == 504) item = new ItemMusicDiscFar();
+			else if (id == 505) item = new ItemMusicDiscMall();
+			else if (id == 506) item = new ItemMusicDiscMellohi();
+			else if (id == 507) item = new ItemMusicDiscStal();
+			else if (id == 508) item = new ItemMusicDiscStrad();
+			else if (id == 509) item = new ItemMusicDiscWard();
+			else if (id == 510) item = new ItemMusicDisc11();
+			else if (id == 511) item = new ItemMusicDiscWait();
+			
 			else if (id == 513) item = new ItemShield();
 			else if (id == 720) item = new ItemCampfire();
 			else if (id == 734) item = new ItemSuspiciousStew();
@@ -395,7 +409,7 @@ namespace MiNET.Items
 			else if (id == 756) item = new ItemWarpedDoor();
 			else if (id == 757) item = new ItemWarpedFungusOnAStick();
 			else if (id == 758) item = new ItemChain();
-			else if (id == 759) item = new ItemRecordPigstep();
+			else if (id == 759) item = new ItemMusicDiscPigstep();
 			else if (id == 760) item = new ItemNetherSprouts();
 			else if (id == 801) item = new ItemSoulCampfire();
 
@@ -405,6 +419,7 @@ namespace MiNET.Items
 				if (blockId < 0) blockId = (short) (Math.Abs(id) + 255); // hehe
 				Block block = BlockFactory.GetBlockById(blockId);
 				var runtimeId = BlockFactory.GetRuntimeId(blockId, (byte) metadata);
+
 				if (runtimeId < BlockFactory.BlockPalette.Count)
 				{
 					var blockState = BlockFactory.BlockPalette[(int) runtimeId];
@@ -427,19 +442,29 @@ namespace MiNET.Items
 			item.Metadata = metadata;
 			item.Count = (byte) count;
 
+			if (!string.IsNullOrWhiteSpace(item.Name))
+			{
+				var result = Itemstates.FirstOrDefault(x => x.Name.Equals(item.Name, StringComparison.InvariantCultureIgnoreCase));
+
+				if (result != null)
+				{
+					item.NetworkId = result.Id;
+				}
+			}
+
 			return item;
 		}
 	}
 
 	public class ItemRabbit : Item { public ItemRabbit() : base("minecraft:rabbit", 411) {} }
 	public class ItemMushroomStew : Item { public ItemMushroomStew() : base("minecraft:mushroom_stew", 282) {} }
-	public class ItemRecordWard : Item { public ItemRecordWard() : base("minecraft:record_ward", 509) {} }
-	public class ItemAppleenchanted : Item { public ItemAppleenchanted() : base("minecraft:appleenchanted", 466) {} }
-	public class ItemFish : Item { public ItemFish() : base("minecraft:fish", 349) {} }
+	public class ItemMusicDiscWard : Item { public ItemMusicDiscWard() : base("minecraft:music_disc_ward", 509) {} }
+	public class ItemEnchantedApple : Item { public ItemEnchantedApple() : base("minecraft:enchanted_golden_apple", 466) {} }
+	public class ItemCod : Item { public ItemCod() : base("minecraft:cod", 349) {} }
 	public class ItemSalmon : Item { public ItemSalmon() : base("minecraft:salmon", 460) {} }
-	public class ItemClownfish : Item { public ItemClownfish() : base("minecraft:clownfish", 461) {} }
+	public class ItemTropicalFish : Item { public ItemTropicalFish() : base("minecraft:tropical_fish", 461) {} }
 	public class ItemPufferfish : Item { public ItemPufferfish() : base("minecraft:pufferfish", 462) {} }
-	public class ItemCookedFish : Item { public ItemCookedFish() : base("minecraft:cooked_fish", 350) {} }
+	public class ItemCookedCod : Item { public ItemCookedCod() : base("minecraft:cooked_cod", 350) {} }
 	public class ItemCookedSalmon : Item { public ItemCookedSalmon() : base("minecraft:cooked_salmon", 463) {} }
 	public class ItemSparkler : Item { public ItemSparkler() : base("minecraft:sparkler", 442) {} }
 	public class ItemDriedKelp : Item { public ItemDriedKelp() : base("minecraft:dried_kelp", 464) {} }
@@ -449,7 +474,7 @@ namespace MiNET.Items
 	public class ItemRabbitFoot : Item { public ItemRabbitFoot() : base("minecraft:rabbit_foot", 414) {} }
 	public class ItemLingeringPotion : Item { public ItemLingeringPotion() : base("minecraft:lingering_potion", 441) {} }
 	public class ItemCampfire : Item { public ItemCampfire() : base("minecraft:campfire", 720) {} }
-	public class ItemRecordFar : Item { public ItemRecordFar() : base("minecraft:record_far", 504) {} }
+	public class ItemMusicDiscFar : Item { public ItemMusicDiscFar() : base("minecraft:music_disc_far", 504) {} }
 	public class ItemSpiderEye : Item { public ItemSpiderEye() : base("minecraft:spider_eye", 375) {} }
 	public class ItemPoisonousPotato : Item { public ItemPoisonousPotato() : base("minecraft:poisonous_potato", 394) {} }
 	public class ItemBeetrootSoup : Item { public ItemBeetrootSoup() : base("minecraft:beetroot_soup", 459) {} }
@@ -460,12 +485,12 @@ namespace MiNET.Items
 	public class ItemCommandBlockMinecart : Item { public ItemCommandBlockMinecart() : base("minecraft:command_block_minecart", 443) {} }
 	public class ItemMelonSeeds : Item { public ItemMelonSeeds() : base("minecraft:melon_seeds", 362) {} }
 	public class ItemNetherWart : Item { public ItemNetherWart() : base("minecraft:nether_wart", 372) {} }
-	public class ItemRecordStrad : Item { public ItemRecordStrad() : base("minecraft:record_strad", 508) {} }
+	public class ItemMusicDiscStrad : Item { public ItemMusicDiscStrad() : base("minecraft:music_disc_strad", 508) {} }
 	public class ItemBowl : Item { public ItemBowl() : base("minecraft:bowl", 281) {} }
 	public class ItemString : Item { public ItemString() : base("minecraft:string", 287) {} }
 	public class ItemFeather : Item { public ItemFeather() : base("minecraft:feather", 288) {} }
 	public class ItemGunpowder : Item { public ItemGunpowder() : base("minecraft:gunpowder", 289) {} }
-	public class ItemRecordMellohi : Item { public ItemRecordMellohi() : base("minecraft:record_mellohi", 506) {} }
+	public class ItemMusicDiscMellohi : Item { public ItemMusicDiscMellohi() : base("minecraft:music_disc_mellohi", 506) {} }
 	public class ItemEnderEye : Item { public ItemEnderEye() : base("minecraft:ender_eye", 381) {} }
 	public class ItemShield : Item { public ItemShield() : base("minecraft:shield", 513) {} }
 	public class ItemFlint : Item { public ItemFlint() : base("minecraft:flint", 318) {} }
@@ -476,8 +501,8 @@ namespace MiNET.Items
 	public class ItemKelp : Item { public ItemKelp() : base("minecraft:kelp", 335) {} }
 	public class ItemBrick : Item { public ItemBrick() : base("minecraft:brick", 336) {} }
 	public class ItemClayBall : Item { public ItemClayBall() : base("minecraft:clay_ball", 337) {} }
-	public class ItemCarrotonastick : Item { public ItemCarrotonastick() : base("minecraft:carrotonastick", 398) {} }
-	public class ItemReeds : Item { public ItemReeds() : base("minecraft:reeds", 338) {} }
+	public class ItemCarrotonastick : Item { public ItemCarrotonastick() : base("minecraft:carrot_on_a_stick", 398) {} }
+	public class ItemReeds : Item { public ItemReeds() : base("minecraft:item.reeds", 338) {} }
 	public class ItemPaper : Item { public ItemPaper() : base("minecraft:paper", 339) {} }
 	public class ItemTrident : Item { public ItemTrident() : base("minecraft:trident", 455) {} }
 	public class ItemSlimeBall : Item { public ItemSlimeBall() : base("minecraft:slime_ball", 341) {} }
@@ -495,42 +520,42 @@ namespace MiNET.Items
 	public class ItemMagmaCream : Item { public ItemMagmaCream() : base("minecraft:magma_cream", 378) {} }
 	public class ItemBrewingStand : Item { public ItemBrewingStand() : base("minecraft:brewing_stand", 379) {} }
 	public class ItemRapidFertilizer : Item { public ItemRapidFertilizer() : base("minecraft:rapid_fertilizer", 449) {} } // what is this?
-	public class ItemSpeckledMelon : Item { public ItemSpeckledMelon() : base("minecraft:speckled_melon", 382) {} }
+	public class ItemGlisteningMelonSlice : Item { public ItemGlisteningMelonSlice() : base("minecraft:glistering_melon_slice", 382) {} }
 	public class ItemExperienceBottle : Item { public ItemExperienceBottle() : base("minecraft:experience_bottle", 384) {} }
-	public class ItemFireball : Item { public ItemFireball() : base("minecraft:fireball", 385) {} }
+	public class ItemFireCharge : Item { public ItemFireCharge() : base("minecraft:fire_charge", 385) {} }
 	public class ItemWritableBook : Item { public ItemWritableBook() : base("minecraft:writable_book", 386) {} }
 	public class ItemEmerald : Item { public ItemEmerald() : base("minecraft:emerald", 388) {} }
-	public class ItemRecordPigstep : Item { public ItemRecordPigstep() : base("minecraft:record_pigstep", 759) {} }
+	public class ItemMusicDiscPigstep : Item { public ItemMusicDiscPigstep() : base("minecraft:music_disc_pigstep", 759) {} }
 	public class ItemFlowerPot : Item { public ItemFlowerPot() : base("minecraft:flower_pot", 390) {} }
-	public class ItemNetherstar : Item { public ItemNetherstar() : base("minecraft:netherstar", 399) {} }
+	public class ItemNetherstar : Item { public ItemNetherstar() : base("minecraft:nether_star", 399) {} }
 	public class ItemHopperMinecart : Item { public ItemHopperMinecart() : base("minecraft:hopper_minecart", 408) {} }
-	public class ItemFireworkscharge : Item { public ItemFireworkscharge() : base("minecraft:fireworkscharge", 402) {} }
+	public class ItemFireworkStar : Item { public ItemFireworkStar() : base("minecraft:firework_star", 402) {} }
 	public class ItemNetherbrick : Item { public ItemNetherbrick() : base("minecraft:netherbrick", 405) {} }
 	public class ItemQuartz : Item { public ItemQuartz() : base("minecraft:quartz", 406) {} }
 	public class ItemTntMinecart : Item { public ItemTntMinecart() : base("minecraft:tnt_minecart", 407) {} }
 	public class ItemHopper : Item { public ItemHopper() : base("minecraft:hopper", 410) {} }
 	public class ItemDragonBreath : Item { public ItemDragonBreath() : base("minecraft:dragon_breath", 437) {} }
 	public class ItemRabbitHide : Item { public ItemRabbitHide() : base("minecraft:rabbit_hide", 415) {} }
-	public class ItemRecord13 : Item { public ItemRecord13() : base("minecraft:record_13", 500) {} }
-	public class ItemRecordCat : Item { public ItemRecordCat() : base("minecraft:record_cat", 501) {} }
-	public class ItemRecordBlocks : Item { public ItemRecordBlocks() : base("minecraft:record_blocks", 502) {} }
-	public class ItemRecordChirp : Item { public ItemRecordChirp() : base("minecraft:record_chirp", 503) {} }
-	public class ItemRecordMall : Item { public ItemRecordMall() : base("minecraft:record_mall", 505) {} }
-	public class ItemRecordStal : Item { public ItemRecordStal() : base("minecraft:record_stal", 507) {} }
-	public class ItemRecord11 : Item { public ItemRecord11() : base("minecraft:record_11", 510) {} }
-	public class ItemRecordWait : Item { public ItemRecordWait() : base("minecraft:record_wait", 511) {} }
+	public class ItemMusicDisc13 : Item { public ItemMusicDisc13() : base("minecraft:music_disc_13", 500) {} }
+	public class ItemMusicDiscCat : Item { public ItemMusicDiscCat() : base("minecraft:music_disc_cat", 501) {} }
+	public class ItemMusicDiscBlocks : Item { public ItemMusicDiscBlocks() : base("minecraft:music_disc_blocks", 502) {} }
+	public class ItemMusicDiscChirp : Item { public ItemMusicDiscChirp() : base("minecraft:music_disc_chirp", 503) {} }
+	public class ItemMusicDiscMall : Item { public ItemMusicDiscMall() : base("minecraft:music_disc_mall", 505) {} }
+	public class ItemMusicDiscStal : Item { public ItemMusicDiscStal() : base("minecraft:music_disc_stal", 507) {} }
+	public class ItemMusicDisc11 : Item { public ItemMusicDisc11() : base("minecraft:music_disc_11", 510) {} }
+	public class ItemMusicDiscWait : Item { public ItemMusicDiscWait() : base("minecraft:music_disc_wait", 511) {} }
 	public class ItemLead : Item { public ItemLead() : base("minecraft:lead", 420) {} }
 	public class ItemPrismarineCrystals : Item { public ItemPrismarineCrystals() : base("minecraft:prismarine_crystals", 422) {} }
 	public class ItemArmorStand : Item { public ItemArmorStand() : base("minecraft:armor_stand", 425) {} }
 	public class ItemPhantomMembrane : Item { public ItemPhantomMembrane() : base("minecraft:phantom_membrane", 470) {} }
 	public class ItemChorusFruit : Item { public ItemChorusFruit() : base("minecraft:chorus_fruit", 432) {} }
 	public class ItemSuspiciousStew : Item { public ItemSuspiciousStew() : base("minecraft:suspicious_stew", 734) {} }
-	public class ItemChorusFruitPopped : Item { public ItemChorusFruitPopped() : base("minecraft:chorus_fruit_popped", 433) {} }
+	public class ItemPoppedChorusFruit : Item { public ItemPoppedChorusFruit() : base("minecraft:popped_chorus_fruit", 433) {} }
 	public class ItemSplashPotion : Item { public ItemSplashPotion() : base("minecraft:splash_potion", 438) {} }
 	public class ItemPrismarineShard : Item { public ItemPrismarineShard() : base("minecraft:prismarine_shard", 409) {} }
 	public class ItemShulkerShell : Item { public ItemShulkerShell() : base("minecraft:shulker_shell", 445) {} }
-	public class ItemTotem : Item { public ItemTotem() : base("minecraft:totem", 450) {} }
-	public class ItemTurtleShellPiece : Item { public ItemTurtleShellPiece() : base("minecraft:turtle_shell_piece", 468) {} }
+	public class ItemTotemOfUndying : Item { public ItemTotemOfUndying() : base("minecraft:totem_of_undying", 450) {} }
+	public class ItemTurtleShellPiece : Item { public ItemTurtleShellPiece() : base("minecraft:scute", 468) {} }
 	public class ItemCrossbow : Item { public ItemCrossbow() : base("minecraft:crossbow", 471) {} }
 	public class ItemBalloon : Item { public ItemBalloon() : base("minecraft:balloon", 448) {} }
 	public class ItemBannerPattern : Item { public ItemBannerPattern() : base("minecraft:banner_pattern", 434) {} }
@@ -540,7 +565,7 @@ namespace MiNET.Items
 	public class ItemIceBomb : Item { public ItemIceBomb() : base("minecraft:ice_bomb", 453) {} }
 	public class ItemBleach : Item { public ItemBleach() : base("minecraft:bleach", 451) {} } // A Trump item?
 	public class ItemMedicine : Item { public ItemMedicine() : base("minecraft:medicine", 447) {} } // Corona?
-	public class ItemLodestoneCompass : Item { public ItemLodestoneCompass() : base("minecraft:lodestonecompass", 741) {} }
+	public class ItemLodestoneCompass : Item { public ItemLodestoneCompass() : base("minecraft:lodestone_compass", 741) {} }
 	public class ItemNetheriteIngot : Item { public ItemNetheriteIngot() : base("minecraft:netherite_ingot", 742) {} }
 	public class ItemNetheriteScrap : Item { public ItemNetheriteScrap() : base("minecraft:netherite_scrap", 752) {} }
 	public class ItemChain : Item { public ItemChain() : base("minecraft:chain", 758) {} }

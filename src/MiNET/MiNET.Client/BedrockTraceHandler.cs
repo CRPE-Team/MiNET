@@ -231,9 +231,8 @@ namespace MiNET.Client
 			using(FileStream file = File.OpenWrite(fileName))
 			{
 				var writer = new IndentedTextWriter(new StreamWriter(file));
-
-				Log.Warn($"Directory:\n{Path.GetTempPath()}");
-				Log.Warn($"Filename:\n{fileName}");
+				
+				Log.Warn($"BlockPalette ({blockPalette.Count}) Filename:\n{fileName}");
 
 				writer.WriteLine($"namespace MiNET.Blocks");
 				writer.WriteLine($"{{");
@@ -667,7 +666,7 @@ namespace MiNET.Client
 					writer.Indent++;
 					foreach (var itemStack in shapelessRecipe.Result)
 					{
-						writer.WriteLine($"new Item({itemStack.Id}, {itemStack.Metadata}, {itemStack.Count}),");
+						writer.WriteLine($"new Item({itemStack.Id}, {itemStack.Metadata}, {itemStack.Count}){{ UniqueId = {itemStack.UniqueId}, RuntimeId={itemStack.RuntimeId} }},");
 					}
 					writer.Indent--;
 					writer.WriteLine($"}},");
@@ -677,7 +676,7 @@ namespace MiNET.Client
 					writer.Indent++;
 					foreach (var itemStack in shapelessRecipe.Input)
 					{
-						writer.WriteLine($"new Item({itemStack.Id}, {itemStack.Metadata}, {itemStack.Count}),");
+						writer.WriteLine($"new Item({itemStack.Id}, {itemStack.Metadata}, {itemStack.Count}){{ UniqueId = {itemStack.UniqueId}, RuntimeId={itemStack.RuntimeId} }},");
 					}
 					writer.Indent--;
 					writer.WriteLine($"}}, \"{shapelessRecipe.Block}\"){{ UniqueId = {shapelessRecipe.UniqueId} }},");
@@ -706,7 +705,7 @@ namespace MiNET.Client
 					writer.Indent++;
 					foreach (Item item in shapedRecipe.Result)
 					{
-						writer.WriteLine($"new Item({item.Id}, {item.Metadata}, {item.Count}),");
+						writer.WriteLine($"new Item({item.Id}, {item.Metadata}, {item.Count}){{ UniqueId = {item.UniqueId}, RuntimeId={item.RuntimeId} }},");
 					}
 					writer.Indent--;
 					writer.WriteLine($"}},");
@@ -716,7 +715,7 @@ namespace MiNET.Client
 					writer.Indent++;
 					foreach (Item item in shapedRecipe.Input)
 					{
-						writer.WriteLine($"new Item({item.Id}, {item.Metadata}, {item.Count}),");
+						writer.WriteLine($"new Item({item.Id}, {item.Metadata}, {item.Count}){{ UniqueId = {item.UniqueId}, RuntimeId={item.RuntimeId} }},");
 					}
 					writer.Indent--;
 					writer.WriteLine($"}}, \"{shapedRecipe.Block}\"){{ UniqueId = {shapedRecipe.UniqueId} }},");
@@ -729,7 +728,7 @@ namespace MiNET.Client
 				var smeltingRecipe = recipe as SmeltingRecipe;
 				if (smeltingRecipe != null)
 				{
-					writer.WriteLine($"new SmeltingRecipe(new Item({smeltingRecipe.Result.Id}, {smeltingRecipe.Result.Metadata}, {smeltingRecipe.Result.Count}), new Item({smeltingRecipe.Input.Id}, {smeltingRecipe.Input.Metadata}), \"{smeltingRecipe.Block}\"),");
+					writer.WriteLine($"new SmeltingRecipe(new Item({smeltingRecipe.Result.Id}, {smeltingRecipe.Result.Metadata}, {smeltingRecipe.Result.Count}){{ UniqueId = {smeltingRecipe.Result.UniqueId}, RuntimeId={smeltingRecipe.Result.RuntimeId} }}, new Item({smeltingRecipe.Input.Id}, {smeltingRecipe.Input.Metadata}){{ UniqueId = {smeltingRecipe.Input.UniqueId}, RuntimeId={smeltingRecipe.Input.RuntimeId} }}, \"{smeltingRecipe.Block}\"),");
 					continue;
 				}
 
@@ -925,6 +924,17 @@ namespace MiNET.Client
 				packet.enabled = Client.UseBlobCache;
 				Client.SendPacket(packet);
 			}
+		}
+
+		/// <inheritdoc />
+		public override void HandleMcpeCommandOutput(McpeCommandOutput message)
+		{
+			base.HandleMcpeCommandOutput(message);
+
+			//foreach (var msg in message.Messages)
+			//{
+			//	Log.Warn($"Received command output: {msg}");
+			//}
 		}
 	}
 }

@@ -429,7 +429,7 @@ namespace MiNET
 			var sendSlot = McpeInventorySlot.CreateObject();
 			sendSlot.inventoryId = inventoryId;
 			sendSlot.slot = (uint) slot;
-			sendSlot.uniqueid = item.UniqueId;
+			//sendSlot.uniqueid = item.UniqueId;
 			sendSlot.item = item;
 			Player.SendPacket(sendSlot);
 		}

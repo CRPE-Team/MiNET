@@ -355,6 +355,8 @@ namespace MiNET
 		public virtual void SendResourcePackStack()
 		{
 			McpeResourcePackStack packStack = McpeResourcePackStack.CreateObject();
+			packStack.gameVersion = McpeProtocolInfo.GameVersion;
+			
 			if (_serverHaveResources)
 			{
 				packStack.mustAccept = false;
@@ -496,7 +498,7 @@ namespace MiNET
 		public void HandleMcpeMoveEntity(McpeMoveEntity message)
 		{
 			//Level.RelayBroadcast((McpeMoveEntity) message.Clone());
-			if (Level.TryGetEntity(message.runtimeEntityId, out Entity entity))
+			if (Vehicle == message.runtimeEntityId && Level.TryGetEntity(message.runtimeEntityId, out Entity entity))
 			{
 				entity.KnownPosition = message.position;
 				entity.IsOnGround = (message.flags & 1) == 1;
@@ -773,7 +775,7 @@ namespace MiNET
 			mcpeAdventureSettings.actionPermissions = (uint) ActionPermissions;
 			mcpeAdventureSettings.permissionLevel = (uint) PermissionLevel;
 			mcpeAdventureSettings.customStoredPermissions = (uint) 0;
-			mcpeAdventureSettings.userId = BinaryPrimitives.ReverseEndianness(EntityId);
+			mcpeAdventureSettings.entityUniqueId = BinaryPrimitives.ReverseEndianness(EntityId);
 
 			SendPacket(mcpeAdventureSettings);
 		}
@@ -985,6 +987,7 @@ namespace MiNET
 
 		protected virtual void SendAvailableCommands()
 		{
+			return;
 			//var settings = new JsonSerializerSettings();
 			//settings.NullValueHandling = NullValueHandling.Ignore;
 			//settings.DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate;
@@ -1760,9 +1763,11 @@ namespace MiNET
 
 		public virtual void SendCraftingRecipes()
 		{
-			McpeCraftingData craftingData = McpeCraftingData.CreateObject();
+			//TODO: Fix crafting recipe sending.
+			
+			/*McpeCraftingData craftingData = McpeCraftingData.CreateObject();
 			craftingData.recipes = RecipeManager.Recipes;
-			SendPacket(craftingData);
+			SendPacket(craftingData);*/
 		}
 
 		public virtual void SendCreativeInventory()
@@ -2051,20 +2056,20 @@ namespace MiNET
 				{
 					Result = StackResponseStatus.Ok,
 					RequestId = request.RequestId,
-					Responses = new List<StackResponseContainerInfo>()
+					ResponseContainerInfos = new List<StackResponseContainerInfo>()
 				};
 
 				response.responses.Add(stackResponse);
 
 				try
 				{
-					stackResponse.Responses.AddRange(ItemStackInventoryManager.HandleItemStackActions(request.RequestId, request));
+					stackResponse.ResponseContainerInfos.AddRange(ItemStackInventoryManager.HandleItemStackActions(request.RequestId, request));
 				}
 				catch (Exception e)
 				{
 					Log.Warn($"Failed to process inventory actions", e);
 					stackResponse.Result = StackResponseStatus.Error;
-					stackResponse.Responses.Clear();
+					stackResponse.ResponseContainerInfos.Clear();
 				}
 			}
 
@@ -2077,7 +2082,7 @@ namespace MiNET
 
 		public void HandleMcpePacketViolationWarning(McpePacketViolationWarning message)
 		{
-			Log.Error($"A level {message.severity} packet violation of type {message.violationType} for packet 0x{message.packetId:X} {message.reason}");
+			Log.Error($"A level {message.severity} packet violation of type {message.violationType} for packet 0x{message.packetId:X2}: {message.reason}");
 		}
 
 		/// <inheritdoc />
@@ -2215,7 +2220,7 @@ namespace MiNET
 				var sendSlot = McpeInventorySlot.CreateObject();
 				sendSlot.inventoryId = inventory.WindowsId;
 				sendSlot.slot = slot;
-				sendSlot.uniqueid = itemStack.UniqueId;
+				//sendSlot.uniqueid = itemStack.UniqueId;
 				sendSlot.item = itemStack;
 				SendPacket(sendSlot);
 			}
@@ -2816,7 +2821,7 @@ namespace MiNET
 			startGame.y = (int) (SpawnPosition.Y + Height);
 			startGame.z = (int) SpawnPosition.Z;
 			startGame.hasAchievementsDisabled = true;
-			startGame.dayCycleStopTime = (int) Level.WorldTime;
+			startGame.time = (int) Level.WorldTime;
 			startGame.eduOffer = PlayerInfo.Edition == 1 ? 1 : 0;
 			startGame.rainLevel = 0;
 			startGame.lightningLevel = 0;
