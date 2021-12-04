@@ -988,6 +988,7 @@ Wiki: [Entity Pick Request](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 |:-----|:-----|:-----|
 |Runtime Entity ID | ulong |  |
 |Selected Slot | byte |  |
+|Add User Data | bool |  |
 -----------------------------------------------------------------------
 ### Player Action (0x24)
 Wiki: [Player Action](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-PlayerAction)
@@ -1020,7 +1021,9 @@ Wiki: [Hurt Armor](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-HurtAr
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
+|Cause | SignedVarInt |  |
 |Health | SignedVarInt |  |
+|Armor Slot Flags | UnsignedVarInt |  |
 -----------------------------------------------------------------------
 ### Set Entity Data (0x27)
 Wiki: [Set Entity Data](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetEntityData)

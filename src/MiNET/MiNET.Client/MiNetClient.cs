@@ -87,7 +87,7 @@ namespace MiNET.Client
 		public RakConnection Connection { get; private set; }
 		public bool FoundServer => Connection.FoundServer;
 
-		public RakSession Session => Connection.ConnectionInfo.RakSessions.Values.FirstOrDefault();
+		public RakSession Session => Connection.ConnectionInfo.RakSessions.GetValueOrDefault(ServerEndPoint);
 		public bool IsConnected => Session?.State == ConnectionState.Connected;
 
 		public Vector3 SpawnPoint { get; set; }
@@ -105,6 +105,7 @@ namespace MiNET.Client
 
 		public string Username { get; set; }
 		public int ClientId { get; set; }
+		public string LaguageCode { get; set; } = "en_US";
 
 		public int PlayerStatus { get; set; }
 		public bool UseBlobCache { get; set; }
@@ -161,7 +162,7 @@ namespace MiNET.Client
 			JWT.JsonMapper = new NewtonsoftMapper();
 
 			var clientKey = CryptoUtils.GenerateClientKey();
-			byte[] data = CryptoUtils.CompressJwtBytes(CryptoUtils.EncodeJwt(username, clientKey, IsEmulator), CryptoUtils.EncodeSkinJwt(clientKey, username), CompressionLevel.Fastest);
+			byte[] data = CryptoUtils.CompressJwtBytes(CryptoUtils.EncodeJwt(username, clientKey, IsEmulator), CryptoUtils.EncodeSkinJwt(clientKey, username, ClientId, LaguageCode), CompressionLevel.Fastest);
 
 			McpeLogin loginPacket = new McpeLogin
 			{

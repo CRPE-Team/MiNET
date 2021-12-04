@@ -46,8 +46,8 @@ namespace MiNET.Net
 {
 	public class McpeProtocolInfo
 	{
-		public const int ProtocolVersion = 448;
-		public const string GameVersion = "1.17.11";
+		public const int ProtocolVersion = 465;
+		public const string GameVersion = "1.17.34";
 	}
 
 	public interface IMcpeMessageHandler
@@ -4019,6 +4019,7 @@ namespace MiNET.Net
 
 		public ulong runtimeEntityId; // = null;
 		public byte selectedSlot; // = null;
+		public bool addUserData; // = null;
 
 		public McpeEntityPickRequest()
 		{
@@ -4034,6 +4035,7 @@ namespace MiNET.Net
 
 			Write(runtimeEntityId);
 			Write(selectedSlot);
+			Write(addUserData);
 
 			AfterEncode();
 		}
@@ -4049,6 +4051,7 @@ namespace MiNET.Net
 
 			runtimeEntityId = ReadUlong();
 			selectedSlot = ReadByte();
+			addUserData = ReadBool();
 
 			AfterDecode();
 		}
@@ -4062,6 +4065,7 @@ namespace MiNET.Net
 
 			runtimeEntityId=default(ulong);
 			selectedSlot=default(byte);
+			addUserData=default(bool);
 		}
 
 	}
@@ -4129,7 +4133,9 @@ namespace MiNET.Net
 	public partial class McpeHurtArmor : Packet<McpeHurtArmor>
 	{
 
+		public int cause; // = null;
 		public int health; // = null;
+		public uint armorSlotFlags; // = null;
 
 		public McpeHurtArmor()
 		{
@@ -4143,7 +4149,9 @@ namespace MiNET.Net
 
 			BeforeEncode();
 
+			WriteSignedVarInt(cause);
 			WriteSignedVarInt(health);
+			WriteUnsignedVarInt(armorSlotFlags);
 
 			AfterEncode();
 		}
@@ -4157,7 +4165,9 @@ namespace MiNET.Net
 
 			BeforeDecode();
 
+			cause = ReadSignedVarInt();
 			health = ReadSignedVarInt();
+			armorSlotFlags = ReadUnsignedVarInt();
 
 			AfterDecode();
 		}
@@ -4169,7 +4179,9 @@ namespace MiNET.Net
 		{
 			base.ResetPacket();
 
+			cause=default(int);
 			health=default(int);
+			armorSlotFlags=default(uint);
 		}
 
 	}

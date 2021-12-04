@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.17.11" protocolVersion="448">
+<protocol gameVersion="1.17.34" protocolVersion="465">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -495,6 +495,7 @@
 	<pdu id="0x23" online="false" client="true" server="false" name="MCPE_ENTITY_PICK_REQUEST">
 		<field name="Runtime Entity ID" type="ulong" />
 		<field name="Selected Slot" type="byte" />
+		<field name="Add User Data" type="bool" />
 	</pdu>
 
 	<pdu id="0x24" online="false" client="true" server="false" name="MCPE_PLAYER_ACTION">
@@ -505,7 +506,9 @@
 	</pdu>
 
 	<pdu id="0x26" online="false" client="false" server="true" name="MCPE_HURT_ARMOR">
+		<field name="Cause" type="SignedVarInt" />
 		<field name="Health" type="SignedVarInt" />
+		<field name="Armor Slot Flags" type="UnsignedVarInt" />
 	</pdu>
 
 	<pdu id="0x27" online="false" client="true" server="true" name="MCPE_SET_ENTITY_DATA">

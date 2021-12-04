@@ -7866,8 +7866,9 @@ namespace MiNET.Blocks
 
         [StateRange(0, 5)] public int FacingDirection { get; set; } = 5;
         [StateBit] public bool ItemFrameMapBit { get; set; } = false;
+		[StateBit] public bool ItemFramePhotoBit { get; set; } = false;
 
-        public override void SetState(List<IBlockState> states)
+		public override void SetState(List<IBlockState> states)
         {
             foreach (var state in states)
             {
@@ -7879,7 +7880,10 @@ namespace MiNET.Blocks
                     case BlockStateByte s when s.Name == "item_frame_map_bit":
                         ItemFrameMapBit = Convert.ToBoolean(s.Value);
                         break;
-                } // switch
+					case BlockStateByte s when s.Name == "item_frame_photo_bit":
+						ItemFramePhotoBit = Convert.ToBoolean(s.Value);
+						break;
+				} // switch
             } // foreach
         } // method
 
@@ -7890,7 +7894,8 @@ namespace MiNET.Blocks
             record.Id = 199;
             record.States.Add(new BlockStateInt {Name = "facing_direction", Value = FacingDirection});
             record.States.Add(new BlockStateByte {Name = "item_frame_map_bit", Value = Convert.ToByte(ItemFrameMapBit)});
-            return record;
+			record.States.Add(new BlockStateByte {Name = "item_frame_photo_bit", Value = Convert.ToByte(ItemFramePhotoBit)});
+			return record;
         } // method
     } // class
 
