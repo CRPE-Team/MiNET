@@ -189,7 +189,7 @@ namespace MiNET.Utils.Cryptography
 			return Encoding.UTF8.GetBytes(val);
 		}
 
-		public static byte[] EncodeSkinJwt(AsymmetricCipherKeyPair newKey, string username)
+		public static byte[] EncodeSkinJwt(AsymmetricCipherKeyPair newKey, string username, long clientId, string langCode)
 		{
 			var resourcePatch = new SkinResourcePatch() {Geometry = new GeometryIdentifier() {Default = "geometry.humanoid.customSlim"}};
 			var skin = new Skin
@@ -215,7 +215,7 @@ namespace MiNET.Utils.Cryptography
 	""CapeImageHeight"": 0,
 	""CapeImageWidth"": 0,
 	""CapeOnClassicSkin"": false,
-	""ClientRandomId"": {new Random().Next()},
+	""ClientRandomId"": {clientId},
 	""CurrentInputMode"": 1,
 	""DefaultInputMode"": 1,
 	""DeviceId"": ""{Guid.NewGuid().ToString()}"",
@@ -223,7 +223,7 @@ namespace MiNET.Utils.Cryptography
 	""DeviceOS"": 7,
 	""GameVersion"": ""{McpeProtocolInfo.GameVersion}"",
 	""GuiScale"": -1,
-	""LanguageCode"": ""en_US"",
+	""LanguageCode"": ""{langCode}"",
 	""PersonaPieces"": [],
 	""PersonaSkin"": false,
 	""PieceTintColors"": [],

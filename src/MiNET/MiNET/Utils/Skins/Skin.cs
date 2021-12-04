@@ -67,6 +67,7 @@ namespace MiNET.Utils.Skins
 		public bool Slim { get; set; }
 		public bool IsPersonaSkin { get; set; }
 		public bool IsPremiumSkin { get; set; }
+		public bool IsPrimaryUser { get; set; }
 
 		public Cape Cape { get; set; } = new Cape();
 		public string SkinId { get; set; }
@@ -86,6 +87,7 @@ namespace MiNET.Utils.Skins
 		public byte[] Data { get; set; }
 		public string GeometryName { get; set; }
 		public string GeometryData { get; set; }
+		public string GeometryDataVersion { get; set; }
 
 		public string ArmSize { get; set; }
 

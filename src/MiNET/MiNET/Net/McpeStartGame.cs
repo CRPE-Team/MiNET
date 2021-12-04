@@ -54,6 +54,8 @@ namespace MiNET.Net
 		public string gameVersion; // = null;
 		public int limitedWorldWidth; // = null;
 		public int limitedWorldLength; // = null;
+		public string buttonName; // = null;
+		public string linkUri; // = null;
 		public bool isNewNether; // = null;
 		public bool experimentalGameplayOverride; // = null;
 		public string levelId; // = null;
@@ -124,6 +126,8 @@ namespace MiNET.Net
 			Write(limitedWorldWidth);
 			Write(limitedWorldLength);
 			Write(isNewNether);
+			Write(buttonName);
+			Write(linkUri);
 			Write(false);
 		//	Write(experimentalGameplayOverride);
 			//End of level settings
@@ -202,6 +206,8 @@ namespace MiNET.Net
 			limitedWorldWidth = ReadInt();
 			limitedWorldLength = ReadInt();
 			isNewNether = ReadBool();
+			buttonName = ReadString();
+			linkUri = ReadString();
 			if (ReadBool())
 			{
 				experimentalGameplayOverride = ReadBool();

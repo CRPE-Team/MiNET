@@ -43,12 +43,12 @@ namespace MiNET
 
 			return slotData;
 		}
-		
+
 
 		// GENERATED CODE. DON'T EDIT BY HAND
-        public static List<Item> CreativeInventoryItems = new List<Item>()
-        {
-            new Item(5, 0, 1){ NetworkId=1 }, /*minecraft:planks*/
+		public static List<Item> CreativeInventoryItems = new List<Item>()
+		{
+			new Item(5, 0, 1){ NetworkId=1 }, /*minecraft:planks*/
             new Item(5, 0, 1){ NetworkId=2 }, /*minecraft:planks*/
             new Item(5, 0, 1){ NetworkId=3 }, /*minecraft:planks*/
             new Item(5, 0, 1){ NetworkId=4 }, /*minecraft:planks*/

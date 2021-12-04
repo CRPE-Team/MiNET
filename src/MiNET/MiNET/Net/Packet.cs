@@ -2390,10 +2390,8 @@ namespace MiNET.Net
 			Write(skin.Cape.ImageHeight);
 			WriteByteArray(skin.Cape.Data);
 			Write(skin.GeometryData);
+			Write(skin.GeometryDataVersion);
 			Write(skin.AnimationData);
-			Write(skin.IsPremiumSkin);
-			Write(skin.IsPersonaSkin);
-			Write(skin.Cape.OnClassicSkin);
 			Write(skin.Cape.Id);
 			Write(skin.SkinId + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()); // some unique skin id
 			Write(skin.ArmSize);
@@ -2417,6 +2415,11 @@ namespace MiNET.Net
 					Write(color);
 				}
 			}
+
+			Write(skin.IsPremiumSkin);
+			Write(skin.IsPersonaSkin);
+			Write(skin.Cape.OnClassicSkin);
+			Write(skin.IsPrimaryUser);
 		}
 
 		public Skin ReadSkin()
@@ -2450,10 +2453,8 @@ namespace MiNET.Net
 			skin.Cape.ImageHeight = ReadInt();
 			skin.Cape.Data = ReadByteArray(false);
 			skin.GeometryData = ReadString();
+			skin.GeometryDataVersion = ReadString();
 			skin.AnimationData = ReadString();
-			skin.IsPremiumSkin = ReadBool();
-			skin.IsPersonaSkin = ReadBool();
-			skin.Cape.OnClassicSkin = ReadBool();
 			skin.Cape.Id = ReadString();
 			ReadString(); // fullSkinId
 			skin.ArmSize = ReadString();
@@ -2482,6 +2483,11 @@ namespace MiNET.Net
 				}
 				skin.SkinPieces.Add(piece);
 			}
+
+			skin.IsPremiumSkin = ReadBool();
+			skin.IsPersonaSkin = ReadBool();
+			skin.Cape.OnClassicSkin = ReadBool();
+			skin.IsPrimaryUser = ReadBool();
 
 			//Log.Debug($"SkinId={skin.SkinId}");
 			//Log.Debug($"SkinData lenght={skin.Data.Length}");
@@ -3427,7 +3433,7 @@ namespace MiNET.Net
 
 		public static T CreateObject(long numberOfReferences = 1)
 		{
-			T item = Pool.GetObject();
+			T item = new T();
 			item._isPooled = true;
 			item._referenceCounter = numberOfReferences;
 			item.Timer.Restart();
@@ -3449,16 +3455,16 @@ namespace MiNET.Net
 			if (_isPermanent) return;
 			if (!IsPooled) return;
 
-			long counter = Interlocked.Decrement(ref _referenceCounter);
-			if (counter > 0) return;
+			//long counter = Interlocked.Decrement(ref _referenceCounter);
+			//if (counter > 0) return;
 
-			if (counter < 0)
-			{
-				Log.Error($"Pooling error. Added pooled object too many times. 0x{Id:x2} {GetType().Name}, IsPooled={IsPooled}, IsPooled={_isPermanent}, Refs={_referenceCounter}");
-				return;
-			}
+			//if (counter < 0)
+			//{
+			//	Log.Error($"Pooling error. Added pooled object too many times. 0x{Id:x2} {GetType().Name}, IsPooled={IsPooled}, IsPooled={_isPermanent}, Refs={_referenceCounter}");
+			//	return;
+			//}
 
-			Reset();
+			//Reset();
 
 			_isPooled = false;
 
