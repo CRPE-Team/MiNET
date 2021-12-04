@@ -1,4 +1,4 @@
-#region LICENSE
+ï»¿#region LICENSE
 
 // The contents of this file are subject to the Common Public Attribution
 // License Version 1.0. (the "License"); you may not use this file except in
@@ -178,7 +178,7 @@ namespace TestPlugin.SafePay
 					Text = "Save payment info (safe)",
 					Value = true
 				},
-				new Label {Text = "§lWhat happens now?§r\nThis is step 1 of 2. After submitting payment information you will be able to review your order.\nWe will not bill you until confirm the order on next page (step 2)."},
+				new Label {Text = "Â§lWhat happens now?Â§r\nThis is step 1 of 2. After submitting payment information you will be able to review your order.\nWe will not bill you until confirm the order on next page (step 2)."},
 			};
 
 			player.SendForm(customForm);
@@ -189,8 +189,8 @@ namespace TestPlugin.SafePay
 			var modalForm = new ModalForm();
 			modalForm.ExecuteAction = ExecutePayment;
 			modalForm.Title = "Review Order";
-			modalForm.Content = "§lPlease review your ordering information below.§r\nProduct: Mega coins extra pack.\nYour total: $3.99 USD\nPayment method: VISA ************59 $3.99 USD\n";
-			modalForm.Button1 = "§2§lBuy now";
+			modalForm.Content = "Â§lPlease review your ordering information below.Â§r\nProduct: Mega coins extra pack.\nYour total: $3.99 USD\nPayment method: VISA ************59 $3.99 USD\n";
+			modalForm.Button1 = "Â§2Â§lBuy now";
 			modalForm.Button2 = "Cancel";
 
 			player.SendForm(modalForm);

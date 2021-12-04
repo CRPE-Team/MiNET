@@ -103,23 +103,25 @@ namespace MiNET.Blocks
 
 			lock (lockObj)
 			{
-				//using (var stream = assembly.GetManifestResourceStream(typeof(Block).Namespace + ".blockstates.json"))
-				/*using (var reader = new StreamReader(stream))
-				{
-					BlockPalette = BlockPalette.FromJson(reader.ReadToEnd());
-				}*/
+				Dictionary<string, int> idMapping = new Dictionary<string, int>(ResourceUtil.ReadResource<Dictionary<string, int>>("block_id_map.json", typeof(Block), "Data"), StringComparer.OrdinalIgnoreCase);
 
-				Dictionary<string, int> idMapping;
-				using (var stream = assembly.GetManifestResourceStream(typeof(Block).Namespace + ".block_id_map.json"))
-				using (var reader = new StreamReader(stream))
+				int runtimeId = 0;
+				BlockPalette = new BlockPalette();
+				
+				using (var stream = assembly.GetManifestResourceStream(typeof(Block).Namespace + ".Data.canonical_block_states.nbt"))
 				{
-					idMapping = JsonConvert.DeserializeObject<Dictionary<string, int>>(reader.ReadToEnd());
+					do
+					{
+						var compound = Packet.ReadNbtCompound(stream, true);
+						var container = GetBlockStateContainer(compound);
+						
+						container.RuntimeId = runtimeId++;
+						BlockPalette.Add(container);
+					} while (stream.Position < stream.Length);
 				}
 
-				BlockPalette = new BlockPalette();
-
-				var legacyStateMap = new Dictionary<string, List<R12ToCurrentBlockMapEntry>>();
-				using (var stream = assembly.GetManifestResourceStream(typeof(Block).Namespace + ".r12_to_current_block_map.bin"))
+				List<R12ToCurrentBlockMapEntry> legacyStateMap = new List<R12ToCurrentBlockMapEntry>();
+				using (var stream = assembly.GetManifestResourceStream(typeof(Block).Namespace + ".Data.r12_to_current_block_map.bin"))
 				{
 					while (stream.Position < stream.Length)
 					{
@@ -167,105 +169,60 @@ namespace MiNET.Blocks
 								file.UseVarInt = true;
 								file.AllowAlternativeRootTag = true;
 
-								file.LoadFromStream(reader, NbtCompression.None);
-								if (file.RootTag is NbtCompound)
-								{
-									var record = new BlockStateContainer();
-									record.Name = file.RootTag["name"].StringValue;
-									record.RuntimeId = runtimeId++;
-									record.Id = 248;
-									record.Data = -1;
-									record.States = new List<IBlockState>();
-									var states = (NbtCompound) file.RootTag["states"];
-									foreach (NbtTag stateTag in states)
-									{
-										IBlockState state = null;
-										switch (stateTag.TagType)
-										{
-											case NbtTagType.Byte:
-												state = new BlockStateByte()
-												{
-													Name = stateTag.Name,
-													Value = stateTag.ByteValue
-												};
-												//record.Data = (short) stateTag.ByteValue;
-												break;
-											case NbtTagType.Int:
-												state = new BlockStateInt()
-												{
-													Name = stateTag.Name,
-													Value = stateTag.IntValue
-												};
-												//record.Data = (short) stateTag.IntValue;
-												break;
-											case NbtTagType.String:
-												state = new BlockStateString()
-												{
-													Name = stateTag.Name,
-													Value = stateTag.StringValue
-												};
-												break;
-											default:
-												throw new ArgumentOutOfRangeException();
-										}
-										record.States.Add(state);
-									}
+					candidates.Add(index);
 
-									//record.StatesNbt = (NbtCompound)file.RootTag;
+					idToStatesMap[state.Name] = candidates;
+				}
 
-									newBP.Add(record);
+				foreach (var pair in legacyStateMap)
+				{
+					if (!idMapping.TryGetValue(pair.StringId, out int id))
+						continue;
 
-									if (!legacyStateMap.TryGetValue(record.Name, out var nameMap)) continue;
+					var data = pair.Meta;
 
-									var container = nameMap.FirstOrDefault();
+					if (data > 15)
+					{
+						continue;
+					}
 
-									if (container == null)
-									{
-										//Log.Warn($"Not enough block states for new record {record.Name}");
-										continue;
-									}
+					var mappedState = pair.State;
+					var mappedName = pair.State.Name;
 
-									nameMap.Remove(container);
+					if (!idToStatesMap.TryGetValue(mappedName, out var matching))
+					{
+						continue;
+					}
 
-									record.Data = container.Meta;
-									idMapping.TryGetValue(container.StringId, out int idd);
-									record.Id = idd;
-									record.ItemInstance = new ItemPickInstance()
-									{
-										Id = (short) idd,
-										Metadata = container.Meta,
-										WantNbt = false
-									};
-									//BlockPalette.Remove(container);
+					foreach (var match in matching)
+					{
+						var networkState = BlockPalette[match];
 
+						var thisStates = new HashSet<IBlockState>(mappedState.States);
+						var otherStates = new HashSet<IBlockState>(networkState.States);
 
-									/*if(BlockPalette.Where(a => a.Name == record.Name).ToList().Count == 0)
-									{
-										record.Id = 560;
-										record.RuntimeId = 6632;
-										BlockPalette.Add(record);
-										Console.WriteLine(record.Name);
-										Console.WriteLine(record.Id);
-										Console.WriteLine(record.RuntimeId);
-									}*/
+						otherStates.IntersectWith(thisStates);
 
+						if (otherStates.Count == thisStates.Count)
+						{
+							BlockPalette[match].Id = id;
+							BlockPalette[match].Data = data;
 
-									if (record.Id == 248)
-									{
-										//Console.WriteLine(record.Name);
-										//Console.WriteLine(record.Id);
-										//Console.WriteLine(record.RuntimeId);
-									}
-									//if(remove != null)
-									//newBP = new BlockStateContainer() { Id = - 144, }
-								}
-								//Console.WriteLine(newBP.Count);
-							}
+							BlockPalette[match].ItemInstance = new ItemPickInstance()
+							{
+								Id = (short) id,
+								Metadata = data,
+								WantNbt = false
+							};
+
+							LegacyToRuntimeId[(id << 4) | (byte) data] = match;
+
+							break;
 						}
 					}
 				}
 
-				foreach (var record in BlockPalette)
+				foreach(var record in BlockPalette)
 				{
 					var states = new List<NbtTag>();
 					foreach (IBlockState state in record.States)

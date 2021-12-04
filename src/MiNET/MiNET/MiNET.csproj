@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>MiNET</PackageId>
     <Version>0.0.0</Version>
@@ -19,6 +18,7 @@
     <LangVersion>latest</LangVersion>
     <NoWarn>1701;1702;1701</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>full</DebugType>
@@ -33,39 +33,39 @@
     <EmbeddedResource Include="Blocks\blockstates.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Blocks\legacy_id_map.json">
+    <EmbeddedResource Include="Blocks\Data\block_id_map.json" />
+    <EmbeddedResource Include="Blocks\Data\canonical_block_states.nbt" />
+    <EmbeddedResource Include="Blocks\Data\item_id_map.json" />
+    <EmbeddedResource Include="Blocks\Data\legacy_id_map.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Items\itemstates.json">
+    <EmbeddedResource Include="Blocks\Data\r12_to_current_block_map.bin" />
+    <EmbeddedResource Include="Items\Data\itemstates.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Items\Data\item_id_map.json" />
+    <EmbeddedResource Include="Items\Data\r16_to_current_item_map.json" />
     <None Remove="Blocks\canonical_block_states.nbt" />
-    <EmbeddedResource Include="Blocks\canonical_block_states.nbt" />
     <None Remove="Blocks\block_id_map.json" />
-    <EmbeddedResource Include="Blocks\block_id_map.json" />
     <None Remove="Blocks\item_id_map.json" />
-    <EmbeddedResource Include="Blocks\item_id_map.json" />
     <None Remove="Blocks\r12_to_current_block_map.bin" />
-    <EmbeddedResource Include="Blocks\r12_to_current_block_map.bin" />
     <None Remove="Items\item_id_map.json" />
-    <EmbeddedResource Include="Items\item_id_map.json" />
     <None Remove="Items\r16_to_current_item_map.json" />
-    <EmbeddedResource Include="Items\r16_to_current_item_map.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="jose-jwt" Version="3.1.1" />
+    <PackageReference Include="jose-jwt" Version="3.2.0" />
     <PackageReference Include="LibNoise.NetStandart" Version="0.2.0" />
-    <PackageReference Include="log4net" Version="2.0.12" />
-    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.4.0" />
-    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="16.10.0" />
+    <PackageReference Include="log4net" Version="2.0.13" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.2.0" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.0.0" />
     <PackageReference Include="MiNET.astar" Version="1.0.14" />
     <PackageReference Include="MiNET.fnbt" Version="1.0.22" />
     <PackageReference Include="MiNET.LevelDB" Version="1.0.36" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Portable.BouncyCastle" Version="1.8.10" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
     <PackageReference Include="SharpAvi" Version="2.1.2" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
-    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="5.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Net\MCPE Protocol.xml" />
