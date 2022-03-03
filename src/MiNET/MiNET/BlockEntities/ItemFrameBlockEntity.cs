@@ -1,4 +1,4 @@
-#region LICENSE
+﻿#region LICENSE
 
 // The contents of this file are subject to the Common Public Attribution
 // License Version 1.0. (the "License"); you may not use this file except in
@@ -133,6 +133,12 @@ namespace MiNET.BlockEntities
 			if (itemComp == null) return slots;
 
 			Item item = ItemFactory.GetItem(itemComp["id"].ShortValue, itemComp["Damage"].ShortValue, itemComp["Count"].ByteValue);
+
+			if (itemComp.TryGet("tag", out NbtCompound tag))
+			{
+				item.ExtraData = tag;
+			}
+
 			slots.Add(item);
 
 			return slots;

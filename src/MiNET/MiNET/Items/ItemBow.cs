@@ -112,7 +112,7 @@ namespace MiNET.Items
 					if (itemStack.Id == 262)
 					{
 						haveArrow = true;
-						if (isInfinity) inventory.RemoveItems(262, 1);
+						if (!isInfinity) inventory.RemoveItems(262, 1);
 						break;
 					}
 				}
@@ -128,7 +128,10 @@ namespace MiNET.Items
 			arrow.KnownPosition = (PlayerLocation) player.KnownPosition.Clone();
 			arrow.KnownPosition.Y += 1.62f;
 
-			arrow.Velocity = arrow.KnownPosition.GetHeadDirection().Normalize() * (force * 3);
+			var vector = arrow.KnownPosition.GetHeadDirection().Normalize();
+			arrow.KnownPosition += vector * 0.5f + vector * force;
+
+			arrow.Velocity = vector * force * 3;
 			arrow.KnownPosition.Yaw = (float) arrow.Velocity.GetYaw();
 			arrow.KnownPosition.Pitch = (float) arrow.Velocity.GetPitch();
 			arrow.BroadcastMovement = true;

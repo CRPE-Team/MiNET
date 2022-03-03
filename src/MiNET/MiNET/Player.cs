@@ -1137,6 +1137,8 @@ namespace MiNET
 			KnownPosition = position;
 			LastUpdatedTime = DateTime.UtcNow;
 
+			StartFallY = 0;
+
 			var packet = McpeMovePlayer.CreateObject();
 			packet.runtimeEntityId = EntityManager.EntityIdSelf;
 			packet.x = position.X;
@@ -1164,15 +1166,15 @@ namespace MiNET
 				if (!IsChunkInCache(newPosition))
 				{
 					// send teleport straight up, no chunk loading
-					SetPosition(new PlayerLocation
-					{
-						X = KnownPosition.X,
-						Y = 4000,
-						Z = KnownPosition.Z,
-						Yaw = 91,
-						Pitch = 28,
-						HeadYaw = 91,
-					});
+					//SetPosition(new PlayerLocation
+					//{
+					//	X = KnownPosition.X,
+					//	Y = 4000,
+					//	Z = KnownPosition.Z,
+					//	Yaw = 91,
+					//	Pitch = 28,
+					//	HeadYaw = 91,
+					//});
 
 					ForcedSendChunk(newPosition);
 				}
@@ -1619,15 +1621,15 @@ namespace MiNET
 				toLevel = levelFunc();
 			}
 
-			SetPosition(new PlayerLocation
-			{
-				X = KnownPosition.X,
-				Y = 4000,
-				Z = KnownPosition.Z,
-				Yaw = 91,
-				Pitch = 28,
-				HeadYaw = 91,
-			});
+			//SetPosition(new PlayerLocation
+			//{
+			//	X = KnownPosition.X,
+			//	Y = 4000,
+			//	Z = KnownPosition.Z,
+			//	Yaw = 91,
+			//	Pitch = 28,
+			//	HeadYaw = 91,
+			//});
 
 			Action transferFunc = delegate
 			{
@@ -1668,7 +1670,7 @@ namespace MiNET
 
 					SetNoAi(oldNoAi);
 
-					ForcedSendChunks(() =>
+					ForcedSendChunks(SpawnPosition, () =>
 					{
 						Log.InfoFormat("Respawn player {0} on level {1}", Username, Level.LevelId);
 
@@ -1906,8 +1908,17 @@ namespace MiNET
 				}
 			}
 
-			var origin = KnownPosition.ToVector3();
-			double distanceTo = Vector3.Distance(origin, new Vector3(message.x, message.y - 1.62f, message.z));
+			var newLocation = new PlayerLocation
+			{
+				X = message.x,
+				Y = message.y - 1.62f,
+				Z = message.z,
+				Pitch = message.pitch,
+				Yaw = message.yaw,
+				HeadYaw = message.headYaw
+			};
+
+			double distanceTo = KnownPosition.DistanceTo(newLocation);
 
 			CurrentSpeed = distanceTo / ((double) (DateTime.UtcNow - LastUpdatedTime).Ticks / TimeSpan.TicksPerSecond);
 
@@ -1917,7 +1928,7 @@ namespace MiNET
 			bool isFlyingHorizontally = false;
 			if (Math.Abs(distanceTo) > 0.01)
 			{
-				isOnGround = CheckOnGround(message);
+				isOnGround = CheckOnGround(newLocation);
 				isFlyingHorizontally = DetectSimpleFly(message, isOnGround);
 			}
 
@@ -1929,15 +1940,7 @@ namespace MiNET
 			// Hunger management
 			if (!IsGliding) HungerManager.Move(Vector3.Distance(new Vector3(KnownPosition.X, 0, KnownPosition.Z), new Vector3(message.x, 0, message.z)));
 
-			KnownPosition = new PlayerLocation
-			{
-				X = message.x,
-				Y = message.y - 1.62f,
-				Z = message.z,
-				Pitch = message.pitch,
-				Yaw = message.yaw,
-				HeadYaw = message.headYaw
-			};
+			KnownPosition = newLocation;
 
 			IsFalling = verticalMove < 0 && !IsOnGround;
 
@@ -1947,11 +1950,12 @@ namespace MiNET
 			}
 			else
 			{
-				double damage = StartFallY - KnownPosition.Y;
-				if ((damage - 3) > 0)
+				double damage = Math.Max(0, StartFallY - KnownPosition.Y - 3);
+				if (damage > 0 && !StayInWater(newLocation))
 				{
 					HealthManager.TakeHit(null, (int) DamageCalculator.CalculatePlayerDamage(null, this, null, damage, DamageCause.Fall), DamageCause.Fall);
 				}
+
 				StartFallY = 0;
 			}
 
@@ -1981,12 +1985,21 @@ namespace MiNET
 		private static readonly int[] Layers = {-1, 0};
 		private static readonly int[] Arounds = {0, 1, -1};
 
-		public bool CheckOnGround(McpeMovePlayer message)
+		public bool StayInWater(PlayerLocation location)
 		{
-			if (Level == null)
-				return true;
+			return CheckPlayerStayOn(location, block => block is Water);
+		}
 
-			BlockCoordinates pos = new Vector3(message.x, message.y - 1.62f, message.z);
+		public bool CheckOnGround(PlayerLocation location)
+		{
+			return CheckPlayerStayOn(location, block => block.IsSolid);
+		}
+
+		private bool CheckPlayerStayOn(PlayerLocation location, Func<Block, bool> predicate)
+		{
+			if (Level == null) return true;
+
+			BlockCoordinates pos = location.GetCoordinates3D();
 
 			foreach (int layer in Layers)
 			{
@@ -1996,7 +2009,7 @@ namespace MiNET
 					{
 						var offset = new BlockCoordinates(x, layer, z);
 						Block block = Level.GetBlock(pos + offset);
-						if (block.IsSolid)
+						if (predicate(block))
 						{
 							//Level.SetBlock(new GoldBlock() {Coordinates = block.Coordinates});
 							return true;
@@ -2870,11 +2883,13 @@ namespace MiNET
 			{
 				var chunkPosition = new ChunkCoordinates(position);
 
+				//SendNetworkChunkPublisherUpdate(position.GetCoordinates3D());
+
 				McpeWrapper chunk = Level.GetChunk(chunkPosition)?.GetBatch();
-				if (!_chunksUsed.ContainsKey(chunkPosition))
-				{
-					_chunksUsed.Add(chunkPosition, chunk);
-				}
+				//if (!_chunksUsed.ContainsKey(chunkPosition))
+				//{
+				//	_chunksUsed.Add(chunkPosition, chunk);
+				//}
 
 				if (chunk != null)
 				{
@@ -2912,12 +2927,17 @@ namespace MiNET
 			}
 		}
 
-		public void SendNetworkChunkPublisherUpdate()
+		public void SendNetworkChunkPublisherUpdate(BlockCoordinates coordinates)
 		{
 			var pk = McpeNetworkChunkPublisherUpdate.CreateObject();
-			pk.coordinates = KnownPosition.GetCoordinates3D();
+			pk.coordinates = coordinates;
 			pk.radius = (uint) (MaxViewDistance * 16);
 			SendPacket(pk);
+		}
+
+		public void SendNetworkChunkPublisherUpdate()
+		{
+			SendNetworkChunkPublisherUpdate(KnownPosition.GetCoordinates3D());
 		}
 
 		public void ForcedSendChunks(Action postAction = null)
@@ -2931,7 +2951,6 @@ namespace MiNET
 
 				if (Level == null) return;
 
-				SendNetworkChunkPublisherUpdate();
 				int packetCount = 0;
 				foreach (McpeWrapper chunk in Level.GenerateChunks(_currentChunkPosition, _chunksUsed, ChunkRadius))
 				{
@@ -2939,6 +2958,42 @@ namespace MiNET
 
 					if (++packetCount % 16 == 0) Thread.Sleep(12);
 				}
+
+				SendNetworkChunkPublisherUpdate();
+			}
+			finally
+			{
+				Monitor.Exit(_sendChunkSync);
+			}
+
+			if (postAction != null)
+			{
+				postAction();
+			}
+		}
+
+		public void ForcedSendChunks(PlayerLocation location, Action postAction = null)
+		{
+			Monitor.Enter(_sendChunkSync);
+			try
+			{
+				var chunkPosition = new ChunkCoordinates(location);
+
+				_currentChunkPosition = chunkPosition;
+
+				if (Level == null) return;
+
+				SendNetworkChunkPublisherUpdate(location.GetCoordinates3D());
+
+				int packetCount = 0;
+				foreach (McpeWrapper chunk in Level.GenerateChunks(_currentChunkPosition, _chunksUsed, ChunkRadius))
+				{
+					if (chunk != null) SendPacket(chunk);
+
+					if (++packetCount % 8 == 0) Thread.Sleep(12);
+				}
+
+				SendNetworkChunkPublisherUpdate(location.GetCoordinates3D());
 			}
 			finally
 			{
@@ -2980,13 +3035,15 @@ namespace MiNET
 				{
 					if (chunk != null) SendPacket(chunk);
 
-					if (++packetCount % 16 == 0) Thread.Sleep(12);
+					if (++packetCount % 8 == 0) Thread.Sleep(12);
 
 					if (!IsSpawned && packetCount == 56)
 					{
 						InitializePlayer();
 					}
 				}
+
+				SendNetworkChunkPublisherUpdate();
 
 				Log.Debug($"Sent {packetCount} chunks for {chunkPosition} with view distance {MaxViewDistance}");
 			}
