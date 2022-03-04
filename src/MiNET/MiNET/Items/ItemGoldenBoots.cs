@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemGoldenBoots() : base("minecraft:golden_boots", 317)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Boots;
 			ItemMaterial = ItemMaterial.Gold;
+			Durability = CalculateDurability();
 		}
 	}
 }

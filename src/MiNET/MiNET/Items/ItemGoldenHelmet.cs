@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemGoldenHelmet() : base("minecraft:golden_helmet", 314)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Helmet;
 			ItemMaterial = ItemMaterial.Gold;
+			Durability = CalculateDurability();
 		}
 	}
 }

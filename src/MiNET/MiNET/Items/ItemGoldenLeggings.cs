@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemGoldenLeggings() : base("minecraft:golden_leggings", 316)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Leggings;
 			ItemMaterial = ItemMaterial.Gold;
+			Durability = CalculateDurability();
 		}
 	}
 }

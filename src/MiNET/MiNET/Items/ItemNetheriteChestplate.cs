@@ -30,6 +30,7 @@ namespace MiNET.Items
 		public ItemNetheriteChestplate() : base("minecraft:netherite_chestplate", 749)
 		{
 			ItemMaterial = ItemMaterial.Netherite;
+			Durability = CalculateDurability();
 		}
 	}
 }

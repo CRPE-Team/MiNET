@@ -29,6 +29,7 @@ namespace MiNET.Items
 	{
 		public ItemTurtleHelmet() : base("minecraft:turtle_helmet", 469)
 		{
+			Durability = 275;
 		}
 	}
 }

@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemLeatherHelmet() : base("minecraft:leather_helmet", 298)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Helmet;
 			ItemMaterial = ItemMaterial.Leather;
+			Durability = CalculateDurability();
 		}
 	}
 }

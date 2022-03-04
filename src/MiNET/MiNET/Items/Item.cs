@@ -68,6 +68,8 @@ namespace MiNET.Items
 
 		[JsonIgnore] public int Durability { get; set; }
 
+		[JsonIgnore] public bool Unbreakable { get; set; } = false;
+
 		[JsonIgnore] public int FuelEfficiency { get; set; }
 
 		protected internal Item(string name, short id, short metadata = 0, int count = 1)

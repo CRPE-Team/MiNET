@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemIronChestplate() : base("minecraft:iron_chestplate", 307)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Chestplate;
 			ItemMaterial = ItemMaterial.Iron;
+			Durability = CalculateDurability();
 		}
 	}
 }

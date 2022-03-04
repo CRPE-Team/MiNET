@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemIronBoots() : base("minecraft:iron_boots", 309)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Boots;
 			ItemMaterial = ItemMaterial.Iron;
+			Durability = CalculateDurability();
 		}
 	}
 }

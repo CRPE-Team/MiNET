@@ -30,6 +30,7 @@ namespace MiNET.Items
 		public ItemNetheriteBoots() : base("minecraft:netherite_boots", 751)
 		{
 			ItemMaterial = ItemMaterial.Netherite;
+			Durability = CalculateDurability();
 		}
 	}
 }

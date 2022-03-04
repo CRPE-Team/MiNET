@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemDiamondBoots() : base("minecraft:diamond_boots", 313)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Boots;
 			ItemMaterial = ItemMaterial.Diamond;
+			Durability = CalculateDurability();
 		}
 	}
 }

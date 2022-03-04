@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemIronHelmet() : base("minecraft:iron_helmet", 306)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Helmet;
 			ItemMaterial = ItemMaterial.Iron;
+			Durability = CalculateDurability();
 		}
 	}
 }

@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemChainmailLeggings() : base("minecraft:chainmail_leggings", 304)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Leggings;
 			ItemMaterial = ItemMaterial.Chain;
+			Durability = CalculateDurability();
 		}
 	}
 }

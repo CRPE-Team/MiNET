@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemChainmailChestplate() : base("minecraft:chainmail_chestplate", 303)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Chestplate;
 			ItemMaterial = ItemMaterial.Chain;
+			Durability = CalculateDurability();
 		}
 	}
 }

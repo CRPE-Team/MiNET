@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemLeatherChestplate() : base("minecraft:leather_chestplate", 299)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Chestplate;
 			ItemMaterial = ItemMaterial.Leather;
+			Durability = CalculateDurability();
 		}
 	}
 }

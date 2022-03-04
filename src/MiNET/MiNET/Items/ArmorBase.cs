@@ -47,6 +47,7 @@ namespace MiNET.Items
 		protected ArmorBase(ArmorType armorType, string name, short id, short metadata = 0, int count = 1) : base(name, id, metadata, count)
 		{
 			ArmorType = armorType;
+			MaxStackSize = 1;
 		}
 
 		protected void SwithItem(Player player, Item item)
@@ -61,6 +62,31 @@ namespace MiNET.Items
 		public override bool DamageItem(Player player, ItemDamageReason reason, Entity target, Block block)
 		{
 			return ++Metadata >= Durability;
+		}
+
+		protected int CalculateDurability()
+		{
+			var armor = ArmorType switch
+			{
+				ArmorType.Helmet => 11,
+				ArmorType.Chestplate => 16,
+				ArmorType.Leggings => 15,
+				ArmorType.Boots	=> 13,
+				_ => 0
+			};
+
+			var material = ItemMaterial switch
+			{
+				ItemMaterial.Leather => 5,
+				ItemMaterial.Gold => 7,
+				ItemMaterial.Chain => 15,
+				ItemMaterial.Iron => 15,
+				ItemMaterial.Diamond => 33,
+				ItemMaterial.Netherite => 37,
+				_ => 0
+			};
+
+			return armor * material;
 		}
 	}
 

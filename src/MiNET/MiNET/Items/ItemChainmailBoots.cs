@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemChainmailBoots() : base("minecraft:chainmail_boots", 305)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Boots;
 			ItemMaterial = ItemMaterial.Chain;
+			Durability = CalculateDurability();
 		}
 	}
 }

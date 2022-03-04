@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemGoldenChestplate() : base("minecraft:golden_chestplate", 315)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Chestplate;
 			ItemMaterial = ItemMaterial.Gold;
+			Durability = CalculateDurability();
 		}
 	}
 }

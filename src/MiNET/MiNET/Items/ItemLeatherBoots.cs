@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemLeatherBoots() : base("minecraft:leather_boots", 301)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Boots;
 			ItemMaterial = ItemMaterial.Leather;
+			Durability = CalculateDurability();
 		}
 	}
 }

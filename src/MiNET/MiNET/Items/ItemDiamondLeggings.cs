@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemDiamondLeggings() : base("minecraft:diamond_leggings", 312)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Leggings;
 			ItemMaterial = ItemMaterial.Diamond;
+			Durability = CalculateDurability();
 		}
 	}
 }

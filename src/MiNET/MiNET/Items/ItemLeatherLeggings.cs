@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemLeatherLeggings() : base("minecraft:leather_leggings", 300)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Leggings;
 			ItemMaterial = ItemMaterial.Leather;
+			Durability = CalculateDurability();
 		}
 	}
 }

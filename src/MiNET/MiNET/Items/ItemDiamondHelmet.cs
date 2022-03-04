@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemDiamondHelmet() : base("minecraft:diamond_helmet", 310)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Helmet;
 			ItemMaterial = ItemMaterial.Diamond;
+			Durability = CalculateDurability();
 		}
 	}
 }

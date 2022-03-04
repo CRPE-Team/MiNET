@@ -29,9 +29,8 @@ namespace MiNET.Items
 	{
 		public ItemChainmailHelmet() : base("minecraft:chainmail_helmet", 302)
 		{
-			MaxStackSize = 1;
-			ItemType = ItemType.Helmet;
 			ItemMaterial = ItemMaterial.Chain;
+			Durability = CalculateDurability();
 		}
 	}
 }
