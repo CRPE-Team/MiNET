@@ -685,6 +685,19 @@ namespace MiNET
 				{
 					break;
 				}
+				case PlayerAction.GetUpdatedBlock:
+				case PlayerAction.DropItem:
+				case PlayerAction.Respawn:
+				case PlayerAction.ChangeSkin:
+				case PlayerAction.StartSwimming:
+				case PlayerAction.StopSwimming:
+				case PlayerAction.StartSpinAttack:
+				case PlayerAction.StopSpinAttack:
+				case PlayerAction.PredictDestroyBlock:
+				case PlayerAction.ContinueDestroyBlock:
+				{
+					break;
+				}
 				default:
 				{
 					Log.Warn($"Unhandled action ID={message.actionId}");
