@@ -31,7 +31,7 @@ namespace MiNET.Effects
 	{
 		public JumpBoost() : base(EffectType.JumpBoost)
 		{
-			Particles = true;
+			Particles = false;
 			ParticleColor = Color.FromArgb(0x22, 0xFF, 0x4C);
 		}
 	}
