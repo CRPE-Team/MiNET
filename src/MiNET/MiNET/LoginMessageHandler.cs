@@ -558,6 +558,12 @@ namespace MiNET
 		{
 		}
 
+		/// <inheritdoc />
+		public void HandleMcpePlayerAuthInput(McpePlayerAuthInput message)
+		{
+			
+		}
+
 		public void HandleMcpeItemStackRequest(McpeItemStackRequest message)
 		{
 		}
@@ -573,6 +579,18 @@ namespace MiNET
 		/// <inheritdoc />
 		public void HandleMcpeFilterTextPacket(McpeFilterTextPacket message)
 		{
+		}
+
+		/// <inheritdoc />
+		public void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message)
+		{
+			
+		}
+
+		/// <inheritdoc />
+		public void HandleMcpeSubChunkRequestPacket(McpeSubChunkRequestPacket message)
+		{
+			
 		}
 
 		public void HandleMcpeEntityEvent(McpeEntityEvent message)

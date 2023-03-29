@@ -962,8 +962,8 @@ namespace MiNET.Net
 				case ItemUseTransaction t:
 					WriteUnsignedVarInt((uint) t.ActionType);
 					Write(t.Position);
-					WriteVarInt(t.Face);
-					WriteVarInt(t.Slot);
+					WriteSignedVarInt(t.Face);
+					WriteSignedVarInt(t.Slot);
 					Write(t.Item);
 					Write(t.FromPosition);
 					Write(t.ClickPosition);
@@ -972,14 +972,14 @@ namespace MiNET.Net
 				case ItemUseOnEntityTransaction t:
 					WriteUnsignedVarLong(t.EntityId);
 					WriteUnsignedVarInt((uint) t.ActionType);
-					WriteVarInt(t.Slot);
+					WriteSignedVarInt(t.Slot);
 					Write(t.Item);
 					Write(t.FromPosition);
 					Write(t.ClickPosition);
 					break;
 				case ItemReleaseTransaction t:
 					WriteUnsignedVarInt((uint) t.ActionType);
-					WriteVarInt(t.Slot);
+					WriteSignedVarInt(t.Slot);
 					Write(t.Item);
 					Write(t.FromPosition);
 					break;
@@ -1195,6 +1195,18 @@ namespace MiNET.Net
 							break;
 						}
 
+						case PlaceIntoBundleAction ta:
+						{
+							Write((byte) McpeItemStackRequest.ActionType.PlaceIntoBundle);
+							break;
+						}
+						
+						case TakeFromBundleAction ta:
+						{
+							Write((byte) McpeItemStackRequest.ActionType.TakeFromBundle);
+							break;
+						}
+						
 						case LabTableCombineAction ta:
 						{
 							Write((byte) McpeItemStackRequest.ActionType.LabTableCombine);
@@ -1235,6 +1247,21 @@ namespace MiNET.Net
 							Write((byte) McpeItemStackRequest.ActionType.CraftRecipeOptional);
 							WriteUnsignedVarInt(ta.RecipeNetworkId);
 							Write(ta.FilteredStringIndex);
+							break;
+						}
+
+						case GrindstoneStackRequestAction ta:
+						{
+							Write((byte) McpeItemStackRequest.ActionType.CraftGrindstone);
+							WriteUnsignedVarInt(ta.RecipeNetworkId);
+							WriteVarInt(ta.RepairCost);
+							break;
+						}
+						
+						case LoomStackRequestAction ta:
+						{
+							Write((byte) McpeItemStackRequest.ActionType.CraftLoom);
+							Write(ta.PatternId);
 							break;
 						}
 
@@ -1352,6 +1379,20 @@ namespace MiNET.Net
 							actions.Add(action);
 							break;
 						}
+
+						case McpeItemStackRequest.ActionType.PlaceIntoBundle:
+						{
+							var action = new PlaceIntoBundleAction();
+							actions.Add(action);
+							break;
+						}
+
+						case McpeItemStackRequest.ActionType.TakeFromBundle:
+						{
+							var action = new TakeFromBundleAction();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.LabTableCombine:
 						{
 							var action = new LabTableCombineAction();
@@ -1392,6 +1433,22 @@ namespace MiNET.Net
 							var action = new CraftRecipeOptionalAction();
 							action.RecipeNetworkId = ReadUnsignedVarInt();
 							action.FilteredStringIndex = ReadInt();
+							actions.Add(action);
+							break;
+						}
+						case McpeItemStackRequest.ActionType.CraftGrindstone:
+						{
+							var action = new GrindstoneStackRequestAction();
+							action.RecipeNetworkId = ReadUnsignedVarInt();
+							action.RepairCost = ReadVarInt();
+							
+							actions.Add(action);
+							break;
+						}
+						case McpeItemStackRequest.ActionType.CraftLoom:
+						{
+							var action = new LoomStackRequestAction();
+							action.PatternId = ReadString();
 							actions.Add(action);
 							break;
 						}
@@ -2127,7 +2184,27 @@ namespace MiNET.Net
 			}
 		}
 
-		public void Write(Links links)
+		public void Write(EntityLink link)
+		{
+			WriteVarLong(link.FromEntityId);
+			WriteVarLong(link.ToEntityId);
+			Write((byte)link.Type);
+			Write(link.Immediate);
+			Write(link.CausedByRider);
+		}
+
+		public EntityLink ReadEntityLink()
+		{
+			var from = ReadVarLong();
+			var to = ReadVarLong();
+			var type = (EntityLink.EntityLinkType) ReadByte();
+			var immediate = ReadBool();
+			var causedByRider = ReadBool();
+
+			return new EntityLink(from, to, type, immediate, causedByRider);
+		}
+		
+		public void Write(EntityLinks links)
 		{
 			if (links == null)
 			{
@@ -2137,24 +2214,18 @@ namespace MiNET.Net
 			WriteUnsignedVarInt((uint) links.Count); // LE
 			foreach (var link in links)
 			{
-				WriteVarLong(link.Item1);
-				WriteVarLong(link.Item2);
-				_writer.Write((byte) 1);
-				_writer.Write((byte) 0);
+				Write(link);
 			}
 		}
 
-		public Links ReadLinks()
+		public EntityLinks ReadEntityLinks()
 		{
 			var count = ReadUnsignedVarInt();
 
-			var links = new Links();
+			var links = new EntityLinks();
 			for (int i = 0; i < count; i++)
 			{
-				Tuple<long, long> link = new Tuple<long, long>(ReadSignedVarLong(), ReadSignedVarLong());
-				_reader.ReadInt16();
-				
-				links.Add(link);
+				links.Add(ReadEntityLink());
 			}
 
 			return links;
@@ -2400,6 +2471,7 @@ namespace MiNET.Net
 			Write(skin.GeometryData);
 			Write(skin.GeometryDataVersion);
 			Write(skin.AnimationData);
+
 			Write(skin.Cape.Id);
 			Write(skin.SkinId + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()); // some unique skin id
 			Write(skin.ArmSize);
@@ -2423,7 +2495,7 @@ namespace MiNET.Net
 					Write(color);
 				}
 			}
-
+			
 			Write(skin.IsPremiumSkin);
 			Write(skin.IsPersonaSkin);
 			Write(skin.Cape.OnClassicSkin);
@@ -2463,6 +2535,7 @@ namespace MiNET.Net
 			skin.GeometryData = ReadString();
 			skin.GeometryDataVersion = ReadString();
 			skin.AnimationData = ReadString();
+
 			skin.Cape.Id = ReadString();
 			ReadString(); // fullSkinId
 			skin.ArmSize = ReadString();
@@ -2491,12 +2564,11 @@ namespace MiNET.Net
 				}
 				skin.SkinPieces.Add(piece);
 			}
-
+			
 			skin.IsPremiumSkin = ReadBool();
 			skin.IsPersonaSkin = ReadBool();
 			skin.Cape.OnClassicSkin = ReadBool();
 			skin.IsPrimaryUser = ReadBool();
-
 			//Log.Debug($"SkinId={skin.SkinId}");
 			//Log.Debug($"SkinData lenght={skin.Data.Length}");
 			//Log.Debug($"CapeData lenght={skin.Cape.Data.Length}");
@@ -2813,6 +2885,53 @@ namespace MiNET.Net
 				recipe.Input = ReadVarInt();
 				recipe.Ingredient = ReadVarInt();
 				recipe.Output = ReadVarInt();
+
+				recipes[i] = recipe;
+			}
+
+			return recipes;
+		}
+
+		public void Write(MaterialReducerRecipe[] reducerRecipes)
+		{
+			WriteUnsignedVarInt((uint) reducerRecipes.Length);
+
+			for (int i = 0; i < reducerRecipes.Length; i++)
+			{
+				var recipe = reducerRecipes[i];
+				WriteVarInt((recipe.Input << 16) | recipe.InputMeta);
+				WriteUnsignedVarInt((uint) recipe.Output.Length);
+
+				foreach (var output in recipe.Output)
+				{
+					WriteVarInt(output.ItemId);
+					WriteVarInt(output.ItemCount);
+				}
+			}
+		} 
+
+		public MaterialReducerRecipe[] ReadMaterialReducerRecipes()
+		{
+			int count = (int) ReadUnsignedVarInt();
+			var recipes = new MaterialReducerRecipe[count];
+			for (int i = 0; i < recipes.Length; i++)
+			{
+				var inputIdAndMeta = ReadVarInt();
+				var inputId = inputIdAndMeta >> 16;
+				var inputMeta = inputIdAndMeta & 0x7fff;
+
+				var outputCount = (int) ReadUnsignedVarInt();
+				MaterialReducerRecipe.MaterialReducerRecipeOutput[] outputs = new MaterialReducerRecipe.MaterialReducerRecipeOutput[outputCount];
+
+				for (int o = 0; o < outputs.Length; o++)
+				{
+					var itemId = ReadVarInt();
+					var itemCount = ReadVarInt();
+
+					outputs[o] = new MaterialReducerRecipe.MaterialReducerRecipeOutput(itemId, itemCount);
+				}
+				
+				var recipe = new MaterialReducerRecipe(inputId, inputMeta, outputs);
 
 				recipes[i] = recipe;
 			}
@@ -3220,8 +3339,193 @@ namespace MiNET.Net
 				Write(experiment.Enabled);
 			}
 		}
-		
 
+		public void Write(EducationUriResource resource)
+		{
+			Write(resource.ButtonName);
+			Write(resource.LinkUri);
+		}
+		
+		public EducationUriResource ReadEducationUriResource()
+		{
+			string name = ReadString();
+			var uri = ReadString();
+
+			return new EducationUriResource(name, uri);
+		}
+
+		public void Write(UpdateSubChunkBlocksPacketEntry entry)
+		{
+			Write(entry.Coordinates);
+			WriteUnsignedVarInt(entry.BlockRuntimeId);
+			WriteUnsignedVarInt(entry.Flags);
+			WriteUnsignedVarLong(entry.SyncedUpdatedEntityUniqueId);
+			WriteUnsignedVarInt(entry.SyncedUpdateType);
+		}
+
+		public UpdateSubChunkBlocksPacketEntry ReadUpdateSubChunkBlocksPacketEntry()
+		{
+			var entry = new UpdateSubChunkBlocksPacketEntry();
+			entry.Coordinates = ReadBlockCoordinates();
+			entry.BlockRuntimeId = ReadUnsignedVarInt();
+			entry.Flags = ReadUnsignedVarInt();
+			entry.SyncedUpdatedEntityUniqueId = ReadUnsignedVarLong();
+			entry.SyncedUpdateType = ReadUnsignedVarInt();
+
+			return entry;
+		}
+
+		public void Write(UpdateSubChunkBlocksPacketEntry[] entries)
+		{
+			WriteUnsignedVarInt((uint) entries.Length);
+			foreach(var entry in entries)
+				Write(entry);
+		}
+
+		public UpdateSubChunkBlocksPacketEntry[] ReadUpdateSubChunkBlocksPacketEntrys()
+		{
+			var count = ReadUnsignedVarInt();
+			UpdateSubChunkBlocksPacketEntry[] entries = new UpdateSubChunkBlocksPacketEntry[(int) count];
+
+			for (int i = 0; i < entries.Length; i++)
+			{
+				entries[i] = ReadUpdateSubChunkBlocksPacketEntry();
+			}
+
+			return entries;
+		}
+
+		public void Write(HeightMapData data)
+		{
+			if (data == null)
+			{
+				Write((byte) SubChunkPacketHeightMapType.NoData);
+
+				return;
+			}
+
+			if (data.IsAllTooHigh)
+			{
+				Write((byte) SubChunkPacketHeightMapType.AllTooHigh);
+
+				return;
+			}
+
+			if (data.IsAllTooLow)
+			{
+				Write((byte) SubChunkPacketHeightMapType.AllTooLow);
+
+				return;
+			}
+			
+			Write((byte) SubChunkPacketHeightMapType.Data);
+
+			for (int i = 0; i < data.Heights.Length; i++)
+			{
+				Write((byte) data.Heights[i]);
+			}
+		}
+
+		public HeightMapData ReadHeightMapData()
+		{
+			SubChunkPacketHeightMapType type = (SubChunkPacketHeightMapType) ReadByte();
+
+			if (type != SubChunkPacketHeightMapType.Data)
+				return null;
+
+			short[] heights = new short[256];
+
+			for (int i = 0; i < heights.Length; i++)
+			{
+				heights[i] = (short) ReadByte();
+			}
+
+			return new HeightMapData(heights);
+		}
+
+		public void Write(SubChunkPositionOffset offset)
+		{
+			Write((byte)offset.XOffset);
+			Write((byte)offset.YOffset);
+			Write((byte)offset.ZOffset);
+		}
+
+		public SubChunkPositionOffset ReadSubChunkPositionOffset()
+		{
+			SubChunkPositionOffset result = new SubChunkPositionOffset();
+			result.XOffset = (sbyte)ReadByte();
+			result.YOffset = (sbyte)ReadByte();
+			result.ZOffset = (sbyte)ReadByte();
+			return result;
+		}
+
+		public void Write(SubChunkPositionOffset[] offsets)
+		{
+			Write(offsets.Length);
+
+			foreach (var offset in offsets)
+			{
+				Write(offset);
+			}
+		}
+		
+		public SubChunkPositionOffset[] ReadSubChunkPositionOffsets()
+		{
+			var count = ReadInt();
+			SubChunkPositionOffset[] offsets = new SubChunkPositionOffset[count];
+
+			for (int i = 0; i < offsets.Length; i++)
+			{
+				offsets[i] = ReadSubChunkPositionOffset();
+			}
+
+			return offsets;
+		}
+
+		public DimensionData ReadDimensionData()
+		{
+			DimensionData data = new DimensionData();
+			data.MaxHeight = ReadVarInt();
+			data.MinHeight = ReadVarInt();
+			data.Generator = ReadVarInt();
+
+			return data;
+		}
+
+		public void Write(DimensionData data)
+		{
+			WriteVarInt(data.MaxHeight);
+			WriteVarInt(data.MinHeight);
+			WriteVarInt(data.Generator);
+		}
+		
+		public void Write(DimensionDefinitions definitions)
+		{
+			WriteUnsignedVarInt((uint) definitions.Count);
+
+			foreach (var def in definitions)
+			{
+				Write(def.Key);
+				Write(def.Value);
+			}
+		}
+		
+		public DimensionDefinitions ReadDimensionDefinitions()
+		{
+			DimensionDefinitions definitions = new DimensionDefinitions();
+			
+			var count = ReadUnsignedVarInt();
+			for (int i = 0; i < count; i++)
+			{
+				var stringId = ReadString();
+				var data = ReadDimensionData();
+
+				definitions.TryAdd(stringId, data);
+			}
+
+			return definitions;
+		}
+		
 		public bool CanRead()
 		{
 			return _reader.Position < _reader.Length;

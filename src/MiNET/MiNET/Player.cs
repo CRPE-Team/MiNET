@@ -36,6 +36,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using fNbt;
 using log4net;
+using Microsoft.IO;
 using MiNET.Blocks;
 using MiNET.Crafting;
 using MiNET.Effects;
@@ -429,9 +430,6 @@ namespace MiNET
 		}
 
 		private object _mapInfoSync = new object();
-
-		private Timer _mapSender;
-		private ConcurrentQueue<McpeWrapper> _mapBatches = new ConcurrentQueue<McpeWrapper>();
 
 		public virtual void HandleMcpeMapInfoRequest(McpeMapInfoRequest message)
 		{
@@ -1914,8 +1912,6 @@ namespace MiNET
 			}
 		}
 
-		private string _prevText = null;
-
 		public virtual void HandleMcpeText(McpeText message)
 		{
 			string text = message.message;
@@ -2089,6 +2085,12 @@ namespace MiNET
 		{
 		}
 
+		/// <inheritdoc />
+		public void HandleMcpePlayerAuthInput(McpePlayerAuthInput message)
+		{
+			
+		}
+
 
 		public bool UsingAnvil { get; set; }
 
@@ -2128,7 +2130,7 @@ namespace MiNET
 
 		public void HandleMcpePacketViolationWarning(McpePacketViolationWarning message)
 		{
-			Log.Error($"A level {message.severity} packet violation of type {message.violationType} for packet 0x{message.packetId:X2}: {message.reason}");
+			Log.Error($"Client reported a level {message.severity} packet violation of type {message.violationType} for packet 0x{message.packetId:X2}: {message.reason}");
 		}
 
 		/// <inheritdoc />
@@ -2140,6 +2142,56 @@ namespace MiNET
 			packet.text = message.text;
 			packet.fromServer = true;
 			SendPacket(packet);
+		}
+
+		/// <inheritdoc />
+		public void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message)
+		{
+			
+		}
+
+		/// <inheritdoc />
+		public void HandleMcpeSubChunkRequestPacket(McpeSubChunkRequestPacket message)
+		{
+			/*McpeSubChunkPacket response = McpeSubChunkPacket.CreateObject();
+			if (message.dimension != (int) Level.Dimension)
+			{
+				response.requestResult = (int) SubChunkRequestResult.WrongDimension;
+			}
+			else
+			{
+				var chunk = Level.GetChunk(message.subchunkCoordinates);
+
+				if (chunk == null)
+				{
+					response.requestResult = (int) SubChunkRequestResult.NoSuchChunk;
+				}
+				else
+				{
+					try
+					{
+						var subChunk = chunk.GetSubChunk(message.subchunkCoordinates.Y);
+
+						using (MemoryStream ms = new MemoryStream())
+						{
+							subChunk.Write(ms);
+							response.data = ms.ToArray();
+						}
+						//subChunk.Write();
+
+						response.dimension = message.dimension;
+						response.heightmapData = new HeightMapData(chunk.height);
+						
+						response.requestResult = (int) SubChunkRequestResult.Success;
+					}
+					catch (IndexOutOfRangeException)
+					{
+						response.requestResult = (int) SubChunkRequestResult.YIndexOutOfBounds;
+					}
+				}
+			}
+			
+			SendPacket(response);*/
 		}
 
 		public virtual void HandleMcpeMobArmorEquipment(McpeMobArmorEquipment message)
@@ -2712,6 +2764,7 @@ namespace MiNET
 		/// <param name="message">The message.</param>
 		public virtual void HandleMcpeInteract(McpeInteract message)
 		{
+			//Log.Info($"Interact. Target={message.targetRuntimeEntityId} Action={message.actionId} Position={message.Position}");
 			Entity target = null;
 			long runtimeEntityId = message.targetRuntimeEntityId;
 			if (runtimeEntityId == EntityManager.EntityIdSelf)
@@ -2730,9 +2783,9 @@ namespace MiNET
 			}
 
 			if (target == null) return;
-			switch (message.actionId)
+			switch ((McpeInteract.Actions)message.actionId)
 			{
-				case 3:
+				case McpeInteract.Actions.LeaveVehicle:
 				{
 					if (Level.TryGetEntity(Vehicle, out Mob mob))
 					{
@@ -2741,14 +2794,14 @@ namespace MiNET
 
 					break;
 				}
-				case 4:
+				case McpeInteract.Actions.MouseOver:
 				{
 					// Mouse over
 					DoMouseOverInteraction(message.actionId, this);
 					target.DoMouseOverInteraction(message.actionId, this);
 					break;
 				}
-				case 6:
+				case McpeInteract.Actions.OpenInventory:
 				{
 					if (target == this)
 					{
@@ -2853,46 +2906,57 @@ namespace MiNET
 
 		public void SendStartGame()
 		{
+			var levelSettings = new LevelSettings();
+			levelSettings.spawnSettings = new SpawnSettings()
+			{
+				Dimension = (int)(Level?.Dimension ?? 0),
+				BiomeName = "",
+				BiomeType = 0
+			};
+			levelSettings.seed = 12345;
+			levelSettings.generator = 1;
+			levelSettings.gamemode = (int) GameMode;
+			levelSettings.x = (int) SpawnPosition.X;
+			levelSettings.y = (int) (SpawnPosition.Y + Height);
+			levelSettings.z = (int) SpawnPosition.Z;
+			levelSettings.hasAchievementsDisabled = true;
+			levelSettings.time = (int) Level.WorldTime;
+			levelSettings.eduOffer = PlayerInfo.Edition == 1 ? 1 : 0;
+			levelSettings.rainLevel = 0;
+			levelSettings.lightningLevel = 0;
+			levelSettings.isMultiplayer = true;
+			levelSettings.broadcastToLan = true;
+			levelSettings.enableCommands = EnableCommands;
+			levelSettings.isTexturepacksRequired = false;
+			levelSettings.gamerules = Level.GetGameRules();
+			levelSettings.bonusChest = false;
+			levelSettings.mapEnabled = false;
+			levelSettings.permissionLevel = (int) PermissionLevel;
+			levelSettings.gameVersion = "";
+			levelSettings.hasEduFeaturesEnabled = true;
+			
 			var startGame = McpeStartGame.CreateObject();
+			startGame.levelSettings = levelSettings;
 			startGame.entityIdSelf = EntityId;
 			startGame.runtimeEntityId = EntityManager.EntityIdSelf;
 			startGame.playerGamemode = (int) GameMode;
 			startGame.spawn = SpawnPosition;
 			startGame.rotation = new Vector2(KnownPosition.HeadYaw, KnownPosition.Pitch);
-			startGame.seed = 12345;
-			startGame.dimension = 0;
-			startGame.generator = 1;
-			startGame.gamemode = (int) GameMode;
-			startGame.x = (int) SpawnPosition.X;
-			startGame.y = (int) (SpawnPosition.Y + Height);
-			startGame.z = (int) SpawnPosition.Z;
-			startGame.hasAchievementsDisabled = true;
-			startGame.time = (int) Level.WorldTime;
-			startGame.eduOffer = PlayerInfo.Edition == 1 ? 1 : 0;
-			startGame.rainLevel = 0;
-			startGame.lightningLevel = 0;
-			startGame.isMultiplayer = true;
-			startGame.broadcastToLan = true;
-			startGame.enableCommands = EnableCommands;
-			startGame.isTexturepacksRequired = false;
-			startGame.gamerules = Level.GetGameRules();
-			startGame.bonusChest = false;
-			startGame.mapEnabled = false;
-			startGame.permissionLevel = (int) PermissionLevel;
+			
 			startGame.levelId = "1m0AAMIFIgA=";
 			startGame.worldName = Level.LevelName;
 			startGame.premiumWorldTemplateId = "";
 			startGame.isTrial = false;
 			startGame.currentTick = Level.TickTime;
 			startGame.enchantmentSeed = 123456;
-			startGame.gameVersion = "";
 			startGame.movementType = 0;
-			startGame.hasEduFeaturesEnabled = true;
 
 			//startGame.blockPalette = BlockFactory.BlockPalette;
 			startGame.itemstates = ItemFactory.Itemstates;
 
 			startGame.enableNewInventorySystem = true;
+			startGame.blockPaletteChecksum = 0;
+			startGame.serverVersion = McpeProtocolInfo.GameVersion;
 
 			SendPacket(startGame);
 		}
@@ -3493,7 +3557,6 @@ namespace MiNET
 			}
 			else
 			{
-				int a = 0xff;
 				int r = 0, g = 0, b = 0;
 				int levels = 0;
 				foreach (var effect in Effects.Values)
@@ -3518,7 +3581,7 @@ namespace MiNET
 					g /= levels;
 					b /= levels;
 
-					PotionColor = (int) (0xff000000 | (r << 16) | (g << 8) | b);
+					PotionColor = (int) (0xff000000 | (r << 16) | (uint) (g << 8) | (uint) b);
 				}
 			}
 
@@ -3702,6 +3765,7 @@ namespace MiNET
 			mcpeAddPlayer.userId = -1;
 			mcpeAddPlayer.deviceId = PlayerInfo.DeviceId;
 			mcpeAddPlayer.deviceOs = PlayerInfo.DeviceOS;
+			mcpeAddPlayer.gameType = (uint) GameMode;
 
 			int[] a = new int[5];
 

@@ -179,7 +179,7 @@ namespace MiNET.Worlds
 						continue;
 					}
 
-					ParseSection(chunkColumn[y], sectionBytes);
+					ParseSection(chunkColumn[4 + y], sectionBytes); //Offset by 4 because of 1.18 world update.
 				}
 
 				// Biomes
@@ -223,14 +223,12 @@ namespace MiNET.Worlds
 				}
 			}
 
-			bool isGenerated = false;
 			if (chunkColumn == null)
 			{
 				if (version != null) Log.Error($"Expected other version, but got version={version.First()}");
 
 				chunkColumn = generator?.GenerateChunkColumn(coordinates);
 				chunkColumn?.RecalcHeight();
-				isGenerated = true;
 			}
 
 			if (chunkColumn != null)

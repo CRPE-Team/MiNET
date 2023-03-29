@@ -36,7 +36,6 @@ using fNbt;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Net;
-using MiNET.Utils;
 using MiNET.Utils.IO;
 using MiNET.Utils.Vectors;
 
@@ -44,6 +43,10 @@ namespace MiNET.Worlds
 {
 	public class ChunkColumn : ICloneable, IEnumerable<SubChunk>, IDisposable
 	{
+		public const int WorldHeight = 384;
+		public const int WorldMaxY = WorldHeight + WorldMinY;
+		public const int WorldMinY = -64;
+		
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ChunkColumn));
 
 		public int X { get; set; }
@@ -57,7 +60,7 @@ namespace MiNET.Worlds
 		//TODO: This dictionary need to be concurrent. Investigate performance before changing.
 		public IDictionary<BlockCoordinates, NbtCompound> BlockEntities { get; private set; } = new Dictionary<BlockCoordinates, NbtCompound>();
 
-		private SubChunk[] _subChunks = new SubChunk[16];
+		private SubChunk[] _subChunks = new SubChunk[WorldHeight / 16];
 
 		// Cache related. Should actually all be private, but well
 		public bool IsDirty { get; set; }
@@ -112,7 +115,10 @@ namespace MiNET.Worlds
 
 		public SubChunk GetSubChunk(int by)
 		{
-			return this[by >> 4];
+			by >>= 4;
+			by += WorldMinY < 0 ? Math.Abs(WorldMinY >> 4) : 0;
+			
+			return this[Math.Clamp(by, 0, _subChunks.Length - 1)];
 		}
 
 		public int GetBlockId(int bx, int by, int bz)
@@ -369,7 +375,7 @@ namespace MiNET.Worlds
 			}
 		}
 
-		public void RecalcHeight(int x, int z, int startY = 255)
+		public void RecalcHeight(int x, int z, int startY = WorldMaxY)
 		{
 			bool isInLight = true;
 			bool isInAir = true;
@@ -412,7 +418,7 @@ namespace MiNET.Worlds
 		{
 			bool isInAir = true;
 
-			for (int y = 255; y >= 0; y--)
+			for (int y = WorldHeight; y >= WorldMinY; y--)
 			{
 				{
 					SubChunk chunk = GetSubChunk(y);
@@ -453,12 +459,6 @@ namespace MiNET.Worlds
 			}
 		}
 
-		private static long max = 0;
-		private static long count = 0;
-		private static double average = 0;
-		private static double averageSize = 0;
-		private static double averageCompressedSize = 0;
-
 		public McpeWrapper GetBatch()
 		{
 			lock (_cacheSync)
@@ -472,6 +472,7 @@ namespace MiNET.Worlds
 
 				var fullChunkPacket = McpeLevelChunk.CreateObject();
 				fullChunkPacket.cacheEnabled = false;
+				fullChunkPacket.subChunkRequestMode = SubChunkRequestMode.SubChunkRequestModeLegacy;
 				fullChunkPacket.chunkX = X;
 				fullChunkPacket.chunkZ = Z;
 				fullChunkPacket.subChunkCount = (uint) topEmpty;
@@ -484,8 +485,6 @@ namespace MiNET.Worlds
 
 				_cachedBatch = batch;
 				IsDirty = false;
-
-				count++;
 
 				return _cachedBatch;
 			}
@@ -501,7 +500,8 @@ namespace MiNET.Worlds
 				this[ci].Write(stream);
 			}
 
-			stream.Write(biomeId, 0, biomeId.Length);
+			var biomePalette = GetBiomePalette(biomeId);
+			stream.Write(biomePalette, 0, biomePalette.Length);
 
 			stream.WriteByte(0); // Border blocks - nope (EDU)
 
@@ -518,25 +518,38 @@ namespace MiNET.Worlds
 				}
 			}
 
-			// Alex data
+			return stream.ToArray();
+		}
 
-			if (Config.GetProperty("UseAlexChunks", false))
+		private byte[] GetBiomePalette(byte[] biomes)
+		{
+			for (int b = 0; b < biomes.Length; b++)
 			{
-				var alexRoot = new NbtCompound("alex");
-				for (int ci = 0; ci < topEmpty; ci++)
+				if (biomes[b] == 255)
+					biomes[b] = 0;
+			}
+			using var stream = new MemoryStream();
+			
+			var uniqueBiomes = biomes.Distinct().Select(x => (int)x).ToList();
+
+			short[] newBiomes = new short[16 * 16 * 16];
+			for (int x = 0; x < 16; x++)
+			{
+				for (int z = 0; z < 16; z++)
 				{
-					SubChunk subChunk = this[ci];
-					alexRoot.Add(new NbtByteArray($"skylight-{ci}", subChunk._skylight.Data));
-					alexRoot.Add(new NbtByteArray($"blocklight-{ci}", subChunk._blocklight.Data));
-				}
-				{
-					var file = new NbtFile(alexRoot)
+					var currentBiome = (int)biomes[(z << 4) + (x)];
+
+					for (int y = 0; y < 16; y++)
 					{
-						BigEndian = false,
-						UseVarInt = true
-					};
-					file.SaveToStream(stream, NbtCompression.None);
+						//var index = ((y >> 2) << 4) | ((z >> 2) << 2) | (x >> 2);
+						newBiomes[(x << 8 | z << 4 | y)] = (short) uniqueBiomes.IndexOf(currentBiome);
+					}
 				}
+			}
+			
+			for (int i = 0; i < 24; i++)
+			{
+				SubChunk.WriteStore(stream, newBiomes, null, false, uniqueBiomes);
 			}
 
 			return stream.ToArray();
@@ -546,8 +559,8 @@ namespace MiNET.Worlds
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal int GetTopEmpty()
 		{
-			int topEmpty = 16;
-			for (int ci = 15; ci >= 0; ci--)
+			int topEmpty = WorldHeight / 16;
+			for (int ci = (WorldHeight / 16) - 1; ci >= 0; ci--)
 			{
 				// Maybe reconsider if this is what we really want to do. Pooling buffers may remove the need for it. It's just an object.
 				if (_subChunks[ci] == null || _subChunks[ci].IsAllAir())
@@ -568,7 +581,7 @@ namespace MiNET.Worlds
 		{
 			ChunkColumn cc = (ChunkColumn) MemberwiseClone();
 
-			cc._subChunks = new SubChunk[16];
+			cc._subChunks = new SubChunk[_subChunks.Length];
 			for (int i = 0; i < _subChunks.Length; i++)
 			{
 				cc._subChunks[i] = (SubChunk) _subChunks[i]?.Clone();

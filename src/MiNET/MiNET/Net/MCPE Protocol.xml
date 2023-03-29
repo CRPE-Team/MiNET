@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.17.34" protocolVersion="465">
+<protocol gameVersion="1.18.30" protocolVersion="503">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -221,6 +221,7 @@
 		<field name="Yaw" type="float" />
 		<field name="Head Yaw" type="float" />
 		<field name="Item" type="Item" />
+		<field name="Game Type" type="UnsignedVarInt" />
 		<field name="Metadata" type="MetadataDictionary" />
 
 		<field name="Flags" type="UnsignedVarInt" />
@@ -229,7 +230,7 @@
 		<field name="Permission Level" type="UnsignedVarInt" />
 		<field name="Custom stored permissions" type="UnsignedVarInt" />
 		<field name="User Id" type="long" />
-		<field name="Links" type="Links" />
+		<field name="Links" type="EntityLinks" />
 		<field name="Device ID" type="string" />
 		<field name="Device OS" type="int" />
 	</pdu>
@@ -263,7 +264,7 @@
 		<field name="Head Yaw" type="float" />
 		<field name="Attributes" type="EntityAttributes" />
 		<field name="Metadata" type="MetadataDictionary" />
-		<field name="Links" type="Links" />
+		<field name="Links" type="EntityLinks" />
 	</pdu>
 
 	<pdu id="0x0e" online="false" client="false" server="true" name="MCPE_REMOVE_ENTITY">
@@ -506,9 +507,9 @@
 	</pdu>
 
 	<pdu id="0x26" online="false" client="false" server="true" name="MCPE_HURT_ARMOR">
-		<field name="Cause" type="SignedVarInt" />
+		<field name="Cause" type="VarInt" />
 		<field name="Health" type="SignedVarInt" />
-		<field name="Armor Slot Flags" type="UnsignedVarInt" />
+		<field name="Armor slot flags" type="UnsignedVarLong" />
 	</pdu>
 
 	<pdu id="0x27" online="false" client="true" server="true" name="MCPE_SET_ENTITY_DATA">
@@ -602,6 +603,7 @@
 		<field name="Recipes" type="Recipes" />
 		<field name="Potion type recipes" type="PotionTypeRecipe[]" />
 		<field name="potion container recipes" type="PotionContainerChangeRecipe[]" />
+		<field name="Material reducer recipes" type="MaterialReducerRecipe[]" />
 		<field name="Is Clean" type="bool" />
 	</pdu>
 
@@ -689,8 +691,8 @@
 	<pdu id="0x3a" online="false" client="false" server="true" name="MCPE_LEVEL_CHUNK">
 		<field name="Chunk X" type="SignedVarInt" />
 		<field name="Chunk Z" type="SignedVarInt" />
-		<field name="Sub Chunk Count" type="UnsignedVarInt" />
-		<field name="Cache Enabled" type="bool" />
+		<!--<field name="Sub Chunk Count" type="UnsignedVarInt" />
+		<field name="Cache Enabled" type="bool" />-->
 		<!--<field name="Blob Hashes" type="ulong[]" />
 		<field name="Chunk Data" type="ByteArray" />-->
 	</pdu>
@@ -772,6 +774,7 @@
 			<enum id="Update Name" value="5" />
 			<enum id="Update Options" value="6" />
 			<enum id="Update Style" value="7" />
+			<enum id="Query" value="8" />
 		</enums>
 		<field name="Boss Entity ID" type="SignedVarLong" />
 		<field name="Event Type" type="UnsignedVarInt" />
@@ -1036,6 +1039,7 @@
 		<field name="Entity ID" type="SignedVarLong" />
 		<field name="Position" type="Vector3" />
 		<field name="Particle name" type="string" />
+		<field name="Molang Variables Json" type="string" />
 	</pdu>
 
 	<pdu id="0x77" online="false" client="false" server="true" name="MCPE_AVAILABLE_ENTITY_IDENTIFIERS">
@@ -1121,6 +1125,10 @@
 		<field name="Compression threshold" type="byte" />
 	</pdu>
 
+	<pdu id="0x90" online="false" client="true" server="false" name="MCPE_PLAYER_AUTH_INPUT">
+
+	</pdu>
+
 	<pdu id="0x91" online="false" client="false" server="true" name="MCPE_CREATIVE_CONTENT">
 		<field name="Input" type="CreativeItemStacks" />
 	</pdu>
@@ -1148,15 +1156,19 @@
 			<enum id="Destroy" value="4" />
 			<enum id="Consume" value="5" />
 			<enum id="Create" value="6" />
-			<enum id="Lab table combine" value="7" />
-			<enum id="Beacon payment" value="8" />
-			<enum id="Mine Block" value="9"/>
-			<enum id="Craft recipe" value="10" />
-			<enum id="Craft recipe Auto" value="11" />
-			<enum id="Craft creative" value="12" />
-			<enum id="Craft recipe optional" value="13" />
-			<enum id="Craft not implemented deprecated" value="14"/>
-			<enum id="Craft results deprecated" value="15" />
+			<enum id="Place into bundle" value="7" />
+			<enum id="Take from bundle" value="8" />
+			<enum id="Lab table combine" value="9" />
+			<enum id="Beacon payment" value="10" />
+			<enum id="Mine Block" value="11"/>
+			<enum id="Craft recipe" value="12" />
+			<enum id="Craft recipe Auto" value="13" />
+			<enum id="Craft creative" value="14" />
+			<enum id="Craft recipe optional" value="15" />
+			<enum id="Craft Grindstone" value="16"/>
+			<enum id="Craft loom" value="17"/>
+			<enum id="Craft not implemented deprecated" value="18"/>
+			<enum id="Craft results deprecated" value="19" />
 		</enums>
 		<field name="Requests" type="ItemStackRequests" />
 	</pdu>
@@ -1182,7 +1194,30 @@
 		<field name="Text" type="string" />
 		<field name="From server" type="bool"/>
 	</pdu>
+	
+	<pdu id="0xac" online="false" client="true" server="true" name="MCPE_UPDATE_SUB_CHUNK_BLOCKS_PACKET">
+		<field name="Subchunk coordinates" type="BlockCoordinates"/>
+		<field name="Layer zero updates" type="UpdateSubChunkBlocksPacketEntry[]"/>
+		<field name="Layer one updates" type="UpdateSubChunkBlocksPacketEntry[]"/>
+	</pdu>
 
+	<pdu id="0xae" online="false" client="false" server="true" name="MCPE_SUB_CHUNK_PACKET">
+		<field name="Cache enabled" type="bool" />
+		<field name="Dimension" type="VarInt" />
+		<field name="Subchunk coordinates" type="BlockCoordinates"/>
+		
+	</pdu>
+
+	<pdu id="0xaf" online="false" client="true" server="false" name="MCPE_SUB_CHUNK_REQUEST_PACKET">
+		<field name="Dimension" type="VarInt" />
+		<field name="Base Position" type="BlockCoordinates"/>
+		<field name="Offsets" type="SubChunkPositionOffset[]"/>
+	</pdu>
+	
+	<pdu id="0xb4" online="false" client="false" server="true" name="MCPE_DIMENSION_DATA">
+		<field name="Definitions" type="DimensionDefinitions" />
+	</pdu>
+	
 	<pdu id="0xe0" online="false" client="false" server="true" name="MCPE_ALEX_ENTITY_ANIMATION">
 		<field name="Runtime Entity ID" type="UnsignedVarLong" />
 		<field name="Bone Id" type="string" />

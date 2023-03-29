@@ -1,5 +1,4 @@
-﻿#region LICENSE
-
+#region LICENSE
 // The contents of this file are subject to the Common Public Attribution
 // License Version 1.0. (the "License"); you may not use this file except in
 // compliance with the License. You may obtain a copy of the License at
@@ -18,40 +17,23 @@
 // The Original Developer is the Initial Developer.  The Initial Developer of
 // the Original Code is Niclas Olofsson.
 // 
-// All portions of the code written by Niclas Olofsson are Copyright (c) 2014-2020 Niclas Olofsson.
+// All portions of the code written by Niclas Olofsson are Copyright (c) 2014-2022 Niclas Olofsson.
 // All Rights Reserved.
-
 #endregion
 
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MiNET.Utils;
-using MiNET.Utils.Vectors;
+using System.Collections.Generic;
 
-namespace MiNET.Worlds.Tests
+namespace MiNET.Net
 {
-	[TestClass()]
-	public class LevelDbProviderTests
+	public class DimensionData
 	{
-		[TestMethod()]
-		public void RoundtripTest()
-		{
-			var provider = new LevelDbProvider();
-			var flatGenerator = new SuperflatGenerator(Dimension.Overworld);
-			flatGenerator.Initialize(null);
-			SubChunk chunk = flatGenerator.GenerateChunkColumn(new ChunkCoordinates())[0];
+		public int MaxHeight { get; set; }
+		public int MinHeight { get; set; }
+		public int Generator { get; set; }
+	}
 
-			using var stream = new MemoryStream();
-			provider.Write(chunk, stream);
-			byte[] output = stream.ToArray();
+	public class DimensionDefinitions : Dictionary<string, DimensionData>
+	{
 
-			var parsedChunk = new SubChunk();
-			provider.ParseSection(parsedChunk, output);
-
-			// Assert
-			CollectionAssert.AreEqual(chunk.Blocks, parsedChunk.Blocks);
-			CollectionAssert.AreEqual(chunk.LoggedBlocks, parsedChunk.LoggedBlocks);
-			CollectionAssert.AreEqual(chunk.RuntimeIds, parsedChunk.RuntimeIds);
-		}
 	}
 }
