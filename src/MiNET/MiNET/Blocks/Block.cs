@@ -110,7 +110,7 @@ namespace MiNET.Blocks
 			BlockStateContainer currentState = GetState();
 			if (!BlockFactory.BlockStates.TryGetValue(currentState, out var blockstate))
 			{
-				Log.Warn($"Did not find block state for {this}, {currentState}");
+				//Log.Warn($"Did not find block state for {this}, {currentState}");
 				return -1;
 			}
 

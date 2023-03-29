@@ -266,6 +266,8 @@ namespace MiNET.Blocks
 					}
 				}
 
+				BlockPalette = newBP;
+
 				foreach (var record in BlockPalette)
 				{
 					var states = new List<NbtTag>();
@@ -301,8 +303,6 @@ namespace MiNET.Blocks
 					record.StatesCacheNbt = nbtBinary;
 				}
 
-
-				BlockPalette = newBP;
 				int palletSize = BlockPalette.Count;
 				for (int i = 0; i < palletSize; i++)
 				{
