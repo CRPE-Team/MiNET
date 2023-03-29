@@ -1668,6 +1668,14 @@ namespace MiNET.Net
 				}
 			}
 			
+			if (stack.RuntimeId == 0)
+			{
+				if (stack is ItemBlock itemBlock)
+				{
+					itemBlock.RuntimeId = itemBlock.Block.GetRuntimeId();
+				}
+			}
+
 			WriteSignedVarInt(stack.RuntimeId);
 
 			byte[] extraData = null;

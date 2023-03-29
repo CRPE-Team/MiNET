@@ -226,11 +226,11 @@ namespace MiNET
 		private void UpdateSlot(Func<Item> getItem, Action<Item> setItem, Item item, bool forceReplace = false)
 		{
 			var existing = getItem();
-			if (existing.Id != item.Id)
+
 			if (forceReplace || existing.Id != item.Id)
 			{
 				setItem(item);
-				existing = item;
+				return;
 			}
 
 			existing.UniqueId = item.UniqueId;
