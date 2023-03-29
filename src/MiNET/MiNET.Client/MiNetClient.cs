@@ -106,6 +106,7 @@ namespace MiNET.Client
 
 		public string Username { get; set; }
 		public int ClientId { get; set; }
+		public string DeviceId { get; set; }
 		public string LaguageCode { get; set; } = "en_US";
 
 		public int PlayerStatus { get; set; }
@@ -125,6 +126,7 @@ namespace MiNET.Client
 			_threadPool = threadPool;
 			Username = username;
 			ClientId = new Random().Next();
+			DeviceId = Guid.NewGuid().ToString();
 			ServerEndPoint = endPoint;
 			if (ServerEndPoint != null) Log.Info("Connecting to: " + ServerEndPoint);
 			ClientEndpoint = new IPEndPoint(IPAddress.Any, 0);
@@ -163,7 +165,7 @@ namespace MiNET.Client
 			JWT.JsonMapper = new NewtonsoftMapper();
 
 			var clientKey = CryptoUtils.GenerateClientKey();
-			byte[] data = CryptoUtils.CompressJwtBytes(CryptoUtils.EncodeJwt(username, clientKey, IsEmulator), CryptoUtils.EncodeSkinJwt(clientKey, username, ClientId, LaguageCode), CompressionLevel.Fastest);
+			byte[] data = CryptoUtils.CompressJwtBytes(CryptoUtils.EncodeJwt(username, clientKey, IsEmulator), CryptoUtils.EncodeSkinJwt(clientKey, username, ClientId, DeviceId, LaguageCode), CompressionLevel.Fastest);
 
 			McpeLogin loginPacket = new McpeLogin
 			{

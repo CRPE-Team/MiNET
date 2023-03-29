@@ -189,7 +189,7 @@ namespace MiNET.Utils.Cryptography
 			return Encoding.UTF8.GetBytes(val);
 		}
 
-		public static byte[] EncodeSkinJwt(AsymmetricCipherKeyPair newKey, string username, long clientId, string langCode)
+		public static byte[] EncodeSkinJwt(AsymmetricCipherKeyPair newKey, string username, long clientId, string deviceId, string langCode)
 		{
 			var resourcePatch = new SkinResourcePatch() {Geometry = new GeometryIdentifier() {Default = "geometry.humanoid.customSlim"}};
 			var skin = new Skin
@@ -218,7 +218,7 @@ namespace MiNET.Utils.Cryptography
 	""ClientRandomId"": {clientId},
 	""CurrentInputMode"": 1,
 	""DefaultInputMode"": 1,
-	""DeviceId"": ""{Guid.NewGuid().ToString()}"",
+	""DeviceId"": ""{deviceId}"",
 	""DeviceModel"": ""MiNET CLIENT"",
 	""DeviceOS"": 7,
 	""GameVersion"": ""{McpeProtocolInfo.GameVersion}"",
