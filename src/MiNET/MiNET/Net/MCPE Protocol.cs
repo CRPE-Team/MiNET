@@ -6792,9 +6792,6 @@ namespace MiNET.Net
 	{
 
 		public string name; // = null;
-		public BlockCoordinates coordinates; // = null;
-		public float volume; // = null;
-		public float pitch; // = null;
 
 		public McpePlaySound()
 		{
@@ -6809,9 +6806,6 @@ namespace MiNET.Net
 			BeforeEncode();
 
 			Write(name);
-			Write(coordinates);
-			Write(volume);
-			Write(pitch);
 
 			AfterEncode();
 		}
@@ -6826,9 +6820,6 @@ namespace MiNET.Net
 			BeforeDecode();
 
 			name = ReadString();
-			coordinates = ReadBlockCoordinates();
-			volume = ReadFloat();
-			pitch = ReadFloat();
 
 			AfterDecode();
 		}
@@ -6841,9 +6832,6 @@ namespace MiNET.Net
 			base.ResetPacket();
 
 			name=default(string);
-			coordinates=default(BlockCoordinates);
-			volume=default(float);
-			pitch=default(float);
 		}
 
 	}
