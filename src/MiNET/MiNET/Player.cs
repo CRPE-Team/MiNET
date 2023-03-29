@@ -33,6 +33,7 @@ using System.Linq;
 using System.Net;
 using System.Numerics;
 using System.Threading;
+using System.Threading.Tasks;
 using fNbt;
 using log4net;
 using MiNET.Blocks;
@@ -1179,11 +1180,12 @@ namespace MiNET
 				if (!IsChunkInCache(newPosition))
 				{
 					// send teleport straight up, no chunk loading
+					//SetPosition(newPosition);
 					//SetPosition(new PlayerLocation
 					//{
-					//	X = KnownPosition.X,
+					//	X = newPosition.X,
 					//	Y = 4000,
-					//	Z = KnownPosition.Z,
+					//	Z = newPosition.Z,
 					//	Yaw = 91,
 					//	Pitch = 28,
 					//	HeadYaw = 91,
@@ -1634,15 +1636,18 @@ namespace MiNET
 				toLevel = levelFunc();
 			}
 
-			//SetPosition(new PlayerLocation
-			//{
-			//	X = KnownPosition.X,
-			//	Y = 4000,
-			//	Z = KnownPosition.Z,
-			//	Yaw = 91,
-			//	Pitch = 28,
-			//	HeadYaw = 91,
-			//});
+			var newSpawnPoint = spawnPoint ?? toLevel?.SpawnPoint;
+
+			SetPosition(newSpawnPoint);
+			SetPosition(new PlayerLocation
+			{
+				X = newSpawnPoint.X,
+				Y = 4000,
+				Z = newSpawnPoint.Z,
+				Yaw = 91,
+				Pitch = 28,
+				HeadYaw = 91,
+			});
 
 			Action transferFunc = delegate
 			{
@@ -1654,7 +1659,7 @@ namespace MiNET
 				Level.RemovePlayer(this, true);
 
 				Level = toLevel; // Change level
-				SpawnPosition = spawnPoint ?? Level?.SpawnPoint;
+				SpawnPosition = newSpawnPoint;
 
 				HungerManager.ResetHunger();
 
@@ -1854,11 +1859,22 @@ namespace MiNET
 							var disconnect = McpeDisconnect.CreateObject();
 							disconnect.message = reason;
 							NetworkHandler.SendPacket(disconnect);
-
-							Thread.Sleep(50);
 						}
 
-						NetworkHandler.Close();
+						var networkHandler = NetworkHandler;
+						Task.Run(async () =>
+						{
+							try
+							{
+								await Task.Delay(150);
+								networkHandler.Close();
+							}
+							catch (Exception ex)
+							{
+								Log.Error("On close player network handler", ex);
+							}
+						});
+
 						NetworkHandler = null;
 
 						IsConnected = false;
@@ -2896,7 +2912,7 @@ namespace MiNET
 			{
 				var chunkPosition = new ChunkCoordinates(position);
 
-				//SendNetworkChunkPublisherUpdate(position.GetCoordinates3D());
+				SendNetworkChunkPublisherUpdate(position.GetCoordinates3D());
 
 				McpeWrapper chunk = Level.GetChunk(chunkPosition)?.GetBatch();
 				//if (!_chunksUsed.ContainsKey(chunkPosition))
@@ -2964,12 +2980,9 @@ namespace MiNET
 
 				if (Level == null) return;
 
-				int packetCount = 0;
-				foreach (McpeWrapper chunk in Level.GenerateChunks(_currentChunkPosition, _chunksUsed, ChunkRadius))
+				foreach (var chunk in Level.GenerateChunkColumns(_currentChunkPosition, _chunksUsed, ChunkRadius, () => KnownPosition))
 				{
-					if (chunk != null) SendPacket(chunk);
-
-					if (++packetCount % 16 == 0) Thread.Sleep(12);
+					_chunksToSend.TryAdd(new ChunkCoordinates(chunk.X, chunk.Z), chunk);
 				}
 
 				SendNetworkChunkPublisherUpdate();
@@ -2998,15 +3011,12 @@ namespace MiNET
 
 				SendNetworkChunkPublisherUpdate(location.GetCoordinates3D());
 
-				int packetCount = 0;
-				foreach (McpeWrapper chunk in Level.GenerateChunks(_currentChunkPosition, _chunksUsed, ChunkRadius))
+				foreach (var chunk in Level.GenerateChunkColumns(_currentChunkPosition, _chunksUsed, ChunkRadius, () => KnownPosition))
 				{
-					if (chunk != null) SendPacket(chunk);
-
-					if (++packetCount % 8 == 0) Thread.Sleep(12);
+					_chunksToSend.TryAdd(new ChunkCoordinates(chunk.X, chunk.Z), chunk);
 				}
 
-				SendNetworkChunkPublisherUpdate(location.GetCoordinates3D());
+				//SendNetworkChunkPublisherUpdate(location.GetCoordinates3D());
 			}
 			finally
 			{
@@ -3019,55 +3029,110 @@ namespace MiNET
 			}
 		}
 
+		private object _knownPositionSendChunkSync = new object();
+
 		private void SendChunksForKnownPosition()
 		{
-			if (!Monitor.TryEnter(_sendChunkSync)) return;
-
-			try
+			if (!Monitor.TryEnter(_knownPositionSendChunkSync))
 			{
-				if (ChunkRadius <= 0) return;
+				return;
+			}
+
+			lock (_sendChunkSync)
+			{ 
+				try
+				{
+					if (ChunkRadius <= 0) return;
 
 
-				var chunkPosition = new ChunkCoordinates(KnownPosition);
-				if (IsSpawned && _currentChunkPosition == chunkPosition) return;
+					var chunkPosition = new ChunkCoordinates(KnownPosition);
+					if (IsSpawned && _currentChunkPosition == chunkPosition) return;
 
-				if (IsSpawned && _currentChunkPosition.DistanceTo(chunkPosition) < MoveRenderDistance)
+					if (IsSpawned && _currentChunkPosition.DistanceTo(chunkPosition) < MoveRenderDistance)
+					{
+						return;
+					}
+
+					_currentChunkPosition = chunkPosition;
+
+					int packetCount = 0;
+
+					if (Level == null) return;
+
+					SendNetworkChunkPublisherUpdate();
+
+					int packetsCount = 0;
+					foreach (var chunk in Level.GenerateChunkColumns(_currentChunkPosition, _chunksUsed, ChunkRadius, () => KnownPosition))
+					{
+						var batch = chunk.GetBatch();
+						_chunksUsed.Add(new ChunkCoordinates(chunk.X, chunk.Z), batch);
+						SendPacket(batch);
+						//_chunksToSend.TryAdd(new ChunkCoordinates(chunk.X, chunk.Z), chunk);
+
+						if (!IsSpawned && ++packetsCount == 56)
+						{
+							InitializePlayer();
+						}
+
+						if (packetCount % 16 == 0) Thread.Sleep(5);
+					}
+
+					//SendNetworkChunkPublisherUpdate();
+
+					Log.Debug($"Sent {packetCount} chunks for {chunkPosition} with view distance {MaxViewDistance}");
+				}
+				catch (Exception e)
+				{
+					Log.Error($"Failed sending chunks for {KnownPosition}", e);
+				}
+				finally
+				{
+					Monitor.Exit(_knownPositionSendChunkSync);
+				}
+			}
+		}
+
+		private ConcurrentDictionary<ChunkCoordinates, ChunkColumn> _chunksToSend = new ConcurrentDictionary<ChunkCoordinates, ChunkColumn>();
+		private int sendInterval = 1;
+		private int onceSendCount = 4;
+		private int sendTicker = 0;
+
+		private void SendChunkTick()
+		{
+			MiNetServer.FastThreadPool.QueueUserWorkItem(() =>
+			{
+				if (!Monitor.TryEnter(_sendChunkSync))
 				{
 					return;
 				}
 
-				_currentChunkPosition = chunkPosition;
-
-				int packetCount = 0;
-
-				if (Level == null) return;
-
-				SendNetworkChunkPublisherUpdate();
-
-				foreach (McpeWrapper chunk in Level.GenerateChunks(_currentChunkPosition, _chunksUsed, ChunkRadius, () => KnownPosition))
+				try
 				{
-					if (chunk != null) SendPacket(chunk);
+					if (_chunksToSend.Count == 0) return;
 
-					if (++packetCount % 8 == 0) Thread.Sleep(12);
+					if (++sendTicker < sendInterval) return;
+					sendTicker = 0;
 
-					if (!IsSpawned && packetCount == 56)
+					var playerChunk = new ChunkCoordinates(KnownPosition);
+					var ordered = _chunksToSend.OrderBy(c => c.Key.DistanceTo(playerChunk));
+
+					for (var i = 0; i < onceSendCount; i++)
 					{
-						InitializePlayer();
+						var chunk = ordered.First();
+						_chunksToSend.TryRemove(chunk.Key, out _);
+
+						if (chunk.Key.DistanceTo(playerChunk) > ChunkRadius + 1) continue;
+
+						var batch = chunk.Value.GetBatch();
+						_chunksUsed.Add(chunk.Key, batch);
+						SendPacket(batch);
 					}
 				}
-
-				SendNetworkChunkPublisherUpdate();
-
-				Log.Debug($"Sent {packetCount} chunks for {chunkPosition} with view distance {MaxViewDistance}");
-			}
-			catch (Exception e)
-			{
-				Log.Error($"Failed sending chunks for {KnownPosition}", e);
-			}
-			finally
-			{
-				Monitor.Exit(_sendChunkSync);
-			}
+				finally
+				{
+					Monitor.Exit(_sendChunkSync);
+				}
+			});
 		}
 
 		public virtual void SendUpdateAttributes()
@@ -3284,6 +3349,8 @@ namespace MiNET
 					popup.CurrentTick++;
 				}
 			}
+
+			MiNetServer.FastThreadPool.QueueUserWorkItem(SendChunkTick);
 
 			OnTicked(new PlayerEventArgs(this));
 		}
@@ -3510,7 +3577,7 @@ namespace MiNET
 		///     Very important litle method. This does all the sending of packets for
 		///     the player class. Treat with respect!
 		/// </summary>
-		public void SendPacket(Packet packet)
+		public virtual void SendPacket(Packet packet)
 		{
 			if (NetworkHandler == null)
 			{
@@ -3550,6 +3617,7 @@ namespace MiNET
 			lock (_sendChunkSync)
 			{
 				_chunksUsed.Clear();
+				_chunksToSend.Clear();
 			}
 		}
 

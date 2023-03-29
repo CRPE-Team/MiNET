@@ -1020,6 +1020,63 @@ namespace MiNET.Worlds
 			}
 		}
 
+		public IEnumerable<ChunkColumn> GenerateChunkColumns(ChunkCoordinates chunkPosition, Dictionary<ChunkCoordinates, McpeWrapper> chunksUsed, double radius, Func<Vector3> getCurrentPositionAction = null)
+		{
+			lock (chunksUsed)
+			{
+				var newOrders = new Dictionary<ChunkCoordinates, double>();
+
+				double radiusSquared = Math.Pow(radius, 2);
+
+				int centerX = chunkPosition.X;
+				int centerZ = chunkPosition.Z;
+
+				for (double x = -radius; x <= radius; ++x)
+				{
+					for (double z = -radius; z <= radius; ++z)
+					{
+						var distance = (x * x) + (z * z);
+						if (distance > radiusSquared)
+						{
+							continue;
+						}
+						int chunkX = (int) (x + centerX);
+						int chunkZ = (int) (z + centerZ);
+						var index = new ChunkCoordinates(chunkX, chunkZ);
+						newOrders[index] = distance;
+					}
+				}
+
+				foreach (var chunkKey in chunksUsed.Keys.ToArray())
+				{
+					if (!newOrders.ContainsKey(chunkKey))
+					{
+						chunksUsed.Remove(chunkKey);
+					}
+				}
+
+				foreach (var pair in newOrders.OrderBy(pair => pair.Value))
+				{
+					if (chunksUsed.ContainsKey(pair.Key)) continue;
+
+					if (WorldProvider == null) continue;
+
+					if (getCurrentPositionAction != null)
+					{
+						var currentPos = getCurrentPositionAction();
+						var coords = new ChunkCoordinates(currentPos);
+						if (coords.DistanceTo(pair.Key) > radius) continue;
+					}
+					ChunkColumn chunkColumn = GetChunk(pair.Key);
+					McpeWrapper chunk = null;
+					if (chunkColumn != null)
+					{
+						yield return chunkColumn;
+					}
+				}
+			}
+		}
+
 		public Block GetBlock(PlayerLocation location)
 		{
 			return GetBlock((BlockCoordinates) location);
