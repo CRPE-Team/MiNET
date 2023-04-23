@@ -127,12 +127,13 @@ namespace MiNET.Blocks
 						byte[] bytes = new byte[length];
 						stream.Read(bytes, 0, bytes.Length);
 
-						string stringId = Encoding.UTF8.GetString(bytes);
+						//string stringId = Encoding.UTF8.GetString(bytes);
 						bytes = new byte[2];
 						stream.Read(bytes, 0, bytes.Length);
 						var meta = BitConverter.ToInt16(bytes);
 
 						var compound = Packet.ReadNbtCompound(stream, true);
+						var stringId = compound["name"].StringValue;
 
 						List<R12ToCurrentBlockMapEntry> nameMap;
 						if (!legacyStateMap.TryGetValue(stringId, out nameMap))

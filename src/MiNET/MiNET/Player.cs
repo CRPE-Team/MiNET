@@ -3048,12 +3048,13 @@ namespace MiNET
 
 				if (Level == null) return;
 
+				SendNetworkChunkPublisherUpdate();
+
 				foreach (var chunk in Level.GenerateChunkColumns(_currentChunkPosition, _chunksUsed, ChunkRadius, () => KnownPosition))
 				{
 					_chunksToSend.TryAdd(new ChunkCoordinates(chunk.X, chunk.Z), chunk);
 				}
 
-				SendNetworkChunkPublisherUpdate();
 			}
 			finally
 			{
@@ -3077,7 +3078,8 @@ namespace MiNET
 
 				if (Level == null) return;
 
-				SendNetworkChunkPublisherUpdate(location.GetCoordinates3D());
+				//SendNetworkChunkPublisherUpdate(location.GetCoordinates3D());
+				SendNetworkChunkPublisherUpdate();
 
 				foreach (var chunk in Level.GenerateChunkColumns(_currentChunkPosition, _chunksUsed, ChunkRadius, () => KnownPosition))
 				{
@@ -3133,9 +3135,9 @@ namespace MiNET
 					foreach (var chunk in Level.GenerateChunkColumns(_currentChunkPosition, _chunksUsed, ChunkRadius, () => KnownPosition))
 					{
 						var batch = chunk.GetBatch();
-						_chunksUsed.Add(new ChunkCoordinates(chunk.X, chunk.Z), batch);
-						SendPacket(batch);
-						//_chunksToSend.TryAdd(new ChunkCoordinates(chunk.X, chunk.Z), chunk);
+						//_chunksUsed.Add(new ChunkCoordinates(chunk.X, chunk.Z), batch);
+						//SendPacket(batch);
+						_chunksToSend.TryAdd(new ChunkCoordinates(chunk.X, chunk.Z), chunk);
 
 						if (!IsSpawned && ++packetsCount == 56)
 						{

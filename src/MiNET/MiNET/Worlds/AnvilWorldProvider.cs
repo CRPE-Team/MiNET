@@ -145,7 +145,7 @@ namespace MiNET.Worlds
 				},
 				{157, new NoDataMapper(126)}, // minecraft:activator_rail
 				{158, new NoDataMapper(125)}, // minecraft:dropper
-				{166, new NoDataMapper(95)}, // minecraft:barrier		=> (Invisible Bedrock)
+				{166, new NoDataMapper(416)}, // minecraft:barrier		=> (Invisible Bedrock)
 				{167, new Mapper(167, (i, b) => (byte) (((b & 0x04) << 1) | ((b & 0x08) >> 1) | (3 - (b & 0x03))))}, //Fix iron_trapdoor
 				{188, new Mapper(85, (i, b) => 1)}, // Spruce Fence		=> Fence
 				{189, new Mapper(85, (i, b) => 2)}, // Birch Fence		=> Fence
@@ -661,11 +661,11 @@ namespace MiNET.Worlds
 						//}
 
 						chunkColumn.IsAllAir &= blockId == 0;
-						if (blockId > 255)
-						{
-							Log.Warn($"Failed mapping for block ID={blockId}, Meta={data}");
-							blockId = 41;
-						}
+						//if (blockId > 255)
+						//{
+						//	Log.Warn($"Failed mapping for block ID={blockId}, Meta={data}");
+						//	blockId = 41;
+						//}
 
 						if (yi == 0 && (blockId == 8 || blockId == 9)) blockId = 7; // Bedrock under water
 
