@@ -3,9 +3,13 @@ using System.Linq;
 
 namespace MiNET.Net;
 
-public class HeightMapData
+public class HeightMapData : IPacketDataObject
 {
 	public short[] Heights { get; }
+
+	public bool IsAllTooLow => Heights.Any(x => x > 0);
+
+	public bool IsAllTooHigh => Heights.Any(x => x <= 15);
 
 	public HeightMapData(short[] heights)
 	{
@@ -20,8 +24,43 @@ public class HeightMapData
 		return Heights[((z & 0xf) << 4) | (x & 0xf)];
 	}
 
-	public bool IsAllTooLow => Heights.Any(x => x > 0);
-	public bool IsAllTooHigh => Heights.Any(x => x <= 15);
+	public void Write(Packet packet)
+	{
+		if (IsAllTooHigh)
+		{
+			packet.Write((byte) SubChunkPacketHeightMapType.AllTooHigh);
+			return;
+		}
+
+		if (IsAllTooLow)
+		{
+			packet.Write((byte) SubChunkPacketHeightMapType.AllTooLow);
+			return;
+		}
+
+		packet.Write((byte) SubChunkPacketHeightMapType.Data);
+
+		for (int i = 0; i < Heights.Length; i++)
+		{
+			packet.Write((byte) Heights[i]);
+		}
+	}
+
+	public static HeightMapData Read(Packet packet)
+	{
+		var type = (SubChunkPacketHeightMapType) packet.ReadByte();
+
+		if (type != SubChunkPacketHeightMapType.Data) return null;
+
+		var heights = new short[256];
+
+		for (int i = 0; i < heights.Length; i++)
+		{
+			heights[i] = (short) packet.ReadByte();
+		}
+
+		return new HeightMapData(heights);
+	}
 }
 
 public enum SubChunkPacketHeightMapType : byte

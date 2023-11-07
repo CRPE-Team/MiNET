@@ -79,11 +79,28 @@ public abstract class SubChunkEntryCommon
 	protected abstract void OnWrite(Packet packet);
 }
 
-public class SubChunkPositionOffset
+public class SubChunkPositionOffset : IPacketDataObject
 {
 	public sbyte XOffset { get; set; }
 	public sbyte YOffset { get; set; }
 	public sbyte ZOffset { get; set; }
+
+	public void Write(Packet packet)
+	{
+		packet.Write(XOffset);
+		packet.Write(YOffset);
+		packet.Write(ZOffset);
+	}
+
+	public static SubChunkPositionOffset Read(Packet packet)
+	{
+		return new SubChunkPositionOffset()
+		{
+			XOffset = packet.ReadSByte(),
+			YOffset = packet.ReadSByte(),
+			ZOffset = packet.ReadSByte()
+		};
+	}
 }
 
 public class SubChunkEntryWithCache : SubChunkEntryCommon

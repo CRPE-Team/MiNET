@@ -153,9 +153,9 @@ namespace MiNET
 			Log.Warn($"Random Bonus: {randomBonus}");
 			Log.Warn($"Final: top:{finalTopLevel}, middle:{finalMiddleLevel}, bottom:{finalBottomLevel}");
 
-			var topFinalEnchants = new List<Enchant>();
-			var middleFinalEnchants = new List<Enchant>();
-			var bottomFinalEnchants = new List<Enchant>();
+			var topFinalEnchants = new Enchants();
+			var middleFinalEnchants = new Enchants();
+			var bottomFinalEnchants = new Enchants();
 
 			Enchant topEnchant = SelectEnchant(GetPossibleEnchantsForItem(itemType, finalTopLevel), rnd);
 			topFinalEnchants.Add(topEnchant);

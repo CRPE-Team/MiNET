@@ -543,7 +543,7 @@ namespace MiNET.Client
 			}
 		}
 		
-		public void WriteInventoryToFile(string fileName, ItemStacks slots)
+		public void WriteInventoryToFile(string fileName, CreativeItemStacks slots)
 		{
 			Log.Warn($"Writing inventory to filename: {fileName}");
 			FileStream file = File.OpenWrite(fileName);
@@ -594,7 +594,7 @@ namespace MiNET.Client
 
 			writer.Flush();
 			file.Close();
-		}
+		}		
 
 		public string MetadataToCode(MetadataDictionary metadata)
 		{

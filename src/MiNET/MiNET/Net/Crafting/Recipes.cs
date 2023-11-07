@@ -581,7 +581,7 @@ namespace MiNET.Net.Crafting
 		public int OutputMeta { get; set; }
 	}
 
-	public class MaterialReducerRecipe
+	public class MaterialReducerRecipe : IPacketDataObject
 	{
 		public int Input { get; set; }
 		public int InputMeta { get; set; }
@@ -616,6 +616,38 @@ namespace MiNET.Net.Crafting
 				ItemId = itemId;
 				ItemCount = itemCount;
 			}
+		}
+
+		public void Write(Packet packet)
+		{
+			packet.WriteVarInt((Input << 16) | InputMeta);
+			packet.WriteUnsignedVarInt((uint) Output.Length);
+
+			foreach (var output in Output)
+			{
+				packet.WriteVarInt(output.ItemId);
+				packet.WriteVarInt(output.ItemCount);
+			}
+		}
+
+		public static MaterialReducerRecipe Read(Packet packet)
+		{
+			var inputIdAndMeta = packet.ReadVarInt();
+			var inputId = inputIdAndMeta >> 16;
+			var inputMeta = inputIdAndMeta & 0x7fff;
+
+			var outputCount = (int) packet.ReadUnsignedVarInt();
+			var outputs = new MaterialReducerRecipeOutput[outputCount];
+
+			for (int i = 0; i < outputs.Length; i++)
+			{
+				var itemId = packet.ReadVarInt();
+				var itemCount = packet.ReadVarInt();
+
+				outputs[i] = new MaterialReducerRecipeOutput(itemId, itemCount);
+			}
+
+			return new MaterialReducerRecipe(inputId, inputMeta, outputs);
 		}
 	}
 

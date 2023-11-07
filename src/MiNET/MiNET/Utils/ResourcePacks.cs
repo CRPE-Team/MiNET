@@ -24,6 +24,8 @@
 #endregion
 
 using System.Collections.Generic;
+using MiNET.Net;
+using Org.BouncyCastle.Crypto;
 
 namespace MiNET.Utils
 {
@@ -82,21 +84,83 @@ namespace MiNET.Utils
 		public bool   RtxEnabled      { get; set; }
 	}
 
-	public class ResourcePackIdVersions : List<PackIdVersion>
+	public class ResourcePackIdVersions : List<PackIdVersion>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt((uint) Count); // LE
+			foreach (var info in this)
+			{
+				info.Write(packet);
+			}
+		}
+
+		public static ResourcePackIdVersions Read(Packet packet)
+		{
+			var count = packet.ReadUnsignedVarInt();
+
+			var packInfos = new ResourcePackIdVersions();
+			for (int i = 0; i < count; i++)
+			{
+				packInfos.Add(PackIdVersion.Read(packet));
+			}
+
+			return packInfos;
+		}
 	}
 
-	public class PackIdVersion
+	public class PackIdVersion : IPacketDataObject
 	{
 		public string Id { get; set; }
+
 		public string Version { get; set; }
+
 		public string SubPackName { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.Write(Id);
+			packet.Write(Version);
+			packet.Write(SubPackName);
+		}
+
+		public static PackIdVersion Read(Packet packet)
+		{
+			return new PackIdVersion
+			{
+				Id = packet.ReadString(),
+				Version = packet.ReadString(),
+				SubPackName = packet.ReadString()
+			};
+		}
 	}
 
-	public class ResourcePackIds : List<string>
+	public class ResourcePackIds : List<string>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.Write((short) Count);
+
+			foreach (var id in this)
+			{
+				packet.Write(id);
+			}
+		}
+
+		public static ResourcePackIds Read(Packet packet)
+		{
+			var count = packet.ReadShort();
+
+			var ids = new ResourcePackIds();
+			for (int i = 0; i < count; i++)
+			{
+				ids.Add(packet.ReadString());
+			}
+
+			return ids;
+		}
 	}
-	
+
 	public enum ResourcePackType : byte
 	{
 		Addon = 1,

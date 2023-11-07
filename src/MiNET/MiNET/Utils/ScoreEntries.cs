@@ -24,22 +24,95 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
+using MiNET.Entities;
+using MiNET.Net;
+using Org.BouncyCastle.Ocsp;
 
 namespace MiNET.Utils
 {
-	public class ScoreEntries : List<ScoreEntry>
+	public class ScoreEntries : List<ScoreEntry>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.Write((byte) (this.FirstOrDefault() is ScoreEntryRemove ? McpeSetScore.Types.Remove : McpeSetScore.Types.Change));
+			packet.WriteUnsignedVarInt((uint) Count);
+			foreach (var entry in this)
+			{
+				entry.Write(packet);
+			}
+		}	
+
+		public static ScoreEntries Read(Packet packet)
+		{
+			var list = new ScoreEntries();
+			var type = packet.ReadByte();
+			var length = packet.ReadUnsignedVarInt();
+			for (var i = 0; i < length; ++i)
+			{
+				var entry = ScoreEntry.Read(packet, type);
+				if (entry == null) continue;
+
+				list.Add(entry);
+			}
+
+			return list;
+		}
 	}
 
-	public abstract class ScoreEntry
+	public abstract class ScoreEntry : IPacketDataObject
 	{
 		public long Id { get; set; }
+
 		public string ObjectiveName { get; set; }
+
 		public uint Score { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.WriteSignedVarLong(Id);
+			packet.Write(ObjectiveName);
+			packet.Write(Score);
+
+			WriteData(packet);
+		}
+
+		protected virtual void WriteData(Packet packet) { }
+
+		public static ScoreEntry Read(Packet packet, byte type)
+		{
+			var entryId = packet.ReadSignedVarLong();
+			var entryObjectiveName = packet.ReadString();
+			var entryScore = packet.ReadUint();
+
+			ScoreEntry entry = type switch
+			{
+				(int) McpeSetScore.Types.Remove => ScoreEntryRemove.ReadData(packet),
+
+				_ => (McpeSetScore.ChangeTypes) packet.ReadByte() switch
+				{
+					McpeSetScore.ChangeTypes.Player => ScoreEntryChangePlayer.ReadData(packet),
+					McpeSetScore.ChangeTypes.Entity => ScoreEntryChangeEntity.ReadData(packet),
+					McpeSetScore.ChangeTypes.FakePlayer => ScoreEntryChangeFakePlayer.ReadData(packet)
+				}
+			};
+
+			if (entry == null) return null;
+
+			entry.Id = entryId;
+			entry.ObjectiveName = entryObjectiveName;
+			entry.Score = entryScore;
+
+			return entry;
+		}
 	}
 
 	public class ScoreEntryRemove : ScoreEntry
 	{
+		internal static ScoreEntryRemove ReadData(Packet packet)
+		{
+			return new ScoreEntryRemove();
+		}
 	}
 
 	public abstract class ScoreEntryChange : ScoreEntry
@@ -49,33 +122,141 @@ namespace MiNET.Utils
 	public class ScoreEntryChangePlayer : ScoreEntryChange
 	{
 		public long EntityId { get; set; }
+
+		protected override void WriteData(Packet packet)
+		{
+			packet.Write((byte) McpeSetScore.ChangeTypes.Player);
+			packet.WriteSignedVarLong(EntityId);
+		}
+
+		internal static ScoreEntryChangePlayer ReadData(Packet packet)
+		{
+			return new ScoreEntryChangePlayer 
+			{ 
+				EntityId = packet.ReadSignedVarLong() 
+			};
+		}
 	}
 
 	public class ScoreEntryChangeEntity : ScoreEntryChange
 	{
 		public long EntityId { get; set; }
+
+		protected override void WriteData(Packet packet)
+		{
+			packet.Write((byte) McpeSetScore.ChangeTypes.Entity);
+			packet.WriteSignedVarLong(EntityId);
+		}
+
+		internal static ScoreEntryChangeEntity ReadData(Packet packet)
+		{
+			return new ScoreEntryChangeEntity
+			{
+				EntityId = packet.ReadSignedVarLong()
+			};
+		}
 	}
 
 	public class ScoreEntryChangeFakePlayer : ScoreEntryChange
 	{
 		public string CustomName { get; set; }
+
+		protected override void WriteData(Packet packet)
+		{
+			packet.Write((byte) McpeSetScore.ChangeTypes.FakePlayer);
+			packet.Write(CustomName);
+		}
+
+		internal static ScoreEntryChangeFakePlayer ReadData(Packet packet)
+		{
+			return new ScoreEntryChangeFakePlayer 
+			{ 
+				CustomName = packet.ReadString() 
+			};
+		}
 	}
 
-	public class ScoreboardIdentityEntries : List<ScoreboardIdentityEntry>
+	public class ScoreboardIdentityEntries : List<ScoreboardIdentityEntry>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.Write((byte) (this.FirstOrDefault() is ScoreboardClearIdentityEntry ? McpeSetScoreboardIdentity.Operations.ClearIdentity : McpeSetScoreboardIdentity.Operations.RegisterIdentity));
+			packet.WriteUnsignedVarInt((uint) Count);
+			foreach (var entry in this)
+			{
+				entry.Write(packet);
+			}
+		}
+
+		public static ScoreboardIdentityEntries Read(Packet packet)
+		{
+			var list = new ScoreboardIdentityEntries();
+
+			var type = (McpeSetScoreboardIdentity.Operations) packet.ReadByte();
+			var length = packet.ReadUnsignedVarInt();
+			for (var i = 0; i < length; ++i)
+			{
+				list.Add(ScoreboardIdentityEntry.Read(packet, type));
+			}
+
+			return list;
+		}
 	}
 
-	public abstract class ScoreboardIdentityEntry
+	public abstract class ScoreboardIdentityEntry : IPacketDataObject
 	{
 		public long Id { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.WriteSignedVarLong(Id);
+
+			WriteData(packet);
+		}
+
+		protected virtual void WriteData(Packet packet) { }
+
+		public static ScoreboardIdentityEntry Read(Packet packet, McpeSetScoreboardIdentity.Operations type)
+		{
+			var scoreboardId = packet.ReadSignedVarLong();
+
+			return type switch
+			{
+				McpeSetScoreboardIdentity.Operations.RegisterIdentity => ScoreboardRegisterIdentityEntry.ReadData(packet, scoreboardId),
+				McpeSetScoreboardIdentity.Operations.ClearIdentity => ScoreboardClearIdentityEntry.ReadData(packet, scoreboardId)
+			};
+
+			// https://github.com/pmmp/PocketMine-MP/commit/39808dd94f4f2d1716eca31cb5a1cfe9000b6c38#diff-041914be0a0493190a4911ae5c4ac502R62
+		}
 	}
 
 	public class ScoreboardRegisterIdentityEntry : ScoreboardIdentityEntry
 	{
 		public long EntityId { get; set; }
+
+		protected override void WriteData(Packet packet)
+		{
+			packet.WriteSignedVarLong(EntityId);
+		}
+
+		internal static ScoreboardRegisterIdentityEntry ReadData(Packet packet, long scoreboardId)
+		{
+			return new ScoreboardRegisterIdentityEntry() 
+			{ 
+				Id = scoreboardId, 
+				EntityId = packet.ReadSignedVarLong() 
+			};
+		}
 	}
 
 	public class ScoreboardClearIdentityEntry : ScoreboardIdentityEntry
 	{
+		internal static ScoreboardClearIdentityEntry ReadData(Packet packet, long scoreboardId)
+		{
+			return new ScoreboardClearIdentityEntry() 
+			{ 
+				Id = scoreboardId
+			};
+		}
 	}
 }

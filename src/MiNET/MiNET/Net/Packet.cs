@@ -365,6 +365,11 @@ namespace MiNET.Net
 			VarInt.WriteSInt64(_buffer, value);
 		}
 
+		public long ReadEntityId()
+		{
+			return ReadSignedVarLong();
+		}
+
 		public long ReadSignedVarLong()
 		{
 			return VarInt.ReadSInt64(_reader);
@@ -510,131 +515,9 @@ namespace MiNET.Net
 			return new BlockCoordinates(ReadSignedVarInt(), (int) ReadUnsignedVarInt(), ReadSignedVarInt());
 		}
 
-		public void Write(PlayerRecords records)
-		{
-			if (records is PlayerAddRecords)
-			{
-				Write((byte) 0);
-				WriteUnsignedVarInt((uint) records.Count);
-				foreach (var record in records)
-				{
-					Write(record.ClientUuid);
-					WriteSignedVarLong(record.EntityId);
-					Write(record.DisplayName ?? record.Username);
-					Write(record.PlayerInfo.CertificateData?.ExtraData?.Xuid ?? String.Empty);
-					Write(record.PlayerInfo.PlatformChatId);
-					Write(record.PlayerInfo.DeviceOS);
-					Write(record.Skin);
-					Write(false); // is teacher
-					Write(false); // is host
-				}
-			}
-			else if (records is PlayerRemoveRecords)
-			{
-				Write((byte) 1);
-				WriteUnsignedVarInt((uint) records.Count);
-				foreach (var record in records)
-				{
-					Write(record.ClientUuid);
-				}
-			}
-
-			if (records is PlayerAddRecords)
-			{
-				foreach (var record in records)
-				{
-					Write(record.Skin.IsVerified); // is verified
-				}
-			}
-		}
-
 		public PlayerRecords ReadPlayerRecords()
 		{
-			// This should never be used in production. It is primarily for 
-			// the client to work.
-			byte recordType = ReadByte();
-			uint count = ReadUnsignedVarInt();
-			PlayerRecords records = null;
-			switch (recordType)
-			{
-				case 0:
-					records = new PlayerAddRecords();
-					for (int i = 0; i < count; i++)
-					{
-						var player = new Player(null, null);
-						player.ClientUuid = ReadUUID();
-						player.EntityId = ReadSignedVarLong();
-						player.DisplayName = ReadString();
-						var xuid =  ReadString();
-						var platformChatId = ReadString();
-						var deviceOS = ReadInt();
-						player.Skin = ReadSkin();
-						ReadBool(); // is teacher
-						ReadBool(); // is host
-
-						player.PlayerInfo = new PlayerInfo()
-						{
-							PlatformChatId = platformChatId,
-							DeviceOS = deviceOS,
-							CertificateData = new CertificateData()
-							{
-								ExtraData = new ExtraData()
-								{
-									Xuid = xuid
-								}
-							}
-						};
-						records.Add(player);
-						//Log.Debug($"Reading {player.ClientUuid}, {player.EntityId}, '{player.DisplayName}', {platformChatId}");
-					}
-					break;
-				case 1:
-					records = new PlayerRemoveRecords();
-					for (int i = 0; i < count; i++)
-					{
-						var player = new Player(null, null);
-						player.ClientUuid = ReadUUID();
-						records.Add(player);
-					}
-					break;
-			}
-
-			if (records is PlayerAddRecords)
-			{
-				foreach (Player player in records)
-				{
-					bool isVerified = ReadBool();
-
-					if (player.Skin != null) 
-						player.Skin.IsVerified = isVerified;
-				}
-			}
-			//if (!_reader.Eof) ReadBool(); // damn BS
-			//if (!_reader.Eof) ReadBool(); // damn BS
-
-			return records;
-		}
-
-		public void Write(Records records)
-		{
-			WriteUnsignedVarInt((uint) records.Count);
-			foreach (BlockCoordinates coord in records)
-			{
-				Write(coord);
-			}
-		}
-
-		public Records ReadRecords()
-		{
-			var records = new Records();
-			uint count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				var coord = ReadBlockCoordinates();
-				records.Add(coord);
-			}
-
-			return records;
+			return PlayerRecords.Read(this);
 		}
 
 		public void Write(PlayerLocation location)
@@ -830,289 +713,21 @@ namespace MiNET.Net
 			return metadata;
 		}
 
-		public void Write(CreativeItemStacks itemStacks)
-		{
-			if (itemStacks == null)
-			{
-				WriteUnsignedVarInt(0);
-				return;
-			}
-
-			WriteUnsignedVarInt((uint) itemStacks.Count);
-
-			foreach (var item in itemStacks)
-			{
-				WriteUnsignedVarInt((uint) item.UniqueId);
-				Write(item, false);
-			}
-		}
-
 		public CreativeItemStacks ReadCreativeItemStacks()
 		{
-			var metadata = new CreativeItemStacks();
-
-			var count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				var networkId = ReadUnsignedVarInt();
-				Item item = ReadItem(false);
-				item.UniqueId = (int) networkId;
-				metadata.Add(item);
-				Log.Debug(item);
-			}
-
-			return metadata;
-		}
-
-		public void Write(ItemStacks itemStacks)
-		{
-			if (itemStacks == null)
-			{
-				WriteUnsignedVarInt(0);
-				return;
-			}
-
-			WriteUnsignedVarInt((uint) itemStacks.Count);
-			for (int i = 0; i < itemStacks.Count; i++)
-			{
-				Write(itemStacks[i]);
-			}
+			return CreativeItemStacks.Read(this);
 		}
 
 		public ItemStacks ReadItemStacks()
 		{
-			var itemStacks = new ItemStacks();
-
-			var count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				itemStacks.Add(ReadItem());
-			}
-
-			return itemStacks;
-		}
-
-		public void Write(Transaction transaction)
-		{
-			WriteSignedVarInt(transaction.RequestId);
-
-			if (transaction.RequestId != 0)
-			{
-				WriteUnsignedVarInt((uint) transaction.RequestRecords.Count);
-
-				foreach (var record in transaction.RequestRecords)
-				{
-					Write(record.ContainerId);
-					WriteUnsignedVarInt((uint) record.Slots.Count);
-
-					foreach (var slot in record.Slots)
-					{
-						Write(slot);
-					}
-				}
-			}
-			
-			switch (transaction)
-			{
-				case InventoryMismatchTransaction _:
-					WriteUnsignedVarInt((int) McpeInventoryTransaction.TransactionType.InventoryMismatch);
-					break;
-				case ItemReleaseTransaction _:
-					WriteUnsignedVarInt((int) McpeInventoryTransaction.TransactionType.ItemRelease);
-					break;
-				case ItemUseOnEntityTransaction _:
-					WriteUnsignedVarInt((int) McpeInventoryTransaction.TransactionType.ItemUseOnEntity);
-					break;
-				case ItemUseTransaction _:
-					WriteUnsignedVarInt((int) McpeInventoryTransaction.TransactionType.ItemUse);
-					break;
-				case NormalTransaction _:
-					WriteUnsignedVarInt((int) McpeInventoryTransaction.TransactionType.Normal);
-					break;
-			}
-			//Write(transaction.HasNetworkIds);
-			
-			WriteUnsignedVarInt((uint) transaction.TransactionRecords.Count);
-			foreach (var record in transaction.TransactionRecords)
-			{
-				switch (record)
-				{
-					case ContainerTransactionRecord r:
-						WriteVarInt((int) McpeInventoryTransaction.InventorySourceType.Container);
-						WriteSignedVarInt(r.InventoryId);
-						break;
-					case GlobalTransactionRecord _:
-						WriteVarInt((int) McpeInventoryTransaction.InventorySourceType.Global);
-						break;
-					case WorldInteractionTransactionRecord r:
-						WriteVarInt((int) McpeInventoryTransaction.InventorySourceType.WorldInteraction);
-						WriteVarInt(r.Flags);
-						break;
-					case CreativeTransactionRecord _:
-						WriteVarInt((int) McpeInventoryTransaction.InventorySourceType.Creative);
-						break;
-					case CraftTransactionRecord r:
-						WriteVarInt((int) McpeInventoryTransaction.InventorySourceType.Crafting);
-						WriteVarInt((int) r.Action);
-						break;
-				}
-
-				WriteVarInt(record.Slot);
-				Write(record.OldItem);
-				Write(record.NewItem);
-				
-				//if (transaction.HasNetworkIds)
-				//	WriteSignedVarInt(record.StackNetworkId);
-			}
-
-			switch (transaction)
-			{
-				case NormalTransaction _:
-				case InventoryMismatchTransaction _:
-					break;
-				case ItemUseTransaction t:
-					WriteUnsignedVarInt((uint) t.ActionType);
-					Write(t.Position);
-					WriteSignedVarInt(t.Face);
-					WriteSignedVarInt(t.Slot);
-					Write(t.Item);
-					Write(t.FromPosition);
-					Write(t.ClickPosition);
-					WriteUnsignedVarInt(t.BlockRuntimeId);
-					break;
-				case ItemUseOnEntityTransaction t:
-					WriteUnsignedVarLong(t.EntityId);
-					WriteUnsignedVarInt((uint) t.ActionType);
-					WriteSignedVarInt(t.Slot);
-					Write(t.Item);
-					Write(t.FromPosition);
-					Write(t.ClickPosition);
-					break;
-				case ItemReleaseTransaction t:
-					WriteUnsignedVarInt((uint) t.ActionType);
-					WriteSignedVarInt(t.Slot);
-					Write(t.Item);
-					Write(t.FromPosition);
-					break;
-				default:
-					break;
-			}
+			return ItemStacks.Read(this);
 		}
 
 		public Transaction ReadTransaction()
 		{
-			var requestId = ReadSignedVarInt(); // request id
-			var requestRecords = new List<RequestRecord>();
-			if (requestId != 0)
-			{
-				var c1 = ReadUnsignedVarInt();
-				for (int i = 0; i < c1; i++)
-				{
-					var rr = new RequestRecord();
-					rr.ContainerId = ReadByte();
-					var c2 = ReadUnsignedVarInt();
-					for (int j = 0; j < c2; j++)
-					{
-						byte slot = ReadByte();
-						rr.Slots.Add(slot);
-						Log.Debug($"RequestId:{requestId}, containerId:{rr.ContainerId}, slot:{slot}");
-					}
-					requestRecords.Add(rr);
-				}
-			}
-
-			var transactionType = (McpeInventoryTransaction.TransactionType) ReadVarInt();
-			//bool hasItemStacks = ReadBool();
-			//if(hasItemStacks) Log.Warn($"Got item stacks in old transaction");
-
-			var transactions = new List<TransactionRecord>();
-			uint count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				TransactionRecord record;
-				int sourceType = ReadVarInt();
-				switch ((McpeInventoryTransaction.InventorySourceType) sourceType)
-				{
-					case McpeInventoryTransaction.InventorySourceType.Container:
-						record = new ContainerTransactionRecord() {InventoryId = ReadSignedVarInt()};
-						break;
-					case McpeInventoryTransaction.InventorySourceType.Global:
-						record = new GlobalTransactionRecord();
-						break;
-					case McpeInventoryTransaction.InventorySourceType.WorldInteraction:
-						record = new WorldInteractionTransactionRecord() {Flags = ReadVarInt()};
-						break;
-					case McpeInventoryTransaction.InventorySourceType.Creative:
-						record = new CreativeTransactionRecord() {InventoryId = 0x79};
-						break;
-					case McpeInventoryTransaction.InventorySourceType.Unspecified:
-					case McpeInventoryTransaction.InventorySourceType.Crafting:
-						record = new CraftTransactionRecord() {Action = (McpeInventoryTransaction.CraftingAction) ReadSignedVarInt()};
-						break;
-					default:
-						Log.Error($"Unknown inventory source type={sourceType}");
-						continue;
-				}
-
-				record.Slot = ReadVarInt();
-				record.OldItem = ReadItem();
-				record.NewItem = ReadItem();
-			//	if (hasItemStacks) 
-				//	record.StackNetworkId = ReadSignedVarInt();
-				
-				transactions.Add(record);
-			}
-
-			Transaction transaction = null;
-			switch (transactionType)
-			{
-				case McpeInventoryTransaction.TransactionType.Normal:
-					transaction = new NormalTransaction();
-					break;
-				case McpeInventoryTransaction.TransactionType.InventoryMismatch:
-					transaction = new InventoryMismatchTransaction();
-					break;
-				case McpeInventoryTransaction.TransactionType.ItemUse:
-					transaction = new ItemUseTransaction()
-					{
-						ActionType = (McpeInventoryTransaction.ItemUseAction) ReadVarInt(),
-						Position = ReadBlockCoordinates(),
-						Face = ReadSignedVarInt(),
-						Slot = ReadSignedVarInt(),
-						Item = ReadItem(),
-						FromPosition = ReadVector3(),
-						ClickPosition = ReadVector3(),
-						BlockRuntimeId = ReadUnsignedVarInt()
-					};
-					break;
-				case McpeInventoryTransaction.TransactionType.ItemUseOnEntity:
-					transaction = new ItemUseOnEntityTransaction()
-					{
-						EntityId = ReadVarLong(),
-						ActionType = (McpeInventoryTransaction.ItemUseOnEntityAction) ReadVarInt(),
-						Slot = ReadSignedVarInt(),
-						Item = ReadItem(),
-						FromPosition = ReadVector3(),
-						ClickPosition = ReadVector3()
-					};
-					break;
-				case McpeInventoryTransaction.TransactionType.ItemRelease:
-					transaction = new ItemReleaseTransaction()
-					{
-						ActionType = (McpeInventoryTransaction.ItemReleaseAction) ReadVarInt(),
-						Slot = ReadSignedVarInt(),
-						Item = ReadItem(),
-						FromPosition = ReadVector3()
-					};
-					break;
-			}
-
-			transaction.TransactionRecords = transactions;
-			transaction.RequestId = requestId;
-			transaction.RequestRecords = requestRecords;
-
-			return transaction;
+			return Transaction.Read(this);	
 		}
+
 		public ItemStackRequests ReadItemStackRequests()
 		{
 			return ItemStackRequests.Read(this);
@@ -1122,110 +737,23 @@ namespace MiNET.Net
 		{
 			return ItemStackResponses.Read(this);
 		}
-
-		public void Write(ItemComponentList list)
-		{
-			WriteUnsignedVarInt((uint) list.Count);
-
-			foreach (var item in list)
-			{
-				Write(item.Name);
-				Write(item.Nbt);
-			}
-		}
 		
 		public ItemComponentList ReadItemComponentList()
 		{
-			var               count = ReadUnsignedVarInt();
-			ItemComponentList l     = new ItemComponentList();
-
-			for (int i = 0; i < count; i++)
-			{
-				string        name      = ReadString();
-				var           nbt       = ReadNbt();
-				
-				ItemComponent component = new ItemComponent();
-				component.Name = name;
-				component.Nbt = nbt;
-				
-				l.Add(component);
-			}
-
-			return l;
-		}
-		
-		public void Write(EnchantOptions options)
-		{
-			WriteUnsignedVarInt((uint) options.Count);
-			foreach (EnchantOption option in options)
-			{
-				WriteUnsignedVarInt(option.Cost);
-				Write(option.Flags);
-				WriteEnchants(option.EquipActivatedEnchantments);
-				WriteEnchants(option.HeldActivatedEnchantments);
-				WriteEnchants(option.SelfActivatedEnchantments);
-				Write(option.Name);
-				WriteVarInt(option.OptionId);
-			}
-		}
-
-		private void WriteEnchants(List<Enchant> enchants)
-		{
-			WriteUnsignedVarInt((uint) enchants.Count);
-			foreach (Enchant enchant in enchants)
-			{
-				Write(enchant.Id);	
-				Write(enchant.Level);	
-			}
-		}
-
-		private List<Enchant> ReadEnchants()
-		{
-			List<Enchant> enchants = new List<Enchant>();
-			var           count    = ReadUnsignedVarInt();
-
-			for (int i = 0; i < count; i++)
-			{
-				Enchant enchant = new Enchant(ReadByte(), ReadByte());
-				enchants.Add(enchant);
-			}
-
-			return enchants;
+			return ItemComponentList.Read(this);
 		}
 
 		public EnchantOptions ReadEnchantOptions()
 		{
-			var options = new EnchantOptions();
-			var count   = ReadUnsignedVarInt();
-
-			for (int i = 0; i < count; i++)
-			{
-				EnchantOption option = new EnchantOption();
-				option.Cost = ReadUnsignedVarInt();
-				option.Flags = ReadInt();
-				option.EquipActivatedEnchantments = ReadEnchants();
-				option.HeldActivatedEnchantments = ReadEnchants();
-				option.SelfActivatedEnchantments = ReadEnchants();
-				option.Name = ReadString();
-				option.OptionId = ReadVarInt();
-				
-				options.Add(option);
-			}
-			
-			return options;
+			return EnchantOptions.Read(this);
 		}
 
 		public void Write(AnimationKey[] keys)
 		{
 			WriteUnsignedVarInt((uint) keys.Length);
-			foreach (AnimationKey key in keys)
+			foreach (var key in keys)
 			{
-				Write(key.ExecuteImmediate);
-				Write(key.ResetBefore);
-				Write(key.ResetAfter);
-				Write(key.StartRotation);
-				Write(key.EndRotation);
-				WriteUnsignedVarInt(key.Duration);
+				key.Write(this);
 			}
 		}
 
@@ -1235,32 +763,10 @@ namespace MiNET.Net
 			var keys = new AnimationKey[count];
 			for (int i = 0; i < count; i++)
 			{
-				AnimationKey key = new AnimationKey();
-				key.ExecuteImmediate = ReadBool();
-				key.ResetBefore = ReadBool();
-				key.ResetAfter = ReadBool();
-				key.StartRotation = ReadVector3();
-				key.EndRotation = ReadVector3();
-				key.Duration = ReadUnsignedVarInt();
-				keys[i] = key;
+				keys[i] = AnimationKey.Read(this);
 			}
 
 			return keys;
-		}
-
-
-		private ItemStacks ReadItems()
-		{
-			var items = new ItemStacks();
-
-			var count = ReadUnsignedVarInt();
-
-			for (int i = 0; i < count; i++)
-			{
-				items.Add(ReadItem(false));
-			}
-
-			return items;
 		}
 
 		private const int ShieldId = 355;
@@ -1422,150 +928,12 @@ namespace MiNET.Net
 
 		public AttributeModifiers ReadAttributeModifiers()
 		{
-			var modifiers = new AttributeModifiers();
-			uint count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				AttributeModifier modifier = new AttributeModifier
-				{
-					Id = ReadString(),
-					Name = ReadString(),
-					Amount = ReadFloat(),
-					Operations = ReadInt(),
-					Operand = ReadInt(),
-					Serializable = ReadBool(),
-				};
-				modifiers[modifier.Name] = modifier;
-			}
-
-			return modifiers;
-		}
-
-		public void Write(AttributeModifiers modifiers)
-		{
-			WriteUnsignedVarInt((uint) modifiers.Count);
-			foreach (AttributeModifier modifier in modifiers.Values)
-			{
-				Write(modifier.Id);
-				Write(modifier.Name);
-				Write(modifier.Amount);
-				Write(modifier.Operations); // unknown
-				Write(modifier.Operand);
-				Write(modifier.Serializable);
-			}
+			return AttributeModifiers.Read(this);
 		}
 
 		public PlayerAttributes ReadPlayerAttributes()
 		{
-			var attributes = new PlayerAttributes();
-			uint count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				PlayerAttribute attribute = new PlayerAttribute
-				{
-					MinValue = ReadFloat(),
-					MaxValue = ReadFloat(),
-					Value = ReadFloat(),
-					Default = ReadFloat(),
-					Name = ReadString(),
-					Modifiers = ReadAttributeModifiers()
-				};
-				attributes[attribute.Name] = attribute;
-			}
-
-			return attributes;
-		}
-
-		public void Write(PlayerAttributes attributes)
-		{
-			WriteUnsignedVarInt((uint) attributes.Count);
-			foreach (PlayerAttribute attribute in attributes.Values)
-			{
-				Write(attribute.MinValue);
-				Write(attribute.MaxValue);
-				Write(attribute.Value);
-				Write(attribute.Default); // unknown
-				Write(attribute.Name);
-				Write(attribute.Modifiers);
-			}
-		}
-
-
-		public GameRules ReadGameRules()
-		{
-			GameRules gameRules = new GameRules();
-
-			int count = ReadVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				string name = ReadString();
-				bool isPlayerModifiable = ReadBool();
-				var type = ReadUnsignedVarInt();
-				switch (type)
-				{
-					case 1:
-					{
-						GameRule<bool> rule = new GameRule<bool>(name, ReadBool())
-						{
-							IsPlayerModifiable = isPlayerModifiable
-						};
-						gameRules.Add(rule);
-						break;
-					}
-					case 2:
-					{
-						GameRule<int> rule = new GameRule<int>(name, ReadVarInt())
-						{
-							IsPlayerModifiable = isPlayerModifiable
-						};
-						gameRules.Add(rule);
-						break;
-					}
-					case 3:
-					{
-						GameRule<float> rule = new GameRule<float>(name, ReadFloat())
-						{
-							IsPlayerModifiable = isPlayerModifiable
-						};
-						gameRules.Add(rule);
-						break;
-					}
-				}
-			}
-
-			return gameRules;
-		}
-
-		public void Write(GameRules gameRules)
-		{
-			if (gameRules == null)
-			{
-				WriteVarInt(0);
-				return;
-			}
-
-			WriteVarInt(gameRules.Count);
-			foreach (var rule in gameRules)
-			{
-				Write(rule.Name.ToLower());
-				Write(rule.IsPlayerModifiable); // bool isPlayerModifiable
-
-				if (rule is GameRule<bool>)
-				{
-					WriteUnsignedVarInt(1);
-					Write(((GameRule<bool>) rule).Value);
-				}
-				else if (rule is GameRule<int>)
-				{
-					WriteUnsignedVarInt(2);
-					WriteVarInt(((GameRule<int>) rule).Value);
-				}
-				else if (rule is GameRule<float>)
-				{
-					WriteUnsignedVarInt(3);
-					Write(((GameRule<float>) rule).Value);
-				}
-			}
+			return PlayerAttributes.Read(this);
 		}
 
 		public void Write(EntityAttributes attributes)
@@ -1576,59 +944,33 @@ namespace MiNET.Net
 				return;
 			}
 
-			WriteUnsignedVarInt((uint) attributes.Count);
-			foreach (EntityAttribute attribute in attributes.Values)
-			{
-				Write(attribute.Name);
-				Write(attribute.MinValue);
-				Write(attribute.Value);
-				Write(attribute.MaxValue);
-			}
+			attributes.Write(this);
 		}
 
 		public EntityAttributes ReadEntityAttributes()
 		{
-			var attributes = new EntityAttributes();
-			uint count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				EntityAttribute attribute = new EntityAttribute
-				{
-					Name = ReadString(),
-					MinValue = ReadFloat(),
-					Value = ReadFloat(),
-					MaxValue = ReadFloat(),
-				};
+			return EntityAttributes.Read(this);
+		}
 
-				attributes[attribute.Name] = attribute;
+		public GameRules ReadGameRules()
+		{
+			return GameRules.Read(this);
+		}
+
+		public void Write(GameRules gameRules)
+		{
+			if (gameRules == null)
+			{
+				WriteVarInt(0);
+				return;
 			}
 
-			return attributes;
+			gameRules.Write(this);
 		}
 
 		public Itemstates ReadItemstates()
 		{
-			var result = new Itemstates();
-			uint count = ReadUnsignedVarInt();
-			for (int runtimeId = 0; runtimeId < count; runtimeId++)
-			{
-				var name = ReadString();
-				var legacyId = ReadShort();
-				var component = ReadBool();
-
-				if (name == "minecraft:shield")
-				{
-					Log.Warn($"Got shield with runtime id {runtimeId}, legacy {legacyId}");
-				}
-
-				result.Add(name, new Itemstate
-				{
-					RuntimeId = legacyId,
-					ComponentBased = component
-				});
-			}
-
-			return result;
+			return Itemstates.Read(this);
 		}
 
 		public void Write(Itemstates itemstates)
@@ -1638,13 +980,8 @@ namespace MiNET.Net
 				WriteUnsignedVarInt(0);
 				return;
 			}
-			WriteUnsignedVarInt((uint) itemstates.Count);
-			foreach (var itemstate in itemstates)
-			{
-				Write(itemstate.Key);
-				Write(itemstate.Value.RuntimeId);
-				Write(itemstate.Value.ComponentBased);
-			}
+
+			itemstates.Write(this);
 		}
 
 		public BlockPalette ReadBlockPalette()
@@ -1771,79 +1108,19 @@ namespace MiNET.Net
 			}
 		}
 
-		public void Write(AbilityLayer layer)
-		{
-			Write((ushort)layer.Type);
-
-			var values = layer.Abilities;
-
-			if (layer.FlySpeed > 0)
-			{
-				layer.Abilities |= PlayerAbility.FlySpeed;
-			}
-			if (layer.WalkSpeed > 0)
-			{
-				layer.Abilities |= PlayerAbility.WalkSpeed;
-			}
-
-			Write((uint)layer.Abilities);
-			Write((uint) values);
-			Write(layer.FlySpeed);
-			Write(layer.WalkSpeed);
-		}
-
 		public AbilityLayer ReadAbilityLayer()
 		{
-			AbilityLayer layer = new AbilityLayer();
-			layer.Type = (AbilityLayerType) ReadUshort();
-			layer.Abilities = (PlayerAbility)ReadUint();
-			layer.Values = ReadUint();
-			layer.FlySpeed = ReadFloat();
-			layer.WalkSpeed = ReadFloat();
-
-			return layer;
-		}
-
-		public void Write(AbilityLayers layers)
-		{
-			Write((byte)layers.Count);
-
-			foreach (var layer in layers)
-			{
-				Write(layer);
-			}
+			return AbilityLayer.Read(this);
 		}
 		
 		public AbilityLayers ReadAbilityLayers()
 		{
-			AbilityLayers layers = new AbilityLayers();
-			var count = ReadByte();
-
-			for (int i = 0; i < count; i++)
-			{
-				layers.Add(ReadAbilityLayer());
-			}
-			return layers;
-		}
-
-		public void Write(EntityLink link)
-		{
-			WriteVarLong(link.FromEntityId);
-			WriteVarLong(link.ToEntityId);
-			Write((byte)link.Type);
-			Write(link.Immediate);
-			Write(link.CausedByRider);
+			return AbilityLayers.Read(this);
 		}
 
 		public EntityLink ReadEntityLink()
 		{
-			var from = ReadVarLong();
-			var to = ReadVarLong();
-			var type = (EntityLink.EntityLinkType) ReadByte();
-			var immediate = ReadBool();
-			var causedByRider = ReadBool();
-
-			return new EntityLink(from, to, type, immediate, causedByRider);
+			return EntityLink.Read(this);
 		}
 		
 		public void Write(EntityLinks links)
@@ -1853,24 +1130,13 @@ namespace MiNET.Net
 				WriteUnsignedVarInt(0); // LE
 				return;
 			}
-			WriteUnsignedVarInt((uint) links.Count); // LE
-			foreach (var link in links)
-			{
-				Write(link);
-			}
+
+			links.Write(this);
 		}
 
 		public EntityLinks ReadEntityLinks()
 		{
-			var count = ReadUnsignedVarInt();
-
-			var links = new EntityLinks();
-			for (int i = 0; i < count; i++)
-			{
-				links.Add(ReadEntityLink());
-			}
-
-			return links;
+			return EntityLinks.Read(this);
 		}
 
 		public void Write(Rules rules)
@@ -2020,35 +1286,13 @@ namespace MiNET.Net
 				WriteUnsignedVarInt(0);
 				return;
 			}
-			WriteUnsignedVarInt((uint) packInfos.Count); // LE
-			foreach (var info in packInfos)
-			{
-				Write(info.Id);
-				Write(info.Version);
-				Write(info.SubPackName);
-			}
+
+			packInfos.Write(this);
 		}
 
 		public ResourcePackIdVersions ReadResourcePackIdVersions()
 		{
-			uint count = ReadUnsignedVarInt();
-
-			var packInfos = new ResourcePackIdVersions();
-			for (int i = 0; i < count; i++)
-			{
-				var id = ReadString();
-				var version = ReadString();
-				var subPackName = ReadString();
-				var info = new PackIdVersion
-				{
-					Id = id,
-					Version = version,
-					SubPackName = subPackName
-				};
-				packInfos.Add(info);
-			}
-
-			return packInfos;
+			return ResourcePackIdVersions.Read(this);
 		}
 
 		public void Write(ResourcePackIds ids)
@@ -2058,26 +1302,13 @@ namespace MiNET.Net
 				Write((short) 0);
 				return;
 			}
-			Write((short) ids.Count);
 
-			foreach (var id in ids)
-			{
-				Write(id);
-			}
+			ids.Write(this);
 		}
 
 		public ResourcePackIds ReadResourcePackIds()
 		{
-			int count = ReadShort();
-
-			var ids = new ResourcePackIds();
-			for (int i = 0; i < count; i++)
-			{
-				var id = ReadString();
-				ids.Add(id);
-			}
-
-			return ids;
+			return ResourcePackIds.Read(this);
 		}
 
 		public void Write(Skin skin)
@@ -2259,45 +1490,19 @@ namespace MiNET.Net
 			}
 
 			WriteUnsignedVarInt((uint) reducerRecipes.Length);
-
-			for (int i = 0; i < reducerRecipes.Length; i++)
+			foreach (var recipe in reducerRecipes)
 			{
-				var recipe = reducerRecipes[i];
-				WriteVarInt((recipe.Input << 16) | recipe.InputMeta);
-				WriteUnsignedVarInt((uint) recipe.Output.Length);
-
-				foreach (var output in recipe.Output)
-				{
-					WriteVarInt(output.ItemId);
-					WriteVarInt(output.ItemCount);
-				}
+				recipe.Write(this);
 			}
 		} 
 
 		public MaterialReducerRecipe[] ReadMaterialReducerRecipes()
 		{
-			int count = (int) ReadUnsignedVarInt();
+			var count = (int) ReadUnsignedVarInt();
 			var recipes = new MaterialReducerRecipe[count];
 			for (int i = 0; i < recipes.Length; i++)
 			{
-				var inputIdAndMeta = ReadVarInt();
-				var inputId = inputIdAndMeta >> 16;
-				var inputMeta = inputIdAndMeta & 0x7fff;
-
-				var outputCount = (int) ReadUnsignedVarInt();
-				MaterialReducerRecipe.MaterialReducerRecipeOutput[] outputs = new MaterialReducerRecipe.MaterialReducerRecipeOutput[outputCount];
-
-				for (int o = 0; o < outputs.Length; o++)
-				{
-					var itemId = ReadVarInt();
-					var itemCount = ReadVarInt();
-
-					outputs[o] = new MaterialReducerRecipe.MaterialReducerRecipeOutput(itemId, itemCount);
-				}
-				
-				var recipe = new MaterialReducerRecipe(inputId, inputMeta, outputs);
-
-				recipes[i] = recipe;
+				recipes[i] = MaterialReducerRecipe.Read(this);
 			}
 
 			return recipes;
@@ -2328,382 +1533,38 @@ namespace MiNET.Net
 			return recipes;
 		}
 
-
-		const int MapUpdateFlagTexture = 0x02;
-		const int MapUpdateFlagDecoration = 0x04;
-		const int MapUpdateFlagInitialisation = 0x08;
-
-		public void Write(MapInfo map)
-		{
-			WriteSignedVarLong(map.MapId);
-			WriteUnsignedVarInt((uint) map.UpdateType);
-			Write((byte) 0); // dimension
-			Write(false); // Locked
-			Write(map.Origin);
-
-			if ((map.UpdateType & MapUpdateFlagInitialisation) != 0)
-			{
-				WriteUnsignedVarInt(0);
-				//WriteSignedVarLong(map.MapId);
-			}
-
-			if ((map.UpdateType & (MapUpdateFlagInitialisation | MapUpdateFlagDecoration | MapUpdateFlagTexture)) != 0)
-			{
-				Write((byte) map.Scale);
-			}
-
-			if ((map.UpdateType & MapUpdateFlagDecoration) != 0)
-			{
-				var countTrackedObj = map.TrackedObjects.Length;
-
-				WriteUnsignedVarInt((uint) countTrackedObj);
-				foreach (var trackedObject in map.TrackedObjects)
-				{
-					if (trackedObject is EntityMapTrackedObject entity)
-					{
-						Write(0);
-						WriteSignedVarLong(entity.EntityId);
-					}
-					else if (trackedObject is BlockMapTrackedObject block)
-					{
-						Write(1);
-						Write(block.Coordinates);
-					}
-				}
-
-				var count = map.Decorators.Length;
-
-				WriteUnsignedVarInt((uint) count);
-				foreach (var decorator in map.Decorators)
-				{
-					if (decorator is EntityMapDecorator entity)
-					{
-						WriteSignedVarLong(entity.EntityId);
-					}
-					else if (decorator is BlockMapDecorator block)
-					{
-						Write(block.Coordinates);
-					}
-				}
-
-				WriteUnsignedVarInt((uint) count);
-				foreach (var decorator in map.Decorators)
-				{
-					Write((byte) decorator.Icon);
-					Write((byte) decorator.Rotation);
-					Write((byte) decorator.X);
-					Write((byte) decorator.Z);
-					Write(decorator.Label);
-					WriteUnsignedVarInt(decorator.Color);
-				}
-			}
-
-			if ((map.UpdateType & MapUpdateFlagTexture) != 0)
-			{
-				WriteSignedVarInt(map.Col);
-				WriteSignedVarInt(map.Row);
-
-				WriteSignedVarInt(map.XOffset);
-				WriteSignedVarInt(map.ZOffset);
-
-				WriteUnsignedVarInt((uint) (map.Col * map.Row));
-				int i = 0;
-				for (int col = 0; col < map.Col; col++)
-				{
-					for (int row = 0; row < map.Row; row++)
-					{
-						byte r = map.Data[i++];
-						byte g = map.Data[i++];
-						byte b = map.Data[i++];
-						byte a = map.Data[i++];
-						uint color = BitConverter.ToUInt32(new byte[] { r, g, b, 0xff }, 0);
-						WriteUnsignedVarInt(color);
-					}
-				}
-			}
-		}
-
 		public MapInfo ReadMapInfo()
 		{
-			MapInfo map = new MapInfo();
-
-			map.MapId = ReadSignedVarLong();
-			map.UpdateType = (byte) ReadUnsignedVarInt();
-			ReadByte(); // Dimension (waste)
-			ReadBool(); // Locked (waste)
-
-			if ((map.UpdateType & MapUpdateFlagInitialisation) == MapUpdateFlagInitialisation)
-			{
-				// Entities
-				var count = ReadUnsignedVarInt();
-				for (int i = 0; i < count - 1; i++) // This is some weird shit vanilla is doing with counting.
-				{
-					var eid = ReadSignedVarLong();
-				}
-			}
-
-			if ((map.UpdateType & MapUpdateFlagTexture) == MapUpdateFlagTexture || (map.UpdateType & MapUpdateFlagDecoration) == MapUpdateFlagDecoration)
-			{
-				map.Scale = ReadByte();
-				//Log.Warn($"Reading scale {map.Scale}");
-			}
-
-			if ((map.UpdateType & MapUpdateFlagDecoration) == MapUpdateFlagDecoration)
-			{
-				// Decorations
-				//Log.Warn("Got decoration update, reading it");
-
-				try
-				{
-					var entityCount = ReadUnsignedVarInt();
-					for (int i = 0; i < entityCount; i++)
-					{
-						var type = ReadInt();
-						if (type == 0)
-						{
-							// entity
-							var q = ReadSignedVarLong();
-						}
-						else if (type == 1)
-						{
-							// block
-							var b = ReadBlockCoordinates();
-						}
-					}
-
-					var count = ReadUnsignedVarInt();
-					map.Decorators = new MapDecorator[count];
-					for (int i = 0; i < count; i++)
-					{
-						MapDecorator decorator = new MapDecorator();
-						decorator.Icon = ReadByte();
-						decorator.Rotation = ReadByte();
-						decorator.X = ReadByte();
-						decorator.Z = ReadByte();
-						decorator.Label = ReadString();
-						decorator.Color = ReadUnsignedVarInt();
-						map.Decorators[i] = decorator;
-					}
-				}
-				catch (Exception e)
-				{
-					Log.Error($"Error while reading decorations for map={map}", e);
-				}
-			}
-
-			if ((map.UpdateType & MapUpdateFlagTexture) == MapUpdateFlagTexture)
-			{
-				// Full map
-				try
-				{
-					map.Col = ReadSignedVarInt();
-					map.Row = ReadSignedVarInt(); //
-
-					map.XOffset = ReadSignedVarInt(); //
-					map.ZOffset = ReadSignedVarInt(); //
-					ReadUnsignedVarInt(); // size
-					for (int col = 0; col < map.Col; col++)
-					{
-						for (int row = 0; row < map.Row; row++)
-						{
-							ReadUnsignedVarInt();
-						}
-					}
-				}
-				catch (Exception e)
-				{
-					Log.Error($"Errror while reading map data for map={map}", e);
-				}
-			}
-
-			//else
-			//{
-			//	Log.Warn($"Unknown map-type 0x{map.UpdateType:X2}");
-			//}
-
-			//map.MapId = ReadLong();
-			//var readBytes = ReadBytes(3);
-			////Log.Warn($"{HexDump(readBytes)}");
-			//map.UpdateType = ReadByte(); //
-			//var bytes = ReadBytes(6);
-			////Log.Warn($"{HexDump(bytes)}");
-
-			//map.Direction = ReadByte(); //
-			//map.X = ReadByte(); //
-			//map.Z = ReadByte(); //
-
-			//if (map.UpdateType == 0x06)
-			//{
-			//	// Full map
-			//	try
-			//	{
-			//		if (bytes[4] == 1)
-			//		{
-			//			map.Col = ReadInt();
-			//			map.Row = ReadInt(); //
-
-			//			map.XOffset = ReadInt(); //
-			//			map.ZOffset = ReadInt(); //
-
-			//			map.Data = ReadBytes(map.Col*map.Row*4);
-			//		}
-			//	}
-			//	catch (Exception e)
-			//	{
-			//		Log.Error($"Errror while reading map data for map={map}", e);
-			//	}
-			//}
-			//else if (map.UpdateType == 0x04)
-			//{
-			//	// Map update
-			//}
-			//else
-			//{
-			//	Log.Warn($"Unknown map-type 0x{map.UpdateType:X2}");
-			//}
-
-			return map;
+			return MapInfo.Read(this);
 		}
 
 		public void Write(ScoreEntries list)
 		{
 			if (list == null) list = new ScoreEntries();
 
-			Write((byte) (list.FirstOrDefault() is ScoreEntryRemove ? McpeSetScore.Types.Remove : McpeSetScore.Types.Change));
-			WriteUnsignedVarInt((uint) list.Count);
-			foreach (var entry in list)
-			{
-				WriteSignedVarLong(entry.Id);
-				Write(entry.ObjectiveName);
-				Write(entry.Score);
-
-				if (entry is ScoreEntryRemove)
-				{
-					continue;
-				}
-
-				if (entry is ScoreEntryChangePlayer player)
-				{
-					Write((byte) McpeSetScore.ChangeTypes.Player);
-					WriteSignedVarLong(player.EntityId);
-				}
-				else if (entry is ScoreEntryChangeEntity entity)
-				{
-					Write((byte) McpeSetScore.ChangeTypes.Entity);
-					WriteSignedVarLong(entity.EntityId);
-				}
-				else if (entry is ScoreEntryChangeFakePlayer fakePlayer)
-				{
-					Write((byte) McpeSetScore.ChangeTypes.FakePlayer);
-					Write(fakePlayer.CustomName);
-				}
-			}
+			list.Write(this);
 		}
 
 		public ScoreEntries ReadScoreEntries()
 		{
-			var list = new ScoreEntries();
-			byte type = ReadByte();
-			var length = ReadUnsignedVarInt();
-			for (var i = 0; i < length; ++i)
-			{
-				var entryId = ReadSignedVarLong();
-				var entryObjectiveName = ReadString();
-				var entryScore = ReadUint();
-
-				ScoreEntry entry = null;
-
-				if (type == (int) McpeSetScore.Types.Remove)
-				{
-					entry = new ScoreEntryRemove();
-				}
-				else
-				{
-					McpeSetScore.ChangeTypes changeType = (McpeSetScore.ChangeTypes) ReadByte();
-					switch (changeType)
-					{
-						case McpeSetScore.ChangeTypes.Player:
-							entry = new ScoreEntryChangePlayer {EntityId = ReadSignedVarLong()};
-							break;
-						case McpeSetScore.ChangeTypes.Entity:
-							entry = new ScoreEntryChangeEntity {EntityId = ReadSignedVarLong()};
-							break;
-						case McpeSetScore.ChangeTypes.FakePlayer:
-							entry = new ScoreEntryChangeFakePlayer {CustomName = ReadString()};
-							break;
-					}
-				}
-
-				if (entry == null) continue;
-
-				entry.Id = entryId;
-				entry.ObjectiveName = entryObjectiveName;
-				entry.Score = entryScore;
-
-				list.Add(entry);
-			}
-
-			return list;
+			return ScoreEntries.Read(this);
 		}
 
 		public void Write(ScoreboardIdentityEntries list)
 		{
 			if (list == null) list = new ScoreboardIdentityEntries();
 
-			Write((byte) (list.FirstOrDefault() is ScoreboardClearIdentityEntry ? McpeSetScoreboardIdentity.Operations.ClearIdentity : McpeSetScoreboardIdentity.Operations.RegisterIdentity));
-			WriteUnsignedVarInt((uint) list.Count);
-			foreach (var entry in list)
-			{
-				WriteSignedVarLong(entry.Id);
-				if (entry is ScoreboardRegisterIdentityEntry reg)
-				{
-					WriteSignedVarLong(reg.EntityId);
-				}
-			}
+			list.Write(this);
 		}
 
 		public ScoreboardIdentityEntries ReadScoreboardIdentityEntries()
 		{
-			ScoreboardIdentityEntries list = new ScoreboardIdentityEntries();
-
-			McpeSetScoreboardIdentity.Operations type = (McpeSetScoreboardIdentity.Operations) ReadByte();
-			var length = ReadUnsignedVarInt();
-			for (var i = 0; i < length; ++i)
-			{
-				var scoreboardId = ReadSignedVarLong();
-
-				switch (type)
-				{
-					case McpeSetScoreboardIdentity.Operations.RegisterIdentity:
-						list.Add(new ScoreboardRegisterIdentityEntry()
-						{
-							Id = scoreboardId,
-							EntityId = ReadSignedVarLong()
-						});
-						break;
-					case McpeSetScoreboardIdentity.Operations.ClearIdentity:
-						list.Add(new ScoreboardClearIdentityEntry() {Id = scoreboardId});
-						break;
-				}
-
-				// https://github.com/pmmp/PocketMine-MP/commit/39808dd94f4f2d1716eca31cb5a1cfe9000b6c38#diff-041914be0a0493190a4911ae5c4ac502R62
-			}
-
-			return list;
+			return ScoreboardIdentityEntries.Read(this);
 		}
 
 		public Experiments ReadExperiments()
 		{
-			Experiments experiments = new Experiments();
-			var count = ReadInt();
-
-			for (int i = 0; i < count; i++)
-			{
-				var experimentName = ReadString();
-				var enabled = ReadBool();
-				experiments.Add(new Experiments.Experiment(experimentName, enabled));
-			}
-			return experiments;
+			return Experiments.Read(this);
 		}
 
 		public void Write(Experiments experiments)
@@ -2713,61 +1574,33 @@ namespace MiNET.Net
 				Write(0);
 				return;
 			}
-			Write(experiments.Count);
 
-			foreach (var experiment in experiments)
-			{
-				Write(experiment.Name);
-				Write(experiment.Enabled);
-			}
-		}
-
-		public void Write(EducationUriResource resource)
-		{
-			Write(resource.ButtonName);
-			Write(resource.LinkUri);
+			experiments.Write(this);
 		}
 		
 		public EducationUriResource ReadEducationUriResource()
 		{
-			string name = ReadString();
-			var uri = ReadString();
-
-			return new EducationUriResource(name, uri);
-		}
-
-		public void Write(UpdateSubChunkBlocksPacketEntry entry)
-		{
-			Write(entry.Coordinates);
-			WriteUnsignedVarInt(entry.BlockRuntimeId);
-			WriteUnsignedVarInt(entry.Flags);
-			WriteUnsignedVarLong(entry.SyncedUpdatedEntityUniqueId);
-			WriteUnsignedVarInt(entry.SyncedUpdateType);
+			return EducationUriResource.Read(this);
 		}
 
 		public UpdateSubChunkBlocksPacketEntry ReadUpdateSubChunkBlocksPacketEntry()
 		{
-			var entry = new UpdateSubChunkBlocksPacketEntry();
-			entry.Coordinates = ReadBlockCoordinates();
-			entry.BlockRuntimeId = ReadUnsignedVarInt();
-			entry.Flags = ReadUnsignedVarInt();
-			entry.SyncedUpdatedEntityUniqueId = ReadUnsignedVarLong();
-			entry.SyncedUpdateType = ReadUnsignedVarInt();
-
-			return entry;
+			return UpdateSubChunkBlocksPacketEntry.Read(this);
 		}
 
 		public void Write(UpdateSubChunkBlocksPacketEntry[] entries)
 		{
 			WriteUnsignedVarInt((uint) entries.Length);
-			foreach(var entry in entries)
-				Write(entry);
+			foreach (var entry in entries)
+			{
+				entry.Write(this);
+			}
 		}
 
 		public UpdateSubChunkBlocksPacketEntry[] ReadUpdateSubChunkBlocksPacketEntrys()
 		{
 			var count = ReadUnsignedVarInt();
-			UpdateSubChunkBlocksPacketEntry[] entries = new UpdateSubChunkBlocksPacketEntry[(int) count];
+			var entries = new UpdateSubChunkBlocksPacketEntry[(int) count];
 
 			for (int i = 0; i < entries.Length; i++)
 			{
@@ -2782,63 +1615,20 @@ namespace MiNET.Net
 			if (data == null)
 			{
 				Write((byte) SubChunkPacketHeightMapType.NoData);
-
 				return;
 			}
 
-			if (data.IsAllTooHigh)
-			{
-				Write((byte) SubChunkPacketHeightMapType.AllTooHigh);
-
-				return;
-			}
-
-			if (data.IsAllTooLow)
-			{
-				Write((byte) SubChunkPacketHeightMapType.AllTooLow);
-
-				return;
-			}
-			
-			Write((byte) SubChunkPacketHeightMapType.Data);
-
-			for (int i = 0; i < data.Heights.Length; i++)
-			{
-				Write((byte) data.Heights[i]);
-			}
+			data.Write(this);
 		}
 
 		public HeightMapData ReadHeightMapData()
 		{
-			SubChunkPacketHeightMapType type = (SubChunkPacketHeightMapType) ReadByte();
-
-			if (type != SubChunkPacketHeightMapType.Data)
-				return null;
-
-			short[] heights = new short[256];
-
-			for (int i = 0; i < heights.Length; i++)
-			{
-				heights[i] = (short) ReadByte();
-			}
-
-			return new HeightMapData(heights);
-		}
-
-		public void Write(SubChunkPositionOffset offset)
-		{
-			Write(offset.XOffset);
-			Write(offset.YOffset);
-			Write(offset.ZOffset);
+			return HeightMapData.Read(this);
 		}
 
 		public SubChunkPositionOffset ReadSubChunkPositionOffset()
 		{
-			SubChunkPositionOffset result = new SubChunkPositionOffset();
-			result.XOffset = ReadSByte();
-			result.YOffset = ReadSByte();
-			result.ZOffset = ReadSByte();
-			return result;
+			return SubChunkPositionOffset.Read(this);
 		}
 
 		public void Write(SubChunkPositionOffset[] offsets)
@@ -2847,14 +1637,14 @@ namespace MiNET.Net
 
 			foreach (var offset in offsets)
 			{
-				Write(offset);
+				offset.Write(this);
 			}
 		}
 		
 		public SubChunkPositionOffset[] ReadSubChunkPositionOffsets()
 		{
 			var count = ReadInt();
-			SubChunkPositionOffset[] offsets = new SubChunkPositionOffset[count];
+			var offsets = new SubChunkPositionOffset[count];
 
 			for (int i = 0; i < offsets.Length; i++)
 			{
@@ -2866,46 +1656,12 @@ namespace MiNET.Net
 
 		public DimensionData ReadDimensionData()
 		{
-			DimensionData data = new DimensionData();
-			data.MaxHeight = ReadVarInt();
-			data.MinHeight = ReadVarInt();
-			data.Generator = ReadVarInt();
-
-			return data;
-		}
-
-		public void Write(DimensionData data)
-		{
-			WriteVarInt(data.MaxHeight);
-			WriteVarInt(data.MinHeight);
-			WriteVarInt(data.Generator);
-		}
-		
-		public void Write(DimensionDefinitions definitions)
-		{
-			WriteUnsignedVarInt((uint) definitions.Count);
-
-			foreach (var def in definitions)
-			{
-				Write(def.Key);
-				Write(def.Value);
-			}
+			return DimensionData.Read(this);
 		}
 		
 		public DimensionDefinitions ReadDimensionDefinitions()
 		{
-			DimensionDefinitions definitions = new DimensionDefinitions();
-			
-			var count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				var stringId = ReadString();
-				var data = ReadDimensionData();
-
-				definitions.TryAdd(stringId, data);
-			}
-
-			return definitions;
+			return DimensionDefinitions.Read(this);
 		}
 
 		public void Write(PropertySyncData syncData)
@@ -2916,38 +1672,12 @@ namespace MiNET.Net
 				WriteUnsignedVarInt(0);
 				return;
 			}
-			WriteUnsignedVarInt((uint) syncData.intProperties.Count);
-
-			foreach (var intP in syncData.intProperties)
-			{
-				WriteUnsignedVarInt(intP.Key);
-				WriteSignedVarInt(intP.Value);
-			}
-
-			WriteUnsignedVarInt((uint) syncData.floatProperties.Count);
-
-			foreach (var intF in syncData.floatProperties)
-			{
-				WriteUnsignedVarInt(intF.Key);
-				Write(intF.Value);
-			}
+			
 		}
 
 		public PropertySyncData ReadPropertySyncData()
 		{
-			PropertySyncData syncData = new PropertySyncData();
-			var countInt = ReadUnsignedVarInt();
-			for (int i = 0; i < countInt; i++)
-			{
-				syncData.intProperties.Add(ReadUnsignedVarInt(), ReadVarInt());
-			}
-
-			var countFloat = ReadUnsignedVarInt();
-			for (int i = 0; i < countFloat; i++)
-			{
-				syncData.floatProperties.Add(ReadUnsignedVarInt(), ReadFloat());
-			}
-			return syncData;
+			return PropertySyncData.Read(this);
 		}
 
 		public bool CanRead()

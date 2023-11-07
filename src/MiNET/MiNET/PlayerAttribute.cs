@@ -23,11 +23,12 @@
 
 #endregion
 
-using Newtonsoft.Json.Linq;
+using System;
+using MiNET.Net;
 
 namespace MiNET
 {
-	public class AttributeModifier
+	public class AttributeModifier : IPacketDataObject
 	{
 		public string Id { get; set; }
 		public string Name { get; set; }
@@ -40,9 +41,32 @@ namespace MiNET
 		{
 			return $"{{Id: {Id}, Name: {Name}, Amount: {Amount}, Operations: {Operations}, Operand: {Operand}, Serializable: {Serializable}}}";
 		}
+
+		public void Write(Packet packet)
+		{
+			packet.Write(Id);
+			packet.Write(Name);
+			packet.Write(Amount);
+			packet.Write(Operations); // unknown
+			packet.Write(Operand);
+			packet.Write(Serializable);
+		}
+
+		public static AttributeModifier Read(Packet packet)
+		{
+			return new AttributeModifier()
+			{
+				Id = packet.ReadString(),
+				Name = packet.ReadString(),
+				Amount = packet.ReadFloat(),
+				Operations = packet.ReadInt(),
+				Operand = packet.ReadInt(),
+				Serializable = packet.ReadBool()
+			};
+		}
 	}
 
-	public class PlayerAttribute
+	public class PlayerAttribute : IPacketDataObject
 	{
 		public string Name { get; set; }
 		public float MinValue { get; set; }
@@ -55,9 +79,32 @@ namespace MiNET
 		{
 			return $"{{Name: {Name}, MinValue: {MinValue}, MaxValue: {MaxValue}, Value: {Value}, Default: {Default}}}";
 		}
+
+		public void Write(Packet packet)
+		{
+			packet.Write(MinValue);
+			packet.Write(MaxValue);
+			packet.Write(Value);
+			packet.Write(Default); // unknown
+			packet.Write(Name);
+			packet.Write(Modifiers);
+		}
+
+		public static PlayerAttribute Read(Packet packet)
+		{
+			return new PlayerAttribute()
+			{
+				MinValue = packet.ReadFloat(),
+				MaxValue = packet.ReadFloat(),
+				Value = packet.ReadFloat(),
+				Default = packet.ReadFloat(),
+				Name = packet.ReadString(),
+				Modifiers = packet.ReadAttributeModifiers()
+			};
+		}
 	}
 
-	public class EntityAttribute
+	public class EntityAttribute : IPacketDataObject
 	{
 		public string Name { get; set; }
 		public float MinValue { get; set; }
@@ -67,6 +114,25 @@ namespace MiNET
 		public override string ToString()
 		{
 			return $"{{Name: {Name}, MinValue: {MinValue}, MaxValue: {MaxValue}, Value: {Value}}}";
+		}
+
+		public void Write(Packet packet)
+		{
+			packet.Write(Name);
+			packet.Write(MinValue);
+			packet.Write(Value);
+			packet.Write(MaxValue);
+		}
+
+		public static EntityAttribute Read(Packet packet) 
+		{
+			return new EntityAttribute
+			{
+				Name = packet.ReadString(),
+				MinValue = packet.ReadFloat(),
+				Value = packet.ReadFloat(),
+				MaxValue = packet.ReadFloat(),
+			};
 		}
 	}
 
@@ -101,7 +167,7 @@ namespace MiNET
 		// int,
 	}
 
-	public abstract class GameRule
+	public abstract class GameRule : IPacketDataObject
 	{
 		public string Name { get; }
 		public bool IsPlayerModifiable { get; set; } = true;
@@ -128,6 +194,29 @@ namespace MiNET
 		{
 			return (Name != null ? Name.GetHashCode() : 0);
 		}
+
+		public void Write(Packet packet)
+		{
+			packet.Write(Name.ToLower());
+			packet.Write(IsPlayerModifiable); // bool isPlayerModifiable
+
+			WriteData(packet);
+		}
+
+		protected virtual void WriteData(Packet packet) { }
+
+		public static GameRule Read(Packet packet)
+		{
+			var name = packet.ReadString();
+			var isPlayerModifiable = packet.ReadBool();
+			var type = packet.ReadUnsignedVarInt();
+			return type switch
+			{
+				1 => GameRule<bool>.ReadData(packet, name, isPlayerModifiable),
+				2 => GameRule<int>.ReadData(packet, name, isPlayerModifiable),
+				3 => GameRule<float>.ReadData(packet, name, isPlayerModifiable)
+			};
+		}
 	}
 
 	public class GameRule<T> : GameRule
@@ -141,6 +230,54 @@ namespace MiNET
 		public GameRule(string name, T value) : base(name)
 		{
 			Value = value;
+		}
+
+		protected override void WriteData(Packet packet)
+		{
+			if (Value is bool)
+			{
+				packet.WriteUnsignedVarInt(1);
+				packet.Write((this as GameRule<bool>).Value);
+			}
+			else if (Value is int)
+			{
+				packet.WriteUnsignedVarInt(2);
+				packet.WriteVarInt((this as GameRule<int>).Value);
+			}
+			else if (Value is float)
+			{
+				packet.WriteUnsignedVarInt(3);
+				packet.Write((this as GameRule<float>).Value);
+			}
+		}
+
+		internal static GameRule ReadData(Packet packet, string name, bool isPlayerModifiable)
+		{
+			if (typeof(T) == typeof(bool))
+			{
+				return new GameRule<bool>(name, packet.ReadBool())
+				{
+					IsPlayerModifiable = isPlayerModifiable
+				};
+			}
+			else if (typeof(T) == typeof(int))
+			{
+				return new GameRule<int>(name, packet.ReadVarInt())
+				{
+					IsPlayerModifiable = isPlayerModifiable
+				};
+			}
+			else if (typeof(T) == typeof(float))
+			{
+				return new GameRule<float>(name, packet.ReadFloat())
+				{
+					IsPlayerModifiable = isPlayerModifiable
+				};
+			}
+			else
+			{
+				throw new Exception($"Trying to read a game rule with type that was not written, type={typeof(T)}");
+			}
 		}
 	}
 }
