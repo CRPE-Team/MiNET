@@ -1139,144 +1139,42 @@ namespace MiNET.Net
 			return EntityLinks.Read(this);
 		}
 
-		public void Write(Rules rules)
-		{
-			_writer.Write(rules.Count); // LE
-			foreach (var rule in rules)
-			{
-				Write(rule.Name);
-				Write(rule.Unknown1);
-				Write(rule.Unknown2);
-			}
-		}
-
 		public Rules ReadRules()
 		{
-			int count = _reader.ReadInt32(); // LE
-
-			var rules = new Rules();
-			for (int i = 0; i < count; i++)
-			{
-				RuleData rule = new RuleData();
-				rule.Name = ReadString();
-				rule.Unknown1 = ReadBool();
-				rule.Unknown2 = ReadBool();
-				rules.Add(rule);
-			}
-
-			return rules;
+			return Rules.Read(this);
 		}
 
 		public void Write(TexturePackInfos packInfos)
 		{
 			if (packInfos == null)
 			{
-				_writer.Write((short) 0);
-
+				Write((short) 0);
 				return;
 			}
 			
-			_writer.Write((short) packInfos.Count); // LE
-			//WriteVarInt(packInfos.Count);
-			foreach (var info in packInfos)
-			{
-				Write(info.UUID);
-				Write(info.Version);
-				Write(info.Size);
-				Write(info.ContentKey);
-				Write(info.SubPackName);
-				Write(info.ContentIdentity);
-				Write(info.HasScripts);
-				Write(info.RtxEnabled);
-			}
+			packInfos.Write(this);
 		}
 
 		public TexturePackInfos ReadTexturePackInfos()
 		{
-			int count = _reader.ReadInt16(); // LE
-			//int count = ReadVarInt(); // LE
-
-			var packInfos = new TexturePackInfos();
-			for (int i = 0; i < count; i++)
-			{
-				var info            = new TexturePackInfo();
-				var id              = ReadString();
-				var version         = ReadString();
-				var size            = ReadUlong();
-				var encryptionKey   = ReadString();
-				var subpackName     = ReadString();
-				var contentIdentity = ReadString();
-				var hasScripts      = ReadBool();
-				var rtxEnabled      = ReadBool();
-				
-				info.UUID = id;
-				info.Version = version;
-				info.Size = size;
-				info.HasScripts = hasScripts;
-				info.ContentKey = encryptionKey;
-				info.SubPackName = subpackName;
-				info.ContentIdentity = contentIdentity;
-				info.RtxEnabled = rtxEnabled;
-				
-				packInfos.Add(info);
-			}
-
-			return packInfos;
+			return TexturePackInfos.Read(this);
 		}
 		
 		public void Write(ResourcePackInfos packInfos)
 		{
 			if (packInfos == null)
 			{
-				_writer.Write((short) 0); // LE
+				Write((short) 0); // LE
 				//WriteVarInt(0);
 				return;
 			}
 
-			_writer.Write((short) packInfos.Count); // LE
-			//WriteVarInt(packInfos.Count);
-			foreach (var info in packInfos)
-			{
-				Write(info.UUID);
-				Write(info.Version);
-				Write(info.Size);
-				Write(info.ContentKey);
-				Write(info.SubPackName);
-				Write(info.ContentIdentity);
-				Write(info.HasScripts);
-			}
+			packInfos.Write(this);
 		}
 
 		public ResourcePackInfos ReadResourcePackInfos()
 		{
-			int count = _reader.ReadInt16(); // LE
-			//int count = ReadVarInt(); // LE
-
-			var packInfos = new ResourcePackInfos();
-			for (int i = 0; i < count; i++)
-			{
-				var info = new ResourcePackInfo();
-				
-				var id = ReadString();
-				var version = ReadString();
-				var size = ReadUlong();
-				var encryptionKey = ReadString();
-				var subpackName = ReadString();
-				var contentIdentity = ReadString();
-				var hasScripts = ReadBool();
-				
-				info.UUID = id;
-				info.Version = version;
-				info.Size = size;
-				info.ContentKey = encryptionKey;
-				info.SubPackName = subpackName;
-				info.ContentIdentity = contentIdentity;
-				info.HasScripts = hasScripts;
-				
-				packInfos.Add(info);
-			}
-
-			return packInfos;
+			return ResourcePackInfos.Read(this);
 		}
 
 		public void Write(ResourcePackIdVersions packInfos)

@@ -25,15 +25,37 @@
 
 using System.Collections.Generic;
 using MiNET.Net;
-using Org.BouncyCastle.Crypto;
 
 namespace MiNET.Utils
 {
-	public class ResourcePackInfos : List<ResourcePackInfo>
+	public class ResourcePackInfos : List<ResourcePackInfo>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.Write((short) Count); // LE
+			//WriteVarInt(packInfos.Count);
+			foreach (var info in this)
+			{
+				info.Write(packet);
+			}
+		}
+
+		public static ResourcePackInfos Read(Packet packet)
+		{
+			var count = packet.ReadShort(); // LE
+			//int count = packet.ReadVarInt(); // LE
+
+			var packInfos = new ResourcePackInfos();
+			for (int i = 0; i < count; i++)
+			{
+				packInfos.Add(ResourcePackInfo.Read(packet));
+			}
+
+			return packInfos;
+		}
 	}
 
-	public class ResourcePackInfo
+	public class ResourcePackInfo : IPacketDataObject
 	{
 		/// <summary>
 		///		The unique identifier for the pack
@@ -69,19 +91,94 @@ namespace MiNET.Utils
 		///		HasScripts specifies if the texture packs has any scripts in it. A client will only download the behaviour pack if it supports scripts, which, up to 1.11, only includes Windows 10.
 		/// </summary>
 		public bool   HasScripts      { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.Write(UUID);
+			packet.Write(Version);
+			packet.Write(Size);
+			packet.Write(ContentKey);
+			packet.Write(SubPackName);
+			packet.Write(ContentIdentity);
+			packet.Write(HasScripts);
+		}
+
+		public static ResourcePackInfo Read(Packet packet)
+		{
+			return new ResourcePackInfo()
+			{
+				UUID = packet.ReadString(),
+				Version = packet.ReadString(),
+				Size = packet.ReadUlong(),
+				ContentKey = packet.ReadString(),
+				SubPackName = packet.ReadString(),
+				ContentIdentity = packet.ReadString(),
+				HasScripts = packet.ReadBool()
+			};
+		}
 	}
 
-	public class TexturePackInfos : List<TexturePackInfo>
+	public class TexturePackInfos : List<TexturePackInfo>, IPacketDataObject
 	{
-		
+		public void Write(Packet packet)
+		{
+			packet.Write((short) Count); // LE
+			//WriteVarInt(packInfos.Count);
+
+			foreach (var info in this)
+			{
+				info.Write(packet);
+			}
+		}
+
+		public static TexturePackInfos Read(Packet packet)
+		{
+			var packInfos = new TexturePackInfos();
+
+			var count = packet.ReadShort(); // LE
+			//int count = packet.ReadVarInt(); // LE
+			for (int i = 0; i < count; i++)
+			{
+				packInfos.Add(TexturePackInfo.Read(packet));
+			}
+
+			return packInfos;
+		}
 	}
-	
-	public class TexturePackInfo : ResourcePackInfo
+
+	public class TexturePackInfo : ResourcePackInfo, IPacketDataObject
 	{
 		/// <summary>
 		/// RTXEnabled specifies if the texture pack uses the raytracing technology introduced in 1.16.200.
 		/// </summary>
 		public bool   RtxEnabled      { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.Write(UUID);
+			packet.Write(Version);
+			packet.Write(Size);
+			packet.Write(ContentKey);
+			packet.Write(SubPackName);
+			packet.Write(ContentIdentity);
+			packet.Write(HasScripts);
+			packet.Write(RtxEnabled);
+		}
+
+		public static TexturePackInfo Read(Packet packet)
+		{
+			return new TexturePackInfo()
+			{
+				UUID = packet.ReadString(),
+				Version = packet.ReadString(),
+				Size = packet.ReadUlong(),
+				ContentKey = packet.ReadString(),
+				SubPackName = packet.ReadString(),
+				ContentIdentity = packet.ReadString(),
+				HasScripts = packet.ReadBool(),
+				RtxEnabled = packet.ReadBool()
+			};
+		}
 	}
 
 	public class ResourcePackIdVersions : List<PackIdVersion>, IPacketDataObject
