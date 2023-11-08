@@ -1359,21 +1359,19 @@ namespace MiNET.Net
 
 		public void Write(PotionContainerChangeRecipe[] recipes)
 		{
-			WriteUnsignedVarInt(0);
+			foreach (var recipe in recipes)
+			{
+				recipe.Write(this); // TODO - implement writing into packet (now it's empty)
+			}
 		}
 
 		public PotionContainerChangeRecipe[] ReadPotionContainerChangeRecipes()
 		{
-			int count = (int) ReadUnsignedVarInt();
+			var count = (int) ReadUnsignedVarInt();
 			var recipes = new PotionContainerChangeRecipe[count];
 			for (int i = 0; i < recipes.Length; i++)
 			{
-				var recipe = new PotionContainerChangeRecipe();
-				recipe.Input = ReadVarInt();
-				recipe.Ingredient = ReadVarInt();
-				recipe.Output = ReadVarInt();
-
-				recipes[i] = recipe;
+				recipes[i] = PotionContainerChangeRecipe.Read(this);
 			}
 
 			return recipes;
@@ -1408,7 +1406,10 @@ namespace MiNET.Net
 
 		public void Write(PotionTypeRecipe[] recipes)
 		{
-			WriteUnsignedVarInt(0);
+			foreach (var recipe in recipes)
+			{
+				recipe.Write(this); // TODO - implement writing into packet (now it's empty)
+			}
 		}
 
 		public PotionTypeRecipe[] ReadPotionTypeRecipes()
@@ -1417,15 +1418,7 @@ namespace MiNET.Net
 			var recipes = new PotionTypeRecipe[count];
 			for (int i = 0; i < recipes.Length; i++)
 			{
-				var recipe = new PotionTypeRecipe();
-				recipe.Input = ReadVarInt();
-				recipe.InputMeta = ReadVarInt();
-				recipe.Ingredient = ReadVarInt();
-				recipe.IngredientMeta = ReadVarInt();
-				recipe.Output = ReadVarInt();
-				recipe.OutputMeta = ReadVarInt();
-
-				recipes[i] = recipe;
+				recipes[i] = PotionTypeRecipe.Read(this);
 			}
 
 			return recipes;

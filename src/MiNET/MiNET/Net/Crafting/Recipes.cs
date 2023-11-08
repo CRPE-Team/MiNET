@@ -564,14 +564,29 @@ namespace MiNET.Net.Crafting
 		}
 	}
 
-	public class PotionContainerChangeRecipe
+	public class PotionContainerChangeRecipe : IPacketDataObject
 	{
 		public int Input { get; set; }
 		public int Ingredient { get; set; }
 		public int Output { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt(0);
+		}
+
+		public static PotionContainerChangeRecipe Read(Packet packet)
+		{
+			return new PotionContainerChangeRecipe()
+			{
+				Input = packet.ReadVarInt(),
+				Ingredient = packet.ReadVarInt(),
+				Output = packet.ReadVarInt()
+			};	
+		}
 	}
 
-	public class PotionTypeRecipe
+	public class PotionTypeRecipe : IPacketDataObject
 	{
 		public int Input { get; set; }
 		public int InputMeta { get; set; }
@@ -579,6 +594,24 @@ namespace MiNET.Net.Crafting
 		public int IngredientMeta { get; set; }
 		public int Output { get; set; }
 		public int OutputMeta { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt(0);
+		}
+
+		public static PotionTypeRecipe Read(Packet packet)
+		{
+			return new PotionTypeRecipe()
+			{
+				Input = packet.ReadVarInt(),
+				InputMeta = packet.ReadVarInt(),
+				Ingredient = packet.ReadVarInt(),
+				IngredientMeta = packet.ReadVarInt(),
+				Output = packet.ReadVarInt(),
+				OutputMeta = packet.ReadVarInt()
+			};
+		}
 	}
 
 	public class MaterialReducerRecipe : IPacketDataObject
