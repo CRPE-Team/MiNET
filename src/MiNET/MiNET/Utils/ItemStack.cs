@@ -24,23 +24,75 @@
 #endregion
 
 using System.Collections.Generic;
+using log4net;
 using MiNET.Items;
+using MiNET.Net;
 
 namespace MiNET.Utils
 {
-	public class ItemStacks : List<Item>
+	public class ItemStacks : List<Item>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt((uint) Count);
+
+			for (int i = 0; i < Count; i++)
+			{
+				packet.Write(this[i]);
+			}
+		}
+
+		public static ItemStacks Read(Packet packet)
+		{
+			var itemStacks = new ItemStacks();
+
+			var count = packet.ReadUnsignedVarInt();
+			for (int i = 0; i < count; i++)
+			{
+				itemStacks.Add(packet.ReadItem());
+			}
+
+			return itemStacks;
+		}
 	}
 
-	public class CreativeItemStacks : ItemStacks
+	public class CreativeItemStacks : List<Item>, IPacketDataObject
 	{
-		
+		private static readonly ILog Log = LogManager.GetLogger(typeof(CreativeItemStacks));
+
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt((uint) Count);
+
+			foreach (var item in this)
+			{
+				packet.WriteUnsignedVarInt((uint) item.UniqueId);
+				packet.Write(item, false);
+			}
+		}
+
+		public static CreativeItemStacks Read(Packet packet)
+		{
+			var metadata = new CreativeItemStacks();
+
+			var count = packet.ReadUnsignedVarInt();
+			for (int i = 0; i < count; i++)
+			{
+				var networkId = packet.ReadUnsignedVarInt();
+				Item item = packet.ReadItem(false);
+				item.UniqueId = (int) networkId;
+				metadata.Add(item);
+				Log.Debug(item);
+			}
+
+			return metadata;
+		}
 	}
 
 	/// <summary>
 	/// An item stack without unique identifiers
 	/// </summary>
-	public class GlobalItemStacks : List<Item>
+	public class GlobalItemStacks : ItemStacks
 	{
 	}
 }

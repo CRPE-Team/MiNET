@@ -3469,14 +3469,14 @@ namespace MiNET
 
 			{
 				var playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerRemoveRecords {this};
+				playerList.records = new PlayerRemoveRecords(this);
 				Level.RelayBroadcast(Level.CreateMcpeBatch(playerList.Encode())); // Replace with records, to remove need for player and encode
 				playerList.records = null;
 				playerList.PutPool();
 			}
 			{
 				var playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerAddRecords {this};
+				playerList.records = new PlayerAddRecords(this);
 				Level.RelayBroadcast(Level.CreateMcpeBatch(playerList.Encode())); // Replace with records, to remove need for player and encode
 				playerList.records = null;
 				playerList.PutPool();

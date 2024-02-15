@@ -24,6 +24,7 @@
 #endregion
 
 using System.Numerics;
+using MiNET.Net;
 
 namespace MiNET.Utils
 {
@@ -32,7 +33,7 @@ namespace MiNET.Utils
 	//<field name="End rotation" type="Vector3" />
 	//<field name="Duration" type="UnsignedVarInt" />
 
-	public class AnimationKey
+	public class AnimationKey : IPacketDataObject
 	{
 		public bool ExecuteImmediate { get; set; }
 		public bool ResetBefore { get; set; }
@@ -40,5 +41,28 @@ namespace MiNET.Utils
 		public Vector3 StartRotation { get; set; }
 		public Vector3 EndRotation { get; set; }
 		public uint Duration { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.Write(ExecuteImmediate);
+			packet.Write(ResetBefore);
+			packet.Write(ResetAfter);
+			packet.Write(StartRotation);
+			packet.Write(EndRotation);
+			packet.WriteUnsignedVarInt(Duration);
+		}
+
+		public static AnimationKey Read(Packet packet)
+		{
+			return new AnimationKey()
+			{
+				ExecuteImmediate = packet.ReadBool(),
+				ResetBefore = packet.ReadBool(),
+				ResetAfter = packet.ReadBool(),
+				StartRotation = packet.ReadVector3(),
+				EndRotation = packet.ReadVector3(),
+				Duration = packet.ReadUnsignedVarInt()
+			};
+		}
 	}
 }

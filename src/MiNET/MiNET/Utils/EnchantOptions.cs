@@ -23,28 +23,99 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
+using MiNET.Net;
 
 namespace MiNET.Utils
 {
-	public class EnchantOptions : List<EnchantOption>
+	public class EnchantOptions : List<EnchantOption>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt((uint) Count);
+			foreach (var option in this)
+			{
+				packet.Write(option);
+			}
+		}
+
+		public static EnchantOptions Read(Packet packet)
+		{
+			var options = new EnchantOptions();
+			var count = packet.ReadUnsignedVarInt();
+
+			for (int i = 0; i < count; i++)
+			{
+				options.Add(EnchantOption.Read(packet));
+			}
+
+			return options;
+		}
 	}
 
-	public class EnchantOption
+	public class EnchantOption : IPacketDataObject
 	{
 		public uint Cost { get; set; }
 		public int Flags { get; set; }
 		public string Name { get; set; }
 		public int OptionId { get; set; }
 
-		public List<Enchant> EquipActivatedEnchantments { get; set; } = new List<Enchant>();
-		public List<Enchant> HeldActivatedEnchantments { get; set; } = new List<Enchant>();
-		public List<Enchant> SelfActivatedEnchantments { get; set; } = new List<Enchant>();
+		public Enchants EquipActivatedEnchantments { get; set; } = new Enchants();
+		public Enchants HeldActivatedEnchantments { get; set; } = new Enchants();
+		public Enchants SelfActivatedEnchantments { get; set; } = new Enchants();
+
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt(Cost);
+			packet.Write(Flags);
+			packet.Write(EquipActivatedEnchantments);
+			packet.Write(HeldActivatedEnchantments);
+			packet.Write(SelfActivatedEnchantments);
+			packet.Write(Name);
+			packet.WriteVarInt(OptionId);
+		}
+
+		public static EnchantOption Read(Packet packet)
+		{
+			return new EnchantOption()
+			{
+				Cost = packet.ReadUnsignedVarInt(),
+				Flags = packet.ReadInt(),
+				EquipActivatedEnchantments = Enchants.Read(packet),
+				HeldActivatedEnchantments = Enchants.Read(packet),
+				SelfActivatedEnchantments = Enchants.Read(packet),
+				Name = packet.ReadString(),
+				OptionId = packet.ReadVarInt()
+			};
+		}
 	}
 
-	public class Enchant
+	public class Enchants : List<Enchant>, IPacketDataObject
+	{
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt((uint) Count);
+			foreach (var enchant in this)
+			{
+				packet.Write(enchant);
+			}
+		}
+
+		public static Enchants Read(Packet packet)
+		{
+			var enchants = new Enchants();
+			var count = packet.ReadUnsignedVarInt();
+
+			for (int i = 0; i < count; i++)
+			{
+				enchants.Add(Enchant.Read(packet));
+			}
+
+			return enchants;
+		}
+	}
+
+	public class Enchant : IPacketDataObject
 	{
 		public byte Id { get; set; }
 		public byte Level { get; set; }
@@ -59,10 +130,11 @@ namespace MiNET.Utils
 			Levels = GetEnchantmentLevels();
 			Weight = GetWeight();
 		}
+
 		public Enchant(EnchantingType enchanting, byte level = 1) : this((byte) enchanting, level)
 		{
-		}
 
+		}
 
 		private int GetWeight()
 		{
@@ -239,6 +311,17 @@ namespace MiNET.Utils
 			}
 
 			return enchantmentLevels;
+		}
+
+		public void Write(Packet packet)
+		{
+			packet.Write(Id);
+			packet.Write(Level);
+		}
+
+		public static Enchant Read(Packet packet)
+		{
+			return new Enchant(packet.ReadByte(), packet.ReadByte());
 		}
 	}
 

@@ -1,4 +1,4 @@
-#region LICENSE
+﻿#region LICENSE
 
 // The contents of this file are subject to the Common Public Attribution
 // License Version 1.0. (the "License"); you may not use this file except in
@@ -24,14 +24,36 @@
 #endregion
 
 using System.Collections.Generic;
+using MiNET.Net;
 
 namespace MiNET.Utils
 {
-	public class Rules : List<RuleData>
+	public class Rules : List<RuleData>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.Write(Count); // LE
+			foreach (var rule in this)
+			{
+				rule.Write(packet);
+			}
+		}
+
+		public static Rules Read(Packet packet)
+		{
+			var rules = new Rules();
+
+			var count = packet.ReadInt(); // LE
+			for (int i = 0; i < count; i++)
+			{
+				rules.Add(RuleData.Read(packet));
+			}
+
+			return rules;
+		}
 	}
 
-	public class RuleData
+	public class RuleData : IPacketDataObject
 	{
 		public string Name { get; set; }
 		public bool Unknown1 { get; set; }
@@ -40,6 +62,23 @@ namespace MiNET.Utils
 		public override string ToString()
 		{
 			return $"Name: {Name}, Unknown1: {Unknown1}, Unknown2: {Unknown2}";
+		}
+
+		public void Write(Packet packet)
+		{
+			packet.Write(Name);
+			packet.Write(Unknown1);
+			packet.Write(Unknown2);
+		}
+
+		public static RuleData Read(Packet packet)
+		{
+			return new RuleData()
+			{
+				Name = packet.ReadString(),
+				Unknown1 = packet.ReadBool(),
+				Unknown2 = packet.ReadBool()
+			};
 		}
 	}
 }

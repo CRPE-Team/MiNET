@@ -564,14 +564,29 @@ namespace MiNET.Net.Crafting
 		}
 	}
 
-	public class PotionContainerChangeRecipe
+	public class PotionContainerChangeRecipe : IPacketDataObject
 	{
 		public int Input { get; set; }
 		public int Ingredient { get; set; }
 		public int Output { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt(0);
+		}
+
+		public static PotionContainerChangeRecipe Read(Packet packet)
+		{
+			return new PotionContainerChangeRecipe()
+			{
+				Input = packet.ReadVarInt(),
+				Ingredient = packet.ReadVarInt(),
+				Output = packet.ReadVarInt()
+			};	
+		}
 	}
 
-	public class PotionTypeRecipe
+	public class PotionTypeRecipe : IPacketDataObject
 	{
 		public int Input { get; set; }
 		public int InputMeta { get; set; }
@@ -579,9 +594,27 @@ namespace MiNET.Net.Crafting
 		public int IngredientMeta { get; set; }
 		public int Output { get; set; }
 		public int OutputMeta { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt(0);
+		}
+
+		public static PotionTypeRecipe Read(Packet packet)
+		{
+			return new PotionTypeRecipe()
+			{
+				Input = packet.ReadVarInt(),
+				InputMeta = packet.ReadVarInt(),
+				Ingredient = packet.ReadVarInt(),
+				IngredientMeta = packet.ReadVarInt(),
+				Output = packet.ReadVarInt(),
+				OutputMeta = packet.ReadVarInt()
+			};
+		}
 	}
 
-	public class MaterialReducerRecipe
+	public class MaterialReducerRecipe : IPacketDataObject
 	{
 		public int Input { get; set; }
 		public int InputMeta { get; set; }
@@ -616,6 +649,38 @@ namespace MiNET.Net.Crafting
 				ItemId = itemId;
 				ItemCount = itemCount;
 			}
+		}
+
+		public void Write(Packet packet)
+		{
+			packet.WriteVarInt((Input << 16) | InputMeta);
+			packet.WriteUnsignedVarInt((uint) Output.Length);
+
+			foreach (var output in Output)
+			{
+				packet.WriteVarInt(output.ItemId);
+				packet.WriteVarInt(output.ItemCount);
+			}
+		}
+
+		public static MaterialReducerRecipe Read(Packet packet)
+		{
+			var inputIdAndMeta = packet.ReadVarInt();
+			var inputId = inputIdAndMeta >> 16;
+			var inputMeta = inputIdAndMeta & 0x7fff;
+
+			var outputCount = (int) packet.ReadUnsignedVarInt();
+			var outputs = new MaterialReducerRecipeOutput[outputCount];
+
+			for (int i = 0; i < outputs.Length; i++)
+			{
+				var itemId = packet.ReadVarInt();
+				var itemCount = packet.ReadVarInt();
+
+				outputs[i] = new MaterialReducerRecipeOutput(itemId, itemCount);
+			}
+
+			return new MaterialReducerRecipe(inputId, inputMeta, outputs);
 		}
 	}
 

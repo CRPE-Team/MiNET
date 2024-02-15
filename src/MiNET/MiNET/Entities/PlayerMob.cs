@@ -112,23 +112,18 @@ namespace MiNET.Entities
 		public override void SpawnToPlayers(Player[] players)
 		{
 			{
-				var fake = new Player(null, null)
+				var record = new PlayerRecord()
 				{
 					ClientUuid = ClientUuid,
 					EntityId = EntityId,
-					NameTag = NameTag,
-					DisplayName = NameTag,
 					Username = NameTag,
-					Skin = Skin,
-					PlayerInfo = new PlayerInfo
-					{
-						DeviceOS = 7,
-						PlatformChatId = NameTag,
-					}
+					PlatformChatId = NameTag,
+					DeviceOS = 7,
+					Skin = Skin
 				};
 
 				var playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerAddRecords {fake};
+				playerList.records = new PlayerAddRecords { record };
 				Level.RelayBroadcast(players, Level.CreateMcpeBatch(playerList.Encode()));
 				playerList.records = null;
 				playerList.PutPool();
@@ -170,16 +165,13 @@ namespace MiNET.Entities
 			}
 
 			{
-				var fake = new Player(null, null)
+				var record = new PlayerRecord()
 				{
-					ClientUuid = ClientUuid,
-					EntityId = EntityId,
-					NameTag = NameTag,
-					Skin = Skin
+					ClientUuid = ClientUuid
 				};
 
 				var playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerRemoveRecords { fake };
+				playerList.records = new PlayerRemoveRecords { record };
 				Level.RelayBroadcast(players, Level.CreateMcpeBatch(playerList.Encode()));
 				playerList.records = null;
 				playerList.PutPool();
@@ -195,18 +187,15 @@ namespace MiNET.Entities
 
 		public void RemoveFromPlayerList()
 		{
-			var fake = new Player(null, null)
+			var record = new PlayerRecord()
 			{
-				ClientUuid = ClientUuid,
-				EntityId = EntityId,
-				NameTag = NameTag,
-				Skin = Skin
+				ClientUuid = ClientUuid
 			};
 
 			var players = Level.GetSpawnedPlayers();
 
 			var playerList = McpePlayerList.CreateObject();
-			playerList.records = new PlayerRemoveRecords {fake};
+			playerList.records = new PlayerRemoveRecords { record };
 			Level.RelayBroadcast(players, Level.CreateMcpeBatch(playerList.Encode()));
 			playerList.records = null;
 			playerList.PutPool();
@@ -214,19 +203,18 @@ namespace MiNET.Entities
 
 		public void AddToPlayerList()
 		{
-			Player fake = new Player(null, null)
+			var record = new PlayerRecord()
 			{
 				ClientUuid = ClientUuid,
 				EntityId = EntityId,
-				NameTag = NameTag,
-				Skin = Skin,
-				PlayerInfo = new PlayerInfo()
+				Username = NameTag,
+				Skin = Skin
 			};
 
 			var players = Level.GetSpawnedPlayers();
 
 			McpePlayerList playerList = McpePlayerList.CreateObject();
-			playerList.records = new PlayerAddRecords {fake};
+			playerList.records = new PlayerAddRecords { record };
 			Level.RelayBroadcast(players, Level.CreateMcpeBatch(playerList.Encode()));
 			playerList.records = null;
 			playerList.PutPool();
@@ -235,16 +223,13 @@ namespace MiNET.Entities
 		public override void DespawnFromPlayers(Player[] players)
 		{
 			{
-				var fake = new Player(null, null)
+				var record = new PlayerRecord()
 				{
-					ClientUuid = ClientUuid,
-					EntityId = EntityId,
-					NameTag = NameTag,
-					Skin = Skin
+					ClientUuid = ClientUuid
 				};
 
 				McpePlayerList playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerRemoveRecords {fake};
+				playerList.records = new PlayerRemoveRecords { record };
 				Level.RelayBroadcast(players, Level.CreateMcpeBatch(playerList.Encode()));
 				playerList.records = null;
 				playerList.PutPool();
