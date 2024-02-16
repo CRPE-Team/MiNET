@@ -35,11 +35,9 @@ using System.Net.Sockets;
 using System.Numerics;
 using System.Text;
 using System.Threading;
-using System.Xml.Linq;
 using fNbt;
 using log4net;
 using Microsoft.IO;
-using MiNET.Blocks;
 using MiNET.Items;
 using MiNET.Net.Crafting;
 using MiNET.Net.RakNet;
@@ -492,6 +490,11 @@ namespace MiNET.Net
 			return new Vector3(ReadFloat(), ReadFloat(), ReadFloat());
 		}
 
+		public long ReadEntityId()
+		{
+			return ReadSignedVarLong();
+		}
+
 		public void Write(IPacketDataObject dataObject)
 		{
 			dataObject.Write(this);
@@ -510,131 +513,9 @@ namespace MiNET.Net
 			return new BlockCoordinates(ReadSignedVarInt(), (int) ReadUnsignedVarInt(), ReadSignedVarInt());
 		}
 
-		public void Write(PlayerRecords records)
-		{
-			if (records is PlayerAddRecords)
-			{
-				Write((byte) 0);
-				WriteUnsignedVarInt((uint) records.Count);
-				foreach (var record in records)
-				{
-					Write(record.ClientUuid);
-					WriteSignedVarLong(record.EntityId);
-					Write(record.DisplayName ?? record.Username);
-					Write(record.PlayerInfo.CertificateData?.ExtraData?.Xuid ?? String.Empty);
-					Write(record.PlayerInfo.PlatformChatId);
-					Write(record.PlayerInfo.DeviceOS);
-					Write(record.Skin);
-					Write(false); // is teacher
-					Write(false); // is host
-				}
-			}
-			else if (records is PlayerRemoveRecords)
-			{
-				Write((byte) 1);
-				WriteUnsignedVarInt((uint) records.Count);
-				foreach (var record in records)
-				{
-					Write(record.ClientUuid);
-				}
-			}
-
-			if (records is PlayerAddRecords)
-			{
-				foreach (var record in records)
-				{
-					Write(record.Skin.IsVerified); // is verified
-				}
-			}
-		}
-
 		public PlayerRecords ReadPlayerRecords()
 		{
-			// This should never be used in production. It is primarily for 
-			// the client to work.
-			byte recordType = ReadByte();
-			uint count = ReadUnsignedVarInt();
-			PlayerRecords records = null;
-			switch (recordType)
-			{
-				case 0:
-					records = new PlayerAddRecords();
-					for (int i = 0; i < count; i++)
-					{
-						var player = new Player(null, null);
-						player.ClientUuid = ReadUUID();
-						player.EntityId = ReadSignedVarLong();
-						player.DisplayName = ReadString();
-						var xuid =  ReadString();
-						var platformChatId = ReadString();
-						var deviceOS = ReadInt();
-						player.Skin = ReadSkin();
-						ReadBool(); // is teacher
-						ReadBool(); // is host
-
-						player.PlayerInfo = new PlayerInfo()
-						{
-							PlatformChatId = platformChatId,
-							DeviceOS = deviceOS,
-							CertificateData = new CertificateData()
-							{
-								ExtraData = new ExtraData()
-								{
-									Xuid = xuid
-								}
-							}
-						};
-						records.Add(player);
-						//Log.Debug($"Reading {player.ClientUuid}, {player.EntityId}, '{player.DisplayName}', {platformChatId}");
-					}
-					break;
-				case 1:
-					records = new PlayerRemoveRecords();
-					for (int i = 0; i < count; i++)
-					{
-						var player = new Player(null, null);
-						player.ClientUuid = ReadUUID();
-						records.Add(player);
-					}
-					break;
-			}
-
-			if (records is PlayerAddRecords)
-			{
-				foreach (Player player in records)
-				{
-					bool isVerified = ReadBool();
-
-					if (player.Skin != null) 
-						player.Skin.IsVerified = isVerified;
-				}
-			}
-			//if (!_reader.Eof) ReadBool(); // damn BS
-			//if (!_reader.Eof) ReadBool(); // damn BS
-
-			return records;
-		}
-
-		public void Write(Records records)
-		{
-			WriteUnsignedVarInt((uint) records.Count);
-			foreach (BlockCoordinates coord in records)
-			{
-				Write(coord);
-			}
-		}
-
-		public Records ReadRecords()
-		{
-			var records = new Records();
-			uint count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				var coord = ReadBlockCoordinates();
-				records.Add(coord);
-			}
-
-			return records;
+			return PlayerRecords.Read(this);
 		}
 
 		public void Write(PlayerLocation location)
