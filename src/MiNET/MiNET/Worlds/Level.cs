@@ -325,7 +325,8 @@ namespace MiNET.Worlds
 				playerListMessage.PutPool();
 
 				var playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerAddRecords {newPlayer};
+				playerList.records = new PlayerAddRecords(newPlayer);
+
 				RelayBroadcast(newPlayer, sendList, CreateMcpeBatch(playerList.Encode()));
 				playerList.PutPool();
 
@@ -380,8 +381,9 @@ namespace MiNET.Worlds
 				playerListMessage.records = null;
 				playerListMessage.PutPool();
 
-				McpePlayerList playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerRemoveRecords {player};
+				var playerList = McpePlayerList.CreateObject();
+				playerList.records = new PlayerRemoveRecords(player);
+
 				RelayBroadcast(player, CreateMcpeBatch(playerList.Encode()));
 				playerList.records = null;
 				playerList.PutPool();
