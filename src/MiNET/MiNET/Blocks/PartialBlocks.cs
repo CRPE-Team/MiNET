@@ -7232,7 +7232,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element0 : Block
+	public partial class Element0 : ElementBase
 	{
 		public override string Id => "minecraft:element_0";
 
@@ -7244,7 +7244,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element1 : Block
+	public partial class Element1 : ElementBase
 	{
 		public override string Id => "minecraft:element_1";
 
@@ -7256,7 +7256,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element10 : Block
+	public partial class Element10 : ElementBase
 	{
 		public override string Id => "minecraft:element_10";
 
@@ -7268,7 +7268,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element100 : Block
+	public partial class Element100 : ElementBase
 	{
 		public override string Id => "minecraft:element_100";
 
@@ -7280,7 +7280,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element101 : Block
+	public partial class Element101 : ElementBase
 	{
 		public override string Id => "minecraft:element_101";
 
@@ -7292,7 +7292,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element102 : Block
+	public partial class Element102 : ElementBase
 	{
 		public override string Id => "minecraft:element_102";
 
@@ -7304,7 +7304,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element103 : Block
+	public partial class Element103 : ElementBase
 	{
 		public override string Id => "minecraft:element_103";
 
@@ -7316,7 +7316,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element104 : Block
+	public partial class Element104 : ElementBase
 	{
 		public override string Id => "minecraft:element_104";
 
@@ -7328,7 +7328,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element105 : Block
+	public partial class Element105 : ElementBase
 	{
 		public override string Id => "minecraft:element_105";
 
@@ -7340,7 +7340,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element106 : Block
+	public partial class Element106 : ElementBase
 	{
 		public override string Id => "minecraft:element_106";
 
@@ -7352,7 +7352,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element107 : Block
+	public partial class Element107 : ElementBase
 	{
 		public override string Id => "minecraft:element_107";
 
@@ -7364,7 +7364,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element108 : Block
+	public partial class Element108 : ElementBase
 	{
 		public override string Id => "minecraft:element_108";
 
@@ -7376,7 +7376,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element109 : Block
+	public partial class Element109 : ElementBase
 	{
 		public override string Id => "minecraft:element_109";
 
@@ -7388,7 +7388,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element11 : Block
+	public partial class Element11 : ElementBase
 	{
 		public override string Id => "minecraft:element_11";
 
@@ -7400,7 +7400,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element110 : Block
+	public partial class Element110 : ElementBase
 	{
 		public override string Id => "minecraft:element_110";
 
@@ -7412,7 +7412,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element111 : Block
+	public partial class Element111 : ElementBase
 	{
 		public override string Id => "minecraft:element_111";
 
@@ -7424,7 +7424,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element112 : Block
+	public partial class Element112 : ElementBase
 	{
 		public override string Id => "minecraft:element_112";
 
@@ -7436,7 +7436,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element113 : Block
+	public partial class Element113 : ElementBase
 	{
 		public override string Id => "minecraft:element_113";
 
@@ -7448,7 +7448,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element114 : Block
+	public partial class Element114 : ElementBase
 	{
 		public override string Id => "minecraft:element_114";
 
@@ -7460,7 +7460,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element115 : Block
+	public partial class Element115 : ElementBase
 	{
 		public override string Id => "minecraft:element_115";
 
@@ -7472,7 +7472,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element116 : Block
+	public partial class Element116 : ElementBase
 	{
 		public override string Id => "minecraft:element_116";
 
@@ -7484,7 +7484,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element117 : Block
+	public partial class Element117 : ElementBase
 	{
 		public override string Id => "minecraft:element_117";
 
@@ -7496,7 +7496,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element118 : Block
+	public partial class Element118 : ElementBase
 	{
 		public override string Id => "minecraft:element_118";
 
@@ -7508,7 +7508,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element12 : Block
+	public partial class Element12 : ElementBase
 	{
 		public override string Id => "minecraft:element_12";
 
@@ -7520,7 +7520,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element13 : Block
+	public partial class Element13 : ElementBase
 	{
 		public override string Id => "minecraft:element_13";
 
@@ -7532,7 +7532,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element14 : Block
+	public partial class Element14 : ElementBase
 	{
 		public override string Id => "minecraft:element_14";
 
@@ -7544,7 +7544,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element15 : Block
+	public partial class Element15 : ElementBase
 	{
 		public override string Id => "minecraft:element_15";
 
@@ -7556,7 +7556,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element16 : Block
+	public partial class Element16 : ElementBase
 	{
 		public override string Id => "minecraft:element_16";
 
@@ -7568,7 +7568,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element17 : Block
+	public partial class Element17 : ElementBase
 	{
 		public override string Id => "minecraft:element_17";
 
@@ -7580,7 +7580,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element18 : Block
+	public partial class Element18 : ElementBase
 	{
 		public override string Id => "minecraft:element_18";
 
@@ -7592,7 +7592,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element19 : Block
+	public partial class Element19 : ElementBase
 	{
 		public override string Id => "minecraft:element_19";
 
@@ -7604,7 +7604,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element2 : Block
+	public partial class Element2 : ElementBase
 	{
 		public override string Id => "minecraft:element_2";
 
@@ -7616,7 +7616,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element20 : Block
+	public partial class Element20 : ElementBase
 	{
 		public override string Id => "minecraft:element_20";
 
@@ -7628,7 +7628,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element21 : Block
+	public partial class Element21 : ElementBase
 	{
 		public override string Id => "minecraft:element_21";
 
@@ -7640,7 +7640,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element22 : Block
+	public partial class Element22 : ElementBase
 	{
 		public override string Id => "minecraft:element_22";
 
@@ -7652,7 +7652,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element23 : Block
+	public partial class Element23 : ElementBase
 	{
 		public override string Id => "minecraft:element_23";
 
@@ -7664,7 +7664,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element24 : Block
+	public partial class Element24 : ElementBase
 	{
 		public override string Id => "minecraft:element_24";
 
@@ -7676,7 +7676,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element25 : Block
+	public partial class Element25 : ElementBase
 	{
 		public override string Id => "minecraft:element_25";
 
@@ -7688,7 +7688,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element26 : Block
+	public partial class Element26 : ElementBase
 	{
 		public override string Id => "minecraft:element_26";
 
@@ -7700,7 +7700,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element27 : Block
+	public partial class Element27 : ElementBase
 	{
 		public override string Id => "minecraft:element_27";
 
@@ -7712,7 +7712,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element28 : Block
+	public partial class Element28 : ElementBase
 	{
 		public override string Id => "minecraft:element_28";
 
@@ -7724,7 +7724,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element29 : Block
+	public partial class Element29 : ElementBase
 	{
 		public override string Id => "minecraft:element_29";
 
@@ -7736,7 +7736,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element3 : Block
+	public partial class Element3 : ElementBase
 	{
 		public override string Id => "minecraft:element_3";
 
@@ -7748,7 +7748,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element30 : Block
+	public partial class Element30 : ElementBase
 	{
 		public override string Id => "minecraft:element_30";
 
@@ -7760,7 +7760,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element31 : Block
+	public partial class Element31 : ElementBase
 	{
 		public override string Id => "minecraft:element_31";
 
@@ -7772,7 +7772,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element32 : Block
+	public partial class Element32 : ElementBase
 	{
 		public override string Id => "minecraft:element_32";
 
@@ -7784,7 +7784,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element33 : Block
+	public partial class Element33 : ElementBase
 	{
 		public override string Id => "minecraft:element_33";
 
@@ -7796,7 +7796,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element34 : Block
+	public partial class Element34 : ElementBase
 	{
 		public override string Id => "minecraft:element_34";
 
@@ -7808,7 +7808,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element35 : Block
+	public partial class Element35 : ElementBase
 	{
 		public override string Id => "minecraft:element_35";
 
@@ -7820,7 +7820,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element36 : Block
+	public partial class Element36 : ElementBase
 	{
 		public override string Id => "minecraft:element_36";
 
@@ -7832,7 +7832,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element37 : Block
+	public partial class Element37 : ElementBase
 	{
 		public override string Id => "minecraft:element_37";
 
@@ -7844,7 +7844,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element38 : Block
+	public partial class Element38 : ElementBase
 	{
 		public override string Id => "minecraft:element_38";
 
@@ -7856,7 +7856,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element39 : Block
+	public partial class Element39 : ElementBase
 	{
 		public override string Id => "minecraft:element_39";
 
@@ -7868,7 +7868,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element4 : Block
+	public partial class Element4 : ElementBase
 	{
 		public override string Id => "minecraft:element_4";
 
@@ -7880,7 +7880,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element40 : Block
+	public partial class Element40 : ElementBase
 	{
 		public override string Id => "minecraft:element_40";
 
@@ -7892,7 +7892,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element41 : Block
+	public partial class Element41 : ElementBase
 	{
 		public override string Id => "minecraft:element_41";
 
@@ -7904,7 +7904,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element42 : Block
+	public partial class Element42 : ElementBase
 	{
 		public override string Id => "minecraft:element_42";
 
@@ -7916,7 +7916,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element43 : Block
+	public partial class Element43 : ElementBase
 	{
 		public override string Id => "minecraft:element_43";
 
@@ -7928,7 +7928,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element44 : Block
+	public partial class Element44 : ElementBase
 	{
 		public override string Id => "minecraft:element_44";
 
@@ -7940,7 +7940,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element45 : Block
+	public partial class Element45 : ElementBase
 	{
 		public override string Id => "minecraft:element_45";
 
@@ -7952,7 +7952,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element46 : Block
+	public partial class Element46 : ElementBase
 	{
 		public override string Id => "minecraft:element_46";
 
@@ -7964,7 +7964,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element47 : Block
+	public partial class Element47 : ElementBase
 	{
 		public override string Id => "minecraft:element_47";
 
@@ -7976,7 +7976,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element48 : Block
+	public partial class Element48 : ElementBase
 	{
 		public override string Id => "minecraft:element_48";
 
@@ -7988,7 +7988,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element49 : Block
+	public partial class Element49 : ElementBase
 	{
 		public override string Id => "minecraft:element_49";
 
@@ -8000,7 +8000,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element5 : Block
+	public partial class Element5 : ElementBase
 	{
 		public override string Id => "minecraft:element_5";
 
@@ -8012,7 +8012,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element50 : Block
+	public partial class Element50 : ElementBase
 	{
 		public override string Id => "minecraft:element_50";
 
@@ -8024,7 +8024,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element51 : Block
+	public partial class Element51 : ElementBase
 	{
 		public override string Id => "minecraft:element_51";
 
@@ -8036,7 +8036,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element52 : Block
+	public partial class Element52 : ElementBase
 	{
 		public override string Id => "minecraft:element_52";
 
@@ -8048,7 +8048,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element53 : Block
+	public partial class Element53 : ElementBase
 	{
 		public override string Id => "minecraft:element_53";
 
@@ -8060,7 +8060,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element54 : Block
+	public partial class Element54 : ElementBase
 	{
 		public override string Id => "minecraft:element_54";
 
@@ -8072,7 +8072,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element55 : Block
+	public partial class Element55 : ElementBase
 	{
 		public override string Id => "minecraft:element_55";
 
@@ -8084,7 +8084,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element56 : Block
+	public partial class Element56 : ElementBase
 	{
 		public override string Id => "minecraft:element_56";
 
@@ -8096,7 +8096,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element57 : Block
+	public partial class Element57 : ElementBase
 	{
 		public override string Id => "minecraft:element_57";
 
@@ -8108,7 +8108,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element58 : Block
+	public partial class Element58 : ElementBase
 	{
 		public override string Id => "minecraft:element_58";
 
@@ -8120,7 +8120,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element59 : Block
+	public partial class Element59 : ElementBase
 	{
 		public override string Id => "minecraft:element_59";
 
@@ -8132,7 +8132,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element6 : Block
+	public partial class Element6 : ElementBase
 	{
 		public override string Id => "minecraft:element_6";
 
@@ -8144,7 +8144,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element60 : Block
+	public partial class Element60 : ElementBase
 	{
 		public override string Id => "minecraft:element_60";
 
@@ -8156,7 +8156,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element61 : Block
+	public partial class Element61 : ElementBase
 	{
 		public override string Id => "minecraft:element_61";
 
@@ -8168,7 +8168,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element62 : Block
+	public partial class Element62 : ElementBase
 	{
 		public override string Id => "minecraft:element_62";
 
@@ -8180,7 +8180,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element63 : Block
+	public partial class Element63 : ElementBase
 	{
 		public override string Id => "minecraft:element_63";
 
@@ -8192,7 +8192,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element64 : Block
+	public partial class Element64 : ElementBase
 	{
 		public override string Id => "minecraft:element_64";
 
@@ -8204,7 +8204,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element65 : Block
+	public partial class Element65 : ElementBase
 	{
 		public override string Id => "minecraft:element_65";
 
@@ -8216,7 +8216,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element66 : Block
+	public partial class Element66 : ElementBase
 	{
 		public override string Id => "minecraft:element_66";
 
@@ -8228,7 +8228,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element67 : Block
+	public partial class Element67 : ElementBase
 	{
 		public override string Id => "minecraft:element_67";
 
@@ -8240,7 +8240,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element68 : Block
+	public partial class Element68 : ElementBase
 	{
 		public override string Id => "minecraft:element_68";
 
@@ -8252,7 +8252,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element69 : Block
+	public partial class Element69 : ElementBase
 	{
 		public override string Id => "minecraft:element_69";
 
@@ -8264,7 +8264,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element7 : Block
+	public partial class Element7 : ElementBase
 	{
 		public override string Id => "minecraft:element_7";
 
@@ -8276,7 +8276,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element70 : Block
+	public partial class Element70 : ElementBase
 	{
 		public override string Id => "minecraft:element_70";
 
@@ -8288,7 +8288,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element71 : Block
+	public partial class Element71 : ElementBase
 	{
 		public override string Id => "minecraft:element_71";
 
@@ -8300,7 +8300,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element72 : Block
+	public partial class Element72 : ElementBase
 	{
 		public override string Id => "minecraft:element_72";
 
@@ -8312,7 +8312,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element73 : Block
+	public partial class Element73 : ElementBase
 	{
 		public override string Id => "minecraft:element_73";
 
@@ -8324,7 +8324,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element74 : Block
+	public partial class Element74 : ElementBase
 	{
 		public override string Id => "minecraft:element_74";
 
@@ -8336,7 +8336,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element75 : Block
+	public partial class Element75 : ElementBase
 	{
 		public override string Id => "minecraft:element_75";
 
@@ -8348,7 +8348,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element76 : Block
+	public partial class Element76 : ElementBase
 	{
 		public override string Id => "minecraft:element_76";
 
@@ -8360,7 +8360,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element77 : Block
+	public partial class Element77 : ElementBase
 	{
 		public override string Id => "minecraft:element_77";
 
@@ -8372,7 +8372,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element78 : Block
+	public partial class Element78 : ElementBase
 	{
 		public override string Id => "minecraft:element_78";
 
@@ -8384,7 +8384,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element79 : Block
+	public partial class Element79 : ElementBase
 	{
 		public override string Id => "minecraft:element_79";
 
@@ -8396,7 +8396,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element8 : Block
+	public partial class Element8 : ElementBase
 	{
 		public override string Id => "minecraft:element_8";
 
@@ -8408,7 +8408,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element80 : Block
+	public partial class Element80 : ElementBase
 	{
 		public override string Id => "minecraft:element_80";
 
@@ -8420,7 +8420,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element81 : Block
+	public partial class Element81 : ElementBase
 	{
 		public override string Id => "minecraft:element_81";
 
@@ -8432,7 +8432,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element82 : Block
+	public partial class Element82 : ElementBase
 	{
 		public override string Id => "minecraft:element_82";
 
@@ -8444,7 +8444,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element83 : Block
+	public partial class Element83 : ElementBase
 	{
 		public override string Id => "minecraft:element_83";
 
@@ -8456,7 +8456,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element84 : Block
+	public partial class Element84 : ElementBase
 	{
 		public override string Id => "minecraft:element_84";
 
@@ -8468,7 +8468,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element85 : Block
+	public partial class Element85 : ElementBase
 	{
 		public override string Id => "minecraft:element_85";
 
@@ -8480,7 +8480,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element86 : Block
+	public partial class Element86 : ElementBase
 	{
 		public override string Id => "minecraft:element_86";
 
@@ -8492,7 +8492,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element87 : Block
+	public partial class Element87 : ElementBase
 	{
 		public override string Id => "minecraft:element_87";
 
@@ -8504,7 +8504,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element88 : Block
+	public partial class Element88 : ElementBase
 	{
 		public override string Id => "minecraft:element_88";
 
@@ -8516,7 +8516,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element89 : Block
+	public partial class Element89 : ElementBase
 	{
 		public override string Id => "minecraft:element_89";
 
@@ -8528,7 +8528,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element9 : Block
+	public partial class Element9 : ElementBase
 	{
 		public override string Id => "minecraft:element_9";
 
@@ -8540,7 +8540,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element90 : Block
+	public partial class Element90 : ElementBase
 	{
 		public override string Id => "minecraft:element_90";
 
@@ -8552,7 +8552,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element91 : Block
+	public partial class Element91 : ElementBase
 	{
 		public override string Id => "minecraft:element_91";
 
@@ -8564,7 +8564,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element92 : Block
+	public partial class Element92 : ElementBase
 	{
 		public override string Id => "minecraft:element_92";
 
@@ -8576,7 +8576,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element93 : Block
+	public partial class Element93 : ElementBase
 	{
 		public override string Id => "minecraft:element_93";
 
@@ -8588,7 +8588,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element94 : Block
+	public partial class Element94 : ElementBase
 	{
 		public override string Id => "minecraft:element_94";
 
@@ -8600,7 +8600,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element95 : Block
+	public partial class Element95 : ElementBase
 	{
 		public override string Id => "minecraft:element_95";
 
@@ -8612,7 +8612,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element96 : Block
+	public partial class Element96 : ElementBase
 	{
 		public override string Id => "minecraft:element_96";
 
@@ -8624,7 +8624,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element97 : Block
+	public partial class Element97 : ElementBase
 	{
 		public override string Id => "minecraft:element_97";
 
@@ -8636,7 +8636,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element98 : Block
+	public partial class Element98 : ElementBase
 	{
 		public override string Id => "minecraft:element_98";
 
@@ -8648,7 +8648,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Element99 : Block
+	public partial class Element99 : ElementBase
 	{
 		public override string Id => "minecraft:element_99";
 

@@ -14,9 +14,12 @@ namespace MiNET.Inventory
 		public static List<Item> CreativeInventoryItems { get; } = new List<Item>();
 
 		private static McpeWrapper _creativeInventoryData;
+		private static readonly bool _isEduEnabled;
 
 		static InventoryUtils()
 		{
+			_isEduEnabled = Config.GetProperty("EnableEdu", false);
+
 			var creativeItems = ResourceUtil.ReadResource<List<ExternalDataItem>>("creativeitems.json", typeof(InventoryUtils), "Data");
 
 			var uniqueId = 0;
@@ -62,10 +65,10 @@ namespace MiNET.Inventory
 			result = null;
 
 			if (string.IsNullOrEmpty(itemData.Id)) return false;
-			if (itemData.Id.StartsWith("minecraft:element")) return false;
 
 			var item = ItemFactory.GetItem(itemData.Id, itemData.Metadata, (byte) itemData.Count);
 			if (item is ItemAir) return false;
+			if (item.Edu && !_isEduEnabled) return false;
 
 			if (itemData.BlockStates != null && item is ItemBlock itemBlock)
 			{

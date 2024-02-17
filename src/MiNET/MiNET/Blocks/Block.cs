@@ -61,6 +61,8 @@ namespace MiNET.Blocks
 		public bool IsFlammable { get; protected set; } = false;
 		public bool IsBlockingSkylight { get; protected set; } = true;
 
+		public bool Edu { get; protected set; } = false;
+
 		public byte BlockLight { get; set; }
 		public byte SkyLight { get; set; }
 

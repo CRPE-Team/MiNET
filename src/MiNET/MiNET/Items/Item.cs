@@ -61,6 +61,8 @@ namespace MiNET.Items
 		public byte Count { get; set; } = 1;
 		public virtual NbtCompound ExtraData { get; set; }
 
+		public bool Edu { get; protected set; } = false;
+
 		[JsonIgnore] public virtual ItemMaterial ItemMaterial { get; set; } = ItemMaterial.None;
 
 		[JsonIgnore] public virtual ItemType ItemType { get; set; } = ItemType.Item;

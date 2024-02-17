@@ -71,6 +71,7 @@ namespace MiNET.Items
 			}
 
 			FuelEfficiency = Block.FuelEfficiency;
+			Edu = Block.Edu;
 		}
 
 		public override Item GetSmelt(string block)
