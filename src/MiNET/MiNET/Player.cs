@@ -2876,13 +2876,15 @@ namespace MiNET
 
 		public virtual void HandleMcpeBlockPickRequest(McpeBlockPickRequest message)
 		{
-			Block block = Level.GetBlock(message.x, message.y, message.z);
+			var block = Level.GetBlock(message.x, message.y, message.z);
 			Log.Debug($"Picked block {block.Id} from blockstate {block.GetRuntimeId()}. Expected block to be in slot {message.selectedSlot}");
-			Item item = block.GetItem(Level);
+
+			var item = block.GetItem(Level);
 			if (item is ItemBlock blockItem)
 			{
-				Log.Debug($"Have BlockItem with block state {blockItem.Block.GetRuntimeId()}");
+				Log.Debug($"Have BlockItem with block state {blockItem.Block?.GetRuntimeId()}");
 			}
+
 			if (item == null) return;
 
 			for (var i = 0; i < PlayerInventory.HotbarSize; i++)

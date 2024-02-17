@@ -26,25 +26,14 @@
 using System.Linq;
 using System.Numerics;
 using MiNET.BlockEntities;
-using MiNET.Items;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public abstract partial class WallSignBase : Block
+	public abstract class WallSignBase : SignBase
 	{
-		public WallSignBase() : base()
-		{
-			IsTransparent = true;
-			IsSolid = false;
-			BlastResistance = 5;
-			Hardness = 1;
-
-			IsFlammable = true; // Only in PE!!
-		}
-
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
 			return world.GetBlock(blockCoordinates).IsReplaceable;
@@ -66,45 +55,5 @@ namespace MiNET.Blocks
 		{
 			return true;
 		}
-	}
-
-	public partial class WallSign : WallSignBase
-	{
-		public WallSign() : base() { }
-	}
-
-	public partial class SpruceWallSign : WallSignBase
-	{
-		public SpruceWallSign() : base() { }
-	}
-
-	public partial class BirchWallSign : WallSignBase
-	{
-		public BirchWallSign() : base() { }
-	}
-
-	public partial class JungleWallSign : WallSignBase
-	{
-		public JungleWallSign() : base() { }
-	}
-
-	public partial class AcaciaWallSign : WallSignBase
-	{
-		public AcaciaWallSign() : base() { }
-	}
-
-	public partial class DarkoakWallSign : WallSignBase
-	{
-		public DarkoakWallSign() : base() { }
-	}
-
-	public partial class CrimsonWallSign : WallSignBase
-	{
-		public CrimsonWallSign() : base() { }
-	}
-
-	public partial class WarpedWallSign : WallSignBase
-	{
-		public WarpedWallSign() : base() { }
 	}
 }

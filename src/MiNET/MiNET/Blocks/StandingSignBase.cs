@@ -27,7 +27,6 @@ using System;
 using System.Linq;
 using System.Numerics;
 using MiNET.BlockEntities;
-using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
@@ -35,18 +34,8 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public abstract partial class StandingSignBase : Block
+	public abstract class StandingSignBase : SignBase
 	{
-		public StandingSignBase() : base()
-		{
-			IsTransparent = true;
-			IsSolid = false;
-			BlastResistance = 5;
-			Hardness = 1;
-
-			IsFlammable = true; // Only in PE!!
-		}
-
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
 			return world.GetBlock(blockCoordinates).IsReplaceable;
@@ -76,46 +65,5 @@ namespace MiNET.Blocks
 		{
 			return true;
 		}
-	}
-
-	public partial class StandingSign : StandingSignBase
-	{
-		public StandingSign() : base() { }
-	}
-
-
-	public partial class SpruceStandingSign : StandingSignBase
-	{
-		public SpruceStandingSign() : base() { }
-	}
-
-	public partial class BirchStandingSign : StandingSignBase
-	{
-		public BirchStandingSign() : base() { }
-	}
-
-	public partial class JungleStandingSign : StandingSignBase
-	{
-		public JungleStandingSign() : base() { }
-	}
-
-	public partial class AcaciaStandingSign : StandingSignBase
-	{
-		public AcaciaStandingSign() : base() { }
-	}
-
-	public partial class DarkoakStandingSign : StandingSignBase
-	{
-		public DarkoakStandingSign() : base() { }
-	}
-
-	public partial class CrimsonStandingSign : StandingSignBase
-	{
-		public CrimsonStandingSign() : base() { }
-	}
-
-	public partial class WarpedStandingSign : StandingSignBase
-	{
-		public WarpedStandingSign() : base() { }
 	}
 }

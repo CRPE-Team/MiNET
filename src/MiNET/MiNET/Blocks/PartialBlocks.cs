@@ -146,7 +146,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class AcaciaHangingSign : Block
+	public partial class AcaciaHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:acacia_hanging_sign";
 
@@ -290,7 +290,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class AcaciaStandingSign
+	public partial class AcaciaStandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:acacia_standing_sign";
 
@@ -362,7 +362,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class AcaciaWallSign
+	public partial class AcaciaWallSign : WallSignBase
 	{
 		public override string Id => "minecraft:acacia_wall_sign";
 
@@ -902,7 +902,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooHangingSign : Block
+	public partial class BambooHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:bamboo_hanging_sign";
 
@@ -1200,7 +1200,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooStandingSign : Block
+	public partial class BambooStandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:bamboo_standing_sign";
 
@@ -1272,7 +1272,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooWallSign : Block
+	public partial class BambooWallSign : WallSignBase
 	{
 		public override string Id => "minecraft:bamboo_wall_sign";
 
@@ -1790,7 +1790,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BirchHangingSign : Block
+	public partial class BirchHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:birch_hanging_sign";
 
@@ -1934,7 +1934,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BirchStandingSign
+	public partial class BirchStandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:birch_standing_sign";
 
@@ -2006,7 +2006,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BirchWallSign
+	public partial class BirchWallSign : WallSignBase
 	{
 		public override string Id => "minecraft:birch_wall_sign";
 
@@ -3590,7 +3590,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherryHangingSign : Block
+	public partial class CherryHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:cherry_hanging_sign";
 
@@ -3840,7 +3840,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherryStandingSign : Block
+	public partial class CherryStandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:cherry_standing_sign";
 
@@ -3912,7 +3912,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherryWallSign : Block
+	public partial class CherryWallSign : WallSignBase
 	{
 		public override string Id => "minecraft:cherry_wall_sign";
 
@@ -5152,7 +5152,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CrimsonHangingSign : Block
+	public partial class CrimsonHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:crimson_hanging_sign";
 
@@ -5361,7 +5361,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CrimsonStandingSign
+	public partial class CrimsonStandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:crimson_standing_sign";
 
@@ -5462,7 +5462,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CrimsonWallSign
+	public partial class CrimsonWallSign : WallSignBase
 	{
 		public override string Id => "minecraft:crimson_wall_sign";
 
@@ -5839,7 +5839,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class DarkOakHangingSign : Block
+	public partial class DarkOakHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:dark_oak_hanging_sign";
 
@@ -6062,7 +6062,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class DarkoakStandingSign
+	public partial class DarkoakStandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:darkoak_standing_sign";
 
@@ -6091,7 +6091,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class DarkoakWallSign
+	public partial class DarkoakWallSign : WallSignBase
 	{
 		public override string Id => "minecraft:darkoak_wall_sign";
 
@@ -10503,7 +10503,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class JungleHangingSign : Block
+	public partial class JungleHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:jungle_hanging_sign";
 
@@ -10647,7 +10647,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class JungleStandingSign
+	public partial class JungleStandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:jungle_standing_sign";
 
@@ -10719,7 +10719,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class JungleWallSign
+	public partial class JungleWallSign : WallSignBase
 	{
 		public override string Id => "minecraft:jungle_wall_sign";
 
@@ -11980,7 +11980,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MangroveHangingSign : Block
+	public partial class MangroveHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:mangrove_hanging_sign";
 
@@ -12249,7 +12249,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MangroveStandingSign : Block
+	public partial class MangroveStandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:mangrove_standing_sign";
 
@@ -12321,7 +12321,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MangroveWallSign : Block
+	public partial class MangroveWallSign : WallSignBase
 	{
 		public override string Id => "minecraft:mangrove_wall_sign";
 
@@ -13061,7 +13061,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class OakHangingSign : Block
+	public partial class OakHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:oak_hanging_sign";
 
@@ -16899,7 +16899,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class SpruceHangingSign : Block
+	public partial class SpruceHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:spruce_hanging_sign";
 
@@ -17043,7 +17043,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class SpruceStandingSign
+	public partial class SpruceStandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:spruce_standing_sign";
 
@@ -17115,7 +17115,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class SpruceWallSign
+	public partial class SpruceWallSign : WallSignBase
 	{
 		public override string Id => "minecraft:spruce_wall_sign";
 
@@ -17260,7 +17260,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class StandingSign
+	public partial class StandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:standing_sign";
 
@@ -18982,7 +18982,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WallSign
+	public partial class WallSign : WallSignBase
 	{
 		public override string Id => "minecraft:wall_sign";
 
@@ -19193,7 +19193,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WarpedHangingSign : Block
+	public partial class WarpedHangingSign : HangingSignBase
 	{
 		public override string Id => "minecraft:warped_hanging_sign";
 
@@ -19402,7 +19402,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WarpedStandingSign
+	public partial class WarpedStandingSign : StandingSignBase
 	{
 		public override string Id => "minecraft:warped_standing_sign";
 
@@ -19503,7 +19503,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WarpedWallSign
+	public partial class WarpedWallSign : WallSignBase
 	{
 		public override string Id => "minecraft:warped_wall_sign";
 
