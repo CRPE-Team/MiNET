@@ -397,6 +397,10 @@ namespace MiNET.Test
 			{
 				return nameof(CarpetBase);
 			}
+			if (name.EndsWith("_sign"))
+			{
+				return nameof(SignBase);
+			}
 
 			return nameof(Block);
 		}
