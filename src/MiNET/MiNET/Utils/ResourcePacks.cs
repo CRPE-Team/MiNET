@@ -56,7 +56,7 @@ namespace MiNET.Utils
 	public class ResourcePackInfo : IPacketDataObject
 	{
 		/// <summary>
-		///		The unique identifier for the pack
+		///	The unique identifier for the pack
 		/// </summary>
 		public string UUID { get; set; }
 
@@ -86,11 +86,11 @@ namespace MiNET.Utils
 		public string ContentIdentity { get; set; }
 
 		/// <summary>
-		///		HasScripts specifies if the texture packs has any scripts in it. A client will only download the behaviour pack if it supports scripts, which, up to 1.11, only includes Windows 10.
+		///	HasScripts specifies if the texture packs has any scripts in it. A client will only download the behaviour pack if it supports scripts, which, up to 1.11, only includes Windows 10.
 		/// </summary>
 		public bool HasScripts { get; set; }
 
-		public virtual void Write(Packet packet)
+		public void Write(Packet packet)
 		{
 			packet.Write(UUID);
 			packet.Write(Version);
@@ -99,7 +99,11 @@ namespace MiNET.Utils
 			packet.Write(SubPackName);
 			packet.Write(ContentIdentity);
 			packet.Write(HasScripts);
+
+			WriteData(packet);
 		}
+
+		protected virtual void WriteData(Packet packet) { }
 
 		public static ResourcePackInfo Read(Packet packet)
 		{
@@ -159,15 +163,8 @@ namespace MiNET.Utils
 		/// </summary>
 		public bool RtxEnabled { get; set; }
 
-		public override void Write(Packet packet)
+		protected override void WriteData(Packet packet)
 		{
-			packet.Write(UUID);
-			packet.Write(Version);
-			packet.Write(Size);
-			packet.Write(ContentKey);
-			packet.Write(SubPackName);
-			packet.Write(ContentIdentity);
-			packet.Write(HasScripts);
 			packet.Write(RtxEnabled);
 		}
 
