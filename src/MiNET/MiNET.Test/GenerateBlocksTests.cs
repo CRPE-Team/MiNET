@@ -96,7 +96,7 @@ namespace MiNET.Test
 			var writer = new IndentedTextWriter(new StreamWriter(file));
 
 			var itemStates = ItemFactory.Itemstates;
-			var newItems = new Dictionary<string, Itemstate>();
+			var newItems = new Dictionary<string, ItemState>();
 			foreach (var state in itemStates)
 			{
 				var item = ItemFactory.GetItem(state.Value.RuntimeId);

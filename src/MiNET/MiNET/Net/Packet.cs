@@ -1122,36 +1122,10 @@ namespace MiNET.Net
 		{
 			return ItemStackResponses.Read(this);
 		}
-
-		public void Write(ItemComponentList list)
-		{
-			WriteUnsignedVarInt((uint) list.Count);
-
-			foreach (var item in list)
-			{
-				Write(item.Name);
-				Write(item.Nbt);
-			}
-		}
 		
 		public ItemComponentList ReadItemComponentList()
 		{
-			var               count = ReadUnsignedVarInt();
-			ItemComponentList l     = new ItemComponentList();
-
-			for (int i = 0; i < count; i++)
-			{
-				string        name      = ReadString();
-				var           nbt       = ReadNbt();
-				
-				ItemComponent component = new ItemComponent();
-				component.Name = name;
-				component.Nbt = nbt;
-				
-				l.Add(component);
-			}
-
-			return l;
+			return ItemComponentList.Read(this);
 		}
 		
 		public void Write(EnchantOptions options)
@@ -1218,14 +1192,9 @@ namespace MiNET.Net
 		public void Write(AnimationKey[] keys)
 		{
 			WriteUnsignedVarInt((uint) keys.Length);
-			foreach (AnimationKey key in keys)
+			foreach (var key in keys)
 			{
-				Write(key.ExecuteImmediate);
-				Write(key.ResetBefore);
-				Write(key.ResetAfter);
-				Write(key.StartRotation);
-				Write(key.EndRotation);
-				WriteUnsignedVarInt(key.Duration);
+				Write(key);
 			}
 		}
 
@@ -1235,19 +1204,11 @@ namespace MiNET.Net
 			var keys = new AnimationKey[count];
 			for (int i = 0; i < count; i++)
 			{
-				AnimationKey key = new AnimationKey();
-				key.ExecuteImmediate = ReadBool();
-				key.ResetBefore = ReadBool();
-				key.ResetAfter = ReadBool();
-				key.StartRotation = ReadVector3();
-				key.EndRotation = ReadVector3();
-				key.Duration = ReadUnsignedVarInt();
-				keys[i] = key;
+				keys[i] = AnimationKey.Read(this);
 			}
 
 			return keys;
 		}
-
 
 		private ItemStacks ReadItems()
 		{
@@ -1422,229 +1383,27 @@ namespace MiNET.Net
 
 		public AttributeModifiers ReadAttributeModifiers()
 		{
-			var modifiers = new AttributeModifiers();
-			uint count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				AttributeModifier modifier = new AttributeModifier
-				{
-					Id = ReadString(),
-					Name = ReadString(),
-					Amount = ReadFloat(),
-					Operations = ReadInt(),
-					Operand = ReadInt(),
-					Serializable = ReadBool(),
-				};
-				modifiers[modifier.Name] = modifier;
-			}
-
-			return modifiers;
-		}
-
-		public void Write(AttributeModifiers modifiers)
-		{
-			WriteUnsignedVarInt((uint) modifiers.Count);
-			foreach (AttributeModifier modifier in modifiers.Values)
-			{
-				Write(modifier.Id);
-				Write(modifier.Name);
-				Write(modifier.Amount);
-				Write(modifier.Operations); // unknown
-				Write(modifier.Operand);
-				Write(modifier.Serializable);
-			}
+			return AttributeModifiers.Read(this);
 		}
 
 		public PlayerAttributes ReadPlayerAttributes()
 		{
-			var attributes = new PlayerAttributes();
-			uint count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				PlayerAttribute attribute = new PlayerAttribute
-				{
-					MinValue = ReadFloat(),
-					MaxValue = ReadFloat(),
-					Value = ReadFloat(),
-					Default = ReadFloat(),
-					Name = ReadString(),
-					Modifiers = ReadAttributeModifiers()
-				};
-				attributes[attribute.Name] = attribute;
-			}
-
-			return attributes;
+			return PlayerAttributes.Read(this);
 		}
-
-		public void Write(PlayerAttributes attributes)
-		{
-			WriteUnsignedVarInt((uint) attributes.Count);
-			foreach (PlayerAttribute attribute in attributes.Values)
-			{
-				Write(attribute.MinValue);
-				Write(attribute.MaxValue);
-				Write(attribute.Value);
-				Write(attribute.Default); // unknown
-				Write(attribute.Name);
-				Write(attribute.Modifiers);
-			}
-		}
-
 
 		public GameRules ReadGameRules()
 		{
-			GameRules gameRules = new GameRules();
-
-			int count = ReadVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				string name = ReadString();
-				bool isPlayerModifiable = ReadBool();
-				var type = ReadUnsignedVarInt();
-				switch (type)
-				{
-					case 1:
-					{
-						GameRule<bool> rule = new GameRule<bool>(name, ReadBool())
-						{
-							IsPlayerModifiable = isPlayerModifiable
-						};
-						gameRules.Add(rule);
-						break;
-					}
-					case 2:
-					{
-						GameRule<int> rule = new GameRule<int>(name, ReadVarInt())
-						{
-							IsPlayerModifiable = isPlayerModifiable
-						};
-						gameRules.Add(rule);
-						break;
-					}
-					case 3:
-					{
-						GameRule<float> rule = new GameRule<float>(name, ReadFloat())
-						{
-							IsPlayerModifiable = isPlayerModifiable
-						};
-						gameRules.Add(rule);
-						break;
-					}
-				}
-			}
-
-			return gameRules;
-		}
-
-		public void Write(GameRules gameRules)
-		{
-			if (gameRules == null)
-			{
-				WriteVarInt(0);
-				return;
-			}
-
-			WriteVarInt(gameRules.Count);
-			foreach (var rule in gameRules)
-			{
-				Write(rule.Name.ToLower());
-				Write(rule.IsPlayerModifiable); // bool isPlayerModifiable
-
-				if (rule is GameRule<bool>)
-				{
-					WriteUnsignedVarInt(1);
-					Write(((GameRule<bool>) rule).Value);
-				}
-				else if (rule is GameRule<int>)
-				{
-					WriteUnsignedVarInt(2);
-					WriteVarInt(((GameRule<int>) rule).Value);
-				}
-				else if (rule is GameRule<float>)
-				{
-					WriteUnsignedVarInt(3);
-					Write(((GameRule<float>) rule).Value);
-				}
-			}
-		}
-
-		public void Write(EntityAttributes attributes)
-		{
-			if (attributes == null)
-			{
-				WriteUnsignedVarInt(0);
-				return;
-			}
-
-			WriteUnsignedVarInt((uint) attributes.Count);
-			foreach (EntityAttribute attribute in attributes.Values)
-			{
-				Write(attribute.Name);
-				Write(attribute.MinValue);
-				Write(attribute.Value);
-				Write(attribute.MaxValue);
-			}
+			return GameRules.Read(this);
 		}
 
 		public EntityAttributes ReadEntityAttributes()
 		{
-			var attributes = new EntityAttributes();
-			uint count = ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
-			{
-				EntityAttribute attribute = new EntityAttribute
-				{
-					Name = ReadString(),
-					MinValue = ReadFloat(),
-					Value = ReadFloat(),
-					MaxValue = ReadFloat(),
-				};
-
-				attributes[attribute.Name] = attribute;
-			}
-
-			return attributes;
+			return EntityAttributes.Read(this);
 		}
 
-		public Itemstates ReadItemstates()
+		public ItemStates ReadItemStates()
 		{
-			var result = new Itemstates();
-			uint count = ReadUnsignedVarInt();
-			for (int runtimeId = 0; runtimeId < count; runtimeId++)
-			{
-				var name = ReadString();
-				var legacyId = ReadShort();
-				var component = ReadBool();
-
-				if (name == "minecraft:shield")
-				{
-					Log.Warn($"Got shield with runtime id {runtimeId}, legacy {legacyId}");
-				}
-
-				result.Add(name, new Itemstate
-				{
-					RuntimeId = legacyId,
-					ComponentBased = component
-				});
-			}
-
-			return result;
-		}
-
-		public void Write(Itemstates itemstates)
-		{
-			if (itemstates == null)
-			{
-				WriteUnsignedVarInt(0);
-				return;
-			}
-			WriteUnsignedVarInt((uint) itemstates.Count);
-			foreach (var itemstate in itemstates)
-			{
-				Write(itemstate.Key);
-				Write(itemstate.Value.RuntimeId);
-				Write(itemstate.Value.ComponentBased);
-			}
+			return ItemStates.Read(this);
 		}
 
 		public BlockPalette ReadBlockPalette()
@@ -1826,51 +1585,9 @@ namespace MiNET.Net
 			return layers;
 		}
 
-		public void Write(EntityLink link)
-		{
-			WriteVarLong(link.FromEntityId);
-			WriteVarLong(link.ToEntityId);
-			Write((byte)link.Type);
-			Write(link.Immediate);
-			Write(link.CausedByRider);
-		}
-
-		public EntityLink ReadEntityLink()
-		{
-			var from = ReadVarLong();
-			var to = ReadVarLong();
-			var type = (EntityLink.EntityLinkType) ReadByte();
-			var immediate = ReadBool();
-			var causedByRider = ReadBool();
-
-			return new EntityLink(from, to, type, immediate, causedByRider);
-		}
-		
-		public void Write(EntityLinks links)
-		{
-			if (links == null)
-			{
-				WriteUnsignedVarInt(0); // LE
-				return;
-			}
-			WriteUnsignedVarInt((uint) links.Count); // LE
-			foreach (var link in links)
-			{
-				Write(link);
-			}
-		}
-
 		public EntityLinks ReadEntityLinks()
 		{
-			var count = ReadUnsignedVarInt();
-
-			var links = new EntityLinks();
-			for (int i = 0; i < count; i++)
-			{
-				links.Add(ReadEntityLink());
-			}
-
-			return links;
+			return EntityLinks.Read(this);
 		}
 
 		public void Write(Rules rules)
