@@ -35,11 +35,9 @@ using System.Net.Sockets;
 using System.Numerics;
 using System.Text;
 using System.Threading;
-using System.Xml.Linq;
 using fNbt;
 using log4net;
 using Microsoft.IO;
-using MiNET.Blocks;
 using MiNET.Items;
 using MiNET.Net.Crafting;
 using MiNET.Net.RakNet;
@@ -1770,60 +1768,10 @@ namespace MiNET.Net
 				Write(record.StatesCacheNbt);
 			}
 		}
-
-		public void Write(AbilityLayer layer)
-		{
-			Write((ushort)layer.Type);
-
-			var values = layer.Abilities;
-
-			if (layer.FlySpeed > 0)
-			{
-				layer.Abilities |= PlayerAbility.FlySpeed;
-			}
-			if (layer.WalkSpeed > 0)
-			{
-				layer.Abilities |= PlayerAbility.WalkSpeed;
-			}
-
-			Write((uint)layer.Abilities);
-			Write((uint) values);
-			Write(layer.FlySpeed);
-			Write(layer.WalkSpeed);
-		}
-
-		public AbilityLayer ReadAbilityLayer()
-		{
-			AbilityLayer layer = new AbilityLayer();
-			layer.Type = (AbilityLayerType) ReadUshort();
-			layer.Abilities = (PlayerAbility)ReadUint();
-			layer.Values = ReadUint();
-			layer.FlySpeed = ReadFloat();
-			layer.WalkSpeed = ReadFloat();
-
-			return layer;
-		}
-
-		public void Write(AbilityLayers layers)
-		{
-			Write((byte)layers.Count);
-
-			foreach (var layer in layers)
-			{
-				Write(layer);
-			}
-		}
 		
 		public AbilityLayers ReadAbilityLayers()
 		{
-			AbilityLayers layers = new AbilityLayers();
-			var count = ReadByte();
-
-			for (int i = 0; i < count; i++)
-			{
-				layers.Add(ReadAbilityLayer());
-			}
-			return layers;
+			return AbilityLayers.Read(this);
 		}
 
 		public void Write(EntityLink link)
@@ -1873,144 +1821,37 @@ namespace MiNET.Net
 			return links;
 		}
 
-		public void Write(Rules rules)
-		{
-			_writer.Write(rules.Count); // LE
-			foreach (var rule in rules)
-			{
-				Write(rule.Name);
-				Write(rule.Unknown1);
-				Write(rule.Unknown2);
-			}
-		}
-
-		public Rules ReadRules()
-		{
-			int count = _reader.ReadInt32(); // LE
-
-			var rules = new Rules();
-			for (int i = 0; i < count; i++)
-			{
-				RuleData rule = new RuleData();
-				rule.Name = ReadString();
-				rule.Unknown1 = ReadBool();
-				rule.Unknown2 = ReadBool();
-				rules.Add(rule);
-			}
-
-			return rules;
-		}
-
 		public void Write(TexturePackInfos packInfos)
 		{
-			if (packInfos == null)
+			if (packInfos == null || packInfos.Count == 0)
 			{
-				_writer.Write((short) 0);
-
+				Write((short) 0);
 				return;
 			}
-			
-			_writer.Write((short) packInfos.Count); // LE
-			//WriteVarInt(packInfos.Count);
-			foreach (var info in packInfos)
-			{
-				Write(info.UUID);
-				Write(info.Version);
-				Write(info.Size);
-				Write(info.ContentKey);
-				Write(info.SubPackName);
-				Write(info.ContentIdentity);
-				Write(info.HasScripts);
-				Write(info.RtxEnabled);
-			}
+
+			packInfos.Write(this);
 		}
 
 		public TexturePackInfos ReadTexturePackInfos()
 		{
-			int count = _reader.ReadInt16(); // LE
-			//int count = ReadVarInt(); // LE
-
-			var packInfos = new TexturePackInfos();
-			for (int i = 0; i < count; i++)
-			{
-				var info            = new TexturePackInfo();
-				var id              = ReadString();
-				var version         = ReadString();
-				var size            = ReadUlong();
-				var encryptionKey   = ReadString();
-				var subpackName     = ReadString();
-				var contentIdentity = ReadString();
-				var hasScripts      = ReadBool();
-				var rtxEnabled      = ReadBool();
-				
-				info.UUID = id;
-				info.Version = version;
-				info.Size = size;
-				info.HasScripts = hasScripts;
-				info.ContentKey = encryptionKey;
-				info.SubPackName = subpackName;
-				info.ContentIdentity = contentIdentity;
-				info.RtxEnabled = rtxEnabled;
-				
-				packInfos.Add(info);
-			}
-
-			return packInfos;
+			return TexturePackInfos.Read(this);
 		}
 		
 		public void Write(ResourcePackInfos packInfos)
 		{
-			if (packInfos == null)
+			if (packInfos == null || packInfos.Count == 0)
 			{
-				_writer.Write((short) 0); // LE
+				Write((short) 0); // LE
 				//WriteVarInt(0);
 				return;
 			}
 
-			_writer.Write((short) packInfos.Count); // LE
-			//WriteVarInt(packInfos.Count);
-			foreach (var info in packInfos)
-			{
-				Write(info.UUID);
-				Write(info.Version);
-				Write(info.Size);
-				Write(info.ContentKey);
-				Write(info.SubPackName);
-				Write(info.ContentIdentity);
-				Write(info.HasScripts);
-			}
+			packInfos.Write(this);
 		}
 
 		public ResourcePackInfos ReadResourcePackInfos()
 		{
-			int count = _reader.ReadInt16(); // LE
-			//int count = ReadVarInt(); // LE
-
-			var packInfos = new ResourcePackInfos();
-			for (int i = 0; i < count; i++)
-			{
-				var info = new ResourcePackInfo();
-				
-				var id = ReadString();
-				var version = ReadString();
-				var size = ReadUlong();
-				var encryptionKey = ReadString();
-				var subpackName = ReadString();
-				var contentIdentity = ReadString();
-				var hasScripts = ReadBool();
-				
-				info.UUID = id;
-				info.Version = version;
-				info.Size = size;
-				info.ContentKey = encryptionKey;
-				info.SubPackName = subpackName;
-				info.ContentIdentity = contentIdentity;
-				info.HasScripts = hasScripts;
-				
-				packInfos.Add(info);
-			}
-
-			return packInfos;
+			return ResourcePackInfos.Read(this);
 		}
 
 		public void Write(ResourcePackIdVersions packInfos)
@@ -2020,64 +1861,29 @@ namespace MiNET.Net
 				WriteUnsignedVarInt(0);
 				return;
 			}
-			WriteUnsignedVarInt((uint) packInfos.Count); // LE
-			foreach (var info in packInfos)
-			{
-				Write(info.Id);
-				Write(info.Version);
-				Write(info.SubPackName);
-			}
+
+			Write(packInfos);
 		}
 
 		public ResourcePackIdVersions ReadResourcePackIdVersions()
 		{
-			uint count = ReadUnsignedVarInt();
-
-			var packInfos = new ResourcePackIdVersions();
-			for (int i = 0; i < count; i++)
-			{
-				var id = ReadString();
-				var version = ReadString();
-				var subPackName = ReadString();
-				var info = new PackIdVersion
-				{
-					Id = id,
-					Version = version,
-					SubPackName = subPackName
-				};
-				packInfos.Add(info);
-			}
-
-			return packInfos;
+			return ResourcePackIdVersions.Read(this);
 		}
 
 		public void Write(ResourcePackIds ids)
 		{
-			if (ids == null)
+			if (ids == null || ids.Count == 0)
 			{
 				Write((short) 0);
 				return;
 			}
-			Write((short) ids.Count);
 
-			foreach (var id in ids)
-			{
-				Write(id);
-			}
+			Write(ids);
 		}
 
 		public ResourcePackIds ReadResourcePackIds()
 		{
-			int count = ReadShort();
-
-			var ids = new ResourcePackIds();
-			for (int i = 0; i < count; i++)
-			{
-				var id = ReadString();
-				ids.Add(id);
-			}
-
-			return ids;
+			return ResourcePackIds.Read(this);
 		}
 
 		public void Write(Skin skin)
