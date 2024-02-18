@@ -26,17 +26,17 @@ namespace MiNET.Items
 		public static Dictionary<string, Func<Item>> IdToFactory { get; private set; } = new Dictionary<string, Func<Item>>();
 		public static Dictionary<string, string[]> ItemTags { get; private set; } = new Dictionary<string, string[]>();
 
-		public static Itemstates Itemstates { get; internal set; } = new Itemstates();
+		public static ItemStates Itemstates { get; internal set; } = new ItemStates();
 
 		static ItemFactory()
 		{
 			ItemTags = ResourceUtil.ReadResource<Dictionary<string, string[]>>("item_tags.json", typeof(ItemFactory), "Data");
-			Itemstates = ResourceUtil.ReadResource<Itemstates>("required_item_list.json", typeof(ItemFactory), "Data");
+			Itemstates = ResourceUtil.ReadResource<ItemStates>("required_item_list.json", typeof(ItemFactory), "Data");
 
 			var maxRuntimeId = Itemstates.Max(state => state.Value.RuntimeId);
 			foreach (var blockId in BlockFactory.ItemToBlock.Values)
 			{
-				Itemstates.TryAdd(blockId, new Itemstate() { RuntimeId = ++maxRuntimeId });
+				Itemstates.TryAdd(blockId, new ItemState() { RuntimeId = ++maxRuntimeId });
 			}
 
 			RuntimeIdToId = BuildRuntimeIdToId();
