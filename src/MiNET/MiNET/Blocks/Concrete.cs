@@ -23,6 +23,9 @@
 
 #endregion
 
+using MiNET.Items;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
 	public partial class Concrete : Block
@@ -31,6 +34,11 @@ namespace MiNET.Blocks
 		{
 			BlastResistance = 15;
 			Hardness = 3;
+		}
+
+		public override Item GetItem(Level world, bool blockItem = false)
+		{
+			return ItemFactory.GetItem(this);
 		}
 	}
 }

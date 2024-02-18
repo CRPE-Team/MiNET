@@ -32,7 +32,7 @@ namespace MiNET.Blocks
 {
 	public abstract class LogBase : Block
 	{
-		public virtual string PillarAxis { get; set; } = "";
+		public virtual string PillarAxis { get; set; } = "y";
 
 		public LogBase() : base()
 		{

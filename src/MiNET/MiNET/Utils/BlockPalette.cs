@@ -81,20 +81,8 @@ namespace MiNET.Utils
 					}
 				}
 
-				dynamic itemInstance = obj.ItemInstance;
-				if (itemInstance != null)
-				{
-					record.ItemInstance = new ItemPickInstance()
-					{
-						Id = itemInstance.Id,
-						Metadata = itemInstance.Metadata,
-						WantNbt = itemInstance.WantNbt
-					};
-				}
-
 				pallet.Add(record);
 			}
-
 
 			return pallet;
 		}
@@ -111,7 +99,6 @@ namespace MiNET.Utils
 		public byte[] StatesCacheNbt { get; set; }
 		[JsonIgnore]
 		public NbtCompound StatesNbt { get; set; }
-		public ItemPickInstance ItemInstance { get; set; }
 
 		protected bool Equals(BlockStateContainer other)
 		{

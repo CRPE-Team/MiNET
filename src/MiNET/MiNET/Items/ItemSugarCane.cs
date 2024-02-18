@@ -1,12 +1,9 @@
-﻿using System.Numerics;
-using MiNET.Blocks;
-using MiNET.Utils.Vectors;
-using MiNET.Worlds;
+﻿using MiNET.Blocks;
 
 namespace MiNET.Items
 {
-	public partial class ItemSugarCane : ItemBlock
+	public partial class ItemSugarCane : ItemBlock<Reeds>
 	{
-		public override Block Block { get; protected set; } = new Reeds();
+
 	}
 }

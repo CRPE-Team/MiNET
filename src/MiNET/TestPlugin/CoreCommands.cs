@@ -975,25 +975,25 @@ namespace TestPlugin
 				Metadata = 3,
 				Count = 64
 			};
-			inventory.Slots[slot++] = new ItemBlock(new CraftingTable()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Anvil()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Furnace()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new BlastFurnace()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Smoker()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Chest()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Barrel()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new CartographyTable()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Cauldron()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new FletchingTable()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Grindstone()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Lectern()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Loom()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new SmithingTable()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new SmithingTable()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Stonecutter()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Stonecutter()) {Count = 64};
+			inventory.Slots[slot++] = new ItemCraftingTable() {Count = 64};
+			inventory.Slots[slot++] = new ItemAnvil() {Count = 64};
+			inventory.Slots[slot++] = new ItemFurnace() {Count = 64};
+			inventory.Slots[slot++] = new ItemBlastFurnace() {Count = 64};
+			inventory.Slots[slot++] = new ItemSmoker() {Count = 64};
+			inventory.Slots[slot++] = new ItemChest() {Count = 64};
+			inventory.Slots[slot++] = new ItemBarrel() {Count = 64};
+			inventory.Slots[slot++] = new ItemCartographyTable() {Count = 64};
+			inventory.Slots[slot++] = new ItemCauldron() {Count = 64};
+			inventory.Slots[slot++] = new ItemFletchingTable() {Count = 64};
+			inventory.Slots[slot++] = new ItemGrindstone() {Count = 64};
+			inventory.Slots[slot++] = new ItemLectern() {Count = 64};
+			inventory.Slots[slot++] = new ItemLoom() {Count = 64};
+			inventory.Slots[slot++] = new ItemSmithingTable() {Count = 64};
+			inventory.Slots[slot++] = new ItemSmithingTable() {Count = 64};
+			inventory.Slots[slot++] = new ItemStonecutter() {Count = 64};
+			inventory.Slots[slot++] = new ItemStonecutter() {Count = 64};
 			inventory.Slots[slot++] = new ItemCoal {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new IronOre()) {Count = 64};
+			inventory.Slots[slot++] = new ItemIronOre() {Count = 64};
 
 			player.SendPlayerInventory();
 			SendEquipmentForPlayer(player);
@@ -1008,9 +1008,9 @@ namespace TestPlugin
 			PlayerInventory inventory = player.Inventory;
 
 			byte slot = 0;
-			inventory.Slots[slot++] = new ItemBlock(new CraftingTable()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Anvil()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new EnchantingTable()) {Count = 64};
+			inventory.Slots[slot++] = new ItemCraftingTable() {Count = 64};
+			inventory.Slots[slot++] = new ItemAnvil() {Count = 64};
+			inventory.Slots[slot++] = new ItemEnchantingTable() {Count = 64};
 
 			slot = 9;
 			inventory.Slots[slot++] = new ItemDye()
@@ -1077,9 +1077,9 @@ namespace TestPlugin
 			var inventory = player.Inventory;
 
 			byte slot = 0;
-			inventory.Slots[slot++] = new ItemBlock(new EnchantingTable()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new Anvil()) {Count = 64};
-			inventory.Slots[slot++] = new ItemBlock(new CraftingTable()) {Count = 64};
+			inventory.Slots[slot++] = new ItemEnchantingTable() {Count = 64};
+			inventory.Slots[slot++] = new ItemAnvil() {Count = 64};
+			inventory.Slots[slot++] = new ItemCraftingTable() {Count = 64};
 			player.Inventory.Slots[slot++] = new ItemDye()
 			{
 				Metadata = 4,
@@ -1265,10 +1265,10 @@ namespace TestPlugin
 					}
 				}
 			};
-			inventory.Slots[c++] = new ItemBlock(new Anvil(), 0) {Count = 64};
-			inventory.Slots[c++] = new ItemBlock(new EnchantingTable(), 0) {Count = 64};
-			inventory.Slots[c++] = new ItemDye() { Metadata = 4, Count = 64 };
-			inventory.Slots[c++] = new ItemBlock(new Planks(), 0) {Count = 64};
+			inventory.Slots[c++] = new ItemAnvil() { Count  = 64 };
+			inventory.Slots[c++] = new ItemEnchantingTable() { Count  = 64 };
+			inventory.Slots[c++] = new ItemDye() { Metadata = 4,Count = 64};
+			inventory.Slots[c++] = new ItemPlanks() { Count  = 64 };
 			inventory.Slots[c++] = new ItemCompass(); // Wooden Sword
 			inventory.Slots[c++] = new ItemWoodenSword(); // Wooden Sword
 			inventory.Slots[c++] = new ItemStoneSword(); // Stone Sword
@@ -1397,9 +1397,9 @@ namespace TestPlugin
 			var inventory = player.Inventory;
 
 			byte c = 0;
-			inventory.Slots[c++] = new ItemBlock(new Furnace(), 0) {Count = 64}; // Custom command block
+			inventory.Slots[c++] = new ItemFurnace() {Count = 64}; // Custom command block
 			inventory.Slots[c++] = new ItemCoal {Count = 64}; // Custom command block
-			inventory.Slots[c++] = new ItemBlock(new IronOre(), 0) {Count = 64}; // Custom command block
+			inventory.Slots[c++] = new ItemIronOre() {Count = 64}; // Custom command block
 
 			player.SendPlayerInventory();
 			SendEquipmentForPlayer(player);

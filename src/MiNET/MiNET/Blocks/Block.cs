@@ -113,16 +113,7 @@ namespace MiNET.Blocks
 
 		public virtual Item GetItem(Level world, bool blockItem = false)
 		{
-			if (!BlockFactory.BlockStates.TryGetValue(GetState(), out BlockStateContainer stateFromPick)) return null;
-
-			if (blockItem && stateFromPick.ItemInstance != null)
-			{
-				return ItemFactory.GetItem(stateFromPick.ItemInstance.Id, stateFromPick.ItemInstance.Metadata);
-			}
-			else
-			{
-				return ItemFactory.GetItem(Id, stateFromPick.Data);
-			}
+			return ItemFactory.GetItem(Id);
 		}
 
 		public bool CanPlace(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face)
@@ -272,6 +263,24 @@ namespace MiNET.Blocks
 		public object Clone()
 		{
 			return MemberwiseClone();
+		}
+
+		protected virtual bool Equals(Block other)
+		{
+			return Id == Id && GetRuntimeId() == other.GetRuntimeId();
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (!(obj is Block)) return false;
+			return Equals((Block) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, GetRuntimeId());
 		}
 
 		public override string ToString()

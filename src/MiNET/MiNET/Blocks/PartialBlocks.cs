@@ -1845,7 +1845,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:birch_log";
 
 		[StateEnum("y", "x", "z")]
-		public override string PillarAxis { get; set; } = "";
+		public override string PillarAxis { get; set; } = "y";
 
 		public override void SetState(List<IBlockState> states)
 		{
@@ -5894,7 +5894,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dark_oak_log";
 
 		[StateEnum("y", "x", "z")]
-		public override string PillarAxis { get; set; } = "";
+		public override string PillarAxis { get; set; } = "y";
 
 		public override void SetState(List<IBlockState> states)
 		{
@@ -10558,7 +10558,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:jungle_log";
 
 		[StateEnum("y", "x", "z")]
-		public override string PillarAxis { get; set; } = "";
+		public override string PillarAxis { get; set; } = "y";
 
 		public override void SetState(List<IBlockState> states)
 		{
@@ -16954,7 +16954,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:spruce_log";
 
 		[StateEnum("y", "x", "z")]
-		public override string PillarAxis { get; set; } = "";
+		public override string PillarAxis { get; set; } = "y";
 
 		public override void SetState(List<IBlockState> states)
 		{

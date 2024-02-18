@@ -30,13 +30,30 @@ using JetBrains.Annotations;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Entities;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 using Newtonsoft.Json;
 
 namespace MiNET.Items
 {
+	/// <summary>
+	///     Generic Item that will simply place the block on use. No interaction or other use supported by the block.
+	/// </summary>
+	public abstract class ItemBlock<TBlock> : ItemBlock where TBlock : Block, new()
+	{
+		[JsonIgnore] public new TBlock Block { get => (TBlock) base.Block; }
+
+		public ItemBlock() : this(new TBlock())
+		{
+
+		}
+
+		protected ItemBlock([NotNull] TBlock block) : base(block)
+		{
+
+		}
+	}
+
 	/// <summary>
 	///     Generic Item that will simply place the block on use. No interaction or other use supported by the block.
 	/// </summary>
@@ -55,21 +72,12 @@ namespace MiNET.Items
 			_blockRuntimeId = new Lazy<int>(() => Block?.GetRuntimeId() ?? -1);
 		}
 
-		public ItemBlock([NotNull] Block block, short metadata = 0) : this()
+		internal ItemBlock([NotNull] Block block) : this()
 		{
 			Block = block ?? throw new ArgumentNullException(nameof(block));
 
 			Id = block.Id;
-			Metadata = metadata;
 	
-			if (BlockFactory.BlockStates.TryGetValue(block.GetState(), out BlockStateContainer value))
-			{
-				var instanceMetadata = value.ItemInstance?.Metadata;
-				if (Id != value.ItemInstance?.Id) instanceMetadata = null;
-
-				Metadata = (short) (instanceMetadata ?? (value.Data == -1 ? 0 : value.Data));
-			}
-
 			FuelEfficiency = Block.FuelEfficiency;
 			Edu = Block.Edu;
 		}
@@ -165,6 +173,23 @@ namespace MiNET.Items
 		public override string ToString()
 		{
 			return $"{GetType().Name}(Id={Id}, Meta={Metadata}, UniqueId={UniqueId}) {{Block={Block?.GetType().Name}}} Count={Count}, NBT={ExtraData}";
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(base.GetHashCode(), Block.GetHashCode());
+		}
+
+		internal void SetBlock(Block block)
+		{
+			Block = block;
+		}
+
+		protected override bool Equals(Item other)
+		{
+			return other is ItemBlock otherItemBlock
+				&& base.Equals(other)
+				&& Block.Equals(otherItemBlock.Block);
 		}
 	}
 }

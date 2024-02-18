@@ -174,13 +174,6 @@ namespace MiNET.Blocks
 
 							var id = blockIdItemIdMap.GetValueOrDefault(mappedName, mappedName);
 
-							BlockPalette[match].ItemInstance = new ItemPickInstance()
-							{
-								Id = id,
-								Metadata = data,
-								WantNbt = false
-							};
-
 							break;
 						}
 					}
@@ -330,11 +323,7 @@ namespace MiNET.Blocks
 			return RuntimeIdToId.GetValueOrDefault(id);
 		}
 
-		public static T GetBlockById<T>(string id, short metadata) where T : Block
-		{
-			return (T) GetBlockById(id, metadata);
-		}
-
+		[Obsolete]
 		public static Block GetBlockById(string id, short metadata)
 		{
 			var block = GetBlockById(id);
@@ -345,7 +334,6 @@ namespace MiNET.Blocks
 			}
 
 			block.SetState(map.States);
-			block.Metadata = (byte) metadata;
 
 			return block;
 		}
@@ -372,7 +360,6 @@ namespace MiNET.Blocks
 			if (block != null)
 			{
 				block.SetState(blockState.States);
-				block.Metadata = (byte) blockState.Data;
 			}
 
 			return block;

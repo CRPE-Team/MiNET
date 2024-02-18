@@ -216,6 +216,14 @@ namespace MiNET.Test
 				{
 					var currentBlockState = blockstateGrouping.First();
 					var defaultBlockState = blockstateGrouping.FirstOrDefault(bs => bs.Data == 0);
+					if (defaultBlockState == null)
+					{
+						defaultBlockState = blockstateGrouping.OrderBy(bs => bs.Data).First();
+						if (defaultBlockState != null)
+						{
+							Console.WriteLine($"Unexpected not zero block state data id [{defaultBlockState}]");
+						}
+					}
 
 					var id = currentBlockState.Id;
 					var name = id.Replace("minecraft:", "");

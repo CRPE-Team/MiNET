@@ -84,7 +84,6 @@ namespace MiNET.Inventory
 				if (BlockFactory.BlockStates.TryGetValue(statesContainer, out var blockStateContainer))
 				{
 					itemBlock.Block.SetState(blockStateContainer);
-					itemBlock.Metadata = blockStateContainer.Data;
 				}
 			}
 

@@ -41,10 +41,10 @@ namespace MiNET.Test
 		public void RemoveItemsFromInventoryTest()
 		{
 			var inventory = new PlayerInventory(new Player(null, null));
-			inventory.Slots[0] = new ItemBlock(new Cobblestone()) {Count = 64};
-			inventory.Slots[1] = new ItemBlock(new Stone()) {Count = 64};
-			inventory.Slots[2] = new ItemBlock(new Stone()) {Count = 64};
-			inventory.Slots[3] = new ItemBlock(new Stone()) {Count = 64};
+			inventory.Slots[0] = new ItemCobblestone {Count = 64};
+			inventory.Slots[1] = new ItemStone {Count = 64};
+			inventory.Slots[2] = new ItemStone {Count = 64};
+			inventory.Slots[3] = new ItemStone {Count = 64};
 
 			inventory.RemoveItems(BlockFactory.GetIdByType<Stone>(), 2);
 
