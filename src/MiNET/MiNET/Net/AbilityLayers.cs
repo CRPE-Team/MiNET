@@ -26,18 +26,70 @@ using System.Collections.Generic;
 
 namespace MiNET.Net;
 
-public class AbilityLayers : List<AbilityLayer>
+public class AbilityLayers : List<AbilityLayer>, IPacketDataObject
 {
-	
+	public void Write(Packet packet)
+	{
+		packet.Write((byte) Count);
+
+		foreach (var layer in this)
+		{
+			layer.Write(packet);
+		}
+	}
+
+	public static AbilityLayers Read(Packet packet)
+	{
+		var layers = new AbilityLayers();
+
+		var count = packet.ReadByte();
+		for (int i = 0; i < count; i++)
+		{
+			layers.Add(AbilityLayer.Read(packet));
+		}
+
+		return layers;
+	}
 }
 
-public class AbilityLayer
+public class AbilityLayer : IPacketDataObject
 {
-	public AbilityLayerType Type;
-	public PlayerAbility Abilities;
-	public uint Values;
-	public float FlySpeed;
-	public float WalkSpeed;
+	public AbilityLayerType Type { get; set; }
+
+	public PlayerAbility Abilities { get; set; }
+
+	public uint Values { get; set; }
+
+	public float FlySpeed { get; set; }
+
+	public float WalkSpeed { get; set; }
+
+	public void Write(Packet packet)
+	{
+		packet.Write((ushort) Type);
+
+		var values = Abilities;
+
+		if (FlySpeed > 0) Abilities |= PlayerAbility.FlySpeed;
+		if (WalkSpeed > 0) Abilities |= PlayerAbility.WalkSpeed;
+
+		packet.Write((uint) Abilities);
+		packet.Write((uint) values);
+		packet.Write(FlySpeed);
+		packet.Write(WalkSpeed);
+	}
+
+	public static AbilityLayer Read(Packet packet)
+	{
+		return new AbilityLayer()
+		{
+			Type = (AbilityLayerType) packet.ReadUshort(),
+			Abilities = (PlayerAbility) packet.ReadUint(),
+			Values = packet.ReadUint(),
+			FlySpeed = packet.ReadFloat(),
+			WalkSpeed = packet.ReadFloat()
+		};
+	}
 }
 
 public enum AbilityLayerType
@@ -70,5 +122,5 @@ public enum PlayerAbility : uint
 	Muted = 1 << 15,
 	WorldBuilder = 1 << 16,
 	NoClip = 1 << 17,
-	PrivilegedBuilder= 1 << 18
+	PrivilegedBuilder = 1 << 18
 }
