@@ -42,6 +42,12 @@ namespace MiNET.Items
 			RuntimeIdToId = BuildRuntimeIdToId();
 			(IdToType, TypeToId) = BuildIdTypeMapPair();
 			IdToFactory = BuildIdToFactory();
+
+			var missingItems = Itemstates.Keys.Where(id => !id.Contains("item.")).Except(IdToType.Keys);
+			foreach (var missingItem in missingItems)
+			{
+				Log.Warn($"Detected missing items [{missingItem}]");
+			}
 		}
 
 		public static string GetIdByType<T>()

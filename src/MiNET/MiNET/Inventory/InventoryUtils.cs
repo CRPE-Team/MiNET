@@ -95,6 +95,8 @@ namespace MiNET.Inventory
 				item.ExtraData = Packet.ReadNbtCompound(memoryStream, false);
 			}
 
+			item.Metadata = itemData.Metadata;
+
 			result = item;
 			return true;
 		}

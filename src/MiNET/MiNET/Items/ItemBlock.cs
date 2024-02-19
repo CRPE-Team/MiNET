@@ -76,7 +76,7 @@ namespace MiNET.Items
 		{
 			Block = block ?? throw new ArgumentNullException(nameof(block));
 
-			Id = block.Id;
+			Id ??= block.Id;
 	
 			FuelEfficiency = Block.FuelEfficiency;
 			Edu = Block.Edu;
