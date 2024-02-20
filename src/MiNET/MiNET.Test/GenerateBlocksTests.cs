@@ -409,6 +409,18 @@ namespace MiNET.Test
 			{
 				return nameof(ElementBase);
 			}
+			if (name.EndsWith("standing_sign"))
+			{
+				return nameof(StandingSignBase);
+			}
+			if (name.EndsWith("hanging_sign"))
+			{
+				return nameof(HangingSignBase);
+			}
+			if (name.EndsWith("wall_sign"))
+			{
+				return nameof(WallSignBase);
+			}
 
 			return nameof(Block);
 		}

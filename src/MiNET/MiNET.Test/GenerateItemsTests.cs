@@ -82,10 +82,11 @@ namespace MiNET.Test
 
 					if (existingType == null 
 						|| existingType.BaseType == baseType
+						|| (baseType?.IsAssignableTo(existingType.BaseType) ?? false)
 						|| existingType.BaseType == typeof(object)
 						|| existingType.BaseType == typeof(Item)
 						|| (existingType.BaseType == typeof(ItemBlock) && (baseType?.IsAssignableTo(typeof(ItemBlock)) ?? false))
-						|| (existingType.BaseType.GetGenericTypeDefinition() == typeof(ItemBlock<>) && (baseType?.IsAssignableTo(typeof(ItemBlock)) ?? false)))
+						|| (existingType.BaseType.IsGenericType && existingType.BaseType.GetGenericTypeDefinition() == typeof(ItemBlock<>) && (baseType?.IsAssignableTo(typeof(ItemBlock)) ?? false)))
 					{
 						baseClassPart = $" : {baseName}";
 					}
@@ -143,6 +144,10 @@ namespace MiNET.Test
 			if (id.EndsWith("_carpet"))
 			{
 				return new GenerationItemInfo(typeof(ItemCarpetBase).Name);
+			}
+			if (id.EndsWith("_hanging_sign"))
+			{
+				return new GenerationItemInfo(typeof(ItemHangingSignBase).Name);
 			}
 
 			var genInfo = new GenerationItemInfo(associatedBlockId == null ? "Item" : "ItemBlock");
