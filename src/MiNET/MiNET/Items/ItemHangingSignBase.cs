@@ -1,7 +1,10 @@
 ﻿namespace MiNET.Items
 {
-	public class ItemHangingSignBase : ItemSignBase
+	public abstract class ItemHangingSignBase : ItemSignBase
 	{
+		protected ItemHangingSignBase() : base()
+		{
 
+		}
 	}
 }

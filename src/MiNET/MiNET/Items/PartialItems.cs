@@ -28,7 +28,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:acacia_fence_gate";
 	}
 
-	public partial class ItemAcaciaHangingSign : ItemSignBase
+	public partial class ItemAcaciaHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:acacia_hanging_sign";
 
@@ -232,7 +232,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:bamboo_fence_gate";
 	}
 
-	public partial class ItemBambooHangingSign : ItemSignBase
+	public partial class ItemBambooHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:bamboo_hanging_sign";
 
@@ -414,7 +414,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:birch_fence_gate";
 	}
 
-	public partial class ItemBirchHangingSign : ItemSignBase
+	public partial class ItemBirchHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:birch_hanging_sign";
 
@@ -920,7 +920,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:cherry_fence_gate";
 	}
 
-	public partial class ItemCherryHangingSign : ItemSignBase
+	public partial class ItemCherryHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:cherry_hanging_sign";
 
@@ -1357,7 +1357,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:crimson_fungus";
 	}
 
-	public partial class ItemCrimsonHangingSign : ItemSignBase
+	public partial class ItemCrimsonHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:crimson_hanging_sign";
 
@@ -1511,7 +1511,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:dark_oak_fence_gate";
 	}
 
-	public partial class ItemDarkOakHangingSign : ItemSignBase
+	public partial class ItemDarkOakHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:dark_oak_hanging_sign";
 
@@ -3667,7 +3667,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:jungle_fence_gate";
 	}
 
-	public partial class ItemJungleHangingSign : ItemSignBase
+	public partial class ItemJungleHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:jungle_hanging_sign";
 
@@ -4085,7 +4085,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:mangrove_fence_gate";
 	}
 
-	public partial class ItemMangroveHangingSign : ItemSignBase
+	public partial class ItemMangroveHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:mangrove_hanging_sign";
 
@@ -4604,7 +4604,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:oak_fence";
 	}
 
-	public partial class ItemOakHangingSign : ItemSignBase
+	public partial class ItemOakHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:oak_hanging_sign";
 
@@ -5734,7 +5734,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:spruce_fence_gate";
 	}
 
-	public partial class ItemSpruceHangingSign : ItemSignBase
+	public partial class ItemSpruceHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:spruce_hanging_sign";
 
@@ -6337,7 +6337,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:warped_fungus_on_a_stick";
 	}
 
-	public partial class ItemWarpedHangingSign : ItemSignBase
+	public partial class ItemWarpedHangingSign : ItemHangingSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:warped_hanging_sign";
 

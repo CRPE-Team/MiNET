@@ -32,7 +32,7 @@ namespace MiNET.Items
 {
 	public abstract class ItemSignBase : ItemBlock
 	{
-		public ItemSignBase() : base()
+		protected ItemSignBase() : base()
 		{
 			MaxStackSize = 16;
 		}
@@ -41,16 +41,22 @@ namespace MiNET.Items
 		{
 			if (face == BlockFace.Down) return false;
 
-			var id = Id.Replace("dark_oak", "darkoak");
+			var id = Id;
+
+			if (!id.Contains("hanging")) id = id.Replace("dark_oak", "darkoak");
 			if (id == "minecraft:oak_sign") id = id.Replace("oak_", "");
 
 			if (face == BlockFace.Up)
 			{
-				Block = BlockFactory.GetBlockById(id.Replace("sign", "standing_sign"));
+				if (!id.Contains("hanging")) id = id.Replace("sign", "standing_sign");
+
+				Block = BlockFactory.GetBlockById(id);
 			}
 			else
 			{
-				Block = BlockFactory.GetBlockById(id.Replace("sign", "wall_sign"));
+				if (!id.Contains("hanging")) id = id.Replace("sign", "wall_sign");
+
+				Block = BlockFactory.GetBlockById(id);
 			}
 
 			return base.PlaceBlock(world, player, blockCoordinates, face, faceCoords);
