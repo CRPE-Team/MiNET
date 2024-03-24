@@ -61,6 +61,8 @@ namespace MiNET.Items
 		public byte Count { get; set; } = 1;
 		public virtual NbtCompound ExtraData { get; set; }
 
+		public bool Edu { get; protected set; } = false;
+
 		[JsonIgnore] public virtual ItemMaterial ItemMaterial { get; set; } = ItemMaterial.None;
 
 		[JsonIgnore] public virtual ItemType ItemType { get; set; } = ItemType.Item;
@@ -210,7 +212,7 @@ namespace MiNET.Items
 		{
 		}
 
-		protected bool Equals(Item other)
+		protected virtual bool Equals(Item other)
 		{
 			if (Id != other.Id || Metadata != other.Metadata) return false;
 			if (ExtraData == null ^ other.ExtraData == null) return false;
@@ -232,6 +234,7 @@ namespace MiNET.Items
 					nbtCheck = saveToBuffer.SequenceEqual(saveToBuffer2);
 				}
 			}
+
 			return nbtCheck;
 		}
 

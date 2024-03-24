@@ -598,7 +598,7 @@ namespace MiNET
 				case PlayerAction.Breaking:
 				{
 					Block target = Level.GetBlock(message.coordinates);
-					int data = ((int) target.GetRuntimeId()) | ((byte) (message.face << 24));
+					int data = ((int) target.RuntimeId) | ((byte) (message.face << 24));
 
 					McpeLevelEvent breakEvent = McpeLevelEvent.CreateObject();
 					breakEvent.eventId = 2014;
@@ -2877,11 +2877,11 @@ namespace MiNET
 		public virtual void HandleMcpeBlockPickRequest(McpeBlockPickRequest message)
 		{
 			Block block = Level.GetBlock(message.x, message.y, message.z);
-			Log.Debug($"Picked block {block.Id} from blockstate {block.GetRuntimeId()}. Expected block to be in slot {message.selectedSlot}");
+			Log.Debug($"Picked block {block.Id} from blockstate {block.RuntimeId}. Expected block to be in slot {message.selectedSlot}");
 			Item item = block.GetItem(Level);
 			if (item is ItemBlock blockItem)
 			{
-				Log.Debug($"Have BlockItem with block state {blockItem.Block.GetRuntimeId()}");
+				Log.Debug($"Have BlockItem with block state {blockItem.Block.RuntimeId}");
 			}
 			if (item == null) return;
 

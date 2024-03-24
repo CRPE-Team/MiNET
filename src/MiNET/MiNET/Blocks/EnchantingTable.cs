@@ -23,11 +23,8 @@
 
 #endregion
 
-using System.Collections.Generic;
 using System.Numerics;
 using MiNET.BlockEntities;
-using MiNET.Net;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -45,7 +42,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			byte direction = player.GetDirection();
+			var direction = player.GetDirection();
 
 			//switch (direction)
 			//{
@@ -73,7 +70,6 @@ namespace MiNET.Blocks
 
 		public override bool Interact(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoord)
 		{
-			
 			player.OpenInventory(blockCoordinates);
 
 			return true;

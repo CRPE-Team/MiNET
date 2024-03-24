@@ -91,8 +91,10 @@ namespace MiNET.Net.Crafting
 
 		public override bool ValidateItem(Item item)
 		{
+			var metadata = item is ItemBlock itemBlock ? itemBlock.Block.Data : item.Metadata;
+
 			return item.Id == Id
-				&& (item.Metadata == Metadata || Metadata == short.MaxValue)
+				&& (metadata == Metadata || Metadata == short.MaxValue)
 				&& item.Count >= Count;
 		}
 

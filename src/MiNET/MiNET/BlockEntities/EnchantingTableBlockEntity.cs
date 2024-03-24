@@ -1,4 +1,4 @@
-#region LICENSE
+﻿#region LICENSE
 
 // The contents of this file are subject to the Common Public Attribution
 // License Version 1.0. (the "License"); you may not use this file except in
@@ -24,6 +24,7 @@
 #endregion
 
 using fNbt;
+using MiNET.Items;
 
 namespace MiNET.BlockEntities
 {
@@ -42,32 +43,14 @@ namespace MiNET.BlockEntities
 				new NbtInt("z", Coordinates.Z)
 			};
 
-			NbtList items = (NbtList) Compound["Items"];
-			//for (byte i = 0; i < 2; i++)
-			//{
-			//	items.Add(new NbtCompound()
-			//	{
-			//		new NbtByte("Count", 0),
-			//		new NbtByte("Slot", i),
-			//		new NbtShort("id", 0),
-			//		new NbtByte("Damage", 0),
-			//	});
-			//}
+			var items = (NbtList) Compound["Items"];
+			for (byte i = 0; i < 2; i++)
+			{
+				var itemTag = new ItemAir().ToNbt();
+				itemTag.Add(new NbtByte("Slot", i));
 
-			items.Add(new NbtCompound()
-			{
-				new NbtByte("Count", 0),
-				new NbtByte("Slot", 0),
-				new NbtShort("id", 0),
-				new NbtShort("Damage", 0),
-			});
-			items.Add(new NbtCompound()
-			{
-				new NbtByte("Count", 0),
-				new NbtByte("Slot", 1),
-				new NbtShort("id", 0),
-				new NbtShort("Damage", 0),
-			});
+				items.Add(itemTag);
+			}
 		}
 
 		public override NbtCompound GetCompound()
@@ -85,7 +68,7 @@ namespace MiNET.BlockEntities
 
 			if (Compound["Items"] == null)
 			{
-				NbtList items = new NbtList("Items");
+				var items = new NbtList("Items");
 				for (byte i = 0; i < 2; i++)
 				{
 					items.Add(new NbtCompound()
@@ -96,6 +79,7 @@ namespace MiNET.BlockEntities
 						new NbtShort("Damage", 0),
 					});
 				}
+
 				Compound["Items"] = items;
 			}
 		}

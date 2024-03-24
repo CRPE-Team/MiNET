@@ -45,7 +45,7 @@ namespace MiNET.Console
 		private readonly IWorldProvider _worldProvider;
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ChunkGeneratorHandler));
 		private BlockPalette BlockPalette;
-		private HashSet<BlockStateContainer> _internalStates;
+		private HashSet<IBlockStateContainer> _internalStates;
 
 		public ChunkGeneratorHandler(MiNetClient client, IWorldProvider worldProvider) : base(client)
 		{
@@ -82,7 +82,7 @@ namespace MiNET.Console
 
 			BlockPalette = message.blockPalette;
 
-			_internalStates = new HashSet<BlockStateContainer>(BlockFactory.BlockPalette);
+			_internalStates = new HashSet<IBlockStateContainer>(BlockFactory.BlockPalette);
 
 			Log.Info($"Telling server to do 1 chunk radius");
 			var packet = McpeRequestChunkRadius.CreateObject();

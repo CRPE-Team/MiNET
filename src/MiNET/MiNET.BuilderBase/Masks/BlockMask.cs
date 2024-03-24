@@ -1,4 +1,4 @@
-using MiNET.Blocks;
+﻿using MiNET.Blocks;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
@@ -20,7 +20,7 @@ namespace MiNET.BuilderBase.Masks
 		{
 			var to = _level.GetBlock(coordinates);
 
-			return to.Id == _from.Id && to.Metadata == _from.Metadata;
+			return to.Id == _from.Id && to.Data == _from.Data;
 		}
 	}
 }

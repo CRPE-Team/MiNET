@@ -41,6 +41,8 @@ namespace MiNET.Blocks
 
 		public override string Id => "minecraft:chalkboard";
 
+		public short Size { get; set; }
+
 		public Chalkboard() : base()
 		{
 			IsTransparent = true;
@@ -49,19 +51,6 @@ namespace MiNET.Blocks
 			Hardness = 1;
 		}
 
-		public override void SetState(List<IBlockState> states)
-		{
-			
-		} // method
-
-		public override BlockStateContainer GetState()
-		{
-			var record = new BlockStateContainer();
-			record.Id = "minecraft:chalkboard";
-			return record;
-		} // method
-
-
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
 			return world.GetBlock(blockCoordinates).IsReplaceable;
@@ -69,16 +58,14 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			int size = Metadata;
-
-			if (size == 0)
+			if (Size == 0)
 			{
-				Metadata = (byte) ((int) (Math.Floor((player.KnownPosition.Yaw + 180) * 16 / 360) + 0.5) & 0x0f);
+				Size = (byte) ((int) (Math.Floor((player.KnownPosition.Yaw + 180) * 16 / 360) + 0.5) & 0x0f);
 
 				var block = new Chalkboard
 				{
 					Coordinates = Coordinates,
-					Metadata = Metadata
+					Size = Size
 				};
 				world.SetBlock(block);
 
@@ -87,15 +74,15 @@ namespace MiNET.Blocks
 					BaseCoordinates = Coordinates,
 					Coordinates = Coordinates,
 					Owner = player.EntityId,
-					Size = size,
+					Size = Size,
 					OnGround = true,
 				};
 
 				world.SetBlockEntity(blockEntity);
 			}
-			else if (size == 1)
+			else if (Size == 1)
 			{
-				Metadata = (byte) ((int) (Math.Floor((player.KnownPosition.Yaw + 180) * 4 / 360) + 0.5) & 0x0f);
+				Size = (byte) ((int) (Math.Floor((player.KnownPosition.Yaw + 180) * 4 / 360) + 0.5) & 0x0f);
 
 				var current = Coordinates;
 
@@ -104,7 +91,7 @@ namespace MiNET.Blocks
 					var block = new Chalkboard
 					{
 						Coordinates = current + GetDirCoord() * x,
-						Metadata = Metadata
+						Size = Size
 					};
 					world.SetBlock(block);
 					var blockEntity = new ChalkboardBlockEntity
@@ -112,15 +99,15 @@ namespace MiNET.Blocks
 						BaseCoordinates = Coordinates,
 						Coordinates = current + GetDirCoord() * x,
 						Owner = player.EntityId,
-						Size = size,
+						Size = Size,
 						OnGround = true,
 					};
 					world.SetBlockEntity(blockEntity);
 				}
 			}
-			else if (size == 2)
+			else if (Size == 2)
 			{
-				Metadata = (byte) ((int) (Math.Floor((player.KnownPosition.Yaw + 180) * 4 / 360) + 0.5) & 0x0f);
+				Size = (byte) ((int) (Math.Floor((player.KnownPosition.Yaw + 180) * 4 / 360) + 0.5) & 0x0f);
 
 				for (int y = 0; y < 2; y++)
 				{
@@ -131,7 +118,7 @@ namespace MiNET.Blocks
 						var block = new Chalkboard
 						{
 							Coordinates = current + GetDirCoord() * x,
-							Metadata = Metadata
+							Size = Size
 						};
 						world.SetBlock(block);
 						var blockEntity = new ChalkboardBlockEntity
@@ -139,7 +126,7 @@ namespace MiNET.Blocks
 							BaseCoordinates = Coordinates,
 							Coordinates = current + GetDirCoord() * x,
 							Owner = player.EntityId,
-							Size = size,
+							Size = Size,
 							OnGround = true,
 						};
 						world.SetBlockEntity(blockEntity);
@@ -210,7 +197,7 @@ namespace MiNET.Blocks
 		private BlockCoordinates GetDirCoord()
 		{
 			BlockCoordinates direction = new BlockCoordinates();
-			switch (Metadata & 0x07)
+			switch (Size & 0x07)
 			{
 				case 0:
 					direction = Level.West;

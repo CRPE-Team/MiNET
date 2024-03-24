@@ -423,7 +423,7 @@ namespace MiNET.BuilderBase.Commands
 			var selection = selector.GetSelectedBlocks().Where(coord =>
 			{
 				var block = player.Level.GetBlock(coord);
-				return block.Id == tileId && (!separateByData || block.Metadata == tileData);
+				return block.Id == tileId && (!separateByData || block.Data == tileData);
 			}).ToArray();
 
 			player.SendMessage($"Counted: {selection.Length}");
@@ -438,7 +438,7 @@ namespace MiNET.BuilderBase.Commands
 			Dictionary<Tuple<string, int>, int> dist = new Dictionary<Tuple<string, int>, int>();
 			foreach (var block in selection)
 			{
-				Tuple<string, int> tuple = Tuple.Create(block.Id, separateByData ? block.Metadata : 0);
+				Tuple<string, int> tuple = Tuple.Create(block.Id, separateByData ? block.Data : 0);
 				if (dist.ContainsKey(tuple)) dist[tuple] = dist[tuple] + 1;
 				else dist.Add(tuple, 1);
 			}

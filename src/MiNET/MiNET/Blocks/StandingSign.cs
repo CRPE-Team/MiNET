@@ -54,10 +54,9 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			var container = GetState();
-			var direction = (BlockStateInt) container.States.First(s => s.Name == "ground_sign_direction");
+			var direction = (BlockStateInt) States.First(s => s.Name == "ground_sign_direction");
 			direction.Value = (byte) ((int) (Math.Floor((player.KnownPosition.Yaw + 180) * 16 / 360) + 0.5) & 0x0f);
-			SetState(container);
+			SetStates(this);
 
 			var signBlockEntity = new SignBlockEntity {Coordinates = Coordinates};
 			world.SetBlockEntity(signBlockEntity);

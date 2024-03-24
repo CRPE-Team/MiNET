@@ -62,7 +62,7 @@ namespace MiNET.Blocks
 			if (world.GetBlockEntity(Coordinates) is FlowerPotBlockEntity existingBlockEntity && existingBlockEntity.PlantBlock != null)
 			{
 				if (existingBlockEntity.PlantBlock.Id == block?.Id
-					&& existingBlockEntity.PlantBlock.GetGlobalState().Data == block.GetGlobalState().Data)
+					&& existingBlockEntity.PlantBlock.Data == block.Data)
 				{
 					return;
 				}

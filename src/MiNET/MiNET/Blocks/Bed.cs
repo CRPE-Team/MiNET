@@ -34,7 +34,7 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class Bed : Block
+	public partial class Bed
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Bed));
 

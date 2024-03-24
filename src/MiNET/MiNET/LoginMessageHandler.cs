@@ -62,6 +62,11 @@ namespace MiNET
 		private object _loginSyncLock = new object();
 		private PlayerInfo _playerInfo = new PlayerInfo();
 
+		static LoginMessageHandler()
+		{
+			JWT.DefaultSettings.JsonMapper = new NewtonsoftMapper();
+		}
+
 		public LoginMessageHandler(BedrockMessageHandler bedrockHandler, RakSession session, IServerManager serverManager)
 		{
 			_bedrockHandler = bedrockHandler;
