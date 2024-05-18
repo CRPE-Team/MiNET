@@ -163,7 +163,7 @@ namespace MiNET.Utils
 			var records = new PlayerAddRecords();
 
 			var count = packet.ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
+			for (var i = 0; i < count; i++)
 			{
 				records.Add(ReadRecord(packet));
 			}
@@ -236,7 +236,7 @@ namespace MiNET.Utils
 			var records = new PlayerRemoveRecords();
 
 			var count = packet.ReadUnsignedVarInt();
-			for (int i = 0; i < count; i++)
+			for (var i = 0; i < count; i++)
 			{
 				records.Add(ReadRecord(packet));
 			}
