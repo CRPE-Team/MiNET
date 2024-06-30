@@ -1961,21 +1961,26 @@ namespace MiNET.Net
 
 		public void Write(PotionContainerChangeRecipe[] recipes)
 		{
-			WriteUnsignedVarInt(0);
+			if (recipes == null || recipes.Length == 0)
+			{
+				WriteUnsignedVarInt(0);
+				return;
+			}
+
+			WriteUnsignedVarInt((uint) recipes.Length);
+			foreach (var recipe in recipes)
+			{
+				Write(recipe);
+			}
 		}
 
 		public PotionContainerChangeRecipe[] ReadPotionContainerChangeRecipes()
 		{
-			int count = (int) ReadUnsignedVarInt();
+			var count = (int) ReadUnsignedVarInt();
 			var recipes = new PotionContainerChangeRecipe[count];
 			for (int i = 0; i < recipes.Length; i++)
 			{
-				var recipe = new PotionContainerChangeRecipe();
-				recipe.Input = ReadVarInt();
-				recipe.Ingredient = ReadVarInt();
-				recipe.Output = ReadVarInt();
-
-				recipes[i] = recipe;
+				recipes[i] = PotionContainerChangeRecipe.Read(this);
 			}
 
 			return recipes;
@@ -1983,52 +1988,26 @@ namespace MiNET.Net
 
 		public void Write(MaterialReducerRecipe[] reducerRecipes)
 		{
-			if (reducerRecipes == null)
+			if (reducerRecipes == null || reducerRecipes.Length == 0)
 			{
 				WriteUnsignedVarInt(0);
 				return;
 			}
 
 			WriteUnsignedVarInt((uint) reducerRecipes.Length);
-
-			for (int i = 0; i < reducerRecipes.Length; i++)
+			foreach (var recipe in reducerRecipes)
 			{
-				var recipe = reducerRecipes[i];
-				WriteVarInt((recipe.Input << 16) | recipe.InputMeta);
-				WriteUnsignedVarInt((uint) recipe.Output.Length);
-
-				foreach (var output in recipe.Output)
-				{
-					WriteVarInt(output.ItemId);
-					WriteVarInt(output.ItemCount);
-				}
+				Write(recipe);
 			}
 		} 
 
 		public MaterialReducerRecipe[] ReadMaterialReducerRecipes()
 		{
-			int count = (int) ReadUnsignedVarInt();
+			var count = (int) ReadUnsignedVarInt();
 			var recipes = new MaterialReducerRecipe[count];
 			for (int i = 0; i < recipes.Length; i++)
 			{
-				var inputIdAndMeta = ReadVarInt();
-				var inputId = inputIdAndMeta >> 16;
-				var inputMeta = inputIdAndMeta & 0x7fff;
-
-				var outputCount = (int) ReadUnsignedVarInt();
-				MaterialReducerRecipe.MaterialReducerRecipeOutput[] outputs = new MaterialReducerRecipe.MaterialReducerRecipeOutput[outputCount];
-
-				for (int o = 0; o < outputs.Length; o++)
-				{
-					var itemId = ReadVarInt();
-					var itemCount = ReadVarInt();
-
-					outputs[o] = new MaterialReducerRecipe.MaterialReducerRecipeOutput(itemId, itemCount);
-				}
-				
-				var recipe = new MaterialReducerRecipe(inputId, inputMeta, outputs);
-
-				recipes[i] = recipe;
+				recipes[i] = MaterialReducerRecipe.Read(this);
 			}
 
 			return recipes;
@@ -2036,264 +2015,33 @@ namespace MiNET.Net
 
 		public void Write(PotionTypeRecipe[] recipes)
 		{
-			WriteUnsignedVarInt(0);
+			if (recipes == null || recipes.Length == 0)
+			{
+				WriteUnsignedVarInt(0);
+			}
+
+			WriteUnsignedVarInt((uint) recipes.Length);
+			foreach (var recipe in recipes)
+			{
+				Write(recipe);
+			}
 		}
 
 		public PotionTypeRecipe[] ReadPotionTypeRecipes()
 		{
-			int count = (int) ReadUnsignedVarInt();
+			var count = (int) ReadUnsignedVarInt();
 			var recipes = new PotionTypeRecipe[count];
 			for (int i = 0; i < recipes.Length; i++)
 			{
-				var recipe = new PotionTypeRecipe();
-				recipe.Input = ReadVarInt();
-				recipe.InputMeta = ReadVarInt();
-				recipe.Ingredient = ReadVarInt();
-				recipe.IngredientMeta = ReadVarInt();
-				recipe.Output = ReadVarInt();
-				recipe.OutputMeta = ReadVarInt();
-
-				recipes[i] = recipe;
+				recipes[i] = PotionTypeRecipe.Read(this);
 			}
 
 			return recipes;
 		}
 
-
-		const int MapUpdateFlagTexture = 0x02;
-		const int MapUpdateFlagDecoration = 0x04;
-		const int MapUpdateFlagInitialisation = 0x08;
-
-		public void Write(MapInfo map)
-		{
-			WriteSignedVarLong(map.MapId);
-			WriteUnsignedVarInt((uint) map.UpdateType);
-			Write((byte) 0); // dimension
-			Write(false); // Locked
-			Write(map.Origin);
-
-			if ((map.UpdateType & MapUpdateFlagInitialisation) != 0)
-			{
-				WriteUnsignedVarInt(0);
-				//WriteSignedVarLong(map.MapId);
-			}
-
-			if ((map.UpdateType & (MapUpdateFlagInitialisation | MapUpdateFlagDecoration | MapUpdateFlagTexture)) != 0)
-			{
-				Write((byte) map.Scale);
-			}
-
-			if ((map.UpdateType & MapUpdateFlagDecoration) != 0)
-			{
-				var countTrackedObj = map.TrackedObjects.Length;
-
-				WriteUnsignedVarInt((uint) countTrackedObj);
-				foreach (var trackedObject in map.TrackedObjects)
-				{
-					if (trackedObject is EntityMapTrackedObject entity)
-					{
-						Write(0);
-						WriteSignedVarLong(entity.EntityId);
-					}
-					else if (trackedObject is BlockMapTrackedObject block)
-					{
-						Write(1);
-						Write(block.Coordinates);
-					}
-				}
-
-				var count = map.Decorators.Length;
-
-				WriteUnsignedVarInt((uint) count);
-				foreach (var decorator in map.Decorators)
-				{
-					if (decorator is EntityMapDecorator entity)
-					{
-						WriteSignedVarLong(entity.EntityId);
-					}
-					else if (decorator is BlockMapDecorator block)
-					{
-						Write(block.Coordinates);
-					}
-				}
-
-				WriteUnsignedVarInt((uint) count);
-				foreach (var decorator in map.Decorators)
-				{
-					Write((byte) decorator.Icon);
-					Write((byte) decorator.Rotation);
-					Write((byte) decorator.X);
-					Write((byte) decorator.Z);
-					Write(decorator.Label);
-					WriteUnsignedVarInt(decorator.Color);
-				}
-			}
-
-			if ((map.UpdateType & MapUpdateFlagTexture) != 0)
-			{
-				WriteSignedVarInt(map.Col);
-				WriteSignedVarInt(map.Row);
-
-				WriteSignedVarInt(map.XOffset);
-				WriteSignedVarInt(map.ZOffset);
-
-				WriteUnsignedVarInt((uint) (map.Col * map.Row));
-				int i = 0;
-				for (int col = 0; col < map.Col; col++)
-				{
-					for (int row = 0; row < map.Row; row++)
-					{
-						byte r = map.Data[i++];
-						byte g = map.Data[i++];
-						byte b = map.Data[i++];
-						byte a = map.Data[i++];
-						uint color = BitConverter.ToUInt32(new byte[] { r, g, b, 0xff }, 0);
-						WriteUnsignedVarInt(color);
-					}
-				}
-			}
-		}
-
 		public MapInfo ReadMapInfo()
 		{
-			MapInfo map = new MapInfo();
-
-			map.MapId = ReadSignedVarLong();
-			map.UpdateType = (byte) ReadUnsignedVarInt();
-			ReadByte(); // Dimension (waste)
-			ReadBool(); // Locked (waste)
-
-			if ((map.UpdateType & MapUpdateFlagInitialisation) == MapUpdateFlagInitialisation)
-			{
-				// Entities
-				var count = ReadUnsignedVarInt();
-				for (int i = 0; i < count - 1; i++) // This is some weird shit vanilla is doing with counting.
-				{
-					var eid = ReadSignedVarLong();
-				}
-			}
-
-			if ((map.UpdateType & MapUpdateFlagTexture) == MapUpdateFlagTexture || (map.UpdateType & MapUpdateFlagDecoration) == MapUpdateFlagDecoration)
-			{
-				map.Scale = ReadByte();
-				//Log.Warn($"Reading scale {map.Scale}");
-			}
-
-			if ((map.UpdateType & MapUpdateFlagDecoration) == MapUpdateFlagDecoration)
-			{
-				// Decorations
-				//Log.Warn("Got decoration update, reading it");
-
-				try
-				{
-					var entityCount = ReadUnsignedVarInt();
-					for (int i = 0; i < entityCount; i++)
-					{
-						var type = ReadInt();
-						if (type == 0)
-						{
-							// entity
-							var q = ReadSignedVarLong();
-						}
-						else if (type == 1)
-						{
-							// block
-							var b = ReadBlockCoordinates();
-						}
-					}
-
-					var count = ReadUnsignedVarInt();
-					map.Decorators = new MapDecorator[count];
-					for (int i = 0; i < count; i++)
-					{
-						MapDecorator decorator = new MapDecorator();
-						decorator.Icon = ReadByte();
-						decorator.Rotation = ReadByte();
-						decorator.X = ReadByte();
-						decorator.Z = ReadByte();
-						decorator.Label = ReadString();
-						decorator.Color = ReadUnsignedVarInt();
-						map.Decorators[i] = decorator;
-					}
-				}
-				catch (Exception e)
-				{
-					Log.Error($"Error while reading decorations for map={map}", e);
-				}
-			}
-
-			if ((map.UpdateType & MapUpdateFlagTexture) == MapUpdateFlagTexture)
-			{
-				// Full map
-				try
-				{
-					map.Col = ReadSignedVarInt();
-					map.Row = ReadSignedVarInt(); //
-
-					map.XOffset = ReadSignedVarInt(); //
-					map.ZOffset = ReadSignedVarInt(); //
-					ReadUnsignedVarInt(); // size
-					for (int col = 0; col < map.Col; col++)
-					{
-						for (int row = 0; row < map.Row; row++)
-						{
-							ReadUnsignedVarInt();
-						}
-					}
-				}
-				catch (Exception e)
-				{
-					Log.Error($"Errror while reading map data for map={map}", e);
-				}
-			}
-
-			//else
-			//{
-			//	Log.Warn($"Unknown map-type 0x{map.UpdateType:X2}");
-			//}
-
-			//map.MapId = ReadLong();
-			//var readBytes = ReadBytes(3);
-			////Log.Warn($"{HexDump(readBytes)}");
-			//map.UpdateType = ReadByte(); //
-			//var bytes = ReadBytes(6);
-			////Log.Warn($"{HexDump(bytes)}");
-
-			//map.Direction = ReadByte(); //
-			//map.X = ReadByte(); //
-			//map.Z = ReadByte(); //
-
-			//if (map.UpdateType == 0x06)
-			//{
-			//	// Full map
-			//	try
-			//	{
-			//		if (bytes[4] == 1)
-			//		{
-			//			map.Col = ReadInt();
-			//			map.Row = ReadInt(); //
-
-			//			map.XOffset = ReadInt(); //
-			//			map.ZOffset = ReadInt(); //
-
-			//			map.Data = ReadBytes(map.Col*map.Row*4);
-			//		}
-			//	}
-			//	catch (Exception e)
-			//	{
-			//		Log.Error($"Errror while reading map data for map={map}", e);
-			//	}
-			//}
-			//else if (map.UpdateType == 0x04)
-			//{
-			//	// Map update
-			//}
-			//else
-			//{
-			//	Log.Warn($"Unknown map-type 0x{map.UpdateType:X2}");
-			//}
-
-			return map;
+			return MapInfo.Read(this);
 		}
 
 		public void Write(ScoreEntries list)
