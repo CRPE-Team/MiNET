@@ -1585,6 +1585,17 @@ namespace MiNET.Net
 			return layers;
 		}
 
+		public void WriteEntityLinks(EntityLinks entityLinks)
+		{
+			if (entityLinks == null)
+			{
+				WriteUnsignedVarInt(0);
+				return;
+			}
+
+			Write(entityLinks);
+		}
+
 		public EntityLinks ReadEntityLinks()
 		{
 			return EntityLinks.Read(this);

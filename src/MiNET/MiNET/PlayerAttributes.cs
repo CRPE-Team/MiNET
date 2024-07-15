@@ -158,6 +158,7 @@ namespace MiNET
 		public void Write(Packet packet)
 		{
 			packet.WriteUnsignedVarInt((uint) Count); // LE
+
 			foreach (var link in this)
 			{
 				link.Write(packet);
