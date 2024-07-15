@@ -1906,10 +1906,7 @@ namespace MiNET
 		{
 			if (!UseCreativeInventory) return;
 
-			var creativeContent = McpeCreativeContent.CreateObject();
-			creativeContent.input = InventoryUtils.GetCreativeMetadataSlots();
-
-			SendPacket(creativeContent);
+			SendPacket(InventoryUtils.GetCreativeInventoryData());
 		}
 
 		private void SendChunkRadiusUpdate()
