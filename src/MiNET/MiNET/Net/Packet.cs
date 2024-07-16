@@ -495,8 +495,14 @@ namespace MiNET.Net
 			return ReadSignedVarLong();
 		}
 
-		public void Write(IPacketDataObject dataObject)
+		public void Write<T>(T dataObject) where T : IPacketDataObject
 		{
+			if (dataObject == null && typeof(T).IsAssignableTo(typeof(System.Collections.IEnumerable)))
+			{
+				WriteUnsignedVarInt(0);
+				return;
+			}
+
 			dataObject.Write(this);
 		}
 
