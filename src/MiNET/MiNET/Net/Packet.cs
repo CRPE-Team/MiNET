@@ -37,6 +37,7 @@ using System.Text;
 using System.Threading;
 using fNbt;
 using log4net;
+using log4net.Appender;
 using Microsoft.IO;
 using MiNET.Items;
 using MiNET.Net.Crafting;
@@ -504,6 +505,21 @@ namespace MiNET.Net
 			}
 
 			dataObject.Write(this);
+		}
+
+		public void Write<T>(IEnumerable<T> dataObjects) where T : IPacketDataObject
+		{
+			if (dataObjects == null)
+			{
+				WriteUnsignedVarInt(0);
+				return;
+			}
+
+			WriteUnsignedVarInt((uint) dataObjects.Count());
+			foreach(var dataObject in dataObjects)
+			{
+				Write(dataObject);
+			}
 		}
 
 
