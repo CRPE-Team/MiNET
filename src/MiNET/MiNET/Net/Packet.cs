@@ -766,7 +766,7 @@ namespace MiNET.Net
 
 		public AnimationKey[] ReadAnimationKeys()
 		{
-			var count = ReadUnsignedVarInt();
+			var count = ReadLength();
 			var keys = new AnimationKey[count];
 			for (int i = 0; i < count; i++)
 			{
