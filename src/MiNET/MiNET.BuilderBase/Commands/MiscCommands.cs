@@ -48,11 +48,11 @@ namespace MiNET.BuilderBase.Commands
 		{
 			//var font = new Font("SketchFlow Print", 20, GraphicsUnit.Pixel);
 			var font = SixLabors.Fonts.SystemFonts.CreateFont(fontName, 100); //new Font(fontName, pxSize, GraphicsUnit.Pixel);
-			var size = TextMeasurer.Measure(text, new TextOptions(font));
+			var size = TextMeasurer.MeasureSize(text, new TextOptions(font));
 
 			float scalingFactor = pxSize / size.Height;
 			font = new Font(font, scalingFactor * font.Size);
-			size = TextMeasurer.Measure(text, new TextOptions(font));
+			size = TextMeasurer.MeasureSize(text, new TextOptions(font));
 			
 			var bitmap = new Image<Rgba32>((int) size.Width, (int) size.Height);
 			RectangleF rectf = new RectangleF(0, 0, size.Width, size.Height);

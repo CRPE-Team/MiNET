@@ -25,21 +25,18 @@
 
 using System.Numerics;
 using MiNET.Blocks;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.Items
 {
-	public abstract class ItemSlate : ItemBlock
+	public abstract class ItemSlate : ItemBlock<Chalkboard>
 	{
 		public override string Id { get; protected set; } = "minecraft:board";
 
-		public override Block Block { get; protected set; } = new Chalkboard();
-
 		public ItemSlate(short size = 0) : base()
 		{
-			Block.Metadata = (byte) (Metadata = size);
+			Block.Size = (byte) (Metadata = size);
 			MaxStackSize = 16;
 		}
 

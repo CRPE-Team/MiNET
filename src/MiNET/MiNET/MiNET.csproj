@@ -18,31 +18,12 @@
     <LangVersion>latest</LangVersion>
     <NoWarn>1701;1702;1701</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Blocks\Data\block_id_to_item_id_map.json" />
-    <None Remove="Blocks\Data\canonical_block_states.nbt" />
-    <None Remove="Blocks\Data\r12_to_current_block_map.bin" />
-    <None Remove="Blocks\canonical_block_states.nbt" />
-    <None Remove="Blocks\r12_to_current_block_map.bin" />
-    <None Remove="Crafting\Data\shaped_chemistry.json" />
-    <None Remove="Crafting\Data\shaped_crafting.json" />
-    <None Remove="Crafting\Data\shapeless_chemistry.json" />
-    <None Remove="Crafting\Data\shapeless_crafting.json" />
-    <None Remove="Crafting\Data\shapeless_shulker_box.json" />
-    <None Remove="Crafting\Data\smelting.json" />
-    <None Remove="Inventory\Data\creativeitems.json" />
-    <None Remove="Items\r16_to_current_item_map.json" />
-    <None Remove="Items\Data\item_tags.json" />
-    <None Remove="Worlds\Data\biome_definitions.nbt" />
-    <None Remove="Worlds\Data\biome_definitions_full.nbt" />
-    <None Remove="Worlds\Data\biome_id_map.json" />
-  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Blocks\Data\block_id_to_item_id_map.json" />
     <EmbeddedResource Include="Blocks\Data\canonical_block_states.nbt" />
@@ -54,29 +35,27 @@
     <EmbeddedResource Include="Crafting\Data\smelting.json" />
     <EmbeddedResource Include="Inventory\Data\creativeitems.json" />
     <EmbeddedResource Include="Items\Data\item_tags.json" />
-    <EmbeddedResource Include="Items\Data\required_item_list.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Items\Data\r16_to_current_item_map.json" />
+    <EmbeddedResource Include="Items\Data\required_item_list.json" />
     <EmbeddedResource Include="Worlds\Data\biome_definitions.nbt" />
     <EmbeddedResource Include="Worlds\Data\biome_definitions_full.nbt" />
     <EmbeddedResource Include="Worlds\Data\biome_id_map.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="jose-jwt" Version="3.1.1" />
+    <PackageReference Include="jose-jwt" Version="4.1.0" />
     <PackageReference Include="LibNoise.NetStandart" Version="0.2.0" />
-    <PackageReference Include="log4net" Version="2.0.14" />
-    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.2.0" />
-    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.0.0" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.0" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.9.0" />
     <PackageReference Include="MiNET.astar" Version="1.0.14" />
     <PackageReference Include="MiNET.fnbt" Version="1.0.22" />
     <PackageReference Include="MiNET.LevelDB" Version="1.0.36" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
-    <PackageReference Include="SharpAvi" Version="3.0.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.0" />
-    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta14" />
-    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="6.0.0" />
+    <PackageReference Include="SharpAvi" Version="3.0.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.3" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.2" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Net\MCPE Protocol.xml" />

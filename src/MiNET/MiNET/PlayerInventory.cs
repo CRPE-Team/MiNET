@@ -224,7 +224,7 @@ namespace MiNET
 		private void UpdateSlot(Func<Item> getItem, Action<Item> setItem, Item item, bool forceReplace = false)
 		{
 			var existing = getItem();
-			if (forceReplace || existing.Id != item.Id)
+			if (forceReplace || existing.Id != item.Id || existing is ItemBlock ^ item is ItemBlock)
 			{
 				setItem(item);
 				return;
@@ -234,6 +234,11 @@ namespace MiNET
 			existing.Count = item.Count;
 			existing.Metadata = item.Metadata;
 			existing.ExtraData = item.ExtraData;
+
+			if (existing is ItemBlock existingItemBock && item is ItemBlock itemBlock)
+			{
+				existingItemBock.SetBlock(itemBlock.Block);
+			}
 		}
 
 		public ItemStacks GetSlots()

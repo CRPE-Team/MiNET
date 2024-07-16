@@ -27,7 +27,6 @@ using System.Collections.Generic;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Plugins;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -40,7 +39,7 @@ namespace MiNET.BuilderBase.Masks
 		private class BlockDataEntry
 		{
 			public string Id { get; set; }
-			public byte Metadata { get; set; }
+			public short Metadata { get; set; }
 			public bool IgnoreMetadata { get; set; } = true;
 		}
 
@@ -71,7 +70,7 @@ namespace MiNET.BuilderBase.Masks
 
 			foreach (var block in blocks)
 			{
-				entry.BlockList.Add(new BlockDataEntry() {Id = block.Id, Metadata = block.Metadata, IgnoreMetadata = ignoreMetadata});
+				entry.BlockList.Add(new BlockDataEntry() {Id = block.Id, Metadata = block.Data, IgnoreMetadata = ignoreMetadata});
 			}
 
 			_masks = new[] {entry};
@@ -102,7 +101,7 @@ namespace MiNET.BuilderBase.Masks
 
 			Block block = Level.GetBlock(coordinates);
 
-			var matches = mask.BlockList.Exists(entry => entry.Id == block.Id && (entry.IgnoreMetadata || block.Metadata == entry.Metadata));
+			var matches = mask.BlockList.Exists(entry => entry.Id == block.Id && (entry.IgnoreMetadata || block.Data == entry.Metadata));
 
 			if (mask.Inverted)
 			{
