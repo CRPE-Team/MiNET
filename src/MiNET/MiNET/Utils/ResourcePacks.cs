@@ -32,6 +32,7 @@ namespace MiNET.Utils
 		{
 			packet.Write((short) Count); // LE
 			//packet.WriteVarInt(packInfos.Count);
+
 			foreach (var info in this)
 			{
 				packet.Write(info);
@@ -107,25 +108,16 @@ namespace MiNET.Utils
 
 		public static ResourcePackInfo Read(Packet packet)
 		{
-			var info = new ResourcePackInfo();
-
-			var id = packet.ReadString();
-			var version = packet.ReadString();
-			var size = packet.ReadUlong();
-			var encryptionKey = packet.ReadString();
-			var subpackName = packet.ReadString();
-			var contentIdentity = packet.ReadString();
-			var hasScripts = packet.ReadBool();
-
-			info.UUID = id;
-			info.Version = version;
-			info.Size = size;
-			info.ContentKey = encryptionKey;
-			info.SubPackName = subpackName;
-			info.ContentIdentity = contentIdentity;
-			info.HasScripts = hasScripts;
-
-			return info;
+			return new ResourcePackInfo()
+			{
+				UUID = packet.ReadString(),
+				Version = packet.ReadString(),
+				Size = packet.ReadUlong(),
+				ContentKey = packet.ReadString(),
+				SubPackName = packet.ReadString(),
+				ContentIdentity = packet.ReadString(),
+				HasScripts = packet.ReadBool()
+			};
 		}
 	}
 
@@ -135,6 +127,7 @@ namespace MiNET.Utils
 		{
 			packet.Write((short) Count); // LE
 			//packet.WriteVarInt(Count);
+
 			foreach (var info in this)
 			{
 				packet.Write(info);
@@ -147,6 +140,7 @@ namespace MiNET.Utils
 
 			var count = packet.ReadShort(); // LE
 			//var count = packet.ReadVarInt(); // LE
+
 			for (int i = 0; i < count; i++)
 			{
 				packInfos.Add(TexturePackInfo.Read(packet));
@@ -170,27 +164,17 @@ namespace MiNET.Utils
 
 		public static new TexturePackInfo Read(Packet packet)
 		{
-			var info = new TexturePackInfo();
-
-			var id = packet.ReadString();
-			var version = packet.ReadString();
-			var size = packet.ReadUlong();
-			var encryptionKey = packet.ReadString();
-			var subpackName = packet.ReadString();
-			var contentIdentity = packet.ReadString();
-			var hasScripts = packet.ReadBool();
-			var rtxEnabled = packet.ReadBool();
-
-			info.UUID = id;
-			info.Version = version;
-			info.Size = size;
-			info.HasScripts = hasScripts;
-			info.ContentKey = encryptionKey;
-			info.SubPackName = subpackName;
-			info.ContentIdentity = contentIdentity;
-			info.RtxEnabled = rtxEnabled;
-
-			return info;
+			return new TexturePackInfo()
+			{
+				UUID = packet.ReadString(),
+				Version = packet.ReadString(),
+				Size = packet.ReadUlong(),
+				ContentKey = packet.ReadString(),
+				SubPackName = packet.ReadString(),
+				ContentIdentity = packet.ReadString(),
+				HasScripts = packet.ReadBool(),
+				RtxEnabled = packet.ReadBool()
+			};
 		}
 	}
 
@@ -199,6 +183,7 @@ namespace MiNET.Utils
 		public void Write(Packet packet)
 		{
 			packet.WriteUnsignedVarInt((uint) Count); // LE
+
 			foreach (var info in this)
 			{
 				packet.Write(info);
