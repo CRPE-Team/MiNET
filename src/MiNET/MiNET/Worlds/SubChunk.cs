@@ -77,8 +77,8 @@ namespace MiNET.Worlds
 
 		public SubChunk()
 		{
-			_runtimeIds = new List<int> { new Air().GetRuntimeId() };
-			_loggedRuntimeIds = new List<int> { new Air().GetRuntimeId() };
+			_runtimeIds = new List<int> { new Air().RuntimeId };
+			_loggedRuntimeIds = new List<int> { new Air().RuntimeId };
 			_biomeIds = new List<int> { 1 };
 
 			_blocks = ArrayPool<short>.Shared.Rent(4096);
@@ -112,7 +112,7 @@ namespace MiNET.Worlds
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool IsAllAir()
 		{
-			var airRuntimeId = new Air().GetRuntimeId();
+			var airRuntimeId = new Air().RuntimeId;
 
 			return _isAllAir = _runtimeIds.Count <= 1
 				&& _loggedRuntimeIds.Count <= 1
@@ -152,7 +152,7 @@ namespace MiNET.Worlds
 
 		public void SetBlock(int bx, int by, int bz, Block block)
 		{
-			int runtimeId = block.GetRuntimeId();
+			int runtimeId = block.RuntimeId;
 			if (runtimeId < 0) return;
 
 			SetBlockByRuntimeId(bx, by, bz, runtimeId);
@@ -213,7 +213,7 @@ namespace MiNET.Worlds
 
 		public void SetLoggedBlock(int bx, int by, int bz, Block block)
 		{
-			int runtimeId = block.GetRuntimeId();
+			int runtimeId = block.RuntimeId;
 			if (runtimeId < 0) return;
 
 			SetLoggedBlockByRuntimeId(bx, by, bz, runtimeId);

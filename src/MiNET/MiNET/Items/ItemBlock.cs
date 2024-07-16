@@ -30,7 +30,6 @@ using JetBrains.Annotations;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Entities;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 using Newtonsoft.Json;
@@ -40,37 +39,44 @@ namespace MiNET.Items
 	/// <summary>
 	///     Generic Item that will simply place the block on use. No interaction or other use supported by the block.
 	/// </summary>
+	public abstract class ItemBlock<TBlock> : ItemBlock where TBlock : Block, new()
+	{
+		[JsonIgnore] public new TBlock Block { get => (TBlock) base.Block; }
+
+		public ItemBlock() : this(new TBlock())
+		{
+
+		}
+
+		protected ItemBlock([NotNull] TBlock block) : base(block)
+		{
+
+		}
+	}
+
+	/// <summary>
+	///     Generic Item that will simply place the block on use. No interaction or other use supported by the block.
+	/// </summary>
 	public class ItemBlock : Item
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ItemBlock));
 
 		[JsonIgnore] public virtual Block Block { get; protected set; }
 
-		public override int BlockRuntimeId => _blockRuntimeId.Value;
+		public override int BlockRuntimeId => Block?.RuntimeId ?? -1;
 
-		private readonly Lazy<int> _blockRuntimeId;
-
-		protected ItemBlock() : base()
+		protected ItemBlock()
 		{
-			_blockRuntimeId = new Lazy<int>(() => Block?.GetRuntimeId() ?? -1);
 		}
 
-		public ItemBlock([NotNull] Block block, short metadata = 0) : this()
+		internal ItemBlock([NotNull] Block block)
 		{
 			Block = block ?? throw new ArgumentNullException(nameof(block));
 
-			Id = block.Id;
-			Metadata = metadata;
+			Id ??= block.Id;
 	
-			if (BlockFactory.BlockStates.TryGetValue(block.GetState(), out BlockStateContainer value))
-			{
-				var instanceMetadata = value.ItemInstance?.Metadata;
-				if (Id != value.ItemInstance?.Id) instanceMetadata = null;
-
-				Metadata = (short) (instanceMetadata ?? (value.Data == -1 ? 0 : value.Data));
-			}
-
 			FuelEfficiency = Block.FuelEfficiency;
+			Edu = Block.Edu;
 		}
 
 		public override Item GetSmelt(string block)
@@ -110,15 +116,7 @@ namespace MiNET.Items
 			Block newBlock = BlockFactory.GetBlockById(Block.Id);
 			newBlock.Coordinates = currentBlock.IsReplaceable ? targetCoordinates : GetNewCoordinatesFromFace(targetCoordinates, face);
 
-			// This won't work without explicit mapping where an item dictates
-			// the initial value of a block. Need some sort of manual mapping or from
-			// generated data. The logic belong to the item.
-			// Basically what we want to do here is to check all items for a blockstate
-			// and find a matching one. Then use the blockstate for that item, to set the
-			// default data for this item.
-			newBlock.SetState(Block.GetState());
-
-			//newBlock.Metadata = (byte) Metadata;
+			newBlock.SetStates(Block);
 
 			if (!newBlock.CanPlace(world, player, targetCoordinates, face))
 			{
@@ -138,7 +136,7 @@ namespace MiNET.Items
 				player.Inventory.SetInventorySlot(player.Inventory.InHandSlot, itemInHand);
 			}
 
-			world.BroadcastSound(newBlock.Coordinates, LevelSoundEventType.Place, newBlock.GetRuntimeId());
+			world.BroadcastSound(newBlock.Coordinates, LevelSoundEventType.Place, newBlock.RuntimeId);
 
 			return true;
 		}
@@ -164,6 +162,23 @@ namespace MiNET.Items
 		public override string ToString()
 		{
 			return $"{GetType().Name}(Id={Id}, Meta={Metadata}, UniqueId={UniqueId}) {{Block={Block?.GetType().Name}}} Count={Count}, NBT={ExtraData}";
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(base.GetHashCode(), Block.GetHashCode());
+		}
+
+		internal void SetBlock(Block block)
+		{
+			Block = block;
+		}
+
+		protected override bool Equals(Item other)
+		{
+			return other is ItemBlock otherItemBlock
+				&& base.Equals(other)
+				&& Block.Equals(otherItemBlock.Block);
 		}
 	}
 }

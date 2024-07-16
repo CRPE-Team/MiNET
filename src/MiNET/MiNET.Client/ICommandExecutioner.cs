@@ -199,7 +199,7 @@ namespace MiNET.Client
 		{
 			var client = caller.Client;
 			var palette = client.BlockPalette;
-			foreach (BlockStateContainer blockState in palette.OrderByDescending(bs => bs.Id))
+			foreach (var blockState in palette.OrderByDescending(bs => bs.Id))
 			{
 				Log.Warn($"{blockState.Id}");
 			}
@@ -339,7 +339,7 @@ namespace MiNET.Client
 			writer.WriteLine("\n]");
 
 			var stringRecords = records.Where(r => r.States.Any(s => s is BlockStateString));
-			foreach (BlockStateContainer stringRecord in stringRecords)
+			foreach (var stringRecord in stringRecords)
 			{
 				writer.WriteLine($"Item {stringRecord.Id}");
 			}
@@ -629,16 +629,16 @@ namespace MiNET.Client
 			//Report($"Finished setting blocks.");
 		}
 
-		HashSet<BlockStateContainer> _internalStates = new HashSet<BlockStateContainer>(BlockFactory.BlockPalette);
+		HashSet<IBlockStateContainer> _internalStates = new HashSet<IBlockStateContainer>(BlockFactory.BlockPalette);
 
-		private static BlockStateContainer GetServerRuntimeId(BlockPalette bedrockPalette, HashSet<BlockStateContainer> internalBlockPallet, int runtimeId)
+		private static IBlockStateContainer GetServerRuntimeId(BlockPalette bedrockPalette, HashSet<IBlockStateContainer> internalBlockPallet, int runtimeId)
 		{
 			if (runtimeId < 0 || runtimeId >= bedrockPalette.Count)
 				Log.Error($"RuntimeId = {runtimeId}");
 
 			var record = bedrockPalette[runtimeId];
 
-			if (!internalBlockPallet.TryGetValue(record, out BlockStateContainer internalRecord))
+			if (!internalBlockPallet.TryGetValue(record, out var internalRecord))
 			{
 				Log.Error($"Did not find {record.Id}");
 				return null;
@@ -718,7 +718,7 @@ namespace MiNET.Client
 
 		private AutoResetEvent _resetEventUpdateBlock = new AutoResetEvent(false);
 
-		private BlockStateContainer _lastUpdatedBlockstate = new BlockStateContainer();
+		private IBlockStateContainer _lastUpdatedBlockstate = new PaletteBlockStateContainer();
 
 		private int lastNumber = 0;
 		private List<BlockCoordinates> _blockCoordinates = new List<BlockCoordinates>();

@@ -248,7 +248,7 @@ namespace MiNET.BuilderBase
 					{
 						var block = Player.Level.GetBlock(_structureBlock.Coordinates);
 						var updateBlock = McpeUpdateBlock.CreateObject();
-						updateBlock.blockRuntimeId = (uint) block.GetRuntimeId();
+						updateBlock.blockRuntimeId = (uint) block.RuntimeId;
 						updateBlock.coordinates = _structureBlock.Coordinates;
 						updateBlock.blockPriority = 0xb;
 						Player.SendPacket(updateBlock);
@@ -266,7 +266,7 @@ namespace MiNET.BuilderBase
 
 				{
 					var updateBlock = McpeUpdateBlock.CreateObject();
-					updateBlock.blockRuntimeId = (uint) _structureBlock.GetRuntimeId();
+					updateBlock.blockRuntimeId = (uint) _structureBlock.RuntimeId;
 					updateBlock.coordinates = _structureBlock.Coordinates;
 					updateBlock.blockPriority = 0xb;
 					Player.SendPacket(updateBlock);

@@ -290,14 +290,14 @@ namespace MiNET.Worlds
 					if (block != null && block.GetType() != typeof(Block) && !(block is Air))
 					{
 						List<IBlockState> blockState = ReadBlockState(tag);
-						block.SetState(blockState);
+						block.SetStates(blockState);
 					}
 					else
 					{
 						block = new Air();
 					}
 
-					palette.Add(block.GetRuntimeId());
+					palette.Add(block.RuntimeId);
 				}
 
 				long nextStore = reader.Position;
@@ -594,7 +594,7 @@ namespace MiNET.Worlds
 			stream.Write(count);
 			foreach (int runtimeId in palette)
 			{
-				BlockStateContainer blockState = BlockFactory.BlockPalette[runtimeId];
+				var blockState = BlockFactory.BlockPalette[runtimeId];
 				var file = new NbtFile
 				{
 					BigEndian = false,
@@ -705,7 +705,7 @@ namespace MiNET.Worlds
 			return states;
 		}
 
-		private static NbtCompound WriteBlockState(BlockStateContainer container)
+		private static NbtCompound WriteBlockState(IBlockStateContainer container)
 		{
 			var tag = new NbtCompound("");
 

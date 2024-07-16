@@ -115,11 +115,11 @@ namespace MiNET.BuilderBase.Patterns
 				if (blockEntry.HasBlockStates)
 				{
 					Log.Debug($"Has block state, setting block");
-					BlockStateContainer currentStates = block.GetState();
+					var currentStates = block.States.ToArray();
 					foreach (BlockStateEntry stateEntry in blockEntry.BlockStates)
 					{
 						Log.Debug($"Checking block state for block {stateEntry.Name}");
-						IBlockState state = currentStates.States.FirstOrDefault(s => s.Name == stateEntry.Name);
+						IBlockState state = currentStates.FirstOrDefault(s => s.Name == stateEntry.Name);
 						Log.Debug($"Found state for block {state?.Name}");
 						if(state == null) continue;
 
@@ -142,7 +142,7 @@ namespace MiNET.BuilderBase.Patterns
 							}
 						}
 					}
-					block.SetState(currentStates);
+					block.SetStates(currentStates);
 				}
 			}
 

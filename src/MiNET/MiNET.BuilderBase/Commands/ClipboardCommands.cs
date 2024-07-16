@@ -40,8 +40,7 @@ namespace MiNET.BuilderBase.Commands
 			clipboard.SourceMask = new AnyBlockMask();
 			clipboard.SourceFuncion = coordinates =>
 			{
-				var block = BlockFactory.GetBlockById(leaveId);
-				block.Metadata = (byte) leaveData;
+				var block = BlockFactory.GetBlockById(leaveId, (short) leaveData);
 				block.Coordinates = coordinates;
 				EditSession.SetBlock(block);
 				return true;

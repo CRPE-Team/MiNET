@@ -62,7 +62,12 @@ namespace MiNET.Console
 			System.Console.WriteLine(MiNetServer.MiNET);
 
 			var currentProcess = Process.GetCurrentProcess();
-			currentProcess.ProcessorAffinity = (IntPtr) Config.GetProperty("ProcessorAffinity", (int) currentProcess.ProcessorAffinity);
+
+			var processorAffinity = Config.GetProperty("ProcessorAffinity", -1);
+			if (processorAffinity != -1)
+			{
+				currentProcess.ProcessorAffinity = processorAffinity;
+			}
 
 			var service = new MiNetServer();
 			Log.Info("Starting...");

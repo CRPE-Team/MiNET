@@ -42,6 +42,12 @@ namespace MiNET.Items
 			RuntimeIdToId = BuildRuntimeIdToId();
 			(IdToType, TypeToId) = BuildIdTypeMapPair();
 			IdToFactory = BuildIdToFactory();
+
+			var missingItems = Itemstates.Keys.Where(id => !id.Contains("item.")).Except(IdToType.Keys);
+			foreach (var missingItem in missingItems)
+			{
+				Log.Warn($"Detected missing items [{missingItem}]");
+			}
 		}
 
 		public static string GetIdByType<T>()
@@ -99,7 +105,7 @@ namespace MiNET.Items
 
 		public static ItemBlock GetItem(Block block, int count = 1)
 		{
-			return GetItem<ItemBlock>(block.Id, block.GetGlobalState().Data, count) ?? GetItem<Air>();
+			return (ItemBlock) GetItem(block.Id, 0, count, block) ?? GetItem<Air>();
 		}
 
 		public static ItemBlock GetItem<T>(short metadata = 0, int count = 1) where T : Block
@@ -124,6 +130,11 @@ namespace MiNET.Items
 
 		public static Item GetItem(string id, short metadata = 0, int count = 1)
 		{
+			return GetItem(id, metadata, count, null);
+		}
+
+		private static Item GetItem(string id, short metadata = 0, int count = 1, Block block = null)
+		{
 			if (CustomItemFactory != null)
 			{
 				var customItem = CustomItemFactory.GetItem(id, metadata, count);
@@ -134,17 +145,28 @@ namespace MiNET.Items
 
 			if (item != null)
 			{
-				item.Metadata = metadata;
 				item.Count = (byte) count;
+				item.Metadata = metadata;
+
+				if (item is ItemBlock itemBlock)
+				{
+					block ??= BlockFactory.GetBlockById(BlockFactory.GetBlockIdFromItemId(id))
+						?? BlockFactory.GetBlockById(id);
+
+					if (block != null)
+					{
+						itemBlock.SetBlock(block);
+					}	
+				}
 			}
 			else
 			{
-				var block = BlockFactory.GetBlockById(BlockFactory.GetBlockIdFromItemId(id), metadata)
-					?? BlockFactory.GetBlockById(id, metadata);
+				block ??= BlockFactory.GetBlockById(BlockFactory.GetBlockIdFromItemId(id))
+					?? BlockFactory.GetBlockById(id);
 
 				if (block != null)
 				{
-					item = new ItemBlock(block, metadata) { Count = (byte) count };
+					item = new ItemBlock(block) { Metadata = metadata, Count = (byte) count };
 				}
 			}
 

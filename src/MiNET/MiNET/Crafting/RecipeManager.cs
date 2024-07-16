@@ -394,7 +394,13 @@ namespace MiNET.Crafting
 			{
 				if (!InventoryUtils.TryGetItemFromExternalData(itemData, out var item)) return false;
 
-				recipeIngredient = new RecipeItemIngredient(item.Id, item.Metadata, item.Count);
+				var metadata = item.Metadata;
+				if (item is ItemBlock itemBlock)
+				{
+					metadata = itemBlock.Block.Data;
+				}
+
+				recipeIngredient = new RecipeItemIngredient(item.Id, metadata, item.Count);
 
 				return true;
 			}
