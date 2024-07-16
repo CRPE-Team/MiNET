@@ -124,7 +124,7 @@ namespace MiNET.Blocks
 		{
 			var slab = BlockFactory.GetBlockById(SlabToDoubleSlabMap[Id]);
 			slab.Coordinates = coordinates;
-			slab.SetState(GetState());
+			slab.SetStates(this);
 			world.SetBlock(slab);
 		}
 	}

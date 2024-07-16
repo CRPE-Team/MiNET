@@ -23,15 +23,16 @@
 
 #endregion
 
-using MiNET.Blocks;
-
-namespace MiNET.Items
+namespace MiNET.Blocks
 {
-	public partial class ItemFrame
+	public abstract class CarpetBase : Block
 	{
-		public ItemFrame() : base()
+		public CarpetBase() : base()
 		{
-			Block = new Frame();
+			IsTransparent = true;
+			BlastResistance = 0.5f;
+			Hardness = 0.1f;
+			IsFlammable = true;
 		}
 	}
 }

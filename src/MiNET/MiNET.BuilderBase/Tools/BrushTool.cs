@@ -285,7 +285,7 @@ namespace MiNET.BuilderBase.Tools
 							block.Coordinates = new BlockCoordinates(x0, y0, z0);
 							Block old = level.GetBlock(block.Coordinates);
 
-							if (block.Id == old.Id && block.Metadata == old.Metadata) continue;
+							if (block.Id == old.Id && block.Data == old.Data) continue;
 
 							editSession.SetBlock(block);
 						}

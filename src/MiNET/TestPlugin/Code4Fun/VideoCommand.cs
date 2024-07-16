@@ -215,7 +215,7 @@ namespace TestPlugin.Code4Fun
 
 					int i = 0;
 
-					player.Inventory.Slots[i++] = new ItemBlock(new Planks(), 0) {Count = 64};
+					player.Inventory.Slots[i++] = new ItemPlanks {Count = 64};
 					player.Inventory.Slots[i++] = new ItemFrame {Count = 64};
 
 					foreach (MapEntity entity in entities.Values)

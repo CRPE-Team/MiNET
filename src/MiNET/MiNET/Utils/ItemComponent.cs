@@ -22,18 +22,53 @@
 #endregion
 
 using System.Collections.Generic;
-using fNbt;
+using MiNET.Net;
 
 namespace MiNET.Utils
 {
-	public class ItemComponent
+	public class ItemComponent : IPacketDataObject
 	{
-		public string      Name { get; set; }
-		public Nbt.Nbt Nbt  { get; set; }
+		public string Name { get; set; }
+		public Nbt.Nbt Nbt { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.Write(Name);
+			packet.Write(Nbt);
+		}
+
+		internal static ItemComponent Read(Packet packet)
+		{
+			return new ItemComponent()
+			{
+				Name = packet.ReadString(),
+				Nbt = packet.ReadNbt()
+			};
+		}
 	}
 
-	public class ItemComponentList : List<ItemComponent>
+	public class ItemComponentList : List<ItemComponent>, IPacketDataObject
 	{
-		
+		public void Write(Packet packet)
+		{
+			packet.WriteUnsignedVarInt((uint) Count);
+			foreach (var item in this)
+			{
+				packet.Write(item);
+			}
+		}
+
+		public static ItemComponentList Read(Packet packet)
+		{
+			var count = packet.ReadUnsignedVarInt();
+			var list = new ItemComponentList();
+
+			for (int i = 0; i < count; i++)
+			{
+				list.Add(ItemComponent.Read(packet));
+			}
+
+			return list;
+		}
 	}
 }
