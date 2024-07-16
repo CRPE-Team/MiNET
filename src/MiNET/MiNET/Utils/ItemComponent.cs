@@ -29,7 +29,6 @@ namespace MiNET.Utils
 	public class ItemComponent : IPacketDataObject
 	{
 		public string Name { get; set; }
-
 		public Nbt.Nbt Nbt { get; set; }
 
 		public void Write(Packet packet)

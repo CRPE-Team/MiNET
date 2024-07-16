@@ -77,6 +77,11 @@ namespace MiNET.Blocks
 			}
 		}
 
+		public override Item GetItem(Level world, bool blockItem = false)
+		{
+			return ItemFactory.GetItem(this);
+		}
+
 		public override Item[] GetDrops(Level world, Item tool)
 		{
 			var rnd = new Random();
@@ -89,9 +94,7 @@ namespace MiNET.Blocks
 			}
 			if (rnd.Next(20) == 0)
 			{
-				// Sapling
-				var blockstate = GetState();
-				return new[] { ItemFactory.GetItem<Sapling>(blockstate.Data) };
+				return new[] { ItemFactory.GetItem<Sapling>(Data) };
 			}
 
 			return new Item[0];

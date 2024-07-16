@@ -94,6 +94,7 @@ namespace MiNET
 					OptionId = 0,
 				},
 			};
+
 			player.SendPacket(enchantOptions);
 		}
 
@@ -106,14 +107,13 @@ namespace MiNET
 			}
 
 			var rnd = new Random();
-			ItemType itemType = itemToEnchant.ItemType;
-			ItemMaterial itemMaterial = itemToEnchant.ItemMaterial;
+			var itemType = itemToEnchant.ItemType;
 
-			int noBookshelves = 15;
-			int baseLevel = (int) (rnd.Next(1, 9) + Math.Floor(noBookshelves / 2.0) + rnd.Next(0, noBookshelves + 1));
-			int topSlotLevel = (int) Math.Max(Math.Floor(baseLevel / 3.0), 1);
-			int middleSlotLevel = (int) Math.Floor((baseLevel * 2) / 3.0) + 1;
-			int bottomSlotLevel = (int) Math.Max(baseLevel, noBookshelves * 2);
+			var noBookshelves = 15;
+			var baseLevel = (int) (rnd.Next(1, 9) + Math.Floor(noBookshelves / 2.0) + rnd.Next(0, noBookshelves + 1));
+			var topSlotLevel = (int) Math.Max(Math.Floor(baseLevel / 3.0), 1);
+			var middleSlotLevel = (int) Math.Floor((baseLevel * 2) / 3.0) + 1;
+			var bottomSlotLevel = Math.Max(baseLevel, noBookshelves * 2);
 			Log.Warn($"Enchanting values; baseLevel:{baseLevel}, top:{topSlotLevel}, middle:{middleSlotLevel}, bottom:{bottomSlotLevel}");
 
 			// armor
@@ -125,7 +125,7 @@ namespace MiNET
 				ItemType.Boots
 			};
 
-			int enchantability = itemToEnchant switch
+			var enchantability = itemToEnchant switch
 			{
 				{ } item when armorTypes.Contains(item.ItemType) && item.ItemMaterial == ItemMaterial.Leather => 15,
 				{ } item when armorTypes.Contains(item.ItemType) && item.ItemMaterial == ItemMaterial.Chain => 12,
@@ -143,25 +143,26 @@ namespace MiNET
 
 				_ => 1
 			};
-			int randomEnchantability = 1 + rnd.Next(0, (int) Math.Floor(enchantability / 4.0) + 1) + rnd.Next(0, (int) Math.Floor(enchantability / 4.0) + 1);
-			double randomBonus = 1 + (rnd.NextDouble() + rnd.NextDouble() - 1) * 0.15;
-			int finalTopLevel = (int) Math.Round((topSlotLevel + randomEnchantability) * randomBonus);
-			int finalMiddleLevel = (int) Math.Round((middleSlotLevel + randomEnchantability) * randomBonus);
-			int finalBottomLevel = (int) Math.Round((bottomSlotLevel + randomEnchantability) * randomBonus);
+
+			var randomEnchantability = 1 + rnd.Next(0, (int) Math.Floor(enchantability / 4.0) + 1) + rnd.Next(0, (int) Math.Floor(enchantability / 4.0) + 1);
+			var randomBonus = 1 + (rnd.NextDouble() + rnd.NextDouble() - 1) * 0.15;
+			var finalTopLevel = (int) Math.Round((topSlotLevel + randomEnchantability) * randomBonus);
+			var finalMiddleLevel = (int) Math.Round((middleSlotLevel + randomEnchantability) * randomBonus);
+			var finalBottomLevel = (int) Math.Round((bottomSlotLevel + randomEnchantability) * randomBonus);
 
 			Log.Warn($"Enchantability: {enchantability}");
 			Log.Warn($"Random Bonus: {randomBonus}");
 			Log.Warn($"Final: top:{finalTopLevel}, middle:{finalMiddleLevel}, bottom:{finalBottomLevel}");
 
-			var topFinalEnchants = new List<Enchant>();
-			var middleFinalEnchants = new List<Enchant>();
-			var bottomFinalEnchants = new List<Enchant>();
+			var topFinalEnchants = new Enchants();
+			var middleFinalEnchants = new Enchants();
+			var bottomFinalEnchants = new Enchants();
 
-			Enchant topEnchant = SelectEnchant(GetPossibleEnchantsForItem(itemType, finalTopLevel), rnd);
+			var topEnchant = SelectEnchant(GetPossibleEnchantsForItem(itemType, finalTopLevel), rnd);
 			topFinalEnchants.Add(topEnchant);
-			Enchant middleEnchant = SelectEnchant(GetPossibleEnchantsForItem(itemType, finalMiddleLevel), rnd);
+			var middleEnchant = SelectEnchant(GetPossibleEnchantsForItem(itemType, finalMiddleLevel), rnd);
 			middleFinalEnchants.Add(middleEnchant);
-			Enchant bottomEnchant = SelectEnchant(GetPossibleEnchantsForItem(itemType, finalBottomLevel), rnd);
+			var bottomEnchant = SelectEnchant(GetPossibleEnchantsForItem(itemType, finalBottomLevel), rnd);
 			bottomFinalEnchants.Add(bottomEnchant);
 
 			AddBonusEnchants(topFinalEnchants, rnd, finalTopLevel, itemType);
@@ -199,23 +200,28 @@ namespace MiNET
 					EquipActivatedEnchantments = bottomFinalEnchants,
 				},
 			};
+
 			player.SendPacket(enchantOptions);
 		}
 
-		private static void AddBonusEnchants(List<Enchant> enchants, Random rnd, int inLevel, ItemType itemType)
+		private static void AddBonusEnchants(Enchants enchants, Random rnd, int inLevel, ItemType itemType)
 		{
-			int level = (inLevel + 1) / 2;
+			var level = (inLevel + 1) / 2;
+
 			Enchant enchant;
 			do
 			{
-				List<Enchant> possibleEnchantsForItem = GetPossibleEnchantsForItem(itemType, level);
+				var possibleEnchantsForItem = GetPossibleEnchantsForItem(itemType, level);
 				PurgeConflictingEnchants(enchants, possibleEnchantsForItem);
+
 				enchant = SelectEnchant(possibleEnchantsForItem, rnd);
 				if (enchant != null)
 				{
 					if (enchant.Id == (int) EnchantingType.SilkTouch) Log.Error("Got silk!");
+
 					enchants.Add(enchant);
 				}
+
 				level = (level + 1) / 2;
 			} while (enchant != null);
 		}
@@ -228,6 +234,7 @@ namespace MiNET
 				EnchantingType.Smite,
 				EnchantingType.BaneOfArthropods
 			};
+
 			var protection = new List<EnchantingType>()
 			{
 				EnchantingType.Protection,
@@ -235,22 +242,38 @@ namespace MiNET
 				EnchantingType.FireProtection,
 				EnchantingType.ProjectileProtection
 			};
+
 			var silkAndFortune = new List<EnchantingType>()
 			{
 				EnchantingType.SilkTouch,
 				EnchantingType.Fortune
 			};
 
-			foreach (Enchant enchant in possibleEnchantsForItem.ToList())
+			foreach (var enchant in possibleEnchantsForItem.ToList())
 			{
 				//Every enchantment conflicts with itself. (The player can't get a tool with two copies of the Efficiency enchantment.)
-				if (enchants.Any(e => e.Id == enchant.Id)) possibleEnchantsForItem.Remove(enchant);
+				if (enchants.Any(e => e.Id == enchant.Id))
+				{
+					possibleEnchantsForItem.Remove(enchant);
+				}
+
 				//All damage enchantments (Sharpness, Smite, and Bane of Arthropods) conflict with each other.
-				if (damage.Contains((EnchantingType) enchant.Id) && enchants.Any(e => damage.Contains((EnchantingType) e.Id))) possibleEnchantsForItem.Remove(enchant);
+				if (damage.Contains((EnchantingType) enchant.Id) && enchants.Any(e => damage.Contains((EnchantingType) e.Id)))
+				{
+					possibleEnchantsForItem.Remove(enchant);
+				}
+
 				//All protection enchantments (Protection, Blast Protection, Fire Protection, Projectile Protection) conflict with each other.
-				if (protection.Contains((EnchantingType) enchant.Id) && enchants.Any(e => protection.Contains((EnchantingType) e.Id))) possibleEnchantsForItem.Remove(enchant);
+				if (protection.Contains((EnchantingType) enchant.Id) && enchants.Any(e => protection.Contains((EnchantingType) e.Id)))
+				{
+					possibleEnchantsForItem.Remove(enchant);
+				}
+
 				//Silk Touch and Fortune conflict with each other.
-				if (silkAndFortune.Contains((EnchantingType) enchant.Id) && enchants.Any(e => silkAndFortune.Contains((EnchantingType) e.Id))) possibleEnchantsForItem.Remove(enchant);
+				if (silkAndFortune.Contains((EnchantingType) enchant.Id) && enchants.Any(e => silkAndFortune.Contains((EnchantingType) e.Id)))
+				{
+					possibleEnchantsForItem.Remove(enchant);
+				}
 
 				//Depth Strider and Frost Walker conflict with each other.
 				//Mending and Infinity conflict with each other.
@@ -260,27 +283,29 @@ namespace MiNET
 			}
 		}
 
-		private static Enchant SelectEnchant(List<Enchant> enchants, Random rnd)
+		private static Enchant SelectEnchant(Enchants enchants, Random rnd)
 		{
-			int w = rnd.Next(0, enchants.Sum(e => e.Weight) / 2);
-			foreach (Enchant enchant in enchants.OrderBy(e => e.Weight))
+			var w = rnd.Next(0, enchants.Sum(e => e.Weight) / 2);
+			foreach (var enchant in enchants.OrderBy(e => e.Weight))
 			{
 				w -= enchant.Weight;
 				if (w < 0)
 				{
 					if (enchant.Id == (int) EnchantingType.SilkTouch) Log.Error("Got silk!");
+
 					return enchant;
 				}
 			}
 
-			Enchant last = enchants.LastOrDefault();
+			var last = enchants.LastOrDefault();
 			if (last != null && last.Id == (int) EnchantingType.SilkTouch) Log.Error("Got silk!");
+
 			return last;
 		}
 
-		public static List<Enchant> GetPossibleEnchantsForItem(ItemType itemType, int level)
+		public static Enchants GetPossibleEnchantsForItem(ItemType itemType, int level)
 		{
-			List<Enchant> enchants = new List<Enchant>();
+			var enchants = new Enchants();
 			switch (itemType)
 			{
 				case ItemType.Helmet:
@@ -289,8 +314,6 @@ namespace MiNET
 					break;
 				case ItemType.Chestplate:
 					enchants.Add(new Enchant(EnchantingType.Thorns));
-					break;
-				case ItemType.Leggings:
 					break;
 				case ItemType.Boots:
 					enchants.Add(new Enchant(EnchantingType.DepthStrider));
@@ -305,31 +328,15 @@ namespace MiNET
 					enchants.Add(new Enchant(EnchantingType.Smite));
 					enchants.Add(new Enchant(EnchantingType.Unbreaking));
 					break;
-				case ItemType.Bow:
-					break;
 				case ItemType.Hoe:
 					enchants.Add(new Enchant(EnchantingType.Efficiency));
 					enchants.Add(new Enchant(EnchantingType.Fortune));
 					enchants.Add(new Enchant(EnchantingType.SilkTouch));
-					break;
-				case ItemType.Sheers:
-					break;
-				case ItemType.FlintAndSteel:
-					break;
-				case ItemType.Axe:
-					break;
-				case ItemType.PickAxe:
-					break;
-				case ItemType.Shovel:
-					break;
+					break;	
 				case ItemType.FishingRod:
 					enchants.Add(new Enchant(EnchantingType.LuckOfTheSea));
 					enchants.Add(new Enchant(EnchantingType.Lure));
 					enchants.Add(new Enchant(EnchantingType.Unbreaking));
-					break;
-				case ItemType.CarrotOnAStick:
-					break;
-				case ItemType.Elytra:
 					break;
 				case ItemType.Trident:
 					enchants.Add(new Enchant(EnchantingType.Unbreaking));
@@ -357,41 +364,39 @@ namespace MiNET
 					enchants.Add(new Enchant(EnchantingType.FireProtection));
 					enchants.Add(new Enchant(EnchantingType.ProjectileProtection));
 					break;
+				case ItemType.Axe:
+				case ItemType.PickAxe:
+				case ItemType.Shovel:
+					enchants.Add(new Enchant(EnchantingType.Efficiency));
+					enchants.Add(new Enchant(EnchantingType.Fortune));
+					enchants.Add(new Enchant(EnchantingType.SilkTouch));
+					enchants.Add(new Enchant(EnchantingType.Unbreaking));
+					break;
+				case ItemType.Bow:
+				case ItemType.Sheers:
+				case ItemType.FlintAndSteel:
+				case ItemType.CarrotOnAStick:
+				case ItemType.Elytra:
+					break;
 			}
 
-			// dig
-			if (new List<ItemType>
+			switch (itemType)
 			{
-				ItemType.Axe,
-				ItemType.PickAxe,
-				ItemType.Shovel
-			}.Contains(itemType))
-			{
-				enchants.Add(new Enchant(EnchantingType.Efficiency));
-				enchants.Add(new Enchant(EnchantingType.Fortune));
-				enchants.Add(new Enchant(EnchantingType.SilkTouch));
-				enchants.Add(new Enchant(EnchantingType.Unbreaking));
-			}
-
-			// armor
-			if (new List<ItemType>
-			{
-				ItemType.Helmet,
-				ItemType.Chestplate,
-				ItemType.Leggings,
-				ItemType.Boots
-			}.Contains(itemType))
-			{
-				enchants.Add(new Enchant(EnchantingType.Protection));
-				enchants.Add(new Enchant(EnchantingType.BlastProtection));
-				enchants.Add(new Enchant(EnchantingType.FireProtection));
-				enchants.Add(new Enchant(EnchantingType.ProjectileProtection));
-				enchants.Add(new Enchant(EnchantingType.Unbreaking));
+				case ItemType.Helmet:
+				case ItemType.Chestplate:
+				case ItemType.Leggings:
+				case ItemType.Boots:
+					enchants.Add(new Enchant(EnchantingType.Protection));
+					enchants.Add(new Enchant(EnchantingType.BlastProtection));
+					enchants.Add(new Enchant(EnchantingType.FireProtection));
+					enchants.Add(new Enchant(EnchantingType.ProjectileProtection));
+					enchants.Add(new Enchant(EnchantingType.Unbreaking));
+					break;
 			}
 
 			// enchantments
-			enchants = enchants.GroupBy(p => p.Id).Select(grp => grp.FirstOrDefault()).Where(e => e != null && e.Levels.Count(l => l.MinLevel <= level && l.MaxLevel > level) > 0).ToList();
-			foreach (Enchant enchant in enchants)
+			enchants = new Enchants(enchants.GroupBy(p => p.Id).Select(grp => grp.FirstOrDefault()).Where(e => e != null && e.Levels.Count(l => l.MinLevel <= level && l.MaxLevel > level) > 0).ToList());
+			foreach (var enchant in enchants)
 			{
 				enchant.Level = enchant.Levels.OrderByDescending(l => l.MaxLevel).First(l => l.MinLevel <= level && l.MaxLevel > level).Level;
 				enchant.Cost = (uint) enchant.Levels.OrderByDescending(l => l.MaxLevel).First(l => l.MinLevel <= level && l.MaxLevel > level).MinLevel;
@@ -404,8 +409,9 @@ namespace MiNET
 			var chars = new byte[rnd.Next(7, 20)];
 			for (int i = 0; i < chars.Length; i++)
 			{
-				chars[i] = (byte) rnd.Next((int) 'a', (int) 'z');
+				chars[i] = (byte) rnd.Next('a', 'z');
 			}
+
 			return Encoding.ASCII.GetString(chars);
 		}
 	}

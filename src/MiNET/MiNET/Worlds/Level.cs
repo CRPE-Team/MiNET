@@ -325,7 +325,8 @@ namespace MiNET.Worlds
 				playerListMessage.PutPool();
 
 				var playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerAddRecords {newPlayer};
+				playerList.records = new PlayerAddRecords(newPlayer);
+
 				RelayBroadcast(newPlayer, sendList, CreateMcpeBatch(playerList.Encode()));
 				playerList.PutPool();
 
@@ -380,8 +381,9 @@ namespace MiNET.Worlds
 				playerListMessage.records = null;
 				playerListMessage.PutPool();
 
-				McpePlayerList playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerRemoveRecords {player};
+				var playerList = McpePlayerList.CreateObject();
+				playerList.records = new PlayerRemoveRecords(player);
+
 				RelayBroadcast(player, CreateMcpeBatch(playerList.Encode()));
 				playerList.records = null;
 				playerList.PutPool();
@@ -1198,7 +1200,7 @@ namespace MiNET.Worlds
 			if (broadcast)
 			{
 				var message = McpeUpdateBlock.CreateObject();
-				message.blockRuntimeId = (uint) block.GetRuntimeId();
+				message.blockRuntimeId = (uint) block.RuntimeId;
 				message.coordinates = block.Coordinates;
 				message.blockPriority = 0xb;
 				RelayBroadcast(message);
@@ -1371,7 +1373,7 @@ namespace MiNET.Worlds
 					player.SendPlayerInventory();
 
 					var message = McpeUpdateBlock.CreateObject();
-					message.blockRuntimeId = (uint) block.GetRuntimeId();
+					message.blockRuntimeId = (uint) block.RuntimeId;
 					message.coordinates = block.Coordinates;
 					message.blockPriority = 0xb;
 					player.SendPacket(message);
@@ -1434,7 +1436,7 @@ namespace MiNET.Worlds
 		private static void RevertBlockAction(Player player, Block block, BlockEntity blockEntity)
 		{
 			var message = McpeUpdateBlock.CreateObject();
-			message.blockRuntimeId = (uint) block.GetRuntimeId();
+			message.blockRuntimeId = (uint) block.RuntimeId;
 			message.coordinates = block.Coordinates;
 			message.blockPriority = 0xb;
 			player.SendPacket(message);

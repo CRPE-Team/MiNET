@@ -235,10 +235,11 @@ namespace MiNET.Net
 		public string multiplayerCorrelationId; // = null;
 		public bool enableNewInventorySystem; // = null;
 		public string serverVersion; // = null;
-		public Nbt propertyData;
-		public UUID worldTemplateId;
-		public bool clientSideGenerationEnabled;
-		public bool blockNetworkIdsAreHashes = false;
+		public Nbt propertyData; // = null;
+		public UUID worldTemplateId; // = null;
+		public bool clientSideGenerationEnabled; // = null;
+		public bool blockNetworkIdsAreHashes; // = null;
+		public bool disableClientSounds; // = null;
 
 		public LevelSettings levelSettings = new LevelSettings();
 		
@@ -278,6 +279,7 @@ namespace MiNET.Net
 			Write(worldTemplateId);
 			Write(clientSideGenerationEnabled);
 			Write(blockNetworkIdsAreHashes);
+			Write(disableClientSounds);
 		}
 		
 		partial void AfterDecode()
@@ -324,6 +326,7 @@ namespace MiNET.Net
 			worldTemplateId = ReadUUID();
 			clientSideGenerationEnabled = ReadBool();
 			blockNetworkIdsAreHashes = ReadBool();
+			disableClientSounds = ReadBool();
 		}
 
 		/// <inheritdoc />
@@ -349,10 +352,11 @@ namespace MiNET.Net
 			multiplayerCorrelationId=default(string);
 			enableNewInventorySystem=default(bool);
 			serverVersion=default(string);
-			propertyData = default;
-			worldTemplateId = default;
-			clientSideGenerationEnabled = default(bool);
-			blockNetworkIdsAreHashes =default(bool);
+			propertyData=default;
+			worldTemplateId=default;
+			clientSideGenerationEnabled=default(bool);
+			blockNetworkIdsAreHashes=default(bool);
+			disableClientSounds=default(bool);
 			base.Reset();
 		}
 	}

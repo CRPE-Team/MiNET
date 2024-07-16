@@ -228,11 +228,15 @@ namespace MiNET.Worlds
 
 				if (blockAndMeta.Length == 0) continue;
 
-				Block block = BlockFactory.GetBlockById($"minecraft:{blockAndMeta[0]}");
-
-				if (blockAndMeta.Length > 1 && byte.TryParse(blockAndMeta[1], out byte meta))
+				Block block;
+				if (blockAndMeta.Length > 1 && short.TryParse(blockAndMeta[1], out var meta))
 				{
-					block.Metadata = meta; //TODO: Replace with new state-based data from JE patterns.
+					//TODO: Replace with new state-based data from JE patterns.
+					block = BlockFactory.GetBlockById($"minecraft:{blockAndMeta[0]}", meta);
+				}
+				else
+				{
+					block = BlockFactory.GetBlockById($"minecraft:{blockAndMeta[0]}");
 				}
 
 				if (block != null)

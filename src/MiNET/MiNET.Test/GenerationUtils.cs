@@ -5,6 +5,7 @@
 		public static string CodeName(string name, bool firstUpper = false)
 		{
 			//name = name.ToLowerInvariant();
+			name = name.Replace("minecraft:", "");
 
 			bool upperCase = firstUpper;
 

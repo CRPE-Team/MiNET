@@ -25,10 +25,8 @@
 
 namespace MiNET.Items
 {
-	public class ItemAir : Item
+	public partial class ItemAir : Item
 	{
-		public override string Id { get; protected set; } = "minecraft:air";
-
 		public ItemAir() : base()
 		{
 			Count = 0;

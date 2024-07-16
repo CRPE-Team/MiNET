@@ -89,9 +89,7 @@ namespace MiNET.Blocks
 			}
 			if (rnd.Next(20) == 0)
 			{
-				// Sapling
-				var blockstate = GetState();
-				return new[] { ItemFactory.GetItem<Sapling>(blockstate.Data) };
+				return new[] { ItemFactory.GetItem<Sapling>(Data) };
 			}
 
 			return new Item[0];
