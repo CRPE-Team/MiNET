@@ -134,8 +134,8 @@ namespace MiNET
 
 		public void Write(Packet packet)
 		{
-			packet.WriteVarLong(FromEntityId);
-			packet.WriteVarLong(ToEntityId);
+			packet.WriteEntityId(FromEntityId);
+			packet.WriteEntityId(ToEntityId);
 			packet.Write((byte) Type);
 			packet.Write(Immediate);
 			packet.Write(CausedByRider);
@@ -143,8 +143,8 @@ namespace MiNET
 
 		public static EntityLink Read(Packet packet)
 		{
-			var fromEntityId = packet.ReadVarLong();
-			var toEntityId = packet.ReadVarLong();
+			var fromEntityId = packet.ReadEntityId();
+			var toEntityId = packet.ReadEntityId();
 			var type = (EntityLinkType) packet.ReadByte();
 			var immediate = packet.ReadBool();
 			var causedByRider = packet.ReadBool();
