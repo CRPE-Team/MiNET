@@ -868,7 +868,7 @@ namespace MiNET.Net
 
 		protected override void WriteData(Packet packet)
 		{
-			packet.WriteUnsignedVarLong(EntityId);
+			packet.WriteEntityId(EntityId);
 			packet.WriteUnsignedVarInt((uint) ActionType);
 			packet.WriteSignedVarInt(Slot);
 			packet.Write(Item);
