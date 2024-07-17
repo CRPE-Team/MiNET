@@ -85,7 +85,7 @@ namespace MiNET.Test
 						|| existingType.BaseType == typeof(object)
 						|| existingType.BaseType == typeof(Item)
 						|| (existingType.BaseType == typeof(ItemBlock) && (baseType?.IsAssignableTo(typeof(ItemBlock)) ?? false))
-						|| (existingType.BaseType.GetGenericTypeDefinition() == typeof(ItemBlock<>) && (baseType?.IsAssignableTo(typeof(ItemBlock)) ?? false)))
+						|| (existingType.BaseType.IsGenericType && existingType.BaseType.GetGenericTypeDefinition() == typeof(ItemBlock<>) && (baseType?.IsAssignableTo(typeof(ItemBlock)) ?? false)))
 					{
 						baseClassPart = $" : {baseName}";
 					}

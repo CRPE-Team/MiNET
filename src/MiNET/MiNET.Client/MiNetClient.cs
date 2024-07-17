@@ -138,9 +138,13 @@ namespace MiNET.Client
 			var motdProvider = new MotdProvider();
 
 			Connection = new RakConnection(ClientEndpoint, greyListManager, motdProvider, _threadPool);
-			var handlerFactory = new BedrockClientMessageHandler(Session, MessageHandler ?? new DefaultMessageHandler(this));
-			handlerFactory.ConnectionAction = () => SendLogin(Username);
-			Connection.CustomMessageHandlerFactory = session => handlerFactory;
+			Connection.CustomMessageHandlerFactory = session => 
+			{
+				var handlerFactory = new BedrockClientMessageHandler(session, MessageHandler ?? new DefaultMessageHandler(this));
+				handlerFactory.ConnectionAction = () => SendLogin(Username);
+
+				return handlerFactory;
+			};
 
 			//TODO: This is bad design, need to refactor this later.
 			greyListManager.ConnectionInfo = Connection.ConnectionInfo;

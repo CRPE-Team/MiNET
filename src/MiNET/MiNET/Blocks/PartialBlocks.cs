@@ -2292,6 +2292,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:black_carpet";
 	} // class
 
+	public partial class BlackConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:black_concrete";
+	} // class
+
 	public partial class BlackGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -2323,6 +2328,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class BlackShulkerBox : Block
+	{
+		public override string Id => "minecraft:black_shulker_box";
 	} // class
 
 	public partial class BlackWool : WoolBase
@@ -2619,6 +2629,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:blue_carpet";
 	} // class
 
+	public partial class BlueConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:blue_concrete";
+	} // class
+
 	public partial class BlueGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -2655,6 +2670,11 @@ namespace MiNET.Blocks
 	public partial class BlueIce : Block
 	{
 		public override string Id => "minecraft:blue_ice";
+	} // class
+
+	public partial class BlueShulkerBox : Block
+	{
+		public override string Id => "minecraft:blue_shulker_box";
 	} // class
 
 	public partial class BlueWool : WoolBase
@@ -2952,6 +2972,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:brown_carpet";
 	} // class
 
+	public partial class BrownConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:brown_concrete";
+	} // class
+
 	public partial class BrownGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -3021,6 +3046,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _hugeMushroomBits);
 		} // method
+	} // class
+
+	public partial class BrownShulkerBox : Block
+	{
+		public override string Id => "minecraft:brown_shulker_box";
 	} // class
 
 	public partial class BrownWool : WoolBase
@@ -4850,39 +4880,6 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Concrete : Block
-	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
-
-		public override string Id => "minecraft:concrete";
-
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
-		} // method
-	} // class
-
 	public partial class ConcretePowder : Block
 	{
 		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
@@ -5939,6 +5936,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cyan_carpet";
 	} // class
 
+	public partial class CyanConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:cyan_concrete";
+	} // class
+
 	public partial class CyanGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -5970,6 +5972,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class CyanShulkerBox : Block
+	{
+		public override string Id => "minecraft:cyan_shulker_box";
 	} // class
 
 	public partial class CyanWool : WoolBase
@@ -9053,6 +9060,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:gray_carpet";
 	} // class
 
+	public partial class GrayConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:gray_concrete";
+	} // class
+
 	public partial class GrayGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -9084,6 +9096,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class GrayShulkerBox : Block
+	{
+		public override string Id => "minecraft:gray_shulker_box";
 	} // class
 
 	public partial class GrayWool : WoolBase
@@ -9170,6 +9187,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:green_carpet";
 	} // class
 
+	public partial class GreenConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:green_concrete";
+	} // class
+
 	public partial class GreenGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -9201,6 +9223,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class GreenShulkerBox : Block
+	{
+		public override string Id => "minecraft:green_shulker_box";
 	} // class
 
 	public partial class GreenWool : WoolBase
@@ -10583,6 +10610,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:light_blue_carpet";
 	} // class
 
+	public partial class LightBlueConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:light_blue_concrete";
+	} // class
+
 	public partial class LightBlueGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -10614,6 +10646,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class LightBlueShulkerBox : Block
+	{
+		public override string Id => "minecraft:light_blue_shulker_box";
 	} // class
 
 	public partial class LightBlueWool : WoolBase
@@ -10698,6 +10735,16 @@ namespace MiNET.Blocks
 	public partial class LightGrayCarpet : CarpetBase
 	{
 		public override string Id => "minecraft:light_gray_carpet";
+	} // class
+
+	public partial class LightGrayConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:light_gray_concrete";
+	} // class
+
+	public partial class LightGrayShulkerBox : Block
+	{
+		public override string Id => "minecraft:light_gray_shulker_box";
 	} // class
 
 	public partial class LightGrayWool : WoolBase
@@ -10850,6 +10897,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:lime_carpet";
 	} // class
 
+	public partial class LimeConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:lime_concrete";
+	} // class
+
 	public partial class LimeGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -10881,6 +10933,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class LimeShulkerBox : Block
+	{
+		public override string Id => "minecraft:lime_shulker_box";
 	} // class
 
 	public partial class LimeWool : WoolBase
@@ -11152,6 +11209,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:magenta_carpet";
 	} // class
 
+	public partial class MagentaConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:magenta_concrete";
+	} // class
+
 	public partial class MagentaGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -11183,6 +11245,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class MagentaShulkerBox : Block
+	{
+		public override string Id => "minecraft:magenta_shulker_box";
 	} // class
 
 	public partial class MagentaWool : WoolBase
@@ -12562,13 +12629,13 @@ namespace MiNET.Blocks
 
 	public partial class Observer : Block
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _facingDirection = new BlockStateString() { Name = "minecraft:facing_direction", Value = "down" };
 		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
 
 		public override string Id => "minecraft:observer";
 
-		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("down", "east", "north", "south", "up", "west")]
+		public string FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateBit]
 		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
@@ -12579,7 +12646,7 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
+					case BlockStateString s when s.Name == "minecraft:facing_direction":
 						NotifyStateUpdate(_facingDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == "powered_bit":
@@ -12718,6 +12785,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:orange_carpet";
 	} // class
 
+	public partial class OrangeConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:orange_concrete";
+	} // class
+
 	public partial class OrangeGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -12749,6 +12821,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class OrangeShulkerBox : Block
+	{
+		public override string Id => "minecraft:orange_shulker_box";
 	} // class
 
 	public partial class OrangeWool : WoolBase
@@ -12995,6 +13072,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:pink_carpet";
 	} // class
 
+	public partial class PinkConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:pink_concrete";
+	} // class
+
 	public partial class PinkGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -13067,6 +13149,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _direction, _growth);
 		} // method
+	} // class
+
+	public partial class PinkShulkerBox : Block
+	{
+		public override string Id => "minecraft:pink_shulker_box";
 	} // class
 
 	public partial class PinkWool : WoolBase
@@ -14483,6 +14570,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:purple_carpet";
 	} // class
 
+	public partial class PurpleConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:purple_concrete";
+	} // class
+
 	public partial class PurpleGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -14514,6 +14606,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class PurpleShulkerBox : Block
+	{
+		public override string Id => "minecraft:purple_shulker_box";
 	} // class
 
 	public partial class PurpleWool : WoolBase
@@ -14822,6 +14919,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:red_carpet";
 	} // class
 
+	public partial class RedConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:red_concrete";
+	} // class
+
 	public partial class RedFlower : Block
 	{
 		private readonly BlockStateString _flowerType = new BlockStateString() { Name = "flower_type", Value = "poppy" };
@@ -15044,6 +15146,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
 		} // method
+	} // class
+
+	public partial class RedShulkerBox : Block
+	{
+		public override string Id => "minecraft:red_shulker_box";
 	} // class
 
 	public partial class RedWool : WoolBase
@@ -15665,39 +15772,6 @@ namespace MiNET.Blocks
 	public partial class Shroomlight : Block
 	{
 		public override string Id => "minecraft:shroomlight";
-	} // class
-
-	public partial class ShulkerBox
-	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
-
-		public override string Id => "minecraft:shulker_box";
-
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
-		} // method
 	} // class
 
 	public partial class SilverGlazedTerracotta
@@ -20098,6 +20172,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:white_carpet";
 	} // class
 
+	public partial class WhiteConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:white_concrete";
+	} // class
+
 	public partial class WhiteGlazedTerracotta
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -20129,6 +20208,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class WhiteShulkerBox : Block
+	{
+		public override string Id => "minecraft:white_shulker_box";
 	} // class
 
 	public partial class WhiteWool : WoolBase
@@ -20441,6 +20525,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:yellow_carpet";
 	} // class
 
+	public partial class YellowConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:yellow_concrete";
+	} // class
+
 	public partial class YellowFlower : Block
 	{
 		public override string Id => "minecraft:yellow_flower";
@@ -20477,6 +20566,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class YellowShulkerBox : Block
+	{
+		public override string Id => "minecraft:yellow_shulker_box";
 	} // class
 
 	public partial class YellowWool : WoolBase

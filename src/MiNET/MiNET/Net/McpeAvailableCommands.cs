@@ -62,8 +62,21 @@ namespace MiNET.Net
 					stringValues.Add(str);
 				}
 			}
-			int stringValuesCount = stringValues.Count();
 
+			var chainedSubCommandValueNames = new List<string>();
+			{
+				// Chained sub command value names?
+				uint count = ReadUnsignedVarInt();
+				Log.Debug($"Chained sub command value names {count}");
+				for (int i = 0; i < count; i++)
+				{
+					var value = ReadString();
+					chainedSubCommandValueNames.Add(value);
+					Log.Debug($"\t{value}");
+				}
+			}
+
+			int stringValuesCount = stringValues.Count();
 			{
 				uint count = ReadUnsignedVarInt();
 				Log.Debug($"Postfix values {count}");
@@ -111,6 +124,31 @@ namespace MiNET.Net
 				}
 			}
 
+			var allChainedSubCommandData = new Dictionary<string, Dictionary<string, short>> ();
+			{
+				// Chained sub command data?
+				uint count = ReadUnsignedVarInt();
+				Log.Debug($"Soft enums {count}");
+				for (int i = 0; i < count; i++)
+				{
+					var values = new Dictionary<string, short>();
+
+					string name = ReadString();
+					Log.Debug($"chained sub command name {name}");
+					uint valCount = ReadUnsignedVarInt();
+					for (int j = 0; j < valCount; j++)
+					{
+						var valueName = chainedSubCommandValueNames[ReadShort()];
+						var valueType = ReadShort();
+						Log.Debug($"\t{name} valueName:{valueName} valueType:{valueType}");
+
+						values.Add(valueName, valueType);
+					}
+
+					allChainedSubCommandData.Add(name, values);
+				}
+			}
+
 			{
 				uint count = ReadUnsignedVarInt();
 				Log.Debug($"Commands definitions {count}");
@@ -130,16 +168,30 @@ namespace MiNET.Net
 
 					int aliasEnumIndex = ReadInt();
 
+					{
+						// Chained sub command data?
+						uint c = ReadUnsignedVarInt();
+						Log.Debug($"Command chained sub command data {c}");
+						for (int j = 0; j < c; j++)
+						{
+							var chainedSubCommandData = allChainedSubCommandData.ElementAt(ReadShort());
+							var valueType = ReadShort();
+							//Log.Debug($"\tchainedSubCommandData: {chainedSubCommandData.Key}");
+						}
+					}
+
 					uint overloadCount = ReadUnsignedVarInt();
 					version.Overloads = new Dictionary<string, Overload>();
 					for (int j = 0; j < overloadCount; j++)
 					{
+						var isChaining = ReadBool();
+
 						Overload overload = new Overload();
 						overload.Input = new Input();
 						
 						uint parameterCount = ReadUnsignedVarInt();
 						overload.Input.Parameters = new Parameter[parameterCount];
-						Log.Debug($"{commandName}, {description}, flags={flags}, {((CommandPermission) permissions)}, alias={aliasEnumIndex}, overloads={overloadCount}, params={parameterCount}");
+						Log.Debug($"{commandName}, {description}, isChaining={isChaining}, flags={flags}, {((CommandPermission) permissions)}, alias={aliasEnumIndex}, overloads={overloadCount}, params={parameterCount}");
 						for (int k = 0; k < parameterCount; k++)
 						{
 							string commandParamName = ReadString();
@@ -215,7 +267,6 @@ namespace MiNET.Net
 			}
 			{
 				// Soft enums?
-
 				uint count = ReadUnsignedVarInt();
 				Log.Debug($"Soft enums {count}");
 				for (int i = 0; i < count; i++)
@@ -253,6 +304,8 @@ namespace MiNET.Net
 				if (CommandSet == null || CommandSet.Count == 0)
 				{
 					Log.Warn("No commands to send");
+					WriteUnsignedVarInt(0);
+					WriteUnsignedVarInt(0);
 					WriteUnsignedVarInt(0);
 					WriteUnsignedVarInt(0);
 					WriteUnsignedVarInt(0);
@@ -307,6 +360,7 @@ namespace MiNET.Net
 					}
 				}
 
+				WriteUnsignedVarInt(0); // Chained sub command value names
 				WriteUnsignedVarInt(0); // Postfixes
 
 				List<string> enumList = new List<string>();
@@ -416,6 +470,8 @@ namespace MiNET.Net
 					}
 				}
 
+				WriteUnsignedVarInt(0); // Chained sub command data
+
 				WriteUnsignedVarInt((uint) commands.Count);
 				foreach (var command in commands.Values)
 				{
@@ -434,6 +490,7 @@ namespace MiNET.Net
 						Write((int) -1); // Enum index
 					}
 
+					WriteUnsignedVarInt(0); // Chained sub command data
 
 					//Log.Warn($"Writing command {command.Name}");
 
@@ -441,6 +498,7 @@ namespace MiNET.Net
 					WriteUnsignedVarInt((uint) overloads.Count); // Overloads
 					foreach (var overload in overloads.Values)
 					{
+						Write(false); // isChaining
 						//Log.Warn($"Writing command: {command.Name}");
 
 						var parameters = overload.Input.Parameters;

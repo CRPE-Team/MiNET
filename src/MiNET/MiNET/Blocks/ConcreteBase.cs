@@ -28,9 +28,9 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class Concrete : Block
+	public abstract class ConcreteBase : Block
 	{
-		public Concrete() : base()
+		public ConcreteBase() : base()
 		{
 			BlastResistance = 15;
 			Hardness = 3;

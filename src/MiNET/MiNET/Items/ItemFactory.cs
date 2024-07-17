@@ -189,7 +189,9 @@ namespace MiNET.Items
 
 			foreach (var type in itemTypes)
 			{
-				if (type == typeof(Item)) continue;
+				if (type == typeof(Item) 
+					|| type == typeof(ItemBlock)
+					|| type == typeof(ItemCommand)) continue;
 
 				try
 				{

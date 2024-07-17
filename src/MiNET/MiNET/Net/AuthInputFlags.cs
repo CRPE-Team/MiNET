@@ -122,5 +122,10 @@ public enum AuthInputFlags : long
 	PerformBlockActions = 1L <<35,
 	PerformItemStackRequest = 1L <<36,
 	HandledTeleport = 1L << 37,
-	Emoting = 1L << 38
+	Emoting = 1L << 38,
+	MissedSwing = 1L << 39,
+	StartCrawling = 1L << 40,
+	StopCrawling = 1L << 41,
+	StartFlying = 1L << 42,
+	StopFlying = 1L << 43
 }

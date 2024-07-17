@@ -466,6 +466,10 @@ namespace MiNET.Test
 			{
 				return nameof(ElementBase);
 			}
+			if (id.EndsWith("_concrete"))
+			{
+				return nameof(ConcreteBase);
+			}
 
 			return nameof(Block);
 		}
