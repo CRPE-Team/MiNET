@@ -12,10 +12,10 @@ namespace MiNET.Blocks.Tests
 		{
 			int runtimeId = 917;
 
-			BlockStateContainer blocStateFromPick = BlockFactory.BlockPalette[runtimeId];
+			var blocStateFromPick = BlockFactory.BlockPalette[runtimeId];
 			var block = BlockFactory.GetBlockById(blocStateFromPick.Id);
 			Assert.IsNotNull(block);
-			block.SetState(blocStateFromPick.States);
+			block.SetStates(blocStateFromPick.States);
 
 			Item item = block.GetItem(null);
 
@@ -46,7 +46,8 @@ namespace MiNET.Blocks.Tests
 			block.DoublePlantType = "grass";
 			block.UpperBlockBit = true;
 
-			Assert.AreNotEqual(-1, block.GetRuntimeId());
+			Assert.IsTrue(block.IsValidStates);
+			Assert.AreNotEqual(-1, block.RuntimeId);
 		}
 	}
 }

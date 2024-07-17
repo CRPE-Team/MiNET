@@ -63,16 +63,13 @@ namespace MiNET.Items
 
 		[JsonIgnore] public virtual Block Block { get; protected set; }
 
-		public override int BlockRuntimeId => _blockRuntimeId.Value;
+		public override int BlockRuntimeId => Block?.RuntimeId ?? -1;
 
-		private readonly Lazy<int> _blockRuntimeId;
-
-		protected ItemBlock() : base()
+		protected ItemBlock()
 		{
-			_blockRuntimeId = new Lazy<int>(() => Block?.GetRuntimeId() ?? -1);
 		}
 
-		internal ItemBlock([NotNull] Block block) : this()
+		internal ItemBlock([NotNull] Block block)
 		{
 			Block = block ?? throw new ArgumentNullException(nameof(block));
 
@@ -119,15 +116,7 @@ namespace MiNET.Items
 			Block newBlock = BlockFactory.GetBlockById(Block.Id);
 			newBlock.Coordinates = currentBlock.IsReplaceable ? targetCoordinates : GetNewCoordinatesFromFace(targetCoordinates, face);
 
-			// This won't work without explicit mapping where an item dictates
-			// the initial value of a block. Need some sort of manual mapping or from
-			// generated data. The logic belong to the item.
-			// Basically what we want to do here is to check all items for a blockstate
-			// and find a matching one. Then use the blockstate for that item, to set the
-			// default data for this item.
-			newBlock.SetState(Block.GetState());
-
-			//newBlock.Metadata = (byte) Metadata;
+			newBlock.SetStates(Block);
 
 			if (!newBlock.CanPlace(world, player, targetCoordinates, face))
 			{
@@ -147,7 +136,7 @@ namespace MiNET.Items
 				player.Inventory.SetInventorySlot(player.Inventory.InHandSlot, itemInHand);
 			}
 
-			world.BroadcastSound(newBlock.Coordinates, LevelSoundEventType.Place, newBlock.GetRuntimeId());
+			world.BroadcastSound(newBlock.Coordinates, LevelSoundEventType.Place, newBlock.RuntimeId);
 
 			return true;
 		}

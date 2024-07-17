@@ -856,7 +856,7 @@ namespace MiNET.Worlds.Anvil
 
 					var block = BlockFactory.GetBlockById($"minecraft:{plantType}") ?? new RedFlower() { FlowerType = plantType };
 
-					if (block.GetRuntimeId() >= 0)
+					if (block.IsValidStates)
 					{
 						context.Properties.Add(new NbtString("update_bit", "true"));
 					}
@@ -1531,22 +1531,23 @@ namespace MiNET.Worlds.Anvil
 				if (block == null)
 				{
 					Log.Warn($"Can't find block [{name}] with props1 [{palette["Properties"]}], props2 [{properties}]");
-					return new InfoUpdate().GetRuntimeId();
+					return new InfoUpdate().RuntimeId;
 				}
 
-				var state = block.GetState();
+				var states = block.States.ToList();
 
-				var result = FillProperties(state, properties);
+				var result = FillProperties(states, properties);
 				if (!result)
 				{
 					Log.Warn($"Can't find block [{name}] with props1 [{palette["Properties"]}], props2 [{properties}]");
-					return new InfoUpdate().GetRuntimeId();
+					return new InfoUpdate().RuntimeId;
 				}
 
-				if (!BlockFactory.BlockStates.TryGetValue(state, out var blockstate))
+				var container = new PaletteBlockStateContainer(block.Id, states);
+				if (!BlockFactory.BlockStates.TryGetValue(container, out var blockstate))
 				{
-					Log.Warn($"Did not find block state for {block}, {state}");
-					return new InfoUpdate().GetRuntimeId();
+					Log.Warn($"Did not find block state for {block}, {container}");
+					return new InfoUpdate().RuntimeId;
 				}
 
 				blockEntity = context.BlockEntityTemplate;
@@ -1556,7 +1557,7 @@ namespace MiNET.Worlds.Anvil
 			{
 				Log.Warn($"Can't find block [{name}] with props1 [{palette["Properties"]}], props2 [{properties}]");
 				Log.Error(e);
-				return new InfoUpdate().GetRuntimeId();
+				return new InfoUpdate().RuntimeId;
 			}
 		}
 
@@ -1579,18 +1580,18 @@ namespace MiNET.Worlds.Anvil
 			return biome;
 		}
 
-		private static bool FillProperties(BlockStateContainer blockStateContainer, NbtCompound propertiesTag)
+		private static bool FillProperties(List<IBlockState> states, NbtCompound propertiesTag)
 		{
 			foreach (var prop in propertiesTag)
 			{
 				// workaround for incompatible mapping from anvil
 				if (prop.Name == AnvilIncompatibleBitName)
 				{
-					blockStateContainer.States.Add(new BlockStateByte() { Name = prop.Name, Value = 1 });
+					states.Add(new BlockStateByte() { Name = prop.Name, Value = 1 });
 					continue;
 				}
 
-				var state = blockStateContainer.States.FirstOrDefault(state => state.Name == prop.Name);
+				var state = states.FirstOrDefault(state => state.Name == prop.Name);
 
 				if (state == null) return false;
 

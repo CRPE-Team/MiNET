@@ -45,9 +45,9 @@ namespace MiNET.Blocks
 	{
 		public string StringId { get; set; }
 		public short Meta { get; set; }
-		public BlockStateContainer State { get; set; }
+		public IBlockStateContainer State { get; set; }
 
-		public R12ToCurrentBlockMapEntry(string id, short meta, BlockStateContainer state)
+		public R12ToCurrentBlockMapEntry(string id, short meta, IBlockStateContainer state)
 		{
 			StringId = id;
 			Meta = meta;
@@ -64,7 +64,7 @@ namespace MiNET.Blocks
 		public static byte[] TransparentBlocks { get; private set; }
 		public static byte[] LuminousBlocks { get; private set; }
 
-		public static Dictionary<string, BlockStateContainer> MetaBlockNameToState { get; private set; } = new Dictionary<string, BlockStateContainer>();
+		public static Dictionary<string, IBlockStateContainer> MetaBlockNameToState { get; private set; } = new Dictionary<string, IBlockStateContainer>();
 		public static Dictionary<int, string> RuntimeIdToId { get; private set; }
 		public static Dictionary<string, Type> IdToType { get; private set; } = new Dictionary<string, Type>();
 		public static Dictionary<Type, string> TypeToId { get; private set; } = new Dictionary<Type, string>();
@@ -73,7 +73,7 @@ namespace MiNET.Blocks
 
 		public static List<string> Ids { get; set; }
 		public static BlockPalette BlockPalette { get; } = new BlockPalette();
-		public static HashSet<BlockStateContainer> BlockStates { get; set; }
+		public static HashSet<IBlockStateContainer> BlockStates { get; set; }
 
 		private static readonly object _lockObj = new object();
 
@@ -101,7 +101,7 @@ namespace MiNET.Blocks
 
 				Ids = ids.ToList();
 
-				var visitedContainers = new HashSet<BlockStateContainer>();
+				var visitedContainers = new HashSet<IBlockStateContainer>();
 				var blockMapEntry = new List<R12ToCurrentBlockMapEntry>();
 
 				using (var stream = assembly.GetManifestResourceStream(typeof(BlockFactory).Namespace + ".Data.r12_to_current_block_map.bin"))
@@ -170,7 +170,7 @@ namespace MiNET.Blocks
 
 						if (otherStates.Count == thisStates.Count)
 						{
-							BlockPalette[match].Data = data;
+							((PaletteBlockStateContainer)BlockPalette[match]).Data = data;
 
 							var id = blockIdItemIdMap.GetValueOrDefault(mappedName, mappedName);
 
@@ -179,7 +179,7 @@ namespace MiNET.Blocks
 					}
 				}
 
-				foreach (var record in BlockPalette)
+				foreach (PaletteBlockStateContainer record in BlockPalette)
 				{
 					var states = new List<NbtTag>();
 					foreach (IBlockState state in record.States)
@@ -218,7 +218,7 @@ namespace MiNET.Blocks
 					MetaBlockNameToState.TryAdd(GetMetaBlockName(record.Id, record.Data), record);
 				}
 
-				BlockStates = new HashSet<BlockStateContainer>(BlockPalette);
+				BlockStates = new HashSet<IBlockStateContainer>(BlockPalette, new BlockStateContainerEqualityComparer());
 
 				(IdToType, TypeToId) = BuildIdTypeMapPair();
 				IdToFactory = BuildIdToFactory();
@@ -227,15 +227,11 @@ namespace MiNET.Blocks
 			}
 		}
 
-		private static BlockStateContainer GetBlockStateContainer(NbtTag tag)
+		private static PaletteBlockStateContainer GetBlockStateContainer(NbtTag tag)
 		{
-			var record = new BlockStateContainer();
-
 			string name = tag["name"].StringValue;
-			record.Id = name;
-			record.States = GetBlockStates(tag);
 
-			return record;
+			return new PaletteBlockStateContainer(name, GetBlockStates(tag));
 		}
 
 		public static List<IBlockState> GetBlockStates(NbtTag tag)
@@ -287,11 +283,7 @@ namespace MiNET.Blocks
 			// TODO - rework on serialization
 			var id = compound["name"].StringValue;
 
-			var states = new BlockStateContainer()
-			{
-				Id = id,
-				States = GetBlockStates(compound)
-			};
+			var states = new PaletteBlockStateContainer(id, GetBlockStates(compound));
 
 			if (BlockStates.TryGetValue(states, out var blockState))
 			{
@@ -323,7 +315,7 @@ namespace MiNET.Blocks
 			return RuntimeIdToId.GetValueOrDefault(id);
 		}
 
-		[Obsolete]
+		[Obsolete("Use block states")]
 		public static Block GetBlockById(string id, short metadata)
 		{
 			var block = GetBlockById(id);
@@ -333,7 +325,7 @@ namespace MiNET.Blocks
 				return block;
 			}
 
-			block.SetState(map.States);
+			block.SetStates(map.States);
 
 			return block;
 		}
@@ -359,7 +351,7 @@ namespace MiNET.Blocks
 
 			if (block != null)
 			{
-				block.SetState(blockState.States);
+				block.SetStates(blockState.States);
 			}
 
 			return block;
@@ -403,12 +395,9 @@ namespace MiNET.Blocks
 				if (type == typeof(Block)) continue;
 
 				var block = (Block) Activator.CreateInstance(type);
-				var state = block.GetState();
 
-				if (state == null) continue;
-
-				idToType[state.Id] = type;
-				typeToId[type] = state.Id;
+				idToType[block.Id] = type;
+				typeToId[type] = block.Id;
 			}
 
 			return (idToType, typeToId);

@@ -37,16 +37,11 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public abstract class Block : INbtSerializable, ICloneable
+	public abstract class Block : BlockStateContainer, INbtSerializable, ICloneable
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Block));
 
 		public BlockCoordinates Coordinates { get; set; }
-
-		public abstract string Id { get; }
-
-		[Obsolete("Use block states instead.")]
-		public byte Metadata { get; set; }
 
 		public float Hardness { get; protected set; } = 0;
 		public float BlastResistance { get; protected set; } = 0;
@@ -71,44 +66,6 @@ namespace MiNET.Blocks
 		protected Block()
 		{
 
-		}
-
-		public virtual void SetState(BlockStateContainer blockstate)
-		{
-			SetState(blockstate.States);
-		}
-
-		public virtual void SetState(List<IBlockState> states)
-		{
-		}
-
-		public virtual BlockStateContainer GetState()
-		{
-			return null;
-		}
-
-		public virtual BlockStateContainer GetGlobalState()
-		{
-			BlockStateContainer currentState = GetState();
-			if (!BlockFactory.BlockStates.TryGetValue(currentState, out var blockstate))
-			{
-				Log.Warn($"Did not find block state for {this}, {currentState}");
-				return null;
-			}
-
-			return blockstate;
-		}
-
-		public int GetRuntimeId()
-		{
-			BlockStateContainer currentState = GetState();
-			if (!BlockFactory.BlockStates.TryGetValue(currentState, out var blockstate))
-			{
-				Log.Warn($"Did not find block state for {this}, {currentState}");
-				return -1;
-			}
-
-			return blockstate.RuntimeId;
 		}
 
 		public virtual Item GetItem(Level world, bool blockItem = false)
@@ -252,9 +209,9 @@ namespace MiNET.Blocks
 				new NbtString("name", Id)
 			};
 
-			if (BlockFactory.BlockStates.TryGetValue(GetState(), out BlockStateContainer stateFromPick))
+			if (IsValidStates)
 			{
-				tag.Add((NbtTag) stateFromPick.StatesNbt.Clone());
+				tag.Add((NbtTag) StatesNbt.Clone());
 			}
 
 			return tag;
@@ -267,7 +224,7 @@ namespace MiNET.Blocks
 
 		protected virtual bool Equals(Block other)
 		{
-			return Id == Id && GetRuntimeId() == other.GetRuntimeId();
+			return RuntimeId == other.RuntimeId;
 		}
 
 		public override bool Equals(object obj)
@@ -280,12 +237,12 @@ namespace MiNET.Blocks
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, GetRuntimeId());
+			return base.GetHashCode();
 		}
 
 		public override string ToString()
 		{
-			return $"Id: {Id}, Metadata: {GetState()}, Coordinates: {Coordinates}";
+			return $"{base.ToString()}, Coordinates: {Coordinates}";
 		}
 	}
 

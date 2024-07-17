@@ -115,7 +115,7 @@ namespace MiNET.BlockEntities
 					{
 						Coordinates = furnace.Coordinates,
 					};
-					litFurnace.SetState(furnace.GetState().States);
+					litFurnace.SetStates(furnace.States);
 					level.SetBlock(litFurnace);
 					furnace = litFurnace;
 
@@ -173,7 +173,7 @@ namespace MiNET.BlockEntities
 						{
 							Coordinates = furnace.Coordinates,
 						};
-						unlitFurnace.SetState(furnace.GetState().States);
+						unlitFurnace.SetStates(furnace.States);
 						level.SetBlock(unlitFurnace);
 						FuelEfficiency = 0;
 						BurnTick = 0;

@@ -46,7 +46,7 @@ namespace MiNET.Client
 
 		private static object _chunkRead = new object();
 
-		public static ChunkColumn DecodeChunkColumn(int subChunkCount, byte[] buffer, BlockPalette bedrockPalette = null, HashSet<BlockStateContainer> internalBlockPallet = null)
+		public static ChunkColumn DecodeChunkColumn(int subChunkCount, byte[] buffer, BlockPalette bedrockPalette = null, HashSet<IBlockStateContainer> internalBlockPallet = null)
 		{
 			//lock (_chunkRead)
 			{
@@ -132,14 +132,14 @@ namespace MiNET.Client
 									{
 										List<IBlockState> blockState = ReadBlockState(tag);
 										Log.Error(blockState.ToArray());
-										block.SetState(blockState);
+										block.SetStates(blockState);
 									}
 									else
 									{
 										block = new Air();
 									}
 
-									palette[j] = block.GetRuntimeId();
+									palette[j] = block.RuntimeId;
 								}
 								else
 								{
@@ -466,13 +466,13 @@ namespace MiNET.Client
 			return states;
 		}
 
-		private static int GetServerRuntimeId(BlockPalette bedrockPalette, HashSet<BlockStateContainer> internalBlockPallet, int runtimeId)
+		private static int GetServerRuntimeId(BlockPalette bedrockPalette, HashSet<IBlockStateContainer> internalBlockPallet, int runtimeId)
 		{
 			if (runtimeId < 0 || runtimeId >= bedrockPalette.Count) Log.Error($"RuntimeId = {runtimeId}");
 
 			var record = bedrockPalette[runtimeId];
 
-			if (!internalBlockPallet.TryGetValue(record, out BlockStateContainer internalRecord))
+			if (!internalBlockPallet.TryGetValue(record, out var internalRecord))
 			{
 				Log.Error($"Did not find {record.Id}");
 				return 0; // air

@@ -36,7 +36,7 @@ namespace MiNET.Items
 
 		public ItemSlate(short size = 0) : base()
 		{
-			Block.Metadata = (byte) (Metadata = size);
+			Block.Size = (byte) (Metadata = size);
 			MaxStackSize = 16;
 		}
 

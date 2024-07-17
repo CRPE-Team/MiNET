@@ -598,7 +598,7 @@ namespace MiNET
 				case PlayerAction.Breaking:
 				{
 					Block target = Level.GetBlock(message.coordinates);
-					int data = ((int) target.GetRuntimeId()) | ((byte) (message.face << 24));
+					int data = ((int) target.RuntimeId) | ((byte) (message.face << 24));
 
 					McpeLevelEvent breakEvent = McpeLevelEvent.CreateObject();
 					breakEvent.eventId = 2014;
@@ -1906,10 +1906,7 @@ namespace MiNET
 		{
 			if (!UseCreativeInventory) return;
 
-			var creativeContent = McpeCreativeContent.CreateObject();
-			creativeContent.input = InventoryUtils.GetCreativeMetadataSlots();
-
-			SendPacket(creativeContent);
+			SendPacket(InventoryUtils.GetCreativeInventoryData());
 		}
 
 		private void SendChunkRadiusUpdate()
@@ -2506,7 +2503,7 @@ namespace MiNET
 				Log.Warn($"Attack item mismatch. Expected {itemInHand}, but client reported {transaction.Item}");
 			}
 
-			if (!Level.TryGetEntity(transaction.EntityId, out Entity target)) return;
+			if (!Level.TryGetEntity(transaction.RuntimeEntityId, out Entity target)) return;
 			target.DoItemInteraction(this, itemInHand);
 		}
 
@@ -2514,7 +2511,7 @@ namespace MiNET
 		{
 			DoInteraction((int) transaction.ActionType, this);
 
-			if (!Level.TryGetEntity(transaction.EntityId, out Entity target)) return;
+			if (!Level.TryGetEntity(transaction.RuntimeEntityId, out Entity target)) return;
 			target.DoInteraction((int) transaction.ActionType, this);
 		}
 
@@ -2526,7 +2523,7 @@ namespace MiNET
 				Log.Warn($"Attack item mismatch. Expected {itemInHand}, but client reported {transaction.Item}");
 			}
 
-			if (!Level.TryGetEntity(transaction.EntityId, out Entity target)) return;
+			if (!Level.TryGetEntity(transaction.RuntimeEntityId, out Entity target)) return;
 
 
 			LastAttackTarget = target;
@@ -3009,7 +3006,7 @@ namespace MiNET
 			startGame.movementType = 0;
 
 			//startGame.blockPalette = BlockFactory.BlockPalette;
-			startGame.itemstates = ItemFactory.Itemstates;
+			startGame.itemstates = ItemFactory.ItemStates;
 
 			startGame.enableNewInventorySystem = true;
 			startGame.blockPaletteChecksum = 0;
@@ -3471,14 +3468,14 @@ namespace MiNET
 
 			{
 				var playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerRemoveRecords {this};
+				playerList.records = new PlayerRemoveRecords(this);
 				Level.RelayBroadcast(Level.CreateMcpeBatch(playerList.Encode())); // Replace with records, to remove need for player and encode
 				playerList.records = null;
 				playerList.PutPool();
 			}
 			{
 				var playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerAddRecords {this};
+				playerList.records = new PlayerAddRecords(this);
 				Level.RelayBroadcast(Level.CreateMcpeBatch(playerList.Encode())); // Replace with records, to remove need for player and encode
 				playerList.records = null;
 				playerList.PutPool();

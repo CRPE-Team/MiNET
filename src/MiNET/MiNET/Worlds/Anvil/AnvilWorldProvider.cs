@@ -25,8 +25,8 @@ namespace MiNET.Worlds.Anvil
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(AnvilWorldProvider));
 
-		private static readonly int WaterBlockRuntimeId = new Water().GetRuntimeId();
-		private static readonly int SnowLayerBlockRuntimeId = new SnowLayer().GetRuntimeId();
+		private static readonly int WaterBlockRuntimeId = new Water().RuntimeId;
+		private static readonly int SnowLayerBlockRuntimeId = new SnowLayer().RuntimeId;
 
 		public IWorldGenerator MissingChunkProvider { get; set; }
 

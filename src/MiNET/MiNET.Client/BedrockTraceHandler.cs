@@ -240,12 +240,14 @@ namespace MiNET.Client
 
 				var blocks = new List<(int, string)>();
 
-				foreach (IGrouping<string, BlockStateContainer> blockstateGrouping in blockPalette.OrderBy(record => record.Id).ThenBy(record => record.Data).ThenBy(record => record.RuntimeId) .GroupBy(record => record.Id))
+				foreach (IGrouping<string, IBlockStateContainer> blockstateGrouping in blockPalette.OrderBy(record => record.Id).ThenBy(record => record.Data).ThenBy(record => record.RuntimeId) .GroupBy(record => record.Id))
 				{
-					BlockStateContainer currentBlockState = blockstateGrouping.First();
+					var currentBlockState = blockstateGrouping.First();
 					Log.Debug($"{currentBlockState.Id}, Id={currentBlockState.Id}");
-					BlockStateContainer defaultBlockState = BlockFactory.GetBlockById(currentBlockState.Id)?.GetGlobalState();
-					if (defaultBlockState == null)
+
+					var existingBlock = BlockFactory.GetBlockById(currentBlockState.Id);
+					var defaultBlockState = existingBlock as IBlockStateContainer;
+					if (!existingBlock.IsValidStates)
 					{
 						defaultBlockState = blockstateGrouping.FirstOrDefault(bs => bs.Data == 0);
 					}
@@ -597,7 +599,7 @@ namespace MiNET.Client
 						transaction.transaction = new ItemUseOnEntityTransaction()
 						{
 							TransactionRecords = new List<TransactionRecord>(),
-							EntityId = id,
+							RuntimeEntityId = id,
 							ActionType = 0,
 							Slot = 0,
 							Item = new ItemAir(),

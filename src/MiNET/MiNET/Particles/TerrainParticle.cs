@@ -32,7 +32,7 @@ namespace MiNET.Particles
 	{
 		public TerrainParticle(Level level, Block block) : base(ParticleType.Terrain, level)
 		{
-			Data = (int) block.GetRuntimeId();
+			Data = block.RuntimeId;
 		}
 	}
 }

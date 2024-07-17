@@ -77,14 +77,7 @@ namespace MiNET.Inventory
 				using MemoryStream memoryStream = new MemoryStream(bytes, 0, bytes.Length);
 				var compound = Packet.ReadNbtCompound(memoryStream, false);
 
-				var statesContainer = new BlockStateContainer();
-				statesContainer.Id = itemData.Id;
-				statesContainer.States = BlockFactory.GetBlockStates(compound);
-
-				if (BlockFactory.BlockStates.TryGetValue(statesContainer, out var blockStateContainer))
-				{
-					itemBlock.Block.SetState(blockStateContainer);
-				}
+				itemBlock.Block.SetStates(BlockFactory.GetBlockStates(compound));
 			}
 
 			if (itemData.ExtraData != null)

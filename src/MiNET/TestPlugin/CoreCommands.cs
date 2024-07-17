@@ -1739,7 +1739,7 @@ namespace TestPlugin
 						}
 
 						var message = McpeUpdateBlock.CreateObject();
-						message.blockRuntimeId = (uint) block.GetRuntimeId();
+						message.blockRuntimeId = (uint) block.RuntimeId;
 						message.coordinates = block.Coordinates;
 						message.blockPriority = 0xb;
 						level.RelayBroadcast(sendList.ToArray(), message);
