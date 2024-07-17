@@ -36,7 +36,7 @@ namespace MiNET.Utils
 	{
 		public void Write(Packet packet)
 		{
-			packet.Write((byte) (this.FirstOrDefault() is ScoreEntryRemove ? McpeSetScore.Types.Remove : McpeSetScore.Types.Change));
+			packet.Write((byte) (this.FirstOrDefault() is ScoreEntryRemove ? Types.Remove : Types.Change));
 			packet.WriteLength(Count);
 
 			foreach (var entry in this)
