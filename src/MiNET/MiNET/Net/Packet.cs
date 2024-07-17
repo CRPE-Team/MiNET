@@ -943,6 +943,17 @@ namespace MiNET.Net
 			return PlayerAttributes.Read(this);
 		}
 
+		public void WriteGameRules(GameRules gameRules)
+		{
+			if (gameRules == null)
+			{
+				WriteVarInt(0);
+				return;
+			}
+
+			gameRules.Write(this);
+		}
+
 		public GameRules ReadGameRules()
 		{
 			return GameRules.Read(this);

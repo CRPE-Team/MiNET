@@ -134,14 +134,14 @@ namespace MiNET.Utils
 		protected override void WriteData(Packet packet)
 		{
 			packet.Write((byte) McpeSetScore.ChangeTypes.Player);
-			packet.WriteSignedVarLong(EntityId);
+			packet.WriteEntityId(EntityId);
 		}
 
 		public static ScoreEntry Read(Packet packet)
 		{
 			var entry = ReadData<ScoreEntryChangePlayer>(packet);
 
-			entry.EntityId = packet.ReadSignedVarLong();
+			entry.EntityId = packet.ReadEntityId();
 
 			return entry;
 		}
@@ -154,14 +154,14 @@ namespace MiNET.Utils
 		protected override void WriteData(Packet packet)
 		{
 			packet.Write((byte) McpeSetScore.ChangeTypes.Entity);
-			packet.WriteSignedVarLong(EntityId);
+			packet.WriteEntityId(EntityId);
 		}
 
 		public static ScoreEntry Read(Packet packet)
 		{
 			var entry = ReadData<ScoreEntryChangeEntity>(packet);
 
-			entry.EntityId = packet.ReadSignedVarLong();
+			entry.EntityId = packet.ReadEntityId();
 
 			return entry;
 		}

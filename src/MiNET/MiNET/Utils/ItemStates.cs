@@ -16,7 +16,7 @@ namespace MiNET.Utils
 
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 			foreach (var itemstate in this)
 			{
 				packet.Write(itemstate.Key);
@@ -28,7 +28,7 @@ namespace MiNET.Utils
 		{
 			var result = new ItemStates();
 
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (int runtimeId = 0; runtimeId < count; runtimeId++)
 			{
 				var name = packet.ReadString();
