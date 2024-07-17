@@ -868,7 +868,7 @@ namespace MiNET.Net
 
 		protected override void WriteData(Packet packet)
 		{
-			packet.WriteVarLong(RuntimeEntityId);
+			packet.WriteRuntimeEntityId(RuntimeEntityId);
 			packet.WriteUnsignedVarInt((uint) ActionType);
 			packet.WriteSignedVarInt(Slot);
 			packet.Write(Item);
@@ -880,7 +880,7 @@ namespace MiNET.Net
 		{
 			return new ItemUseOnEntityTransaction()
 			{
-				RuntimeEntityId = packet.ReadVarLong(),
+				RuntimeEntityId = packet.ReadRuntimeEntityId(),
 				ActionType = (McpeInventoryTransaction.ItemUseOnEntityAction) packet.ReadUnsignedVarInt(),
 				Slot = packet.ReadSignedVarInt(),
 				Item = packet.ReadItem(),

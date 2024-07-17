@@ -370,6 +370,11 @@ namespace MiNET.Net
 			WriteUnsignedVarLong(value);
 		}
 
+		public long ReadRuntimeEntityId()
+		{
+			return ReadUnsignedVarLong();
+		}
+
 		public void WriteUnsignedVarLong(long value)
 		{
 			// Need to fix this to ulong later
