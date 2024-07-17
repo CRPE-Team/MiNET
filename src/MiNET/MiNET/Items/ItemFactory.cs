@@ -26,24 +26,24 @@ namespace MiNET.Items
 		public static Dictionary<string, Func<Item>> IdToFactory { get; private set; } = new Dictionary<string, Func<Item>>();
 		public static Dictionary<string, string[]> ItemTags { get; private set; } = new Dictionary<string, string[]>();
 
-		public static Itemstates Itemstates { get; internal set; } = new Itemstates();
+		public static ItemStates ItemStates { get; internal set; } = new ItemStates();
 
 		static ItemFactory()
 		{
 			ItemTags = ResourceUtil.ReadResource<Dictionary<string, string[]>>("item_tags.json", typeof(ItemFactory), "Data");
-			Itemstates = ResourceUtil.ReadResource<Itemstates>("required_item_list.json", typeof(ItemFactory), "Data");
+			ItemStates = ResourceUtil.ReadResource<ItemStates>("required_item_list.json", typeof(ItemFactory), "Data");
 
-			var maxRuntimeId = Itemstates.Max(state => state.Value.RuntimeId);
+			var maxRuntimeId = ItemStates.Max(state => state.Value.RuntimeId);
 			foreach (var blockId in BlockFactory.ItemToBlock.Values)
 			{
-				Itemstates.TryAdd(blockId, new Itemstate() { RuntimeId = ++maxRuntimeId });
+				ItemStates.TryAdd(blockId, new ItemState() { RuntimeId = ++maxRuntimeId });
 			}
 
 			RuntimeIdToId = BuildRuntimeIdToId();
 			(IdToType, TypeToId) = BuildIdTypeMapPair();
 			IdToFactory = BuildIdToFactory();
 
-			var missingItems = Itemstates.Keys.Where(id => !id.Contains("item.")).Except(IdToType.Keys);
+			var missingItems = ItemStates.Keys.Where(id => !id.Contains("item.")).Except(IdToType.Keys);
 			foreach (var missingItem in missingItems)
 			{
 				Log.Warn($"Detected missing items [{missingItem}]");
@@ -62,7 +62,7 @@ namespace MiNET.Items
 
 		public static int GetRuntimeIdById(string id)
 		{
-			return Itemstates.GetValueOrDefault(id)?.RuntimeId ?? 0;
+			return ItemStates.GetValueOrDefault(id)?.RuntimeId ?? 0;
 		}
 
 		public static string GetIdByRuntimeId(int id)
@@ -217,7 +217,7 @@ namespace MiNET.Items
 		{
 			var runtimeIdToId = new Dictionary<int, string>();
 
-			foreach (var state in Itemstates)
+			foreach (var state in ItemStates)
 			{
 				runtimeIdToId.Add(state.Value.RuntimeId, state.Key);
 			}
