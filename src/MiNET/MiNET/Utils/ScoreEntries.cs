@@ -26,9 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MiNET.Entities;
 using MiNET.Net;
-using Org.BouncyCastle.Ocsp;
 using static MiNET.Net.McpeSetScore;
 using static MiNET.Net.McpeSetScoreboardIdentity;
 
@@ -133,7 +131,7 @@ namespace MiNET.Utils
 
 		protected override void WriteData(Packet packet)
 		{
-			packet.Write((byte) McpeSetScore.ChangeTypes.Player);
+			packet.Write((byte) ChangeTypes.Player);
 			packet.WriteEntityId(EntityId);
 		}
 
@@ -153,7 +151,7 @@ namespace MiNET.Utils
 
 		protected override void WriteData(Packet packet)
 		{
-			packet.Write((byte) McpeSetScore.ChangeTypes.Entity);
+			packet.Write((byte) ChangeTypes.Entity);
 			packet.WriteEntityId(EntityId);
 		}
 
@@ -173,7 +171,7 @@ namespace MiNET.Utils
 
 		protected override void WriteData(Packet packet)
 		{
-			packet.Write((byte) McpeSetScore.ChangeTypes.FakePlayer);
+			packet.Write((byte) ChangeTypes.FakePlayer);
 			packet.Write(CustomName);
 		}
 
@@ -191,7 +189,7 @@ namespace MiNET.Utils
 	{
 		public void Write(Packet packet)
 		{
-			packet.Write((byte) (this.FirstOrDefault() is ScoreboardClearIdentityEntry ? McpeSetScoreboardIdentity.Operations.ClearIdentity : McpeSetScoreboardIdentity.Operations.RegisterIdentity));
+			packet.Write((byte) (this.FirstOrDefault() is ScoreboardClearIdentityEntry ? Operations.ClearIdentity : Operations.RegisterIdentity));
 			packet.WriteLength(Count);
 
 			foreach (var entry in this)

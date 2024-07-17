@@ -854,7 +854,7 @@ namespace MiNET.Net
 
 	public class ItemUseOnEntityTransaction : Transaction
 	{
-		public long EntityId { get; set; }
+		public long RuntimeEntityId { get; set; }
 		public McpeInventoryTransaction.ItemUseOnEntityAction ActionType { get; set; }
 		public int Slot { get; set; }
 		public Item Item { get; set; }
@@ -868,7 +868,7 @@ namespace MiNET.Net
 
 		protected override void WriteData(Packet packet)
 		{
-			packet.WriteEntityId(EntityId);
+			packet.WriteVarLong(RuntimeEntityId);
 			packet.WriteUnsignedVarInt((uint) ActionType);
 			packet.WriteSignedVarInt(Slot);
 			packet.Write(Item);
@@ -880,7 +880,7 @@ namespace MiNET.Net
 		{
 			return new ItemUseOnEntityTransaction()
 			{
-				EntityId = packet.ReadUnsignedVarLong(),
+				RuntimeEntityId = packet.ReadVarLong(),
 				ActionType = (McpeInventoryTransaction.ItemUseOnEntityAction) packet.ReadUnsignedVarInt(),
 				Slot = packet.ReadSignedVarInt(),
 				Item = packet.ReadItem(),
