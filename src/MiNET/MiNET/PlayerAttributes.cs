@@ -1,5 +1,4 @@
 ﻿#region LICENSE
-
 // The contents of this file are subject to the Common Public Attribution
 // License Version 1.0. (the "License"); you may not use this file except in
 // compliance with the License. You may obtain a copy of the License at
@@ -23,31 +22,98 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using log4net;
+using MiNET.Net;
 using Newtonsoft.Json;
 
 namespace MiNET
 {
-	public class AttributeModifiers : Dictionary<string, AttributeModifier>
+	public class AttributeModifiers : Dictionary<string, AttributeModifier>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.WriteLength(Count);
+			foreach (var modifier in Values)
+			{
+				modifier.Write(packet);
+			}
+		}
+
+		public static AttributeModifiers Read(Packet packet)
+		{
+			var modifiers = new AttributeModifiers();
+			var count = packet.ReadLength();
+			for (int i = 0; i < count; i++)
+			{
+				var modifier = AttributeModifier.Read(packet);
+				modifiers[modifier.Name] = modifier;
+			}
+
+			return modifiers;
+		}
 	}
 
-	public class PlayerAttributes : Dictionary<string, PlayerAttribute>
+	public class PlayerAttributes : Dictionary<string, PlayerAttribute>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.WriteLength(Count);
+			foreach (var attribute in Values)
+			{
+				attribute.Write(packet);
+			}
+		}
+
+		public static PlayerAttributes Read(Packet packet)
+		{
+			var attributes = new PlayerAttributes();
+			var count = packet.ReadLength();
+			for (int i = 0; i < count; i++)
+			{
+				var attribute = PlayerAttribute.Read(packet);
+				attributes[attribute.Name] = attribute;
+			}
+
+			return attributes;
+		}
 	}
 
-	public class EntityAttributes : Dictionary<string, EntityAttribute>
+	public class EntityAttributes : Dictionary<string, EntityAttribute>, IPacketDataObject
 	{
+		public void Write(Packet packet)
+		{
+			packet.WriteLength(Count);
+			foreach (var attribute in Values)
+			{
+				attribute.Write(packet);
+			}
+		}
+
+		public static EntityAttributes Read(Packet packet)
+		{
+			var attributes = new EntityAttributes();
+			var count = packet.ReadLength();
+			for (int i = 0; i < count; i++)
+			{
+				var attribute = EntityAttribute.Read(packet);
+				attributes[attribute.Name] = attribute;
+			}
+
+			return attributes;
+		}
 	}
 
-	public class EntityLink
+	public class EntityLink : IPacketDataObject
 	{
 		public long FromEntityId { get; set; }
+
 		public long ToEntityId { get; set; }
+
 		public EntityLinkType Type { get; set; }
+
 		public bool Immediate { get; set; }
+
 		public bool CausedByRider { get; set; }
 
 		public EntityLink(long fromEntityId, long toEntityId, EntityLinkType type, bool immediate, bool causedByRider)
@@ -58,37 +124,83 @@ namespace MiNET
 			Immediate = immediate;
 			CausedByRider = causedByRider;
 		}
-		
+
 		public enum EntityLinkType : byte
 		{
 			Remove = 0,
 			Rider = 1,
 			Passenger = 2
 		}
-	}
-	
-	public class EntityLinks : List<EntityLink>
-	{
-	}
 
-	public class GameRules : HashSet<GameRule>
-	{
-	}
-
-	public class Itemstates : Dictionary<string, Itemstate>
-	{
-		public static Itemstates FromJson(string json)
+		public void Write(Packet packet)
 		{
-			return JsonConvert.DeserializeObject<Itemstates>(json);
+			packet.WriteEntityId(FromEntityId);
+			packet.WriteEntityId(ToEntityId);
+			packet.Write((byte) Type);
+			packet.Write(Immediate);
+			packet.Write(CausedByRider);
+		}
+
+		public static EntityLink Read(Packet packet)
+		{
+			var fromEntityId = packet.ReadEntityId();
+			var toEntityId = packet.ReadEntityId();
+			var type = (EntityLinkType) packet.ReadByte();
+			var immediate = packet.ReadBool();
+			var causedByRider = packet.ReadBool();
+
+			return new EntityLink(fromEntityId, toEntityId, type, immediate, causedByRider);
 		}
 	}
 
-	public class Itemstate
+	public class EntityLinks : List<EntityLink>, IPacketDataObject
 	{
-		[JsonProperty("runtime_id")]
-		public short RuntimeId { get; set; }
+		public void Write(Packet packet)
+		{
+			packet.WriteLength(Count); // LE
 
-		[JsonProperty("component_based")]
-		public bool ComponentBased { get; set; } = false;
+			foreach (var link in this)
+			{
+				link.Write(packet);
+			}
+		}
+
+		public static EntityLinks Read(Packet packet)
+		{
+			var count = packet.ReadLength();
+
+			var links = new EntityLinks();
+			for (int i = 0; i < count; i++)
+			{
+				links.Add(EntityLink.Read(packet));
+			}
+
+			return links;
+		}
+	}
+
+	public class GameRules : HashSet<GameRule>, IPacketDataObject
+	{
+		public void Write(Packet packet)
+		{
+			packet.WriteVarInt(Count);
+			foreach (var rule in this)
+			{
+				rule.Write(packet);
+			}
+		}
+
+		public static GameRules Read(Packet packet)
+		{
+			var gameRules = new GameRules();
+
+			var count = packet.ReadVarInt();
+			for (int i = 0; i < count; i++)
+			{
+				gameRules.Add(GameRule.Read(packet));
+			}
+
+			return gameRules;
+		}
 	}
 }

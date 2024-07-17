@@ -33,7 +33,7 @@ namespace MiNET.Utils
 	{
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 			foreach (var option in this)
 			{
 				packet.Write(option);
@@ -43,7 +43,7 @@ namespace MiNET.Utils
 		public static EnchantOptions Read(Packet packet)
 		{
 			var options = new EnchantOptions();
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 
 			for (int i = 0; i < count; i++)
 			{
@@ -105,7 +105,7 @@ namespace MiNET.Utils
 
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 			foreach (var enchant in this)
 			{
 				packet.Write(enchant);
@@ -115,7 +115,7 @@ namespace MiNET.Utils
 		public static Enchants Read(Packet packet)
 		{
 			var enchants = new Enchants();
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 
 			for (int i = 0; i < count; i++)
 			{

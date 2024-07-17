@@ -91,8 +91,7 @@ namespace MiNET.Utils
 				}
 
 				var count = Decorators.Length;
-
-				packet.WriteUnsignedVarInt((uint) count);
+				packet.WriteLength(count);
 				foreach (var decorator in Decorators)
 				{
 					if (decorator is EntityMapDecorator entity)
@@ -105,7 +104,7 @@ namespace MiNET.Utils
 					}
 				}
 
-				packet.WriteUnsignedVarInt((uint) count);
+				packet.WriteLength(count);
 				foreach (var decorator in Decorators)
 				{
 					packet.Write(decorator.Icon);
@@ -126,7 +125,7 @@ namespace MiNET.Utils
 				packet.WriteSignedVarInt(ZOffset);
 
 				packet.WriteUnsignedVarInt((uint) (Col * Row));
-				int i = 0;
+				var i = 0;
 				for (int col = 0; col < Col; col++)
 				{
 					for (int row = 0; row < Row; row++)
@@ -154,7 +153,7 @@ namespace MiNET.Utils
 			if ((map.UpdateType & MapUpdateFlagInitialisation) == MapUpdateFlagInitialisation)
 			{
 				// Entities
-				var count = packet.ReadUnsignedVarInt();
+				var count = packet.ReadLength();
 				for (int i = 0; i < count - 1; i++) // This is some weird shit vanilla is doing with counting.
 				{
 					var eid = packet.ReadSignedVarLong();
@@ -174,7 +173,7 @@ namespace MiNET.Utils
 
 				try
 				{
-					var entityCount = packet.ReadUnsignedVarInt();
+					var entityCount = packet.ReadLength();
 					for (int i = 0; i < entityCount; i++)
 					{
 						var type = packet.ReadInt();
@@ -190,7 +189,7 @@ namespace MiNET.Utils
 						}
 					}
 
-					var count = packet.ReadUnsignedVarInt();
+					var count = packet.ReadLength();
 					map.Decorators = new MapDecorator[count];
 					for (int i = 0; i < count; i++)
 					{
