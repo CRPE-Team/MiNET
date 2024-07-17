@@ -3004,7 +3004,7 @@ namespace MiNET
 			startGame.movementType = 0;
 
 			//startGame.blockPalette = BlockFactory.BlockPalette;
-			startGame.itemstates = ItemFactory.Itemstates;
+			startGame.itemstates = ItemFactory.ItemStates;
 
 			startGame.enableNewInventorySystem = true;
 			startGame.blockPaletteChecksum = 0;
