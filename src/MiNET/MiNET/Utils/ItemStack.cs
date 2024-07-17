@@ -34,7 +34,7 @@ namespace MiNET.Utils
 	{
 		public virtual void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 
 			for (int i = 0; i < Count; i++)
 			{
@@ -46,7 +46,7 @@ namespace MiNET.Utils
 		{
 			var itemStacks = new ItemStacks();
 
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (int i = 0; i < count; i++)
 			{
 				itemStacks.Add(packet.ReadItem());
@@ -62,7 +62,7 @@ namespace MiNET.Utils
 
 		public override void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 
 			foreach (var item in this)
 			{
@@ -75,7 +75,7 @@ namespace MiNET.Utils
 		{
 			var metadata = new CreativeItemStacks();
 
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (int i = 0; i < count; i++)
 			{
 				var networkId = packet.ReadUnsignedVarInt();

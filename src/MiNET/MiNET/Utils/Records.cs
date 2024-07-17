@@ -79,7 +79,7 @@ namespace MiNET.Utils
 		public void Write(Packet packet)
 		{
 			packet.Write((byte) Type);
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 
 			WriteData(packet);
 		}
@@ -162,7 +162,7 @@ namespace MiNET.Utils
 		{
 			var records = new PlayerAddRecords();
 
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (var i = 0; i < count; i++)
 			{
 				records.Add(ReadRecord(packet));
@@ -235,7 +235,7 @@ namespace MiNET.Utils
 		{
 			var records = new PlayerRemoveRecords();
 
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (var i = 0; i < count; i++)
 			{
 				records.Add(ReadRecord(packet));

@@ -9,7 +9,7 @@ namespace MiNET.Net
 
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) IntProperties.Count);
+			packet.WriteLength(IntProperties.Count);
 
 			foreach (var intP in IntProperties)
 			{
@@ -17,7 +17,7 @@ namespace MiNET.Net
 				packet.WriteSignedVarInt(intP.Value);
 			}
 
-			packet.WriteUnsignedVarInt((uint) FloatProperties.Count);
+			packet.WriteLength(FloatProperties.Count);
 
 			foreach (var intF in FloatProperties)
 			{
@@ -29,13 +29,13 @@ namespace MiNET.Net
 		public static PropertySyncData Read(Packet packet)
 		{
 			var syncData = new PropertySyncData();
-			var countInt = packet.ReadUnsignedVarInt();
+			var countInt = packet.ReadLength();
 			for (int i = 0; i < countInt; i++)
 			{
 				syncData.IntProperties.Add(packet.ReadUnsignedVarInt(), packet.ReadVarInt());
 			}
 
-			var countFloat = packet.ReadUnsignedVarInt();
+			var countFloat = packet.ReadLength();
 			for (int i = 0; i < countFloat; i++)
 			{
 				syncData.FloatProperties.Add(packet.ReadUnsignedVarInt(), packet.ReadFloat());

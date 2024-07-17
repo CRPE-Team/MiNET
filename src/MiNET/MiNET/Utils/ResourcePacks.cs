@@ -182,7 +182,7 @@ namespace MiNET.Utils
 	{
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count); // LE
+			packet.WriteLength(Count); // LE
 
 			foreach (var info in this)
 			{
@@ -194,7 +194,7 @@ namespace MiNET.Utils
 		{
 			var packInfos = new ResourcePackIdVersions();
 
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (int i = 0; i < count; i++)
 			{
 				packInfos.Add(PackIdVersion.Read(packet));

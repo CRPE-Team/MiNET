@@ -33,7 +33,7 @@ namespace MiNET
 	{
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 			foreach (var modifier in Values)
 			{
 				modifier.Write(packet);
@@ -43,7 +43,7 @@ namespace MiNET
 		public static AttributeModifiers Read(Packet packet)
 		{
 			var modifiers = new AttributeModifiers();
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (int i = 0; i < count; i++)
 			{
 				var modifier = AttributeModifier.Read(packet);
@@ -58,7 +58,7 @@ namespace MiNET
 	{
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 			foreach (var attribute in Values)
 			{
 				attribute.Write(packet);
@@ -68,7 +68,7 @@ namespace MiNET
 		public static PlayerAttributes Read(Packet packet)
 		{
 			var attributes = new PlayerAttributes();
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (int i = 0; i < count; i++)
 			{
 				var attribute = PlayerAttribute.Read(packet);
@@ -83,7 +83,7 @@ namespace MiNET
 	{
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 			foreach (var attribute in Values)
 			{
 				attribute.Write(packet);
@@ -93,7 +93,7 @@ namespace MiNET
 		public static EntityAttributes Read(Packet packet)
 		{
 			var attributes = new EntityAttributes();
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (int i = 0; i < count; i++)
 			{
 				var attribute = EntityAttribute.Read(packet);
@@ -157,7 +157,7 @@ namespace MiNET
 	{
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count); // LE
+			packet.WriteLength(Count); // LE
 
 			foreach (var link in this)
 			{
@@ -167,7 +167,7 @@ namespace MiNET
 
 		public static EntityLinks Read(Packet packet)
 		{
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 
 			var links = new EntityLinks();
 			for (int i = 0; i < count; i++)

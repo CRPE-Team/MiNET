@@ -9,7 +9,7 @@ namespace MiNET.Net.Crafting
 	{
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 
 			foreach (var recipe in this)
 			{
@@ -21,7 +21,7 @@ namespace MiNET.Net.Crafting
 		{
 			var recipes = new Recipes();
 
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (var i = 0; i < count; i++)
 			{
 				recipes.Add(Recipe.Read(packet));
@@ -210,13 +210,13 @@ namespace MiNET.Net.Crafting
 		{
 			packet.Write(Id.ToString());
 
-			packet.WriteUnsignedVarInt((uint) Input.Count);
+			packet.WriteLength(Input.Count);
 			foreach (var ingredient in Input)
 			{
 				packet.Write(ingredient);
 			}
 
-			packet.WriteUnsignedVarInt((uint) Output.Count);
+			packet.WriteLength(Output.Count);
 			foreach (Item item in Output)
 			{
 				packet.Write(item, false);
@@ -232,13 +232,13 @@ namespace MiNET.Net.Crafting
 		{
 			packet.ReadString(); // some unique id
 
-			var inputCount = packet.ReadUnsignedVarInt();
+			var inputCount = packet.ReadLength();
 			for (var i = 0; i < inputCount; i++)
 			{
 				recipe.Input.Add(RecipeIngredient.Read(packet));
 			}
 
-			var outputCount = packet.ReadUnsignedVarInt();
+			var outputCount = packet.ReadLength();
 			for (var i = 0; i < outputCount; i++)
 			{
 				recipe.Output.Add(packet.ReadItem(false));
@@ -349,7 +349,7 @@ namespace MiNET.Net.Crafting
 				}
 			}
 
-			packet.WriteUnsignedVarInt((uint) Output.Count);
+			packet.WriteLength(Output.Count);
 			foreach (var item in Output)
 			{
 				packet.Write(item, false);
@@ -371,7 +371,7 @@ namespace MiNET.Net.Crafting
 				}
 			}
 
-			var outputCount = packet.ReadUnsignedVarInt();
+			var outputCount = packet.ReadLength();
 			for (var i = 0; i < outputCount; i++)
 			{
 				recipe.Output.Add(packet.ReadItem(false));
@@ -664,7 +664,7 @@ namespace MiNET.Net.Crafting
 		public void Write(Packet packet)
 		{
 			packet.WriteVarInt((Input << 16) | InputMeta);
-			packet.WriteUnsignedVarInt((uint) Output.Length);
+			packet.WriteLength(Output.Length);
 
 			foreach (var output in Output)
 			{
@@ -679,7 +679,7 @@ namespace MiNET.Net.Crafting
 			var inputId = inputIdAndMeta >> 16;
 			var inputMeta = inputIdAndMeta & 0x7fff;
 
-			var outputCount = (int) packet.ReadUnsignedVarInt();
+			var outputCount = packet.ReadLength();
 			var outputs = new MaterialReducerRecipeOutput[outputCount];
 
 			for (int i = 0; i < outputs.Length; i++)
