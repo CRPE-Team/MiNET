@@ -599,7 +599,7 @@ namespace MiNET.Client
 						transaction.transaction = new ItemUseOnEntityTransaction()
 						{
 							TransactionRecords = new List<TransactionRecord>(),
-							EntityId = id,
+							RuntimeEntityId = id,
 							ActionType = 0,
 							Slot = 0,
 							Item = new ItemAir(),

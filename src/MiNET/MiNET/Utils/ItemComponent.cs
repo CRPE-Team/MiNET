@@ -51,7 +51,7 @@ namespace MiNET.Utils
 	{
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 			foreach (var item in this)
 			{
 				packet.Write(item);
@@ -60,7 +60,7 @@ namespace MiNET.Utils
 
 		public static ItemComponentList Read(Packet packet)
 		{
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			var list = new ItemComponentList();
 
 			for (int i = 0; i < count; i++)
