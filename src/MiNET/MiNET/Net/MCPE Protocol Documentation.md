@@ -319,9 +319,9 @@ Wiki: [Disconnect](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Discon
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
+|Reason | VarInt |  |
 |Hide disconnect reason | bool |  |
 |Message | string |  |
-|Reason | int |  |
 -----------------------------------------------------------------------
 ### Resource Packs Info (0x06)
 Wiki: [Resource Packs Info](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ResourcePacksInfo)

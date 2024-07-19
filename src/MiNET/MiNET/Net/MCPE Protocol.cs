@@ -2140,9 +2140,9 @@ namespace MiNET.Net
 	public partial class McpeDisconnect : Packet<McpeDisconnect>
 	{
 
+		public int reason; // = null;
 		public bool hideDisconnectReason; // = null;
 		public string message; // = null;
-		public int reason; // = null;
 
 		public McpeDisconnect()
 		{
@@ -2156,9 +2156,9 @@ namespace MiNET.Net
 
 			BeforeEncode();
 
+			WriteVarInt(reason);
 			Write(hideDisconnectReason);
 			Write(message);
-			Write(reason);
 
 			AfterEncode();
 		}
@@ -2172,9 +2172,9 @@ namespace MiNET.Net
 
 			BeforeDecode();
 
+			reason = ReadVarInt();
 			hideDisconnectReason = ReadBool();
 			message = ReadString();
-			reason = ReadInt();
 
 			AfterDecode();
 		}
@@ -2186,9 +2186,9 @@ namespace MiNET.Net
 		{
 			base.ResetPacket();
 
+			reason=default(int);
 			hideDisconnectReason=default(bool);
 			message=default(string);
-			reason=default(int);
 		}
 
 	}
