@@ -105,7 +105,7 @@ namespace MiNET.Blocks
 
 		public override Item GetItem(Level world, bool blockItem = false)
 		{
-			var item = base.GetItem(world, blockItem) as ItemBlock;
+			var item = ItemFactory.GetItem(this);
 			var block = item.Block as SlabBase;
 
 			block.VerticalHalf = "bottom";

@@ -7,7 +7,10 @@ namespace MiNET.Blocks
 	{
 		public override Item GetItem(Level world, bool blockItem = false)
 		{
-			return ItemFactory.GetItem(DoubleSlabToSlabMap[Id], Data);
+			var item = ItemFactory.GetItem<ItemBlock>(DoubleSlabToSlabMap[Id]);
+			item.Block.SetStates(this);
+
+			return item;
 		}
 
 		public override Item[] GetDrops(Level world, Item tool)
