@@ -5672,7 +5672,27 @@
         },
         "output": [
             {
-                "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+                "block_states": "CgAACBcAbWluZWNyYWZ0OnZlcnRpY2FsX2hhbGYGAGJvdHRvbQA=",
+                "count": 6,
+                "name": "minecraft:crimson_slab"
+            }
+        ],
+        "priority": 0,
+        "shape": [
+            "AAA"
+        ]
+    },
+    {
+        "block": "crafting_table",
+        "input": {
+            "A": {
+                "meta": 32767,
+                "name": "minecraft:crimson_planks"
+            }
+        },
+        "output": [
+            {
+                "block_states": "CgAACBwAbWluZWNyYWZ0OmNhcmRpbmFsX2RpcmVjdGlvbgUAbm9ydGgA",
                 "name": "minecraft:chest"
             }
         ],
@@ -9964,7 +9984,7 @@
         },
         "output": [
             {
-                "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+                "block_states": "CgAACBwAbWluZWNyYWZ0OmNhcmRpbmFsX2RpcmVjdGlvbgUAbm9ydGgA",
                 "name": "minecraft:stonecutter_block"
             }
         ],
@@ -11114,7 +11134,27 @@
         },
         "output": [
             {
-                "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+                "block_states": "CgAACBcAbWluZWNyYWZ0OnZlcnRpY2FsX2hhbGYGAGJvdHRvbQA=",
+                "count": 6,
+                "name": "minecraft:mangrove_slab"
+            }
+        ],
+        "priority": 0,
+        "shape": [
+            "AAA"
+        ]
+    },
+    {
+        "block": "crafting_table",
+        "input": {
+            "A": {
+                "meta": 32767,
+                "name": "minecraft:mangrove_planks"
+            }
+        },
+        "output": [
+            {
+                "block_states": "CgAACBwAbWluZWNyYWZ0OmNhcmRpbmFsX2RpcmVjdGlvbgUAbm9ydGgA",
                 "name": "minecraft:chest"
             }
         ],
@@ -11684,7 +11724,7 @@
         },
         "output": [
             {
-                "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+                "block_states": "CgAACBwAbWluZWNyYWZ0OmNhcmRpbmFsX2RpcmVjdGlvbgUAbm9ydGgA",
                 "name": "minecraft:ender_chest"
             }
         ],
@@ -17027,7 +17067,27 @@
         },
         "output": [
             {
-                "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+                "block_states": "CgAACBcAbWluZWNyYWZ0OnZlcnRpY2FsX2hhbGYGAGJvdHRvbQA=",
+                "count": 6,
+                "name": "minecraft:warped_slab"
+            }
+        ],
+        "priority": 0,
+        "shape": [
+            "AAA"
+        ]
+    },
+    {
+        "block": "crafting_table",
+        "input": {
+            "A": {
+                "meta": 32767,
+                "name": "minecraft:warped_planks"
+            }
+        },
+        "output": [
+            {
+                "block_states": "CgAACBwAbWluZWNyYWZ0OmNhcmRpbmFsX2RpcmVjdGlvbgUAbm9ydGgA",
                 "name": "minecraft:chest"
             }
         ],
@@ -21212,7 +21272,27 @@
         },
         "output": [
             {
-                "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+                "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAABCABvcGVuX2JpdAAA",
+                "name": "minecraft:barrel"
+            }
+        ],
+        "priority": 0,
+        "shape": [
+            "ABA",
+            "A A",
+            "ABA"
+        ]
+    },
+    {
+        "block": "crafting_table",
+        "input": {
+            "A": {
+                "tag": "minecraft:planks"
+            }
+        },
+        "output": [
+            {
+                "block_states": "CgAACBwAbWluZWNyYWZ0OmNhcmRpbmFsX2RpcmVjdGlvbgUAbm9ydGgA",
                 "name": "minecraft:chest"
             }
         ],

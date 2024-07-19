@@ -49,13 +49,13 @@ namespace MiNET.Blocks
 			}
 		}
 
-		public virtual bool TopSlotBit { get; set; } = false;
+		public virtual string VerticalHalf { get; set; } = "bottom";
 
 		public override BoundingBox GetBoundingBox()
 		{
 			var bottom = (Vector3)Coordinates;
 
-			if (TopSlotBit) bottom.Y += 0.5f;
+			if (VerticalHalf == "bottom") bottom.Y += 0.5f;
 			
 			var top = bottom + new Vector3(1f, 0.5f, 1f);
 			
@@ -90,7 +90,7 @@ namespace MiNET.Blocks
 			{
 				if (face != BlockFace.Up && faceCoords.Y > 0.5 || (face == BlockFace.Down && faceCoords.Y == 0.0))
 				{
-					TopSlotBit = true;
+					VerticalHalf = "top";
 				}
 
 				return false;
@@ -108,7 +108,7 @@ namespace MiNET.Blocks
 			var item = base.GetItem(world, blockItem) as ItemBlock;
 			var block = item.Block as SlabBase;
 
-			block.TopSlotBit = false;
+			block.VerticalHalf = "bottom";
 
 			return item;
 		}

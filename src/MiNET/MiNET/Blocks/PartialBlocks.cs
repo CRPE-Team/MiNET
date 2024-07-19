@@ -886,7 +886,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1035,7 +1035,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_mosaic_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1068,7 +1068,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_mosaic_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1221,7 +1221,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2372,7 +2372,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:blackstone_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2405,7 +2405,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:blackstone_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3829,7 +3829,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cherry_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4118,7 +4118,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cherry_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4343,12 +4343,12 @@ namespace MiNET.Blocks
 
 	public partial class Chest
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "north" };
 
 		public override string Id => "minecraft:chest";
 
-		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4356,8 +4356,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -4365,12 +4365,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -4500,7 +4500,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cobbled_deepslate_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4533,7 +4533,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cobbled_deepslate_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5355,7 +5355,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:crimson_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5585,7 +5585,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:crimson_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5817,7 +5817,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6672,7 +6672,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:deepslate_brick_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6705,7 +6705,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:deepslate_brick_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6889,7 +6889,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:deepslate_tile_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6922,7 +6922,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:deepslate_tile_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7242,7 +7242,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:double_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7317,7 +7317,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:double_stone_block_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("brick", "cobblestone", "nether_brick", "quartz", "sandstone", "smooth_stone", "stone_brick", "wood")]
 		public string StoneSlabType { get => _stoneSlabType.Value; set => NotifyStateUpdate(_stoneSlabType, value); }
@@ -7358,7 +7358,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:double_stone_block_slab2";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("mossy_cobblestone", "prismarine_brick", "prismarine_dark", "prismarine_rough", "purpur", "red_nether_brick", "red_sandstone", "smooth_sandstone")]
 		public string StoneSlabType2 { get => _stoneSlabType2.Value; set => NotifyStateUpdate(_stoneSlabType2, value); }
@@ -7399,7 +7399,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:double_stone_block_slab3";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("andesite", "diorite", "end_stone_brick", "granite", "polished_andesite", "polished_diorite", "polished_granite", "smooth_red_sandstone")]
 		public string StoneSlabType3 { get => _stoneSlabType3.Value; set => NotifyStateUpdate(_stoneSlabType3, value); }
@@ -7440,7 +7440,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:double_stone_block_slab4";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("cut_red_sandstone", "cut_sandstone", "mossy_stone_brick", "smooth_quartz", "stone")]
 		public string StoneSlabType4 { get => _stoneSlabType4.Value; set => NotifyStateUpdate(_stoneSlabType4, value); }
@@ -7481,7 +7481,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:double_wooden_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("acacia", "birch", "dark_oak", "jungle", "oak", "spruce")]
 		public string WoodType { get => _woodType.Value; set => NotifyStateUpdate(_woodType, value); }
@@ -8317,12 +8317,12 @@ namespace MiNET.Blocks
 
 	public partial class EnderChest
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "north" };
 
 		public override string Id => "minecraft:ender_chest";
 
-		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8330,8 +8330,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -8339,12 +8339,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -8365,7 +8365,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:exposed_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8439,7 +8439,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:exposed_double_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11534,7 +11534,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mangrove_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11836,7 +11836,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mangrove_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12290,7 +12290,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mud_brick_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12323,7 +12323,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mud_brick_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13037,7 +13037,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:oxidized_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13111,7 +13111,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:oxidized_double_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13673,7 +13673,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:polished_blackstone_brick_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13706,7 +13706,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:polished_blackstone_brick_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13891,7 +13891,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:polished_blackstone_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13957,7 +13957,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:polished_blackstone_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14101,7 +14101,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:polished_deepslate_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14134,7 +14134,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:polished_deepslate_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17208,7 +17208,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:stone_block_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("brick", "cobblestone", "nether_brick", "quartz", "sandstone", "smooth_stone", "stone_brick", "wood")]
 		public string StoneSlabType { get => _stoneSlabType.Value; set => NotifyStateUpdate(_stoneSlabType, value); }
@@ -17249,7 +17249,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:stone_block_slab2";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("mossy_cobblestone", "prismarine_brick", "prismarine_dark", "prismarine_rough", "purpur", "red_nether_brick", "red_sandstone", "smooth_sandstone")]
 		public string StoneSlabType2 { get => _stoneSlabType2.Value; set => NotifyStateUpdate(_stoneSlabType2, value); }
@@ -17290,7 +17290,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:stone_block_slab3";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("andesite", "diorite", "end_stone_brick", "granite", "polished_andesite", "polished_diorite", "polished_granite", "smooth_red_sandstone")]
 		public string StoneSlabType3 { get => _stoneSlabType3.Value; set => NotifyStateUpdate(_stoneSlabType3, value); }
@@ -17331,7 +17331,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:stone_block_slab4";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("cut_red_sandstone", "cut_sandstone", "mossy_stone_brick", "smooth_quartz", "stone")]
 		public string StoneSlabType4 { get => _stoneSlabType4.Value; set => NotifyStateUpdate(_stoneSlabType4, value); }
@@ -17560,12 +17560,12 @@ namespace MiNET.Blocks
 
 	public partial class StonecutterBlock : Block
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "north" };
 
 		public override string Id => "minecraft:stonecutter_block";
 
-		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17573,8 +17573,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -17582,12 +17582,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -18473,12 +18473,12 @@ namespace MiNET.Blocks
 
 	public partial class TrappedChest
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "north" };
 
 		public override string Id => "minecraft:trapped_chest";
 
-		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -18486,8 +18486,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -18495,12 +18495,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -19097,7 +19097,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:warped_double_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19327,7 +19327,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:warped_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19602,7 +19602,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19676,7 +19676,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_double_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19719,7 +19719,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_exposed_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19793,7 +19793,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_exposed_double_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19836,7 +19836,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_oxidized_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19910,7 +19910,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_oxidized_double_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19953,7 +19953,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_weathered_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -20027,7 +20027,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_weathered_double_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -20070,7 +20070,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:weathered_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -20144,7 +20144,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:weathered_double_cut_copper_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -20581,7 +20581,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:wooden_slab";
 
 		[StateEnum("bottom", "top")]
-		public string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("acacia", "birch", "dark_oak", "jungle", "oak", "spruce")]
 		public string WoodType { get => _woodType.Value; set => NotifyStateUpdate(_woodType, value); }

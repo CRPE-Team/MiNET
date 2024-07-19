@@ -172,6 +172,7 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | byte [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-byte) |
 | byte[] [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-byte[]) |
 | ByteArray [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ByteArray) |
+| CdnUrls [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-CdnUrls) |
 | CreativeItemStacks [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-CreativeItemStacks) |
 | DimensionDefinitions [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-DimensionDefinitions) |
 | EnchantOptions [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-EnchantOptions) |
@@ -320,6 +321,7 @@ Wiki: [Disconnect](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Discon
 |:-----|:-----|:-----|
 |Hide disconnect reason | bool |  |
 |Message | string |  |
+|Reason | int |  |
 -----------------------------------------------------------------------
 ### Resource Packs Info (0x06)
 Wiki: [Resource Packs Info](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ResourcePacksInfo)
@@ -339,6 +341,7 @@ Wiki: [Resource Packs Info](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 |Force Server Packs | bool |  |
 |BehahaviorPackInfos | ResourcePackInfos |  |
 |TexturePacks | TexturePackInfos |  |
+|Cdn Urls | CdnUrls |  |
 -----------------------------------------------------------------------
 ### Resource Pack Stack (0x07)
 Wiki: [Resource Pack Stack](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ResourcePackStack)
