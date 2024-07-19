@@ -55,7 +55,7 @@ namespace MiNET.Blocks
 		{
 			var bottom = (Vector3)Coordinates;
 
-			if (VerticalHalf == "bottom") bottom.Y += 0.5f;
+			if (VerticalHalf == "top") bottom.Y += 0.5f;
 			
 			var top = bottom + new Vector3(1f, 0.5f, 1f);
 			
