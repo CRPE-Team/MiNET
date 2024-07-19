@@ -27,6 +27,7 @@ using System.Numerics;
 using MiNET.Net;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
+using static MiNET.Entities.Entity;
 
 namespace MiNET.Blocks
 {
@@ -42,15 +43,8 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			CardinalDirection = player.GetDirection() switch
-			{
-				0 => "east",
-				1 => "south",
-				2 => "west",
-				3 => "north",
-
-				_ => "east"
-			};
+			var direction = (((int) player.GetDirectionEmum()) + 2) % 4;
+			CardinalDirection = ((Direction) direction).ToString().ToLower();
 
 			return false;
 		}
