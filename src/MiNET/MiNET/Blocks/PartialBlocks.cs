@@ -4348,7 +4348,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:chest";
 
 		[StateEnum("east", "north", "south", "west")]
-		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8322,7 +8322,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:ender_chest";
 
 		[StateEnum("east", "north", "south", "west")]
-		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -18478,7 +18478,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:trapped_chest";
 
 		[StateEnum("east", "north", "south", "west")]
-		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
