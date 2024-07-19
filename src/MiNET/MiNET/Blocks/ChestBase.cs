@@ -37,7 +37,7 @@ namespace MiNET.Blocks
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ChestBase));
 
-		[StateRange(0, 5)] public virtual int FacingDirection { get; set; }
+		[StateRange(0, 5)] public virtual string CardinalDirection { get; set; }
 
 		public ChestBase() : base()
 		{
@@ -50,7 +50,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			FacingDirection = ItemBlock.GetFacingDirectionFromEntity(player);
+			CardinalDirection = player.GetDirectionEmum().ToString().ToLower();
 
 			var chestBlockEntity = CreateBlockEntity();
 			chestBlockEntity.Coordinates = Coordinates;
