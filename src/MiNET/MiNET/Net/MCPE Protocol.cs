@@ -45,8 +45,8 @@ namespace MiNET.Net
 {
 	public class McpeProtocolInfo
 	{
-		public const int ProtocolVersion = 630;
-		public const string GameVersion = "1.20.50";
+		public const int ProtocolVersion = 649;
+		public const string GameVersion = "1.20.60";
 	}
 
 	public interface IMcpeMessageHandler
@@ -57,6 +57,7 @@ namespace MiNET.Net
 		void HandleMcpeClientToServerHandshake(McpeClientToServerHandshake message);
 		void HandleMcpeResourcePackClientResponse(McpeResourcePackClientResponse message);
 		void HandleMcpeText(McpeText message);
+		void HandleMcpeServerPlayerPostMovePosition(McpeServerPlayerPostMovePosition message);
 		void HandleMcpeMoveEntity(McpeMoveEntity message);
 		void HandleMcpeMovePlayer(McpeMovePlayer message);
 		void HandleMcpeRiderJump(McpeRiderJump message);
@@ -113,6 +114,7 @@ namespace MiNET.Net
 		void HandleMcpeRequestNetworkSettings(McpeRequestNetworkSettings message);
 		void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message);
 		void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message);
+		void HandleMcpeSetHud(McpeSetHud message);
 	}
 
 	public interface IMcpeClientMessageHandler
@@ -123,6 +125,7 @@ namespace MiNET.Net
 		void HandleMcpeResourcePacksInfo(McpeResourcePacksInfo message);
 		void HandleMcpeResourcePackStack(McpeResourcePackStack message);
 		void HandleMcpeText(McpeText message);
+		void HandleMcpeServerPlayerPostMovePosition(McpeServerPlayerPostMovePosition message);
 		void HandleMcpeSetTime(McpeSetTime message);
 		void HandleMcpeStartGame(McpeStartGame message);
 		void HandleMcpeAddPlayer(McpeAddPlayer message);
@@ -247,6 +250,7 @@ namespace MiNET.Net
 		void HandleMcpeOpenSign(McpeOpenSign message);
 		void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message);
 		void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message);
+		void HandleMcpeSetHud(McpeSetHud message);
 		void HandleMcpeAlexEntityAnimation(McpeAlexEntityAnimation message);
 		void HandleFtlCreatePlayer(FtlCreatePlayer message);
 	}
@@ -281,6 +285,9 @@ namespace MiNET.Net
 					break;
 				case McpeText msg:
 					_messageHandler.HandleMcpeText(msg);
+					break;
+				case McpeServerPlayerPostMovePosition msg:
+					_messageHandler.HandleMcpeServerPlayerPostMovePosition(msg);
 					break;
 				case McpeSetTime msg:
 					_messageHandler.HandleMcpeSetTime(msg);
@@ -654,6 +661,9 @@ namespace MiNET.Net
 				case McpeSetPlayerInventoryOptions msg:
 					_messageHandler.HandleMcpeSetPlayerInventoryOptions(msg);
 					break;
+				case McpeSetHud msg:
+					_messageHandler.HandleMcpeSetHud(msg);
+					break;
 				case McpeAlexEntityAnimation msg:
 					_messageHandler.HandleMcpeAlexEntityAnimation(msg);
 					break;
@@ -745,6 +755,8 @@ namespace MiNET.Net
 						return McpeResourcePackClientResponse.CreateObject().Decode(buffer);
 					case 0x09:
 						return McpeText.CreateObject().Decode(buffer);
+					case 0x10:
+						return McpeServerPlayerPostMovePosition.CreateObject().Decode(buffer);
 					case 0x0a:
 						return McpeSetTime.CreateObject().Decode(buffer);
 					case 0x0b:
@@ -1031,6 +1043,8 @@ namespace MiNET.Net
 						return McpePlayerToggleCrafterSlotRequest.CreateObject().Decode(buffer);
 					case 0x133:
 						return McpeSetPlayerInventoryOptions.CreateObject().Decode(buffer);
+					case 0x134:
+						return McpeSetHud.CreateObject().Decode(buffer);
 					case 0xe0:
 						return McpeAlexEntityAnimation.CreateObject().Decode(buffer);
 				}
@@ -2452,6 +2466,54 @@ namespace MiNET.Net
 			base.ResetPacket();
 
 			type=default(byte);
+		}
+
+	}
+
+	public partial class McpeServerPlayerPostMovePosition : Packet<McpeServerPlayerPostMovePosition>
+	{
+
+		public Vector3 position; // = null;
+
+		public McpeServerPlayerPostMovePosition()
+		{
+			Id = 0x10;
+			IsMcpe = true;
+		}
+
+		protected override void EncodePacket()
+		{
+			base.EncodePacket();
+
+			BeforeEncode();
+
+			Write(position);
+
+			AfterEncode();
+		}
+
+		partial void BeforeEncode();
+		partial void AfterEncode();
+
+		protected override void DecodePacket()
+		{
+			base.DecodePacket();
+
+			BeforeDecode();
+
+			position = ReadVector3();
+
+			AfterDecode();
+		}
+
+		partial void BeforeDecode();
+		partial void AfterDecode();
+
+		protected override void ResetPacket()
+		{
+			base.ResetPacket();
+
+			position=default(Vector3);
 		}
 
 	}
@@ -5297,6 +5359,7 @@ namespace MiNET.Net
 
 		public int chunkX; // = null;
 		public int chunkZ; // = null;
+		public int dimensionId; // = null;
 
 		public McpeLevelChunk()
 		{
@@ -5312,6 +5375,7 @@ namespace MiNET.Net
 
 			WriteSignedVarInt(chunkX);
 			WriteSignedVarInt(chunkZ);
+			WriteVarInt(dimensionId);
 
 			AfterEncode();
 		}
@@ -5327,6 +5391,7 @@ namespace MiNET.Net
 
 			chunkX = ReadSignedVarInt();
 			chunkZ = ReadSignedVarInt();
+			dimensionId = ReadVarInt();
 
 			AfterDecode();
 		}
@@ -5340,6 +5405,7 @@ namespace MiNET.Net
 
 			chunkX=default(int);
 			chunkZ=default(int);
+			dimensionId=default(int);
 		}
 
 	}
@@ -10501,6 +10567,77 @@ namespace MiNET.Net
 			filtering=default(bool);
 			inventoryLayout=default(int);
 			craftingLayout=default(int);
+		}
+
+	}
+
+	public partial class McpeSetHud : Packet<McpeSetHud>
+	{
+		public enum HudElement
+		{
+			PaperDoll = 0,
+			Armor = 1,
+			Tooltips = 2,
+			TouchControls = 3,
+			Crosshair = 4,
+			Hotbar = 5,
+			Health = 6,
+			Xp = 7,
+			Food = 8,
+			AirBubbles = 9,
+			HorseHealth = 10,
+		}
+		public enum HudVisibility
+		{
+			Hide = 0,
+			Reset = 1,
+		}
+
+		public byte[] hudElements; // = null;
+		public byte hudVisibility; // = null;
+
+		public McpeSetHud()
+		{
+			Id = 0x134;
+			IsMcpe = true;
+		}
+
+		protected override void EncodePacket()
+		{
+			base.EncodePacket();
+
+			BeforeEncode();
+
+			WriteByteArray(hudElements);
+			Write(hudVisibility);
+
+			AfterEncode();
+		}
+
+		partial void BeforeEncode();
+		partial void AfterEncode();
+
+		protected override void DecodePacket()
+		{
+			base.DecodePacket();
+
+			BeforeDecode();
+
+			hudElements = ReadByteArray();
+			hudVisibility = ReadByte();
+
+			AfterDecode();
+		}
+
+		partial void BeforeDecode();
+		partial void AfterDecode();
+
+		protected override void ResetPacket()
+		{
+			base.ResetPacket();
+
+			hudElements=default(byte[]);
+			hudVisibility=default(byte);
 		}
 
 	}

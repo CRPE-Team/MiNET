@@ -52,6 +52,8 @@ namespace MiNET.Worlds
 		public int X { get; set; }
 		public int Z { get; set; }
 
+		public Dimension Dimension { get; set; } = Dimension.Overworld;
+
 		public bool IsAllAir { get; set; }
 
 		public short[] height;
@@ -435,6 +437,7 @@ namespace MiNET.Worlds
 				fullChunkPacket.subChunkRequestMode = SubChunkRequestMode.SubChunkRequestModeLegacy;
 				fullChunkPacket.chunkX = X;
 				fullChunkPacket.chunkZ = Z;
+				fullChunkPacket.dimensionId = (int) Dimension;
 				fullChunkPacket.subChunkCount = (uint) topEmpty;
 				fullChunkPacket.chunkData = chunkData;
 				byte[] bytes = fullChunkPacket.Encode();

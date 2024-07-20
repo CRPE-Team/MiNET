@@ -9771,6 +9771,46 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:hanging_roots";
 	} // class
 
+	public partial class HardBlackStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_black_stained_glass";
+	} // class
+
+	public partial class HardBlackStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_black_stained_glass_pane";
+	} // class
+
+	public partial class HardBlueStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_blue_stained_glass";
+	} // class
+
+	public partial class HardBlueStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_blue_stained_glass_pane";
+	} // class
+
+	public partial class HardBrownStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_brown_stained_glass";
+	} // class
+
+	public partial class HardBrownStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_brown_stained_glass_pane";
+	} // class
+
+	public partial class HardCyanStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_cyan_stained_glass";
+	} // class
+
+	public partial class HardCyanStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_cyan_stained_glass_pane";
+	} // class
+
 	public partial class HardGlass : Block
 	{
 		public override string Id => "minecraft:hard_glass";
@@ -9781,70 +9821,124 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:hard_glass_pane";
 	} // class
 
-	public partial class HardStainedGlass : StainedGlassBase
+	public partial class HardGrayStainedGlass : StainedGlassBase
 	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
-
-		public override string Id => "minecraft:hard_stained_glass";
-
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
-		} // method
+		public override string Id => "minecraft:hard_gray_stained_glass";
 	} // class
 
-	public partial class HardStainedGlassPane : StainedGlassPaneBase
+	public partial class HardGrayStainedGlassPane : StainedGlassPaneBase
 	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
+		public override string Id => "minecraft:hard_gray_stained_glass_pane";
+	} // class
 
-		public override string Id => "minecraft:hard_stained_glass_pane";
+	public partial class HardGreenStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_green_stained_glass";
+	} // class
 
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
+	public partial class HardGreenStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_green_stained_glass_pane";
+	} // class
 
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
+	public partial class HardLightBlueStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_light_blue_stained_glass";
+	} // class
 
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
+	public partial class HardLightBlueStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_light_blue_stained_glass_pane";
+	} // class
 
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
-		} // method
+	public partial class HardLightGrayStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_light_gray_stained_glass";
+	} // class
+
+	public partial class HardLightGrayStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_light_gray_stained_glass_pane";
+	} // class
+
+	public partial class HardLimeStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_lime_stained_glass";
+	} // class
+
+	public partial class HardLimeStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_lime_stained_glass_pane";
+	} // class
+
+	public partial class HardMagentaStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_magenta_stained_glass";
+	} // class
+
+	public partial class HardMagentaStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_magenta_stained_glass_pane";
+	} // class
+
+	public partial class HardOrangeStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_orange_stained_glass";
+	} // class
+
+	public partial class HardOrangeStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_orange_stained_glass_pane";
+	} // class
+
+	public partial class HardPinkStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_pink_stained_glass";
+	} // class
+
+	public partial class HardPinkStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_pink_stained_glass_pane";
+	} // class
+
+	public partial class HardPurpleStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_purple_stained_glass";
+	} // class
+
+	public partial class HardPurpleStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_purple_stained_glass_pane";
+	} // class
+
+	public partial class HardRedStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_red_stained_glass";
+	} // class
+
+	public partial class HardRedStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_red_stained_glass_pane";
+	} // class
+
+	public partial class HardWhiteStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_white_stained_glass";
+	} // class
+
+	public partial class HardWhiteStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_white_stained_glass_pane";
+	} // class
+
+	public partial class HardYellowStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_yellow_stained_glass";
+	} // class
+
+	public partial class HardYellowStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_yellow_stained_glass_pane";
 	} // class
 
 	public partial class HardenedClay : Block
@@ -19207,6 +19301,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _cardinalDirection);
+		} // method
+	} // class
+
+	public partial class TrialSpawner : Block
+	{
+		private readonly BlockStateInt _trialSpawnerState = new BlockStateInt() { Name = "trial_spawner_state", Value = 0 };
+
+		public override string Id => "minecraft:trial_spawner";
+
+		[StateRange(0, 5)]
+		public int TrialSpawnerState { get => _trialSpawnerState.Value; set => NotifyStateUpdate(_trialSpawnerState, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "trial_spawner_state":
+						NotifyStateUpdate(_trialSpawnerState, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _trialSpawnerState;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _trialSpawnerState);
 		} // method
 	} // class
 

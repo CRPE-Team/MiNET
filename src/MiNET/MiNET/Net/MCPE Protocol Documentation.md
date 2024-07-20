@@ -22,6 +22,7 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Add Entity | 0x0d | 13 |   
 | Remove Entity | 0x0e | 14 |   
 | Add Item Entity | 0x0f | 15 |   
+| Server Player Post Move Position | 0x10 | 16 |   
 | Take Item Entity | 0x11 | 17 |   
 | Move Entity | 0x12 | 18 |   
 | Trim Data | 0x12e | 18 |   
@@ -29,6 +30,7 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Move Player | 0x13 | 19 |   
 | Player Toggle Crafter Slot Request | 0x132 | 19 |   
 | Set Player Inventory Options | 0x133 | 19 |   
+| Set Hud | 0x134 | 19 |   
 | Rider Jump | 0x14 | 20 |   
 | Update Block | 0x15 | 21 |   
 | Add Painting | 0x16 | 22 |   
@@ -420,6 +422,21 @@ Wiki: [Text](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Text)
 | Name | Type | Size |
 |:-----|:-----|:-----|
 |Type | byte |  |
+-----------------------------------------------------------------------
+### Server Player Post Move Position (0x10)
+Wiki: [Server Player Post Move Position](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ServerPlayerPostMovePosition)
+
+**Sent from server:** true  
+**Sent from client:** true
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Position | Vector3 |  |
 -----------------------------------------------------------------------
 ### Set Time (0x0a)
 Wiki: [Set Time](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetTime)
@@ -1388,6 +1405,7 @@ Wiki: [Level Chunk](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Level
 |:-----|:-----|:-----|
 |Chunk X | SignedVarInt |  |
 |Chunk Z | SignedVarInt |  |
+|Dimension Id | VarInt |  |
 -----------------------------------------------------------------------
 ### Set Commands Enabled (0x3b)
 Wiki: [Set Commands Enabled](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetCommandsEnabled)
@@ -3062,6 +3080,45 @@ Wiki: [Set Player Inventory Options](https://github.com/NiclasOlofsson/MiNET/wik
 |Filtering | bool |  |
 |Inventory Layout | VarInt |  |
 |Crafting Layout | VarInt |  |
+-----------------------------------------------------------------------
+### Set Hud (0x134)
+Wiki: [Set Hud](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetHud)
+
+**Sent from server:** true  
+**Sent from client:** true
+
+
+
+#### Hud Element constants
+
+| Name | Value |
+|:-----|:-----|
+|Paper Doll | 0 |
+|Armor | 1 |
+|Tooltips | 2 |
+|Touch Controls | 3 |
+|Crosshair | 4 |
+|Hotbar | 5 |
+|Health | 6 |
+|Xp | 7 |
+|Food | 8 |
+|Air Bubbles | 9 |
+|Horse Health | 10 |
+
+#### Hud Visibility constants
+
+| Name | Value |
+|:-----|:-----|
+|Hide | 0 |
+|Reset | 1 |
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Hud Elements | ByteArray |  |
+|Hud Visibility | byte |  |
 -----------------------------------------------------------------------
 ### Alex Entity Animation (0xe0)
 Wiki: [Alex Entity Animation](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AlexEntityAnimation)

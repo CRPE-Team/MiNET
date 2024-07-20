@@ -751,6 +751,14 @@ namespace MiNET.Client
 		public void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message)
 		{
 		}
+
+		public void HandleMcpeServerPlayerPostMovePosition(McpeServerPlayerPostMovePosition message)
+		{
+		}
+
+		public void HandleMcpeSetHud(McpeSetHud message)
+		{
+		}
 	}
 
 	public class DefaultMessageHandler : McpeClientMessageHandlerBase

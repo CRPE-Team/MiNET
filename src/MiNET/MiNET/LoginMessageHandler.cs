@@ -787,6 +787,14 @@ namespace MiNET
 		public void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message)
 		{
 		}
+
+		public void HandleMcpeServerPlayerPostMovePosition(McpeServerPlayerPostMovePosition message)
+		{
+		}
+
+		public void HandleMcpeSetHud(McpeSetHud message)
+		{
+		}
 	}
 
 	public interface IServerManager

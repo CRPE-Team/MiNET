@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.20.50" protocolVersion="630">
+<protocol gameVersion="1.20.60" protocolVersion="649">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -198,6 +198,10 @@
 		</enums>
 
 		<field name="Type" type="byte" />
+	</pdu>
+
+	<pdu id="0x10" online="false" client="true" server="true" name="MCPE_SERVER_PLAYER_POST_MOVE_POSITION">
+		<field name="Position" type="Vector3" />
 	</pdu>
 
 	<pdu id="0x0a" online="false" client="false" server="true" name="MCPE_SET_TIME">
@@ -678,6 +682,7 @@
 	<pdu id="0x3a" online="false" client="false" server="true" name="MCPE_LEVEL_CHUNK">
 		<field name="Chunk X" type="SignedVarInt" />
 		<field name="Chunk Z" type="SignedVarInt" />
+		<field name="Dimension Id" type="VarInt" />
 		<!--<field name="Sub Chunk Count" type="UnsignedVarInt" />
 		<field name="Cache Enabled" type="bool" />-->
 		<!--<field name="Blob Hashes" type="ulong[]" />
@@ -1281,6 +1286,30 @@
 		<field name="Filtering" type="bool" />
 		<field name="Inventory Layout" type="VarInt" />
 		<field name="Crafting Layout" type="VarInt" />
+	</pdu>
+
+	<pdu id="0x134" online="false" client="true" server="true" name="MCPE_SET_HUD">
+		<enums id="Hud Element">
+			<enum id="Paper Doll" value="0" />
+			<enum id="Armor" value="1" />
+			<enum id="Tooltips" value="2" />
+			<enum id="Touch Controls" value="3" />
+			<enum id="Crosshair" value="4" />
+			<enum id="Hotbar" value="5" />
+			<enum id="Health" value="6" />
+			<enum id="Xp" value="7" />
+			<enum id="Food" value="8" />
+			<enum id="Air Bubbles" value="9" />
+			<enum id="Horse Health" value="10" />
+		</enums>
+
+		<enums id="Hud Visibility">
+			<enum id="Hide" value="0" />
+			<enum id="Reset" value="1" />
+		</enums>
+
+		<field name="Hud Elements" type="ByteArray" />
+		<field name="Hud Visibility" type="byte" />
 	</pdu>
 	
 	<pdu id="0xe0" online="false" client="false" server="true" name="MCPE_ALEX_ENTITY_ANIMATION">

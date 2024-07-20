@@ -148,6 +148,16 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:archer_pottery_sherd";
 	}
 
+	public partial class ItemArmadilloScute : Item
+	{
+		public override string Id { get; protected set; } = "minecraft:armadillo_scute";
+	}
+
+	public partial class ItemArmadilloSpawnEgg : Item
+	{
+		public override string Id { get; protected set; } = "minecraft:armadillo_spawn_egg";
+	}
+
 	public partial class ItemArmorStand : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:armor_stand";
@@ -707,6 +717,11 @@ namespace MiNET.Items
 	public partial class ItemBread : FoodItemBase
 	{
 		public override string Id { get; protected set; } = "minecraft:bread";
+	}
+
+	public partial class ItemBreezeSpawnEgg : ItemSpawnEggBase
+	{
+		public override string Id { get; protected set; } = "minecraft:breeze_spawn_egg";
 	}
 
 	public partial class ItemBrewerPotterySherd : Item
@@ -3443,6 +3458,46 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:hanging_roots";
 	}
 
+	public partial class ItemHardBlackStainedGlass : ItemBlock<HardBlackStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_black_stained_glass";
+	}
+
+	public partial class ItemHardBlackStainedGlassPane : ItemBlock<HardBlackStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_black_stained_glass_pane";
+	}
+
+	public partial class ItemHardBlueStainedGlass : ItemBlock<HardBlueStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_blue_stained_glass";
+	}
+
+	public partial class ItemHardBlueStainedGlassPane : ItemBlock<HardBlueStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_blue_stained_glass_pane";
+	}
+
+	public partial class ItemHardBrownStainedGlass : ItemBlock<HardBrownStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_brown_stained_glass";
+	}
+
+	public partial class ItemHardBrownStainedGlassPane : ItemBlock<HardBrownStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_brown_stained_glass_pane";
+	}
+
+	public partial class ItemHardCyanStainedGlass : ItemBlock<HardCyanStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_cyan_stained_glass";
+	}
+
+	public partial class ItemHardCyanStainedGlassPane : ItemBlock<HardCyanStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_cyan_stained_glass_pane";
+	}
+
 	public partial class ItemHardGlass : ItemBlock<HardGlass>
 	{
 		public override string Id { get; protected set; } = "minecraft:hard_glass";
@@ -3453,14 +3508,134 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:hard_glass_pane";
 	}
 
-	public partial class ItemHardStainedGlass : ItemBlock<HardStainedGlass>
+	public partial class ItemHardGrayStainedGlass : ItemBlock<HardGrayStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_gray_stained_glass";
+	}
+
+	public partial class ItemHardGrayStainedGlassPane : ItemBlock<HardGrayStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_gray_stained_glass_pane";
+	}
+
+	public partial class ItemHardGreenStainedGlass : ItemBlock<HardGreenStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_green_stained_glass";
+	}
+
+	public partial class ItemHardGreenStainedGlassPane : ItemBlock<HardGreenStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_green_stained_glass_pane";
+	}
+
+	public partial class ItemHardLightBlueStainedGlass : ItemBlock<HardLightBlueStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_light_blue_stained_glass";
+	}
+
+	public partial class ItemHardLightBlueStainedGlassPane : ItemBlock<HardLightBlueStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_light_blue_stained_glass_pane";
+	}
+
+	public partial class ItemHardLightGrayStainedGlass : ItemBlock<HardLightGrayStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_light_gray_stained_glass";
+	}
+
+	public partial class ItemHardLightGrayStainedGlassPane : ItemBlock<HardLightGrayStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_light_gray_stained_glass_pane";
+	}
+
+	public partial class ItemHardLimeStainedGlass : ItemBlock<HardLimeStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_lime_stained_glass";
+	}
+
+	public partial class ItemHardLimeStainedGlassPane : ItemBlock<HardLimeStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_lime_stained_glass_pane";
+	}
+
+	public partial class ItemHardMagentaStainedGlass : ItemBlock<HardMagentaStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_magenta_stained_glass";
+	}
+
+	public partial class ItemHardMagentaStainedGlassPane : ItemBlock<HardMagentaStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_magenta_stained_glass_pane";
+	}
+
+	public partial class ItemHardOrangeStainedGlass : ItemBlock<HardOrangeStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_orange_stained_glass";
+	}
+
+	public partial class ItemHardOrangeStainedGlassPane : ItemBlock<HardOrangeStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_orange_stained_glass_pane";
+	}
+
+	public partial class ItemHardPinkStainedGlass : ItemBlock<HardPinkStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_pink_stained_glass";
+	}
+
+	public partial class ItemHardPinkStainedGlassPane : ItemBlock<HardPinkStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_pink_stained_glass_pane";
+	}
+
+	public partial class ItemHardPurpleStainedGlass : ItemBlock<HardPurpleStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_purple_stained_glass";
+	}
+
+	public partial class ItemHardPurpleStainedGlassPane : ItemBlock<HardPurpleStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_purple_stained_glass_pane";
+	}
+
+	public partial class ItemHardRedStainedGlass : ItemBlock<HardRedStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_red_stained_glass";
+	}
+
+	public partial class ItemHardRedStainedGlassPane : ItemBlock<HardRedStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_red_stained_glass_pane";
+	}
+
+	public partial class ItemHardStainedGlass : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:hard_stained_glass";
 	}
 
-	public partial class ItemHardStainedGlassPane : ItemBlock<HardStainedGlassPane>
+	public partial class ItemHardStainedGlassPane : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:hard_stained_glass_pane";
+	}
+
+	public partial class ItemHardWhiteStainedGlass : ItemBlock<HardWhiteStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_white_stained_glass";
+	}
+
+	public partial class ItemHardWhiteStainedGlassPane : ItemBlock<HardWhiteStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_white_stained_glass_pane";
+	}
+
+	public partial class ItemHardYellowStainedGlass : ItemBlock<HardYellowStainedGlass>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_yellow_stained_glass";
+	}
+
+	public partial class ItemHardYellowStainedGlassPane : ItemBlock<HardYellowStainedGlassPane>
+	{
+		public override string Id { get; protected set; } = "minecraft:hard_yellow_stained_glass_pane";
 	}
 
 	public partial class ItemHardenedClay : ItemBlock<HardenedClay>
@@ -6002,11 +6177,6 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:sculk_vein";
 	}
 
-	public partial class ItemScute : Item
-	{
-		public override string Id { get; protected set; } = "minecraft:scute";
-	}
-
 	public partial class ItemSeaLantern : ItemBlock<SeaLantern>
 	{
 		public override string Id { get; protected set; } = "minecraft:sea_lantern";
@@ -6727,6 +6897,16 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:trapped_chest";
 	}
 
+	public partial class ItemTrialKey : Item
+	{
+		public override string Id { get; protected set; } = "minecraft:trial_key";
+	}
+
+	public partial class ItemTrialSpawner : ItemBlock<TrialSpawner>
+	{
+		public override string Id { get; protected set; } = "minecraft:trial_spawner";
+	}
+
 	public partial class ItemTrident : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:trident";
@@ -6826,6 +7006,11 @@ namespace MiNET.Items
 		public override ItemType ItemType { get; set; } = ItemType.Helmet;
 
 		public override int MaxStackSize { get; set; } = 1;
+	}
+
+	public partial class ItemTurtleScute : Item
+	{
+		public override string Id { get; protected set; } = "minecraft:turtle_scute";
 	}
 
 	public partial class ItemTurtleSpawnEgg : ItemSpawnEggBase
@@ -7393,6 +7578,11 @@ namespace MiNET.Items
 	public partial class ItemWitherSpawnEgg : ItemSpawnEggBase
 	{
 		public override string Id { get; protected set; } = "minecraft:wither_spawn_egg";
+	}
+
+	public partial class ItemWolfArmor : Item
+	{
+		public override string Id { get; protected set; } = "minecraft:wolf_armor";
 	}
 
 	public partial class ItemWolfSpawnEgg : ItemSpawnEggBase

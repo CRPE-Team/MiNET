@@ -32,7 +32,8 @@ using MiNET.Net;
 
 namespace MiNET.Utils.IO
 {
-	//TODO - rework on NONE and ZLib instances
+	// TODO - rework on NONE and ZLib instances
+	// zlib - 0, snappy - 1, none - 255
 	public class Compression
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Compression));

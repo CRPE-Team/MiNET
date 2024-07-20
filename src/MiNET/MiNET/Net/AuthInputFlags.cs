@@ -128,5 +128,6 @@ public enum AuthInputFlags : long
 	StopCrawling = 1L << 41,
 	StartFlying = 1L << 42,
 	StopFlying = 1L << 43,
-	AckEntityData = 1L << 44
+	AckEntityData = 1L << 44,
+	InClientPredictedVehicle = 1L << 45
 }

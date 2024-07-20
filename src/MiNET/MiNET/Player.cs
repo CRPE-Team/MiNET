@@ -3881,6 +3881,14 @@ namespace MiNET
 				$"inventoryLayout={(McpeSetPlayerInventoryOptions.InventoryLayout) message.inventoryLayout}; " +
 				$"craftingLayout={(McpeSetPlayerInventoryOptions.InventoryLayout) message.craftingLayout}");
 		}
+
+		public void HandleMcpeServerPlayerPostMovePosition(McpeServerPlayerPostMovePosition message)
+		{
+		}
+
+		public void HandleMcpeSetHud(McpeSetHud message)
+		{
+		}
 	}
 
 	public class PlayerEventArgs : EventArgs
