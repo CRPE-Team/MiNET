@@ -153,9 +153,6 @@ namespace MiNET.Net
 				case McpeMobArmorEquipment msg:
 					handler.HandleMcpeMobArmorEquipment(msg);
 					break;
-				case McpeCraftingEvent msg:
-					handler.HandleMcpeCraftingEvent(msg);
-					break;
 				case McpeInventoryTransaction msg:
 					handler.HandleMcpeInventoryTransaction(msg);
 					break;
@@ -236,6 +233,9 @@ namespace MiNET.Net
 					break;
 				case McpeRequestAbility msg:
 					handler.HandleMcpeRequestAbility(msg);
+					break;
+				case McpeSetPlayerInventoryOptions msg:
+					handler.HandleMcpeSetPlayerInventoryOptions(msg);
 					break;
 
 				default:

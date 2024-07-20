@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.20.40" protocolVersion="622">
+<protocol gameVersion="1.20.50" protocolVersion="630">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -613,27 +613,6 @@
 		<field name="Is Clean" type="bool" />
 	</pdu>
 
-	<pdu id="0x35" online="false" client="true" server="true" name="MCPE_CRAFTING_EVENT">
-		<enums id="Recipe Types">
-			<enum id="Shapeless" value="0" />
-			<enum id="Shaped" value="1" />
-			<enum id="Furnace" value="2" />
-			<enum id="Furnace data" value="3" />
-			<enum id="Multi" value="4" />
-			<enum id="Shulker box" value="5" />
-			<enum id="Chemistry Shapeless" value="6" />
-			<enum id="Chemistry Shaped" value="7" />
-			<enum id="Smithing Transform" value="8" />
-			<enum id="Smithing Trim" value="9" />
-		</enums>
-
-		<field name="Window ID" type="byte" />
-		<field name="Recipe Type" type="VarInt" />
-		<field name="Recipe ID" type="UUID" />
-		<field name="Input" type="ItemStacks" />
-		<field name="Result" type="ItemStacks" />
-	</pdu>
-
 	<pdu id="0x36" online="false" client="false" server="true" name="MCPE_GUI_DATA_PICK_ITEM">
 
 	</pdu>
@@ -903,8 +882,8 @@
 	</pdu>
 
 	<pdu id="0x5b" online="false" client="false" server="true" name="MCPE_SHOW_STORE_OFFER">
-		<field name="Unknown0" type="string" />
-		<field name="Unknown1" type="bool" />
+		<field name="Offer Id" type="string" />
+		<field name="Redirect Type" type="byte" />
 	</pdu>
 
 	<pdu id="0x5c" online="false" client="true" server="false" name="MCPE_PURCHASE_RECEIPT">
@@ -1264,6 +1243,44 @@
 	<pdu id="0x12f" online="false" client="false" server="true" name="MCPE_OPEN_SIGN">
 		<field name="Coordinates" type="BlockCoordinates" />
 		<field name="Front" type="bool" />
+	</pdu>
+
+	<pdu id="0x132" online="false" client="true" server="true" name="MCPE_PLAYER_TOGGLE_CRAFTER_SLOT_REQUEST">
+		<field name="X" type="int" />
+		<field name="Y" type="int" />
+		<field name="Z" type="int" />
+		<field name="Slot" type="byte" />
+		<field name="Disabled" type="bool" />
+	</pdu>
+
+	<pdu id="0x133" online="false" client="true" server="true" name="MCPE_SET_PLAYER_INVENTORY_OPTIONS">
+		<enums id="Inventory Left Tab">
+			<enum id="None" value="0" />
+			<enum id="Construction" value="1" />
+			<enum id="Equipment" value="2" />
+			<enum id="Items" value="3" />
+			<enum id="Nature" value="4" />
+			<enum id="Search" value="5" />
+			<enum id="Survival" value="6" />
+		</enums>
+		<enums id="Inventory Right Tab">
+			<enum id="None" value="0" />
+			<enum id="Full Screen" value="1" />
+			<enum id="Crafting" value="2" />
+			<enum id="Armor" value="3" />
+		</enums>
+		<enums id="Inventory Layout">
+			<enum id="None" value="0" />
+			<enum id="Survival" value="1" />
+			<enum id="Recipe Book" value="2" />
+			<enum id="Creative" value="3" />
+		</enums>
+
+		<field name="Left Tab" type="VarInt" />
+		<field name="Right Tab" type="VarInt" />
+		<field name="Filtering" type="bool" />
+		<field name="Inventory Layout" type="VarInt" />
+		<field name="Crafting Layout" type="VarInt" />
 	</pdu>
 	
 	<pdu id="0xe0" online="false" client="false" server="true" name="MCPE_ALEX_ENTITY_ANIMATION">

@@ -490,6 +490,10 @@ namespace MiNET.Test
 			{
 				return nameof(TerracottaBase);
 			}
+			if (id.EndsWith("_planks"))
+			{
+				return nameof(PlanksBase);
+			}
 
 			return nameof(Block);
 		}

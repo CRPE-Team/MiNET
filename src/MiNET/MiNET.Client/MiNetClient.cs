@@ -252,55 +252,55 @@ namespace MiNET.Client
 
 		public void SendCraftingEvent2()
 		{
-			var recipe = _recipeToSend;
+			//var recipe = _recipeToSend;
 
-			if (recipe != null)
-			{
-				Log.Error("Sending crafting event: " + recipe.Id);
+			//if (recipe != null)
+			//{
+			//	Log.Error("Sending crafting event: " + recipe.Id);
 
-				McpeCraftingEvent crafting = McpeCraftingEvent.CreateObject();
-				crafting.windowId = 0;
-				crafting.recipeType = 1;
-				crafting.recipeId = recipe.Id;
+			//	McpeCraftingEvent crafting = McpeCraftingEvent.CreateObject();
+			//	crafting.windowId = 0;
+			//	crafting.recipeType = 1;
+			//	crafting.recipeId = recipe.Id;
 
-				{
-					ItemStacks slotData = new ItemStacks();
-					for (uint i = 0; i < recipe.Input.Length; i++)
-					{
-						slotData.Add(GetItemFromIngredient(recipe.Input[i]));
+			//	{
+			//		ItemStacks slotData = new ItemStacks();
+			//		for (uint i = 0; i < recipe.Input.Length; i++)
+			//		{
+			//			slotData.Add(GetItemFromIngredient(recipe.Input[i]));
 
-						McpeInventorySlot sendSlot = McpeInventorySlot.CreateObject();
-						sendSlot.inventoryId = 0;
-						sendSlot.slot = i;
-						sendSlot.item = GetItemFromIngredient(recipe.Input[i]);
-						SendPacket(sendSlot);
+			//			McpeInventorySlot sendSlot = McpeInventorySlot.CreateObject();
+			//			sendSlot.inventoryId = 0;
+			//			sendSlot.slot = i;
+			//			sendSlot.item = GetItemFromIngredient(recipe.Input[i]);
+			//			SendPacket(sendSlot);
 
-						//McpeContainerSetSlot setSlot = McpeContainerSetSlot.CreateObject();
-						//setSlot.item = recipe.Input[i];
-						//setSlot.windowId = 0;
-						//setSlot.slot = (short) (i);
-						//SendPackage(setSlot);
-						//Log.Error("Set set slot");
-					}
-					crafting.input = slotData;
+			//			//McpeContainerSetSlot setSlot = McpeContainerSetSlot.CreateObject();
+			//			//setSlot.item = recipe.Input[i];
+			//			//setSlot.windowId = 0;
+			//			//setSlot.slot = (short) (i);
+			//			//SendPackage(setSlot);
+			//			//Log.Error("Set set slot");
+			//		}
+			//		crafting.input = slotData;
 
-					{
-						McpeMobEquipment eq = McpeMobEquipment.CreateObject();
-						eq.runtimeEntityId = EntityId;
-						eq.slot = 9;
-						eq.selectedSlot = 0;
-						eq.item = GetItemFromIngredient(recipe.Input[0]);
-						SendPacket(eq);
-						Log.Error("Set eq slot");
-					}
-				}
-				{
-					ItemStacks slotData = new ItemStacks {recipe.Output.First()};
-					crafting.result = slotData;
-				}
+			//		{
+			//			McpeMobEquipment eq = McpeMobEquipment.CreateObject();
+			//			eq.runtimeEntityId = EntityId;
+			//			eq.slot = 9;
+			//			eq.selectedSlot = 0;
+			//			eq.item = GetItemFromIngredient(recipe.Input[0]);
+			//			SendPacket(eq);
+			//			Log.Error("Set eq slot");
+			//		}
+			//	}
+			//	{
+			//		ItemStacks slotData = new ItemStacks {recipe.Output.First()};
+			//		crafting.result = slotData;
+			//	}
 
-				SendPacket(crafting);
-			}
+			//	SendPacket(crafting);
+			//}
 
 
 			//{
@@ -333,61 +333,61 @@ namespace MiNET.Client
 
 		public void SendCraftingEvent()
 		{
-			var recipe = _recipeToSend;
+			//var recipe = _recipeToSend;
 
-			if (recipe != null)
-			{
-				{
-					//McpeContainerSetSlot setSlot = McpeContainerSetSlot.CreateObject();
-					//setSlot.item = new ItemBlock(new Block(17), 0) {Count = 1};
-					//setSlot.windowId = 0;
-					//setSlot.slot = 0;
-					//SendPackage(setSlot);
-				}
-				{
-					McpeMobEquipment eq = McpeMobEquipment.CreateObject();
-					eq.runtimeEntityId = EntityId;
-					eq.slot = 9;
-					eq.selectedSlot = 0;
-					eq.item = ItemFactory.GetItem<OakLog>();
-					SendPacket(eq);
-				}
+			//if (recipe != null)
+			//{
+			//	{
+			//		//McpeContainerSetSlot setSlot = McpeContainerSetSlot.CreateObject();
+			//		//setSlot.item = new ItemBlock(new Block(17), 0) {Count = 1};
+			//		//setSlot.windowId = 0;
+			//		//setSlot.slot = 0;
+			//		//SendPackage(setSlot);
+			//	}
+			//	{
+			//		McpeMobEquipment eq = McpeMobEquipment.CreateObject();
+			//		eq.runtimeEntityId = EntityId;
+			//		eq.slot = 9;
+			//		eq.selectedSlot = 0;
+			//		eq.item = ItemFactory.GetItem<OakLog>();
+			//		SendPacket(eq);
+			//	}
 
-				Log.Error("Sending crafting event: " + recipe.Id);
+			//	Log.Error("Sending crafting event: " + recipe.Id);
 
-				McpeCraftingEvent crafting = McpeCraftingEvent.CreateObject();
-				crafting.windowId = 0;
-				crafting.recipeType = 1;
-				crafting.recipeId = recipe.Id;
+			//	McpeCraftingEvent crafting = McpeCraftingEvent.CreateObject();
+			//	crafting.windowId = 0;
+			//	crafting.recipeType = 1;
+			//	crafting.recipeId = recipe.Id;
 
-				{
-					ItemStacks slotData = new ItemStacks { ItemFactory.GetItem<OakLog>() };
-					crafting.input = slotData;
-				}
-				{
-					ItemStacks slotData = new ItemStacks { ItemFactory.GetItem<OakLog>() };
-					crafting.result = slotData;
-				}
+			//	{
+			//		ItemStacks slotData = new ItemStacks { ItemFactory.GetItem<OakLog>() };
+			//		crafting.input = slotData;
+			//	}
+			//	{
+			//		ItemStacks slotData = new ItemStacks { ItemFactory.GetItem<OakLog>() };
+			//		crafting.result = slotData;
+			//	}
 
-				SendPacket(crafting);
+			//	SendPacket(crafting);
 
-				//{
-				//	McpeContainerSetSlot setSlot = McpeContainerSetSlot.CreateObject();
-				//	setSlot.item = new MetadataSlot(new ItemStack(new ItemBlock(new Block(5), 0), 4));
-				//	setSlot.windowId = 0;
-				//	setSlot.slot = 0;
-				//	SendPackage(setSlot);
-				//}
+			//	//{
+			//	//	McpeContainerSetSlot setSlot = McpeContainerSetSlot.CreateObject();
+			//	//	setSlot.item = new MetadataSlot(new ItemStack(new ItemBlock(new Block(5), 0), 4));
+			//	//	setSlot.windowId = 0;
+			//	//	setSlot.slot = 0;
+			//	//	SendPackage(setSlot);
+			//	//}
 
-				{
-					McpeMobEquipment eq = McpeMobEquipment.CreateObject();
-					eq.runtimeEntityId = EntityId;
-					eq.slot = 10;
-					eq.selectedSlot = 1;
-					eq.item = ItemFactory.GetItem<Planks>();
-					SendPacket(eq);
-				}
-			}
+			//	{
+			//		McpeMobEquipment eq = McpeMobEquipment.CreateObject();
+			//		eq.runtimeEntityId = EntityId;
+			//		eq.slot = 10;
+			//		eq.selectedSlot = 1;
+			//		eq.item = ItemFactory.GetItem<Planks>();
+			//		SendPacket(eq);
+			//	}
+			//}
 		}
 
 		private string SerializeCompound(NbtCompound compound)

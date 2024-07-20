@@ -28,9 +28,9 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class Planks : Block
+	public abstract class PlanksBase : Block
 	{
-		public Planks() : base()
+		public PlanksBase() : base()
 		{
 			FuelEfficiency = 15;
 			BlastResistance = 15;

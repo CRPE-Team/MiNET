@@ -2447,11 +2447,6 @@ namespace MiNET
 		{
 		}
 
-		public virtual void HandleMcpeCraftingEvent(McpeCraftingEvent message)
-		{
-
-		}
-
 		public virtual void HandleMcpeInventoryTransaction(McpeInventoryTransaction message)
 		{
 			switch (message.transaction)
@@ -3874,6 +3869,18 @@ namespace MiNET
 		{
 		}
 
+		public void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message)
+		{
+		}
+
+		public void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message)
+		{
+			Log.Debug($"InvOpt: leftTab={(McpeSetPlayerInventoryOptions.InventoryLeftTab) message.leftTab}; " +
+				$"rightTab={(McpeSetPlayerInventoryOptions.InventoryRightTab) message.rightTab}; " +
+				$"filtering={message.filtering}; " +
+				$"inventoryLayout={(McpeSetPlayerInventoryOptions.InventoryLayout) message.inventoryLayout}; " +
+				$"craftingLayout={(McpeSetPlayerInventoryOptions.InventoryLayout) message.craftingLayout}");
+		}
 	}
 
 	public class PlayerEventArgs : EventArgs

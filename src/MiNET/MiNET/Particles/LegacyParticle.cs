@@ -112,7 +112,14 @@ namespace MiNET.Particles
 		SporeBlossomShower = 78,
 		SporeBlossomAmbient = 79,
 		Wax = 80,
-		Electric_spark = 81,
+		ElectricSpark = 81,
+		Shriek = 82,
+		SculkSoul = 83,
+		SonicExplosion = 84,
+		BrushDust = 85,
+		CherryLeaves = 86,
+		DustPlume = 87,
+		WhiteSmoke = 88,
 }
 
 	public class LegacyParticle : Particle

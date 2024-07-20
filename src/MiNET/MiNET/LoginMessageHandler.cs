@@ -692,10 +692,6 @@ namespace MiNET
 		{
 		}
 
-		public void HandleMcpeCraftingEvent(McpeCraftingEvent message)
-		{
-		}
-
 		public void HandleMcpeAdventureSettings(McpeAdventureSettings message)
 		{
 		}
@@ -781,6 +777,14 @@ namespace MiNET
 		}
 
 		public void HandleMcpeScriptCustomEvent(McpeScriptCustomEvent message)
+		{
+		}
+
+		public void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message)
+		{
+		}
+
+		public void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message)
 		{
 		}
 	}

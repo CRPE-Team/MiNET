@@ -176,8 +176,8 @@ namespace MiNET.Net
 									//if (Log.IsDebugEnabled)
 									//	Log.Debug($"0x{internalBuffer[0]:x2}\n{Packet.HexDump(internalBuffer)}");
 
-									messages.Add(PacketFactory.Create((byte) id, internalBuffer, "mcpe") ??
-												new UnknownPacket((byte) id, internalBuffer));
+									messages.Add(PacketFactory.Create(id, internalBuffer, "mcpe") ??
+												new UnknownPacket(id, internalBuffer));
 								}
 								catch (Exception e)
 								{
@@ -215,8 +215,8 @@ namespace MiNET.Net
 								//if (Log.IsDebugEnabled)
 								//	Log.Debug($"0x{internalBuffer[0]:x2}\n{Packet.HexDump(internalBuffer)}");
 
-								messages.Add(PacketFactory.Create((byte) id, internalBuffer, "mcpe") ??
-											new UnknownPacket((byte) id, internalBuffer));
+								messages.Add(PacketFactory.Create(id, internalBuffer, "mcpe") ??
+											new UnknownPacket(id, internalBuffer));
 							}
 							catch (Exception e)
 							{

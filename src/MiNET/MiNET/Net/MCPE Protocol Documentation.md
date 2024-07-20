@@ -27,6 +27,8 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Trim Data | 0x12e | 18 |   
 | Open Sign | 0x12f | 18 |   
 | Move Player | 0x13 | 19 |   
+| Player Toggle Crafter Slot Request | 0x132 | 19 |   
+| Set Player Inventory Options | 0x133 | 19 |   
 | Rider Jump | 0x14 | 20 |   
 | Update Block | 0x15 | 21 |   
 | Add Painting | 0x16 | 22 |   
@@ -59,7 +61,6 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Inventory Slot | 0x32 | 50 |   
 | Container Set Data | 0x33 | 51 |   
 | Crafting Data | 0x34 | 52 |   
-| Crafting Event | 0x35 | 53 |   
 | Gui Data Pick Item | 0x36 | 54 |   
 | Adventure Settings | 0x37 | 55 |   
 | Block Entity Data | 0x38 | 56 |   
@@ -1304,40 +1305,6 @@ Wiki: [Crafting Data](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Cra
 |Material reducer recipes | MaterialReducerRecipe[] |  |
 |Is Clean | bool |  |
 -----------------------------------------------------------------------
-### Crafting Event (0x35)
-Wiki: [Crafting Event](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-CraftingEvent)
-
-**Sent from server:** true  
-**Sent from client:** true
-
-
-
-#### Recipe Types constants
-
-| Name | Value |
-|:-----|:-----|
-|Shapeless | 0 |
-|Shaped | 1 |
-|Furnace | 2 |
-|Furnace Data | 3 |
-|Multi | 4 |
-|Shulker Box | 5 |
-|Chemistry Shapeless | 6 |
-|Chemistry Shaped | 7 |
-|Smithing Transform | 8 |
-|Smithing Trim | 9 |
-
-
-#### Fields
-
-| Name | Type | Size |
-|:-----|:-----|:-----|
-|Window ID | byte |  |
-|Recipe Type | VarInt |  |
-|Recipe ID | UUID |  |
-|Input | ItemStacks |  |
-|Result | ItemStacks |  |
------------------------------------------------------------------------
 ### Gui Data Pick Item (0x36)
 Wiki: [Gui Data Pick Item](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-GuiDataPickItem)
 
@@ -1972,8 +1939,8 @@ Wiki: [Show Store Offer](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
-|Unknown0 | string |  |
-|Unknown1 | bool |  |
+|Offer Id | string |  |
+|Redirect Type | byte |  |
 -----------------------------------------------------------------------
 ### Purchase Receipt (0x5c)
 Wiki: [Purchase Receipt](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-PurchaseReceipt)
@@ -3027,6 +2994,74 @@ Wiki: [Open Sign](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-OpenSig
 |:-----|:-----|:-----|
 |Coordinates | BlockCoordinates |  |
 |Front | bool |  |
+-----------------------------------------------------------------------
+### Player Toggle Crafter Slot Request (0x132)
+Wiki: [Player Toggle Crafter Slot Request](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-PlayerToggleCrafterSlotRequest)
+
+**Sent from server:** true  
+**Sent from client:** true
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|X | int |  |
+|Y | int |  |
+|Z | int |  |
+|Slot | byte |  |
+|Disabled | bool |  |
+-----------------------------------------------------------------------
+### Set Player Inventory Options (0x133)
+Wiki: [Set Player Inventory Options](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetPlayerInventoryOptions)
+
+**Sent from server:** true  
+**Sent from client:** true
+
+
+
+#### Inventory Left Tab constants
+
+| Name | Value |
+|:-----|:-----|
+|None | 0 |
+|Construction | 1 |
+|Equipment | 2 |
+|Items | 3 |
+|Nature | 4 |
+|Search | 5 |
+|Survival | 6 |
+
+#### Inventory Right Tab constants
+
+| Name | Value |
+|:-----|:-----|
+|None | 0 |
+|Full Screen | 1 |
+|Crafting | 2 |
+|Armor | 3 |
+
+#### Inventory Layout constants
+
+| Name | Value |
+|:-----|:-----|
+|None | 0 |
+|Survival | 1 |
+|Recipe Book | 2 |
+|Creative | 3 |
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Left Tab | VarInt |  |
+|Right Tab | VarInt |  |
+|Filtering | bool |  |
+|Inventory Layout | VarInt |  |
+|Crafting Layout | VarInt |  |
 -----------------------------------------------------------------------
 ### Alex Entity Animation (0xe0)
 Wiki: [Alex Entity Animation](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AlexEntityAnimation)
