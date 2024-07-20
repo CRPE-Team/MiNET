@@ -67,7 +67,7 @@ namespace MiNET.Net
 					var wrapper = McpeWrapper.CreateObject();
 					wrapper.ReliabilityHeader.Reliability = Reliability.ReliableOrdered;
 					wrapper.ForceClear = true;
-					wrapper.payload = _session.Compressor.CompressPacketsForWrapper(new List<Packet> {packet});
+					wrapper.payload = _session.CompressionManager.CompressPacketsForWrapper(new List<Packet> {packet});
 					wrapper.Encode(); // prepare
 					packet.PutPool();
 					sendList.Add(wrapper);
@@ -97,7 +97,7 @@ namespace MiNET.Net
 			{
 				var batch = McpeWrapper.CreateObject();
 				batch.ReliabilityHeader.Reliability = Reliability.ReliableOrdered;
-				batch.payload = _session.Compressor.CompressPacketsForWrapper(sendInBatch);
+				batch.payload = _session.CompressionManager.CompressPacketsForWrapper(sendInBatch);
 				batch.Encode(); // prepare
 				sendList.Add(batch);
 			}
@@ -152,7 +152,7 @@ namespace MiNET.Net
 				IEnumerable<Packet> messages;
 				try
 				{
-					messages = (_session?.Compressor ?? NoneCompressor.Instance).Decompress(payload);
+					messages = (_session?.CompressionManager ?? CompressionManager.NoneCompressionManager).Decompress(payload);
 				}
 				catch (Exception e)
 				{

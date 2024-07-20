@@ -15,59 +15,37 @@ namespace MiNET.Utils.IO
 
 		public CompressionAlgorithm CompressionAlgorithm => CompressionAlgorithm.ZLib;
 
-		public short CompressionThreshold { get; set; } = 1000;
-
-		public byte[] Compress(Memory<byte> input, bool writeLen = false, CompressionLevel compressionLevel = CompressionLevel.Fastest)
+		public void Write(MemoryStream stream, Memory<byte> input, bool writeLen = false, CompressionLevel compressionLevel = CompressionLevel.Fastest)
 		{
-			compressionLevel = input.Length > CompressionThreshold ? compressionLevel : CompressionLevel.NoCompression;
-			using (MemoryStream stream = MiNetServer.MemoryStreamManager.GetStream())
+			using (var compressStream = new DeflateStream(stream, compressionLevel, true))
 			{
-				using (var compressStream = new DeflateStream(stream, compressionLevel, true))
+				if (writeLen)
 				{
-					if (writeLen)
-					{
-						WriteLength(compressStream, input.Length);
-					}
-
-					compressStream.Write(input.Span);
+					WriteLength(compressStream, input.Length);
 				}
 
-				byte[] bytes = stream.ToArray();
-				return bytes;
+				compressStream.Write(input.Span);
 			}
 		}
 
-		public byte[] CompressPacketsForWrapper(List<Packet> packets, CompressionLevel compressionLevel = CompressionLevel.Fastest)
+		public void Write(MemoryStream stream, List<Packet> packets, CompressionLevel compressionLevel = CompressionLevel.Fastest)
 		{
-			long length = 0;
-			foreach (Packet packet in packets)
+			using (var compressStream = new DeflateStream(stream, compressionLevel, true))
 			{
-				length += packet.Encode().Length;
-			}
-
-			compressionLevel = length > CompressionThreshold ? compressionLevel : CompressionLevel.NoCompression;
-			using (MemoryStream stream = MiNetServer.MemoryStreamManager.GetStream())
-			{
-				using (var compressStream = new DeflateStream(stream, compressionLevel, true))
+				foreach (Packet packet in packets)
 				{
-					foreach (Packet packet in packets)
+					byte[] bs = packet.Encode();
+					if (bs != null && bs.Length > 0)
 					{
-						byte[] bs = packet.Encode();
-						if (bs != null && bs.Length > 0)
-						{
-							BatchUtils.WriteLength(compressStream, bs.Length);
-							compressStream.Write(bs, 0, bs.Length);
-						}
-						packet.PutPool();
+						BatchUtils.WriteLength(compressStream, bs.Length);
+						compressStream.Write(bs, 0, bs.Length);
 					}
+					packet.PutPool();
 				}
-
-				byte[] bytes = stream.ToArray();
-				return bytes;
 			}
 		}
 
-		public IEnumerable<Packet> Decompress(ReadOnlyMemory<byte> payload)
+		public IEnumerable<Packet> ReadPackets(ReadOnlyMemory<byte> payload)
 		{
 			var packets = new List<Packet>();
 

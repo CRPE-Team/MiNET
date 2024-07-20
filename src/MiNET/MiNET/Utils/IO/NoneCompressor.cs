@@ -17,48 +17,31 @@ namespace MiNET.Utils.IO
 
 		public short CompressionThreshold => 0;
 
-		public byte[] Compress(Memory<byte> input, bool writeLen = false, CompressionLevel compressionLevel = CompressionLevel.Fastest)
+		public void Write(MemoryStream stream, Memory<byte> input, bool writeLen = false, CompressionLevel compressionLevel = CompressionLevel.Fastest)
 		{
-			using (MemoryStream stream = MiNetServer.MemoryStreamManager.GetStream())
+			if (writeLen)
 			{
-				if (writeLen)
+				WriteLength(stream, input.Length);
+			}
+
+			stream.Write(input.Span);
+		}
+
+		public void Write(MemoryStream stream, List<Packet> packets, CompressionLevel compressionLevel = CompressionLevel.Fastest)
+		{
+			foreach (Packet packet in packets)
+			{
+				byte[] bs = packet.Encode();
+				if (bs != null && bs.Length > 0)
 				{
-					WriteLength(stream, input.Length);
+					BatchUtils.WriteLength(stream, bs.Length);
+					stream.Write(bs, 0, bs.Length);
 				}
-
-				stream.Write(input.Span);
-
-				byte[] bytes = stream.ToArray();
-				return bytes;
+				packet.PutPool();
 			}
 		}
 
-		public byte[] CompressPacketsForWrapper(List<Packet> packets, CompressionLevel compressionLevel = CompressionLevel.Fastest)
-		{
-			using (MemoryStream stream = MiNetServer.MemoryStreamManager.GetStream())
-			{
-				foreach (Packet packet in packets)
-				{
-					byte[] bs = packet.Encode();
-					if (bs != null && bs.Length > 0)
-					{
-						BatchUtils.WriteLength(stream, bs.Length);
-						stream.Write(bs, 0, bs.Length);
-					}
-					packet.PutPool();
-				}
-
-				byte[] bytes = stream.ToArray();
-				return bytes;
-			}
-		}
-
-		private static void WriteLength(Stream stream, int lenght)
-		{
-			VarInt.WriteUInt32(stream, (uint) lenght);
-		}
-
-		public IEnumerable<Packet> Decompress(ReadOnlyMemory<byte> payload)
+		public IEnumerable<Packet> ReadPackets(ReadOnlyMemory<byte> payload)
 		{
 			var packets = new List<Packet>();
 
@@ -102,6 +85,11 @@ namespace MiNET.Utils.IO
 			}
 
 			return packets;
+		}
+
+		private static void WriteLength(Stream stream, int lenght)
+		{
+			VarInt.WriteUInt32(stream, (uint) lenght);
 		}
 	}
 }

@@ -89,19 +89,19 @@ namespace MiNET
 				return;
 			}
 
-			var compressor = ZLibCompressor.Instance;
+			var compressionAlgorithm = CompressionAlgorithm.ZLib;
 
 			McpeNetworkSettings settingsPacket = McpeNetworkSettings.CreateObject();
-			settingsPacket.compressionAlgorithm = (short) compressor.CompressionAlgorithm;
-			settingsPacket.compressionThreshold = compressor.CompressionThreshold;
+			settingsPacket.compressionAlgorithm = (short) compressionAlgorithm;
+			settingsPacket.compressionThreshold = _session.CompressionManager.CompressionThreshold;
 			settingsPacket.clientThrottleEnabled = false;
 			settingsPacket.clientThrottleScalar = 0;
 			settingsPacket.clientThrottleThreshold = 0;
 			settingsPacket.ForceClear = true; // Must be!
 
 			_session.SendPrepareDirectPacket(settingsPacket);
-			//Thread.Sleep(1000);
-			_session.Compressor = compressor;
+
+			_session.CompressionManager.CompressionAlgorithm = compressionAlgorithm;
 		}
 
 		public virtual void HandleMcpeLogin(McpeLogin message)

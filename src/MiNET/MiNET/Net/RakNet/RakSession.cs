@@ -59,7 +59,7 @@ namespace MiNET.Net.RakNet
 
 		public ICustomMessageHandler CustomMessageHandler { get; set; }
 
-		public ICompressor Compressor { get; set; }
+		public CompressionManager CompressionManager { get; set; }
 
 		public string Username { get; set; }
 		public IPEndPoint EndPoint { get; private set; }
@@ -114,7 +114,7 @@ namespace MiNET.Net.RakNet
 		{
 			Log.Debug($"Create session for {endPoint}");
 
-			Compressor = NoneCompressor.Instance;
+			CompressionManager = new CompressionManager();
 
 			_packetSender = packetSender;
 			ConnectionInfo = connectionInfo;
