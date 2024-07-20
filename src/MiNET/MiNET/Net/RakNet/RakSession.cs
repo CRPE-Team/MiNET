@@ -33,6 +33,7 @@ using System.Threading.Tasks;
 using log4net;
 using MiNET.Utils;
 using MiNET.Utils.Collections;
+using MiNET.Utils.IO;
 
 namespace MiNET.Net.RakNet
 {
@@ -58,7 +59,7 @@ namespace MiNET.Net.RakNet
 
 		public ICustomMessageHandler CustomMessageHandler { get; set; }
 
-		public bool EnableCompression { get; set; } = false;
+		public ICompressor Compressor { get; set; }
 
 		public string Username { get; set; }
 		public IPEndPoint EndPoint { get; private set; }
@@ -112,6 +113,8 @@ namespace MiNET.Net.RakNet
 		public RakSession(ConnectionInfo connectionInfo, IPacketSender packetSender, IPEndPoint endPoint, short mtuSize, ICustomMessageHandler messageHandler = null)
 		{
 			Log.Debug($"Create session for {endPoint}");
+
+			Compressor = NoneCompressor.Instance;
 
 			_packetSender = packetSender;
 			ConnectionInfo = connectionInfo;
