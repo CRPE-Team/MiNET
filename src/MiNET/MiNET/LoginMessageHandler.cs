@@ -38,6 +38,7 @@ using MiNET.Net;
 using MiNET.Net.RakNet;
 using MiNET.Utils;
 using MiNET.Utils.Cryptography;
+using MiNET.Utils.IO;
 using MiNET.Utils.Skins;
 using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Crypto.Agreement;
@@ -88,9 +89,11 @@ namespace MiNET
 				return;
 			}
 
+			var compressor = ZLibCompressor.Instance;
+
 			McpeNetworkSettings settingsPacket = McpeNetworkSettings.CreateObject();
-			settingsPacket.compressionAlgorithm = 0;//zlib
-			settingsPacket.compressionThreshold = 1;
+			settingsPacket.compressionAlgorithm = (short) compressor.CompressionAlgorithm;
+			settingsPacket.compressionThreshold = compressor.CompressionThreshold;
 			settingsPacket.clientThrottleEnabled = false;
 			settingsPacket.clientThrottleScalar = 0;
 			settingsPacket.clientThrottleThreshold = 0;
@@ -98,7 +101,7 @@ namespace MiNET
 
 			_session.SendPrepareDirectPacket(settingsPacket);
 			//Thread.Sleep(1000);
-			_session.EnableCompression = true;
+			_session.Compressor = compressor;
 		}
 
 		public virtual void HandleMcpeLogin(McpeLogin message)

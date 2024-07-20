@@ -54,7 +54,7 @@ namespace MiNET.Utils.IO
 		{
 			var batch = McpeWrapper.CreateObject();
 			batch.ReliabilityHeader.Reliability = Reliability.ReliableOrdered;
-			batch.payload = Compression.Compress(input, writeLen, compressionLevel);
+			batch.payload = ZLibCompressor.Instance.Compress(input, writeLen, compressionLevel);
 			batch.Encode(); // prepare
 			return batch;
 		}
