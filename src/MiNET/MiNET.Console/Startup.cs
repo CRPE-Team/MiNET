@@ -61,7 +61,7 @@ namespace MiNET.Console
 			Log.Info(MiNetServer.MiNET);
 			System.Console.WriteLine(MiNetServer.MiNET);
 
-			if (IsSupportSystem())
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 			{
 				var currentProcess = Process.GetCurrentProcess();
 
@@ -86,11 +86,6 @@ namespace MiNET.Console
 			System.Console.WriteLine("MiNET running. Press <enter> to stop service.");
 			System.Console.ReadLine();
 			service.StopServer();
-		}
-
-		private static bool IsSupportSystem()
-		{
-			return RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 		}
 	}
 }
