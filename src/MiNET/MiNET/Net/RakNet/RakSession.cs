@@ -58,7 +58,7 @@ namespace MiNET.Net.RakNet
 		public ConnectionInfo ConnectionInfo { get; }
 
 		public ICustomMessageHandler CustomMessageHandler { get; set; }
-		
+
 		public ICompressor Compressor { get; set; }
 
 		public string Username { get; set; }
