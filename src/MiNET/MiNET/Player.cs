@@ -716,6 +716,22 @@ namespace MiNET
 					Level.UseItem(this, Inventory.GetItemInHand(), message.coordinates, (BlockFace) message.face);
 					break;
 				}
+				case PlayerAction.StartFlying:
+				{
+					if (!AllowFly && !GameMode.AllowsFlying())
+					{
+						SendAbilities();
+						return;
+					}
+
+					IsFlying = true;
+					break;
+				}
+				case PlayerAction.StopFlying:
+				{
+					IsFlying = false;
+					break;
+				}
 				case PlayerAction.GetUpdatedBlock:
 				case PlayerAction.DropItem:
 				case PlayerAction.Respawn:
@@ -731,8 +747,6 @@ namespace MiNET
 				case PlayerAction.MissedSwing:
 				case PlayerAction.StartCrawling:
 				case PlayerAction.StopCrawling:
-				case PlayerAction.StartFlying:
-				case PlayerAction.StopFlying:
 				{
 					break;
 				}
@@ -2293,19 +2307,7 @@ namespace MiNET
 
 		public virtual void HandleMcpeRequestAbility(McpeRequestAbility message)
 		{
-			if (message.ability == 18) // flying??
-			{
-				var isFlying = (bool) message.Value;
-
-				if (isFlying && !AllowFly && !GameMode.AllowsFlying())
-				{
-					SendAbilities();
-					return;
-				}
-
-				IsFlying = isFlying;
-				return;
-			}
+			Log.Debug($"Request abilities ability=[{message.ability}], value=[{message.Value}]");
 		}
 
 		public virtual void HandleMcpeMobArmorEquipment(McpeMobArmorEquipment message)
