@@ -795,7 +795,7 @@ namespace MiNET
 		{
 		}
 
-		public void HandleMcpeSetHud(McpeSetHud message)
+		public void HandleMcpeBossEvent(McpeBossEvent message)
 		{
 		}
 	}
