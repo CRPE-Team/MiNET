@@ -27,14 +27,11 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Threading;
 using log4net;
-using MiNET;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
-using MiNET.Entities;
 using MiNET.Entities.ImageProviders;
 using MiNET.Entities.World;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -46,6 +43,9 @@ namespace MiNET.Test.Utils.NiceLobby
 
 		private readonly List<MapEntity> _frames;
 		private readonly FrameTicker _frameTicker;
+		private int _frame = 0;
+
+		private object _tickSync = new object();
 
 		public CustomItemFrame(List<MapEntity> frames, FrameTicker frameTicker)
 		{
@@ -109,10 +109,6 @@ namespace MiNET.Test.Utils.NiceLobby
 
 			return false;
 		}
-
-		private int _frame = 0;
-
-		private object _tickSync = new object();
 
 		private void Tick(object state)
 		{
