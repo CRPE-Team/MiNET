@@ -28,11 +28,11 @@ using System.IO;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiNET.Entities;
+using MiNET.Test.Utils.Code4Fun;
 using MiNET.Utils.Skins;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using TestPlugin.Code4Fun;
 
 namespace MiNET.Test
 {

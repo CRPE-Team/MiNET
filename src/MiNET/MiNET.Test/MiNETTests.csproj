@@ -10,11 +10,11 @@
     <PackageReference Include="MSTest.TestAdapter" Version="3.2.2" />
     <PackageReference Include="MSTest.TestFramework" Version="3.2.2" />
     <PackageReference Include="System.CodeDom" Version="8.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MiNET.Client\MiNET.Client.csproj" />
     <ProjectReference Include="..\MiNET\MiNET.csproj" />
-    <ProjectReference Include="..\TestPlugin\TestPlugin.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="geometry.json">
