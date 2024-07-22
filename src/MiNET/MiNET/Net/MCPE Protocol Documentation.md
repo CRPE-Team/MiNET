@@ -1644,7 +1644,7 @@ Wiki: [Camera](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Camera)
 Wiki: [Boss Event](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-BossEvent)
 
 **Sent from server:** true  
-**Sent from client:** false
+**Sent from client:** true
 
 
 
@@ -3085,7 +3085,7 @@ Wiki: [Set Player Inventory Options](https://github.com/NiclasOlofsson/MiNET/wik
 Wiki: [Set Hud](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetHud)
 
 **Sent from server:** true  
-**Sent from client:** true
+**Sent from client:** false
 
 
 

@@ -757,7 +757,7 @@
 		<field name="Unknown2" type="SignedVarLong" />
 	</pdu>
 
-	<pdu id="0x4a" online="false" client="false" server="true" name="MCPE_BOSS_EVENT">
+	<pdu id="0x4a" online="false" client="true" server="true" name="MCPE_BOSS_EVENT">
 		<enums id="Type">
 			<enum id="Add Boss" value="0" />
 			<enum id="Add Player" value="1" />
@@ -1288,7 +1288,7 @@
 		<field name="Crafting Layout" type="VarInt" />
 	</pdu>
 
-	<pdu id="0x134" online="false" client="true" server="true" name="MCPE_SET_HUD">
+	<pdu id="0x134" online="false" client="false" server="true" name="MCPE_SET_HUD">
 		<enums id="Hud Element">
 			<enum id="Paper Doll" value="0" />
 			<enum id="Armor" value="1" />

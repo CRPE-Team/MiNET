@@ -237,6 +237,9 @@ namespace MiNET.Net
 				case McpeSetPlayerInventoryOptions msg:
 					handler.HandleMcpeSetPlayerInventoryOptions(msg);
 					break;
+				case McpeBossEvent msg:
+					handler.HandleMcpeBossEvent(msg);
+					break;
 
 				default:
 				{

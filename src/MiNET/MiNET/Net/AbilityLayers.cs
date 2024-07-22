@@ -24,103 +24,131 @@
 using System;
 using System.Collections.Generic;
 
-namespace MiNET.Net;
-
-public class AbilityLayers : List<AbilityLayer>, IPacketDataObject
+namespace MiNET.Net
 {
-	public void Write(Packet packet)
+	public class AbilityLayers : List<AbilityLayer>, IPacketDataObject
 	{
-		packet.Write((byte) Count);
-
-		foreach (var layer in this)
+		public void Write(Packet packet)
 		{
-			layer.Write(packet);
+			packet.Write((byte) Count);
+
+			foreach (var layer in this)
+			{
+				layer.Write(packet);
+			}
+		}
+
+		public static AbilityLayers Read(Packet packet)
+		{
+			var layers = new AbilityLayers();
+
+			var count = packet.ReadByte();
+			for (int i = 0; i < count; i++)
+			{
+				layers.Add(AbilityLayer.Read(packet));
+			}
+
+			return layers;
 		}
 	}
 
-	public static AbilityLayers Read(Packet packet)
+	public class AbilityLayer : IPacketDataObject
 	{
-		var layers = new AbilityLayers();
+		public const int AbilityCount = 19;
 
-		var count = packet.ReadByte();
-		for (int i = 0; i < count; i++)
+		public AbilityLayerType Type { get; set; }
+
+		public Dictionary<PlayerAbility, bool> Abilities { get; set; }
+
+		public float FlySpeed { get; set; }
+
+		public float WalkSpeed { get; set; }
+
+		public void Write(Packet packet)
 		{
-			layers.Add(AbilityLayer.Read(packet));
+			packet.Write((ushort) Type);
+
+			var values = PlayerAbility.None;
+			var abilities = PlayerAbility.None;
+
+			foreach (var ability in Abilities)
+			{
+				abilities |= ability.Key;
+				values |= ability.Value ? ability.Key : 0;
+			}
+
+			if (FlySpeed > 0) abilities |= PlayerAbility.FlySpeed;
+			if (WalkSpeed > 0) abilities |= PlayerAbility.WalkSpeed;
+
+			packet.Write((uint) abilities);
+			packet.Write((uint) values);
+			packet.Write(FlySpeed);
+			packet.Write(WalkSpeed);
 		}
 
-		return layers;
-	}
-}
-
-public class AbilityLayer : IPacketDataObject
-{
-	public AbilityLayerType Type { get; set; }
-
-	public PlayerAbility Abilities { get; set; }
-
-	public uint Values { get; set; }
-
-	public float FlySpeed { get; set; }
-
-	public float WalkSpeed { get; set; }
-
-	public void Write(Packet packet)
-	{
-		packet.Write((ushort) Type);
-
-		var values = Abilities;
-
-		if (FlySpeed > 0) Abilities |= PlayerAbility.FlySpeed;
-		if (WalkSpeed > 0) Abilities |= PlayerAbility.WalkSpeed;
-
-		packet.Write((uint) Abilities);
-		packet.Write((uint) values);
-		packet.Write(FlySpeed);
-		packet.Write(WalkSpeed);
-	}
-
-	public static AbilityLayer Read(Packet packet)
-	{
-		return new AbilityLayer()
+		public static AbilityLayer Read(Packet packet)
 		{
-			Type = (AbilityLayerType) packet.ReadUshort(),
-			Abilities = (PlayerAbility) packet.ReadUint(),
-			Values = packet.ReadUint(),
-			FlySpeed = packet.ReadFloat(),
-			WalkSpeed = packet.ReadFloat()
-		};
+			var type = (AbilityLayerType) packet.ReadUshort();
+			var abilities = (PlayerAbility) packet.ReadUint();
+			var values = (PlayerAbility) packet.ReadUint();
+
+			var abilityValues = new Dictionary<PlayerAbility, bool>(AbilityCount);
+			for (var i = 0; i < AbilityCount; i++)
+			{
+				var ability = (PlayerAbility) (1 << i);
+				if (ability == PlayerAbility.FlySpeed || ability == PlayerAbility.WalkSpeed)
+				{
+					continue;
+				}
+
+				if (abilities.HasFlag(ability))
+				{
+					abilityValues.Add(ability, values.HasFlag(ability));
+				}
+			}
+
+			return new AbilityLayer()
+			{
+				Type = type,
+				Abilities = abilityValues,
+				FlySpeed = packet.ReadFloat(),
+				WalkSpeed = packet.ReadFloat()
+			};
+		}
 	}
-}
 
-public enum AbilityLayerType
-{
-	CustomCache = 0,
-	Base = 1,
-	Spectator = 2,
-	Commands = 3,
-	Editor = 4
-}
+	public enum AbilityLayerType
+	{
+		CustomCache = 0,
+		Base = 1,
+		Spectator = 2,
+		Commands = 3,
+		Editor = 4
+	}
 
-[Flags]
-public enum PlayerAbility : uint
-{
-	Build = 1 << 0,
-	Mine = 1 << 1,
-	DoorsAndSwitches = 1 << 2,
-	OpenContainers = 1 << 3,
-	AttackPlayers = 1 << 4,
-	AttackMobs = 1 << 5,
-	OperatorCommands = 1 << 6,
-	Teleport = 1 << 7,
-	Invulnerable = 1 << 8,
-	Flying = 1 << 9,
-	MayFly = 1 << 10,
-	InstantBuild = 1 << 11,
-	Lightning = 1 << 12,
-	FlySpeed = 1 << 13,
-	WalkSpeed = 1 << 14,
-	Muted = 1 << 15,
-	WorldBuilder = 1 << 16,
-	NoClip = 1 << 17,
-	PrivilegedBuilder = 1 << 18
+	[Flags]
+	public enum PlayerAbility : uint
+	{
+		None = 0,
+
+		Build = 1 << 0,
+		Mine = 1 << 1,
+		DoorsAndSwitches = 1 << 2,
+		OpenContainers = 1 << 3,
+		AttackPlayers = 1 << 4,
+		AttackMobs = 1 << 5,
+		OperatorCommands = 1 << 6,
+		Teleport = 1 << 7,
+		Invulnerable = 1 << 8,
+		Flying = 1 << 9,
+		MayFly = 1 << 10,
+		InstantBuild = 1 << 11,
+		Lightning = 1 << 12,
+		FlySpeed = 1 << 13,
+		WalkSpeed = 1 << 14,
+		Muted = 1 << 15,
+		WorldBuilder = 1 << 16,
+		NoClip = 1 << 17,
+		PrivilegedBuilder = 1 << 18
+	}
 }

@@ -86,6 +86,7 @@ namespace MiNET.Net
 		void HandleMcpeMapInfoRequest(McpeMapInfoRequest message);
 		void HandleMcpeRequestChunkRadius(McpeRequestChunkRadius message);
 		void HandleMcpeItemFrameDropItem(McpeItemFrameDropItem message);
+		void HandleMcpeBossEvent(McpeBossEvent message);
 		void HandleMcpeCommandRequest(McpeCommandRequest message);
 		void HandleMcpeCommandBlockUpdate(McpeCommandBlockUpdate message);
 		void HandleMcpeResourcePackChunkRequest(McpeResourcePackChunkRequest message);
@@ -114,7 +115,6 @@ namespace MiNET.Net
 		void HandleMcpeRequestNetworkSettings(McpeRequestNetworkSettings message);
 		void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message);
 		void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message);
-		void HandleMcpeSetHud(McpeSetHud message);
 	}
 
 	public interface IMcpeClientMessageHandler
