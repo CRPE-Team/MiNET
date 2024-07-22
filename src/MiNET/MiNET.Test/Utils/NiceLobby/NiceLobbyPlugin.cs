@@ -799,9 +799,9 @@ namespace MiNET.Test.Utils.NiceLobby
 		[Command(Name = "w")]
 		public void Warp(Player player, string warp)
 		{
-			var x;
-			var y;
-			var z;
+			float x;
+			float y;
+			float z;
 
 			switch (warp)
 			{

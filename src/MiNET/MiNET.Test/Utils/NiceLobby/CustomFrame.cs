@@ -43,9 +43,6 @@ namespace MiNET.Test.Utils.NiceLobby
 
 		private readonly List<MapEntity> _frames;
 		private readonly FrameTicker _frameTicker;
-		private int _frame = 0;
-
-		private object _tickSync = new object();
 
 		public CustomItemFrame(List<MapEntity> frames, FrameTicker frameTicker)
 		{
@@ -85,12 +82,16 @@ namespace MiNET.Test.Utils.NiceLobby
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(CustomFrame));
 
+		private int _frame = 0;
+
 		private readonly List<MapEntity> _frames;
 		private readonly ItemFrameBlockEntity _itemFrameBlockEntity;
 		private readonly Level _level;
 		private readonly FrameTicker _frameTicker;
 
 		private Timer _timer;
+
+		private object _tickSync = new object();
 
 		public CustomFrame(List<MapEntity> frames, ItemFrameBlockEntity itemFrameBlockEntity, Level level, FrameTicker frameTicker) : base()
 		{
