@@ -25,24 +25,13 @@
 
 namespace MiNET.Blocks
 {
-	public partial class StoneBlockSlab4
+	public abstract class DoubleWoodenSlabBase : DoubleSlabBase
 	{
-		public StoneBlockSlab4() : base()
+		public DoubleWoodenSlabBase() : base()
 		{
-			BlastResistance = 30;
+			BlastResistance = 15;
 			Hardness = 2;
-			IsTransparent = true; // Partial - blocks light.
-			IsBlockingSkylight = false; // Partial - blocks light.
-		}
-
-		protected override bool AreSameType(Block obj)
-		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (obj.GetType() != this.GetType()) return false;
-			var slab = obj as StoneBlockSlab4;
-			if (slab == null) return false;
-
-			return slab.StoneSlabType4 == StoneSlabType4;
+			IsFlammable = true;
 		}
 	}
 }

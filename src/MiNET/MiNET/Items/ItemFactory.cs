@@ -30,7 +30,7 @@ namespace MiNET.Items
 
 		static ItemFactory()
 		{
-			ItemTags = ResourceUtil.ReadResource<Dictionary<string, string[]>>("item_tags.json", typeof(ItemFactory), "Data");
+			ItemTags = BuildItemTags();
 			ItemStates = ResourceUtil.ReadResource<ItemStates>("required_item_list.json", typeof(ItemFactory), "Data");
 
 			var maxRuntimeId = ItemStates.Max(state => state.Value.RuntimeId);
@@ -213,6 +213,16 @@ namespace MiNET.Items
 			}
 
 			return (idToType, typeToId);
+		}
+
+		private static Dictionary<string, string[]> BuildItemTags()
+		{
+			var itemItags = ResourceUtil.ReadResource<Dictionary<string, string[]>>("item_tags.json", typeof(ItemFactory), "Data");
+
+			// extending bedrock item tags for greater compatibility
+			itemItags.Add("minecraft:double_wooden_slabs", itemItags["minecraft:wooden_slabs"].Select(i => i.Replace("slab", "double_slab")).ToArray());
+
+			return itemItags;
 		}
 
 		private static Dictionary<int, string> BuildRuntimeIdToId()

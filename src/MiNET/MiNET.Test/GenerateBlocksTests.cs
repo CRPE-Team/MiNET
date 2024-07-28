@@ -235,7 +235,7 @@ namespace MiNET.Test
 					var existingType = assembly.GetType($"MiNET.Blocks.{className}");
 					var baseType = assembly.GetType($"MiNET.Blocks.{baseName}");
 					if (existingType == null
-						|| existingType.BaseType == baseType
+						|| existingType.BaseType.IsAssignableFrom(baseType)
 						|| existingType.BaseType == typeof(object)
 						|| existingType.BaseType == typeof(Block))
 					{
@@ -441,6 +441,10 @@ namespace MiNET.Test
 					{
 						case "logs":
 							return nameof(LogBase);
+						case "wooden_slabs":
+							return nameof(WoodenSlabBase);
+						case "double_wooden_slabs":
+							return nameof(DoubleWoodenSlabBase);
 					}
 				}
 			}
@@ -493,6 +497,10 @@ namespace MiNET.Test
 			if (id.EndsWith("_planks"))
 			{
 				return nameof(PlanksBase);
+			}
+			if (id.EndsWith("_leaves"))
+			{
+				return nameof(LeavesBase);
 			}
 
 			return nameof(Block);

@@ -65,7 +65,7 @@ public partial class McpePlayerAuthInput : Packet<McpePlayerAuthInput>
 	/// </summary>
 	public Vector3 Delta;
 
-	public long ClientPredictedVehicleEntityUniqueId;
+	public PlayerAuthInputVehicleInfo VehicleInfo;
 
 	public Vector2 AnalogMoveVector;
 
@@ -95,8 +95,8 @@ public partial class McpePlayerAuthInput : Packet<McpePlayerAuthInput>
 		}
 
 		if ((InputFlags & AuthInputFlags.InClientPredictedVehicle) != 0)
-		{ 
-			ClientPredictedVehicleEntityUniqueId = ReadEntityId(); 
+		{
+			VehicleInfo = PlayerAuthInputVehicleInfo.Read(this); 
 		}
 
 		AnalogMoveVector = ReadVector2();
@@ -124,7 +124,7 @@ public partial class McpePlayerAuthInput : Packet<McpePlayerAuthInput>
 
 		if ((InputFlags & AuthInputFlags.InClientPredictedVehicle) != 0)
 		{
-			WriteEntityId(ClientPredictedVehicleEntityUniqueId);
+			Write(VehicleInfo);
 		}
 
 		Write(AnalogMoveVector);
@@ -143,7 +143,7 @@ public partial class McpePlayerAuthInput : Packet<McpePlayerAuthInput>
 		InteractionModel = PlayerInteractionModel.Touch;
 		Tick = 0;
 		Delta = Vector3.Zero;
-		ClientPredictedVehicleEntityUniqueId = 0;
+		VehicleInfo = null;
 		AnalogMoveVector = Vector2.Zero;
 	}
 

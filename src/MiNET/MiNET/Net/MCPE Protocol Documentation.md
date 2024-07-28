@@ -80,7 +80,6 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Map Info Request | 0x44 | 68 |   
 | Request Chunk Radius | 0x45 | 69 |   
 | Chunk Radius Update | 0x46 | 70 |   
-| Item Frame Drop Item | 0x47 | 71 |   
 | Game Rules Changed | 0x48 | 72 |   
 | Camera | 0x49 | 73 |   
 | Boss Event | 0x4a | 74 |   
@@ -339,8 +338,9 @@ Wiki: [Resource Packs Info](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
-|Must accept | bool |  |
-|Has scripts | bool |  |
+|Must Accept | bool |  |
+|Has Addons | bool |  |
+|Has Scripts | bool |  |
 |Force Server Packs | bool |  |
 |BehahaviorPackInfos | ResourcePackInfos |  |
 |TexturePacks | TexturePackInfos |  |
@@ -835,6 +835,7 @@ Wiki: [Mob Effect](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-MobEff
 |Amplifier | SignedVarInt |  |
 |Particles | bool |  |
 |Duration | SignedVarInt |  |
+|Tick | long |  |
 -----------------------------------------------------------------------
 ### Update Attributes (0x1d)
 Wiki: [Update Attributes](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-UpdateAttributes)
@@ -1099,6 +1100,7 @@ Wiki: [Set Entity Motion](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol
 |:-----|:-----|:-----|
 |Runtime Entity ID | UnsignedVarLong |  |
 |Velocity | Vector3 |  |
+|Tick | UnsignedVarLong |  |
 -----------------------------------------------------------------------
 ### Set Entity Link (0x29)
 Wiki: [Set Entity Link](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetEntityLink)
@@ -1593,21 +1595,6 @@ Wiki: [Chunk Radius Update](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 | Name | Type | Size |
 |:-----|:-----|:-----|
 |Chunk Radius | SignedVarInt |  |
------------------------------------------------------------------------
-### Item Frame Drop Item (0x47)
-Wiki: [Item Frame Drop Item](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ItemFrameDropItem)
-
-**Sent from server:** true  
-**Sent from client:** true
-
-
-
-
-#### Fields
-
-| Name | Type | Size |
-|:-----|:-----|:-----|
-|Coordinates | BlockCoordinates |  |
 -----------------------------------------------------------------------
 ### Game Rules Changed (0x48)
 Wiki: [Game Rules Changed](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-GameRulesChanged)
@@ -2519,6 +2506,9 @@ Wiki: [Lectern Update](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Le
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
+|Page | byte |  |
+|Total Pages | byte |  |
+|Block Position | BlockCoordinates |  |
 -----------------------------------------------------------------------
 ### Video Stream Connect (0x7e)
 Wiki: [Video Stream Connect](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-VideoStreamConnect)

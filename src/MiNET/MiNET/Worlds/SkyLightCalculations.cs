@@ -616,8 +616,7 @@ namespace MiNET.Worlds
 			int bid = chunk.GetBlockRuntimeId(blockCoordinates.X & 0x0f, blockCoordinates.Y, blockCoordinates.Z & 0x0f);
 			return BlockFactory.IsBlock<Air>(bid) 
 				|| (BlockFactory.TransparentBlocks[bid] == 1 
-				&& !BlockFactory.IsBlock<Leaves>(bid) 
-				&& !BlockFactory.IsBlock<Leaves2>(bid) 
+				&& !BlockFactory.IsBlock<LeavesBase>(bid)
 				&& !BlockFactory.IsBlock<Web>(bid)
 				&& !BlockFactory.IsBlock<FlowingWater>(bid) 
 				&& !BlockFactory.IsBlock<Water>(bid));
@@ -635,7 +634,7 @@ namespace MiNET.Worlds
 			int bid = section.GetBlockRuntimeId(bx, by - 16 * (by >> 4), bz);
 			return BlockFactory.IsBlock<FlowingWater>(bid) || BlockFactory.IsBlock<Water>(bid) 
 				? 3 
-				: BlockFactory.IsBlock<Leaves>(bid) || BlockFactory.IsBlock<Leaves2>(bid) || BlockFactory.IsBlock<Web>(bid)
+				: BlockFactory.IsBlock<LeavesBase>(bid) || BlockFactory.IsBlock<Web>(bid)
 					? 2 
 					: 1;
 		}

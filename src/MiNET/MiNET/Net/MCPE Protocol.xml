@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.20.60" protocolVersion="649">
+<protocol gameVersion="1.20.70" protocolVersion="662">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -152,8 +152,9 @@
 	</pdu>
 
 	<pdu id="0x06" online="false" client="false" server="true" name="MCPE_RESOURCE_PACKS_INFO">
-		<field name="Must accept" type="bool" />
-		<field name="Has scripts" type="bool" />
+		<field name="Must Accept" type="bool" />
+		<field name="Has Addons" type="bool" />
+		<field name="Has Scripts" type="bool" />
 		<field name="Force Server Packs" type="bool" />
 		<field name="BehahaviorPackInfos" type="ResourcePackInfos" />
 		<field name="TexturePacks" type="TexturePackInfos" />
@@ -407,6 +408,7 @@
 		<field name="Amplifier" type="SignedVarInt" />
 		<field name="Particles" type="bool" />
 		<field name="Duration" type="SignedVarInt" />
+		<field name="Tick" type="long" />
 	</pdu>
 
 	<pdu id="0x1d" online="false" client="false" server="true" name="MCPE_UPDATE_ATTRIBUTES">
@@ -531,6 +533,7 @@
 	<pdu id="0x28" online="false" client="true" server="true" name="MCPE_SET_ENTITY_MOTION">
 		<field name="Runtime Entity ID" type="UnsignedVarLong" />
 		<field name="Velocity" type="Vector3" />
+		<field name="Tick" type="UnsignedVarLong" />
 	</pdu>
 
 	<pdu id="0x29" online="false" client="false" server="true" name="MCPE_SET_ENTITY_LINK">
@@ -742,10 +745,6 @@
 
 	<pdu id="0x46" online="false" client="false" server="true" name="MCPE_CHUNK_RADIUS_UPDATE">
 		<field name="Chunk Radius" type="SignedVarInt" />
-	</pdu>
-
-	<pdu id="0x47" online="false" client="true" server="true" name="MCPE_ITEM_FRAME_DROP_ITEM">
-		<field name="Coordinates" type="BlockCoordinates" />
 	</pdu>
 
 	<pdu id="0x48" online="false" client="false" server="true" name="MCPE_GAME_RULES_CHANGED">
@@ -1075,6 +1074,9 @@
 	</pdu>
 
 	<pdu id="0x7d" online="false" client="false" server="true" name="MCPE_LECTERN_UPDATE">
+		<field name="Page" type="byte" />
+		<field name="Total Pages" type="byte" />
+		<field name="Block Position" type="BlockCoordinates" />
 	</pdu>
 
 	<pdu id="0x7e" online="false" client="false" server="true" name="MCPE_VIDEO_STREAM_CONNECT">

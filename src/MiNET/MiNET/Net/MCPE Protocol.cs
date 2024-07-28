@@ -45,8 +45,8 @@ namespace MiNET.Net
 {
 	public class McpeProtocolInfo
 	{
-		public const int ProtocolVersion = 649;
-		public const string GameVersion = "1.20.60";
+		public const int ProtocolVersion = 662;
+		public const string GameVersion = "1.20.70";
 	}
 
 	public interface IMcpeMessageHandler
@@ -85,7 +85,6 @@ namespace MiNET.Net
 		void HandleMcpeSetPlayerGameType(McpeSetPlayerGameType message);
 		void HandleMcpeMapInfoRequest(McpeMapInfoRequest message);
 		void HandleMcpeRequestChunkRadius(McpeRequestChunkRadius message);
-		void HandleMcpeItemFrameDropItem(McpeItemFrameDropItem message);
 		void HandleMcpeBossEvent(McpeBossEvent message);
 		void HandleMcpeCommandRequest(McpeCommandRequest message);
 		void HandleMcpeCommandBlockUpdate(McpeCommandBlockUpdate message);
@@ -180,7 +179,6 @@ namespace MiNET.Net
 		void HandleMcpeMapInfoRequest(McpeMapInfoRequest message);
 		void HandleMcpeRequestChunkRadius(McpeRequestChunkRadius message);
 		void HandleMcpeChunkRadiusUpdate(McpeChunkRadiusUpdate message);
-		void HandleMcpeItemFrameDropItem(McpeItemFrameDropItem message);
 		void HandleMcpeGameRulesChanged(McpeGameRulesChanged message);
 		void HandleMcpeCamera(McpeCamera message);
 		void HandleMcpeBossEvent(McpeBossEvent message);
@@ -450,9 +448,6 @@ namespace MiNET.Net
 					break;
 				case McpeChunkRadiusUpdate msg:
 					_messageHandler.HandleMcpeChunkRadiusUpdate(msg);
-					break;
-				case McpeItemFrameDropItem msg:
-					_messageHandler.HandleMcpeItemFrameDropItem(msg);
 					break;
 				case McpeGameRulesChanged msg:
 					_messageHandler.HandleMcpeGameRulesChanged(msg);
@@ -873,8 +868,6 @@ namespace MiNET.Net
 						return McpeRequestChunkRadius.CreateObject().Decode(buffer);
 					case 0x46:
 						return McpeChunkRadiusUpdate.CreateObject().Decode(buffer);
-					case 0x47:
-						return McpeItemFrameDropItem.CreateObject().Decode(buffer);
 					case 0x48:
 						return McpeGameRulesChanged.CreateObject().Decode(buffer);
 					case 0x49:
@@ -2216,6 +2209,7 @@ namespace MiNET.Net
 	{
 
 		public bool mustAccept; // = null;
+		public bool hasAddons; // = null;
 		public bool hasScripts; // = null;
 		public bool forceServerPacks; // = null;
 		public ResourcePackInfos behahaviorpackinfos; // = null;
@@ -2235,6 +2229,7 @@ namespace MiNET.Net
 			BeforeEncode();
 
 			Write(mustAccept);
+			Write(hasAddons);
 			Write(hasScripts);
 			Write(forceServerPacks);
 			Write(behahaviorpackinfos);
@@ -2254,6 +2249,7 @@ namespace MiNET.Net
 			BeforeDecode();
 
 			mustAccept = ReadBool();
+			hasAddons = ReadBool();
 			hasScripts = ReadBool();
 			forceServerPacks = ReadBool();
 			behahaviorpackinfos = ReadResourcePackInfos();
@@ -2271,6 +2267,7 @@ namespace MiNET.Net
 			base.ResetPacket();
 
 			mustAccept=default(bool);
+			hasAddons=default(bool);
 			hasScripts=default(bool);
 			forceServerPacks=default(bool);
 			behahaviorpackinfos=default(ResourcePackInfos);
@@ -3685,6 +3682,7 @@ namespace MiNET.Net
 		public int amplifier; // = null;
 		public bool particles; // = null;
 		public int duration; // = null;
+		public long tick; // = null;
 
 		public McpeMobEffect()
 		{
@@ -3704,6 +3702,7 @@ namespace MiNET.Net
 			WriteSignedVarInt(amplifier);
 			Write(particles);
 			WriteSignedVarInt(duration);
+			Write(tick);
 
 			AfterEncode();
 		}
@@ -3723,6 +3722,7 @@ namespace MiNET.Net
 			amplifier = ReadSignedVarInt();
 			particles = ReadBool();
 			duration = ReadSignedVarInt();
+			tick = ReadLong();
 
 			AfterDecode();
 		}
@@ -3740,6 +3740,7 @@ namespace MiNET.Net
 			amplifier=default(int);
 			particles=default(bool);
 			duration=default(int);
+			tick=default(long);
 		}
 
 	}
@@ -4391,6 +4392,7 @@ namespace MiNET.Net
 
 		public long runtimeEntityId; // = null;
 		public Vector3 velocity; // = null;
+		public long tick; // = null;
 
 		public McpeSetEntityMotion()
 		{
@@ -4406,6 +4408,7 @@ namespace MiNET.Net
 
 			WriteUnsignedVarLong(runtimeEntityId);
 			Write(velocity);
+			WriteUnsignedVarLong(tick);
 
 			AfterEncode();
 		}
@@ -4421,6 +4424,7 @@ namespace MiNET.Net
 
 			runtimeEntityId = ReadUnsignedVarLong();
 			velocity = ReadVector3();
+			tick = ReadUnsignedVarLong();
 
 			AfterDecode();
 		}
@@ -4434,6 +4438,7 @@ namespace MiNET.Net
 
 			runtimeEntityId=default(long);
 			velocity=default(Vector3);
+			tick=default(long);
 		}
 
 	}
@@ -6010,54 +6015,6 @@ namespace MiNET.Net
 			base.ResetPacket();
 
 			chunkRadius=default(int);
-		}
-
-	}
-
-	public partial class McpeItemFrameDropItem : Packet<McpeItemFrameDropItem>
-	{
-
-		public BlockCoordinates coordinates; // = null;
-
-		public McpeItemFrameDropItem()
-		{
-			Id = 0x47;
-			IsMcpe = true;
-		}
-
-		protected override void EncodePacket()
-		{
-			base.EncodePacket();
-
-			BeforeEncode();
-
-			Write(coordinates);
-
-			AfterEncode();
-		}
-
-		partial void BeforeEncode();
-		partial void AfterEncode();
-
-		protected override void DecodePacket()
-		{
-			base.DecodePacket();
-
-			BeforeDecode();
-
-			coordinates = ReadBlockCoordinates();
-
-			AfterDecode();
-		}
-
-		partial void BeforeDecode();
-		partial void AfterDecode();
-
-		protected override void ResetPacket()
-		{
-			base.ResetPacket();
-
-			coordinates=default(BlockCoordinates);
 		}
 
 	}
@@ -8890,6 +8847,9 @@ namespace MiNET.Net
 	public partial class McpeLecternUpdate : Packet<McpeLecternUpdate>
 	{
 
+		public byte page; // = null;
+		public byte totalPages; // = null;
+		public BlockCoordinates blockPosition; // = null;
 
 		public McpeLecternUpdate()
 		{
@@ -8903,6 +8863,9 @@ namespace MiNET.Net
 
 			BeforeEncode();
 
+			Write(page);
+			Write(totalPages);
+			Write(blockPosition);
 
 			AfterEncode();
 		}
@@ -8916,6 +8879,9 @@ namespace MiNET.Net
 
 			BeforeDecode();
 
+			page = ReadByte();
+			totalPages = ReadByte();
+			blockPosition = ReadBlockCoordinates();
 
 			AfterDecode();
 		}
@@ -8927,6 +8893,9 @@ namespace MiNET.Net
 		{
 			base.ResetPacket();
 
+			page=default(byte);
+			totalPages=default(byte);
+			blockPosition=default(BlockCoordinates);
 		}
 
 	}

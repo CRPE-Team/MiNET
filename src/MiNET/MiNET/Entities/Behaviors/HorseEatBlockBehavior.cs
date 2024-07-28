@@ -57,7 +57,7 @@ namespace MiNET.Entities.Behaviors
 
 			BlockCoordinates coord = new Vector3(coordinates.X + direction.X, coordinates.Y, coordinates.Z + direction.Z);
 
-			var shouldStart = _entity.Level.GetBlock(coord.BlockDown()) is Grass || _entity.Level.GetBlock(coord) is Tallgrass;
+			var shouldStart = _entity.Level.GetBlock(coord.BlockDown()) is GrassBlock || _entity.Level.GetBlock(coord) is Tallgrass;
 			if (!shouldStart) return false;
 
 			_duration = 40;

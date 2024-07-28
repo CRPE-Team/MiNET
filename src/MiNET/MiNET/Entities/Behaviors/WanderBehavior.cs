@@ -157,7 +157,7 @@ namespace MiNET.Entities.Behaviors
 
 			if (entity is PassiveMob)
 			{
-				if (blockDown is Grass) return 10;
+				if (blockDown is GrassBlock) return 10;
 				return Math.Max(block.BlockLight, block.SkyLight) - 0.5;
 			}
 

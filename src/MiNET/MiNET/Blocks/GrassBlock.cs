@@ -34,11 +34,11 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class Grass : Block
+	public partial class GrassBlock : Block
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(Grass));
+		private static readonly ILog Log = LogManager.GetLogger(typeof(GrassBlock));
 
-		public Grass() : base()
+		public GrassBlock() : base()
 		{
 			BlastResistance = 3;
 			Hardness = 0.6f;
@@ -69,7 +69,7 @@ namespace MiNET.Blocks
 							var nextUp = level.GetBlock(coordinates.BlockUp());
 							if (nextUp.IsTransparent)
 							{
-								level.SetBlock(new Grass { Coordinates = coordinates });
+								level.SetBlock(new GrassBlock { Coordinates = coordinates });
 							}
 						}
 					}
@@ -115,7 +115,7 @@ namespace MiNET.Blocks
 					}
 					if (shouldContinue) continue;
 
-					if (!(level.GetBlock(coord) is Grass)) continue;
+					if (!(level.GetBlock(coord) is GrassBlock)) continue;
 					coord += BlockCoordinates.Up;
 					Block growthBlock = level.GetBlock(coord);
 

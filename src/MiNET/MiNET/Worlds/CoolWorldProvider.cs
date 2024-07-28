@@ -232,7 +232,7 @@ namespace MiNET.Worlds
 					}
 
 					//turn the tops into grass
-					chunk.SetBlock(x, bottomHeight, z, new Grass()); //the top of the base hills
+					chunk.SetBlock(x, bottomHeight, z, new GrassBlock()); //the top of the base hills
 					chunk.SetBlock(x, bottomHeight - 1, z, new Dirt());
 					chunk.SetBlock(x, bottomHeight - 2, z, new Dirt());
 
@@ -247,7 +247,7 @@ namespace MiNET.Worlds
 							if (BlockFactory.IsBlock<Dirt>(chunk.GetBlockRuntimeId(x, y, z)) 
 								|| BlockFactory.IsBlock<Air>(chunk.GetBlockRuntimeId(x, y, z)) 
 								|| BlockFactory.IsBlock<Stone>(chunk.GetBlockRuntimeId(x, y, z))) 
-								chunk.SetBlock(x, y, z, new Grass());
+								chunk.SetBlock(x, y, z, new GrassBlock());
 							if (!BlockFactory.IsBlock<Air>(chunk.GetBlockRuntimeId(x, y - 1, z)))
 								chunk.SetBlock(x, y - 1, z, new Dirt());
 							if (!BlockFactory.IsBlock<Air>(chunk.GetBlockRuntimeId(x, y - 2, z)))
@@ -260,7 +260,7 @@ namespace MiNET.Worlds
 						//Lake generation
 						if (y < WaterLevel)
 						{
-							if (BlockFactory.IsBlock<Grass>(chunk.GetBlockRuntimeId(x, y, z)) || BlockFactory.IsBlock<Dirt>(chunk.GetBlockRuntimeId(x, y, z))) //Grass or Dirt?
+							if (BlockFactory.IsBlock<GrassBlock>(chunk.GetBlockRuntimeId(x, y, z)) || BlockFactory.IsBlock<Dirt>(chunk.GetBlockRuntimeId(x, y, z))) //Grass or Dirt?
 							{
 								if (GetRandomNumber(1, 40) == 1 && y < WaterLevel - 4)
 									chunk.SetBlock(x, y, z, new Clay()); //Clay
@@ -279,7 +279,7 @@ namespace MiNET.Worlds
 					{
 						int thisblock = chunk.GetBlockRuntimeId(x, y, z);
 						int blockabove = chunk.GetBlockRuntimeId(x, y + 1, z);
-						if (BlockFactory.IsBlock<Grass>(thisblock) && BlockFactory.IsBlock<Air>(blockabove) && y > WaterLevel)
+						if (BlockFactory.IsBlock<GrassBlock>(thisblock) && BlockFactory.IsBlock<Air>(blockabove) && y > WaterLevel)
 						{
 							//Grass
 							if (GetRandomNumber(0, 5) == 1)
@@ -301,7 +301,7 @@ namespace MiNET.Worlds
 								if (treeBasePositions[pos, 0] < 14 && treeBasePositions[pos, 0] > 4 && treeBasePositions[pos, 1] < 14 &&
 									treeBasePositions[pos, 1] > 4)
 								{
-									if (BlockFactory.IsBlock<Grass>(chunk.GetBlockRuntimeId(treeBasePositions[pos, 0], y + 1, treeBasePositions[pos, 1])))
+									if (BlockFactory.IsBlock<GrassBlock>(chunk.GetBlockRuntimeId(treeBasePositions[pos, 0], y + 1, treeBasePositions[pos, 1])))
 									{
 										if (y >= bottomHeight)
 											GenerateTree(chunk, treeBasePositions[pos, 0], y + 1, treeBasePositions[pos, 1], WoodType.Oak);

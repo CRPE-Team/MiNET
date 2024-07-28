@@ -174,9 +174,6 @@ namespace MiNET.Net
 				case McpeMapInfoRequest msg:
 					handler.HandleMcpeMapInfoRequest(msg);
 					break;
-				case McpeItemFrameDropItem msg:
-					handler.HandleMcpeItemFrameDropItem(msg);
-					break;
 				case McpeItemStackRequest nms:
 					handler.HandleMcpeItemStackRequest(nms);
 					break;

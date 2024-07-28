@@ -18,6 +18,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:acacia_chest_boat";
 	}
 
+	public partial class ItemAcaciaDoubleSlab : ItemBlock<AcaciaDoubleSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:acacia_double_slab";
+	}
+
 	public partial class ItemAcaciaFence : ItemBlock<AcaciaFence>
 	{
 		public override string Id { get; protected set; } = "minecraft:acacia_fence";
@@ -31,6 +36,11 @@ namespace MiNET.Items
 	public partial class ItemAcaciaHangingSign : ItemSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:acacia_hanging_sign";
+	}
+
+	public partial class ItemAcaciaLeaves : ItemBlock<AcaciaLeaves>
+	{
+		public override string Id { get; protected set; } = "minecraft:acacia_leaves";
 	}
 
 	public partial class ItemAcaciaLog : ItemBlock<AcaciaLog>
@@ -53,6 +63,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:acacia_sign";
 	}
 
+	public partial class ItemAcaciaSlab : ItemBlock<AcaciaSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:acacia_slab";
+	}
+
 	public partial class ItemAcaciaStairs : ItemBlock<AcaciaStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:acacia_stairs";
@@ -71,6 +86,11 @@ namespace MiNET.Items
 	public partial class ItemAcaciaWallSign : ItemBlock<AcaciaWallSign>
 	{
 		public override string Id { get; protected set; } = "minecraft:acacia_wall_sign";
+	}
+
+	public partial class ItemAcaciaWood : ItemBlock<AcaciaWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:acacia_wood";
 	}
 
 	public partial class ItemActivatorRail : ItemBlock<ActivatorRail>
@@ -418,6 +438,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:birch_chest_boat";
 	}
 
+	public partial class ItemBirchDoubleSlab : ItemBlock<BirchDoubleSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:birch_double_slab";
+	}
+
 	public partial class ItemBirchFence : ItemBlock<BirchFence>
 	{
 		public override string Id { get; protected set; } = "minecraft:birch_fence";
@@ -431,6 +456,11 @@ namespace MiNET.Items
 	public partial class ItemBirchHangingSign : ItemSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:birch_hanging_sign";
+	}
+
+	public partial class ItemBirchLeaves : ItemBlock<BirchLeaves>
+	{
+		public override string Id { get; protected set; } = "minecraft:birch_leaves";
 	}
 
 	public partial class ItemBirchLog : ItemBlock<BirchLog>
@@ -453,6 +483,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:birch_sign";
 	}
 
+	public partial class ItemBirchSlab : ItemBlock<BirchSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:birch_slab";
+	}
+
 	public partial class ItemBirchStairs : ItemBlock<BirchStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:birch_stairs";
@@ -471,6 +506,11 @@ namespace MiNET.Items
 	public partial class ItemBirchWallSign : ItemBlock<BirchWallSign>
 	{
 		public override string Id { get; protected set; } = "minecraft:birch_wall_sign";
+	}
+
+	public partial class ItemBirchWood : ItemBlock<BirchWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:birch_wood";
 	}
 
 	public partial class ItemBlackCandle : ItemBlock<BlackCandle>
@@ -660,6 +700,11 @@ namespace MiNET.Items
 	public partial class ItemBoat
 	{
 		public override string Id { get; protected set; } = "minecraft:boat";
+	}
+
+	public partial class ItemBoggedSpawnEgg : ItemSpawnEggBase
+	{
+		public override string Id { get; protected set; } = "minecraft:bogged_spawn_egg";
 	}
 
 	public partial class ItemBone : Item
@@ -1677,6 +1722,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:dark_oak_chest_boat";
 	}
 
+	public partial class ItemDarkOakDoubleSlab : ItemBlock<DarkOakDoubleSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:dark_oak_double_slab";
+	}
+
 	public partial class ItemDarkOakFence : ItemBlock<DarkOakFence>
 	{
 		public override string Id { get; protected set; } = "minecraft:dark_oak_fence";
@@ -1690,6 +1740,11 @@ namespace MiNET.Items
 	public partial class ItemDarkOakHangingSign : ItemSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:dark_oak_hanging_sign";
+	}
+
+	public partial class ItemDarkOakLeaves : ItemBlock<DarkOakLeaves>
+	{
+		public override string Id { get; protected set; } = "minecraft:dark_oak_leaves";
 	}
 
 	public partial class ItemDarkOakLog : ItemBlock<DarkOakLog>
@@ -1712,6 +1767,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:dark_oak_sign";
 	}
 
+	public partial class ItemDarkOakSlab : ItemBlock<DarkOakSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:dark_oak_slab";
+	}
+
 	public partial class ItemDarkOakStairs : ItemBlock<DarkOakStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:dark_oak_stairs";
@@ -1720,6 +1780,11 @@ namespace MiNET.Items
 	public partial class ItemDarkOakTrapdoor : ItemBlock<DarkOakTrapdoor>
 	{
 		public override string Id { get; protected set; } = "minecraft:dark_oak_trapdoor";
+	}
+
+	public partial class ItemDarkOakWood : ItemBlock<DarkOakWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:dark_oak_wood";
 	}
 
 	public partial class ItemDarkPrismarineStairs : ItemBlock<DarkPrismarineStairs>
@@ -2078,11 +2143,6 @@ namespace MiNET.Items
 	public partial class ItemDoubleStoneBlockSlab4 : ItemBlock<DoubleStoneBlockSlab4>
 	{
 		public override string Id { get; protected set; } = "minecraft:double_stone_block_slab4";
-	}
-
-	public partial class ItemDoubleWoodenSlab : ItemBlock<DoubleWoodenSlab>
-	{
-		public override string Id { get; protected set; } = "minecraft:double_wooden_slab";
 	}
 
 	public partial class ItemDragonBreath : Item
@@ -3299,9 +3359,9 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:granite_stairs";
 	}
 
-	public partial class ItemGrass : ItemBlock<Grass>
+	public partial class ItemGrassBlock : ItemBlock<GrassBlock>
 	{
-		public override string Id { get; protected set; } = "minecraft:grass";
+		public override string Id { get; protected set; } = "minecraft:grass_block";
 	}
 
 	public partial class ItemGrassPath : ItemBlock<GrassPath>
@@ -4091,6 +4151,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:jungle_chest_boat";
 	}
 
+	public partial class ItemJungleDoubleSlab : ItemBlock<JungleDoubleSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:jungle_double_slab";
+	}
+
 	public partial class ItemJungleFence : ItemBlock<JungleFence>
 	{
 		public override string Id { get; protected set; } = "minecraft:jungle_fence";
@@ -4104,6 +4169,11 @@ namespace MiNET.Items
 	public partial class ItemJungleHangingSign : ItemSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:jungle_hanging_sign";
+	}
+
+	public partial class ItemJungleLeaves : ItemBlock<JungleLeaves>
+	{
+		public override string Id { get; protected set; } = "minecraft:jungle_leaves";
 	}
 
 	public partial class ItemJungleLog : ItemBlock<JungleLog>
@@ -4126,6 +4196,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:jungle_sign";
 	}
 
+	public partial class ItemJungleSlab : ItemBlock<JungleSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:jungle_slab";
+	}
+
 	public partial class ItemJungleStairs : ItemBlock<JungleStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:jungle_stairs";
@@ -4144,6 +4219,11 @@ namespace MiNET.Items
 	public partial class ItemJungleWallSign : ItemBlock<JungleWallSign>
 	{
 		public override string Id { get; protected set; } = "minecraft:jungle_wall_sign";
+	}
+
+	public partial class ItemJungleWood : ItemBlock<JungleWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:jungle_wood";
 	}
 
 	public partial class ItemLadder : ItemBlock<Ladder>
@@ -4249,12 +4329,12 @@ namespace MiNET.Items
 		public override int MaxStackSize { get; set; } = 1;
 	}
 
-	public partial class ItemLeaves : ItemBlock<Leaves>
+	public partial class ItemLeaves : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:leaves";
 	}
 
-	public partial class ItemLeaves2 : ItemBlock<Leaves2>
+	public partial class ItemLeaves2 : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:leaves2";
 	}
@@ -5154,6 +5234,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:oak_chest_boat";
 	}
 
+	public partial class ItemOakDoubleSlab : ItemBlock<OakDoubleSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:oak_double_slab";
+	}
+
 	public partial class ItemOakFence : ItemBlock<OakFence>
 	{
 		public override string Id { get; protected set; } = "minecraft:oak_fence";
@@ -5162,6 +5247,11 @@ namespace MiNET.Items
 	public partial class ItemOakHangingSign : ItemSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:oak_hanging_sign";
+	}
+
+	public partial class ItemOakLeaves : ItemBlock<OakLeaves>
+	{
+		public override string Id { get; protected set; } = "minecraft:oak_leaves";
 	}
 
 	public partial class ItemOakLog : ItemBlock<OakLog>
@@ -5179,9 +5269,19 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:oak_sign";
 	}
 
+	public partial class ItemOakSlab : ItemBlock<OakSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:oak_slab";
+	}
+
 	public partial class ItemOakStairs : ItemBlock<OakStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:oak_stairs";
+	}
+
+	public partial class ItemOakWood : ItemBlock<OakWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:oak_wood";
 	}
 
 	public partial class ItemObserver : ItemBlock<Observer>
@@ -6462,6 +6562,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:spruce_chest_boat";
 	}
 
+	public partial class ItemSpruceDoubleSlab : ItemBlock<SpruceDoubleSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:spruce_double_slab";
+	}
+
 	public partial class ItemSpruceFence : ItemBlock<SpruceFence>
 	{
 		public override string Id { get; protected set; } = "minecraft:spruce_fence";
@@ -6475,6 +6580,11 @@ namespace MiNET.Items
 	public partial class ItemSpruceHangingSign : ItemSignBase
 	{
 		public override string Id { get; protected set; } = "minecraft:spruce_hanging_sign";
+	}
+
+	public partial class ItemSpruceLeaves : ItemBlock<SpruceLeaves>
+	{
+		public override string Id { get; protected set; } = "minecraft:spruce_leaves";
 	}
 
 	public partial class ItemSpruceLog : ItemBlock<SpruceLog>
@@ -6497,6 +6607,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:spruce_sign";
 	}
 
+	public partial class ItemSpruceSlab : ItemBlock<SpruceSlab>
+	{
+		public override string Id { get; protected set; } = "minecraft:spruce_slab";
+	}
+
 	public partial class ItemSpruceStairs : ItemBlock<SpruceStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:spruce_stairs";
@@ -6515,6 +6630,11 @@ namespace MiNET.Items
 	public partial class ItemSpruceWallSign : ItemBlock<SpruceWallSign>
 	{
 		public override string Id { get; protected set; } = "minecraft:spruce_wall_sign";
+	}
+
+	public partial class ItemSpruceWood : ItemBlock<SpruceWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:spruce_wood";
 	}
 
 	public partial class ItemSpyglass : Item
@@ -6702,6 +6822,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:stripped_acacia_log";
 	}
 
+	public partial class ItemStrippedAcaciaWood : ItemBlock<StrippedAcaciaWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:stripped_acacia_wood";
+	}
+
 	public partial class ItemStrippedBambooBlock : ItemBlock<StrippedBambooBlock>
 	{
 		public override string Id { get; protected set; } = "minecraft:stripped_bamboo_block";
@@ -6710,6 +6835,11 @@ namespace MiNET.Items
 	public partial class ItemStrippedBirchLog : ItemBlock<StrippedBirchLog>
 	{
 		public override string Id { get; protected set; } = "minecraft:stripped_birch_log";
+	}
+
+	public partial class ItemStrippedBirchWood : ItemBlock<StrippedBirchWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:stripped_birch_wood";
 	}
 
 	public partial class ItemStrippedCherryLog : ItemBlock<StrippedCherryLog>
@@ -6737,9 +6867,19 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:stripped_dark_oak_log";
 	}
 
+	public partial class ItemStrippedDarkOakWood : ItemBlock<StrippedDarkOakWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:stripped_dark_oak_wood";
+	}
+
 	public partial class ItemStrippedJungleLog : ItemBlock<StrippedJungleLog>
 	{
 		public override string Id { get; protected set; } = "minecraft:stripped_jungle_log";
+	}
+
+	public partial class ItemStrippedJungleWood : ItemBlock<StrippedJungleWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:stripped_jungle_wood";
 	}
 
 	public partial class ItemStrippedMangroveLog : ItemBlock<StrippedMangroveLog>
@@ -6757,9 +6897,19 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:stripped_oak_log";
 	}
 
+	public partial class ItemStrippedOakWood : ItemBlock<StrippedOakWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:stripped_oak_wood";
+	}
+
 	public partial class ItemStrippedSpruceLog : ItemBlock<StrippedSpruceLog>
 	{
 		public override string Id { get; protected set; } = "minecraft:stripped_spruce_log";
+	}
+
+	public partial class ItemStrippedSpruceWood : ItemBlock<StrippedSpruceWood>
+	{
+		public override string Id { get; protected set; } = "minecraft:stripped_spruce_wood";
 	}
 
 	public partial class ItemStrippedWarpedHyphae : ItemBlock<StrippedWarpedHyphae>
@@ -7051,6 +7201,11 @@ namespace MiNET.Items
 	public partial class ItemUnpoweredRepeater : ItemBlock<UnpoweredRepeater>
 	{
 		public override string Id { get; protected set; } = "minecraft:unpowered_repeater";
+	}
+
+	public partial class ItemVault : ItemBlock<Vault>
+	{
+		public override string Id { get; protected set; } = "minecraft:vault";
 	}
 
 	public partial class ItemVerdantFroglight : ItemBlock<VerdantFroglight>
@@ -7560,6 +7715,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:wild_armor_trim_smithing_template";
 	}
 
+	public partial class ItemWindCharge : Item
+	{
+		public override string Id { get; protected set; } = "minecraft:wind_charge";
+	}
+
 	public partial class ItemWitchSpawnEgg : ItemSpawnEggBase
 	{
 		public override string Id { get; protected set; } = "minecraft:witch_spawn_egg";
@@ -7590,7 +7750,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:wolf_spawn_egg";
 	}
 
-	public partial class ItemWood : ItemBlock<Wood>
+	public partial class ItemWood : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:wood";
 	}
@@ -7649,7 +7809,7 @@ namespace MiNET.Items
 		public override int MaxStackSize { get; set; } = 1;
 	}
 
-	public partial class ItemWoodenSlab : ItemBlock<WoodenSlab>
+	public partial class ItemWoodenSlab : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:wooden_slab";
 	}

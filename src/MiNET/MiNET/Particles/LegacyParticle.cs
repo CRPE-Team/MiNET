@@ -47,7 +47,7 @@ namespace MiNET.Particles
 		SnowballPoof = 15,
 		HugeExplode = 16,
 		HugeExplodeSeed = 17,
-		WindExplosion = 18,
+		BreezeWindExplosion = 18,
 		MobFlame = 19,
 		Heart = 20,
 		Terrain = 21,
@@ -118,8 +118,10 @@ namespace MiNET.Particles
 		BrushDust = 86,
 		CherryLeaves = 87,
 		DustPlume = 88,
-		WhiteSmoke = 89
-}
+		WhiteSmoke = 89,
+		VaultConnection = 90,
+		WindExplosion = 91
+	}
 
 	public class LegacyParticle : Particle
 	{

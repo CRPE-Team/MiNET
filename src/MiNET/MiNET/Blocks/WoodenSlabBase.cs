@@ -25,13 +25,25 @@
 
 namespace MiNET.Blocks
 {
-	public partial class DoubleWoodenSlab
+	public abstract class WoodenSlabBase : SlabBase
 	{
-		public DoubleWoodenSlab() : base()
+		public WoodenSlabBase() : base()
 		{
 			BlastResistance = 15;
 			Hardness = 2;
 			IsFlammable = true;
+			IsTransparent = true; // Partial - blocks light.
+			IsBlockingSkylight = false; // Partial - blocks light.
+		}
+
+		protected override bool AreSameType(Block obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (obj.GetType() != this.GetType()) return false;
+			var slab = obj as WoodenSlabBase;
+			if (slab == null) return false;
+
+			return true;
 		}
 	}
 }

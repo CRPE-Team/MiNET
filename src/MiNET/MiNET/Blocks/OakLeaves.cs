@@ -23,27 +23,22 @@
 
 #endregion
 
+using System;
+using MiNET.Items;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
-	public partial class WoodenSlab : SlabBase
+	public partial class OakLeaves : LeavesBase
 	{
-		public WoodenSlab() : base()
+		public override Item[] GetDrops(Level world, Item tool)
 		{
-			BlastResistance = 15;
-			Hardness = 2;
-			IsFlammable = true;
-			IsTransparent = true; // Partial - blocks light.
-			IsBlockingSkylight = false; // Partial - blocks light.
-		}
+			if (new Random().Next(200) == 0)
+			{
+				return [new ItemApple()];
+			}
 
-		protected override bool AreSameType(Block obj)
-		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (obj.GetType() != this.GetType()) return false;
-			var slab = obj as WoodenSlab;
-			if (slab == null) return false;
-
-			return slab.WoodType == WoodType;
+			return base.GetDrops(world, tool);
 		}
 	}
 }

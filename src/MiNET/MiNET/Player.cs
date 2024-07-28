@@ -2267,16 +2267,6 @@ namespace MiNET
 		{
 		}
 
-		public virtual void HandleMcpeItemFrameDropItem(McpeItemFrameDropItem message)
-		{
-			Log.Debug($"Drops item frame at {message.coordinates}");
-			if (Level.GetBlock(message.coordinates) is Frame frame)
-			{
-				Log.Debug($"Drops from frame {frame}");
-				frame.ClearItem(Level);
-			}
-		}
-
 		public virtual void HandleMcpeMobEquipment(McpeMobEquipment message)
 		{
 			if (HealthManager.IsDead) return;

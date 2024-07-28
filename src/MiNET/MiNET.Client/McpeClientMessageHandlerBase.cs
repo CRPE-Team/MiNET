@@ -418,10 +418,6 @@ namespace MiNET.Client
 		{
 		}
 
-		public virtual void HandleMcpeItemFrameDropItem(McpeItemFrameDropItem message)
-		{
-		}
-
 		public virtual void HandleMcpeGameRulesChanged(McpeGameRulesChanged message)
 		{
 		}

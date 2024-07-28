@@ -23,7 +23,6 @@
 
 #endregion
 
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -42,7 +41,7 @@ namespace MiNET.Blocks
 			if (base.CanPlace(world, player, blockCoordinates, targetCoordinates, face))
 			{
 				Block under = world.GetBlock(Coordinates.BlockDown());
-				return under is Grass || under is Dirt;
+				return under is GrassBlock || under is Dirt;
 			}
 
 			return false;

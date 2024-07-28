@@ -27,17 +27,20 @@ using System;
 using System.Collections.Generic;
 using log4net;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class Leaves : Block
+	public abstract class LeavesBase : Block
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(Leaves));
+		private static readonly ILog Log = LogManager.GetLogger(typeof(LeavesBase));
 
-		public Leaves() : base()
+		public virtual bool PersistentBit { get; set; }
+
+		public virtual bool UpdateBit { get; set; }
+
+		public LeavesBase() : base()
 		{
 			IsTransparent = true;
 			BlastResistance = 1;
@@ -85,19 +88,12 @@ namespace MiNET.Blocks
 		public override Item[] GetDrops(Level world, Item tool)
 		{
 			var rnd = new Random();
-			if (OldLeafType == "oak") // Oak and dark oak drops apple
-			{
-				if (rnd.Next(200) == 0)
-				{
-					return new Item[] { new ItemApple() };
-				}
-			}
 			if (rnd.Next(20) == 0)
 			{
-				return new[] { ItemFactory.GetItem<Sapling>(Data) };
+				return [ItemFactory.GetItem<Sapling>(Data)];
 			}
 
-			return new Item[0];
+			return Array.Empty<Item>();
 		}
 
 		private bool FindLog(Level level, BlockCoordinates coord, List<BlockCoordinates> visited, int distance)
@@ -111,9 +107,7 @@ namespace MiNET.Blocks
 
 			if (distance >= 4) return false;
 
-			if (!(block is Leaves)) return false;
-			var leaves = (Leaves) block;
-			if (leaves.OldLeafType != OldLeafType) return false;
+			if (block.GetType() != GetType()) return false;
 
 			// check down
 			if (FindLog(level, coord.BlockDown(), visited, distance + 1)) return true;

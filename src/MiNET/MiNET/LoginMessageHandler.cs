@@ -719,10 +719,6 @@ namespace MiNET
 		{
 		}
 
-		public void HandleMcpeItemFrameDropItem(McpeItemFrameDropItem message)
-		{
-		}
-
 		public void HandleMcpeCommandRequest(McpeCommandRequest message)
 		{
 		}
