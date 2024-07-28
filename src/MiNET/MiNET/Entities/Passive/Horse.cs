@@ -85,8 +85,8 @@ namespace MiNET.Entities.Passive
 			metadata[(int) MetadataFlags.MarkVariant] = new MetadataInt(Markings);
 			if (IsTamed)
 			{
-				metadata[45] = new MetadataByte(12);
-				metadata[46] = new MetadataInt(2);
+				metadata[(int) MetadataFlags.ContainerSize] = new MetadataByte(12);
+				metadata[(int) MetadataFlags.ContainerStrengthModifier] = new MetadataInt(2);
 			}
 
 			Log.Debug($"Horse: {metadata}");

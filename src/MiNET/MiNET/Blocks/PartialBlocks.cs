@@ -366,7 +366,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:acacia_sapling";
 
 		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1373,7 +1373,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_sapling";
 
 		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2328,7 +2328,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:birch_sapling";
 
 		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4519,7 +4519,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cherry_sapling";
 
 		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6965,7 +6965,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dark_oak_sapling";
 
 		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11367,7 +11367,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:jungle_sapling";
 
 		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14131,7 +14131,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:oak_sapling";
 
 		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -18702,7 +18702,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:spruce_sapling";
 
 		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{

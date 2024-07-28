@@ -34,6 +34,8 @@ namespace MiNET.Blocks
 {
 	public abstract class SaplingBase : Block
 	{
+		public virtual bool AgeBit { get; set; }
+
 		public SaplingBase() : base()
 		{
 			FuelEfficiency = 5;

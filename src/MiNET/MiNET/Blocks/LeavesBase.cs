@@ -92,12 +92,12 @@ namespace MiNET.Blocks
 			{
 				return this switch
 				{
-					OakLeaves => [ItemFactory.GetItem<OakSapling>(Data)],
-					SpruceLeaves => [ItemFactory.GetItem<SpruceSapling>(Data)],
-					BirchLeaves => [ItemFactory.GetItem<BirchSapling>(Data)],
-					JungleLeaves => [ItemFactory.GetItem<JungleSapling>(Data)],
-					AcaciaLeaves => [ItemFactory.GetItem<AcaciaSapling>(Data)],
-					DarkOakLeaves => [ItemFactory.GetItem<DarkOakSapling>(Data)]
+					OakLeaves => [ItemFactory.GetItem<OakSapling>()],
+					SpruceLeaves => [ItemFactory.GetItem<SpruceSapling>()],
+					BirchLeaves => [ItemFactory.GetItem<BirchSapling>()],
+					JungleLeaves => [ItemFactory.GetItem<JungleSapling>()],
+					AcaciaLeaves => [ItemFactory.GetItem<AcaciaSapling>()],
+					DarkOakLeaves => [ItemFactory.GetItem<DarkOakSapling>()]
 				};
 			}
 
