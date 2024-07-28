@@ -23,12 +23,22 @@
 
 #endregion
 
+using MiNET.Items;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
-	public partial class CyanGlazedTerracotta : GlazedTerracotta
+	public abstract class ConcreteBase : Block
 	{
-		public CyanGlazedTerracotta() : base()
+		public ConcreteBase() : base()
 		{
+			BlastResistance = 15;
+			Hardness = 3;
+		}
+
+		public override Item GetItem(Level world, bool blockItem = false)
+		{
+			return ItemFactory.GetItem(this);
 		}
 	}
 }

@@ -25,17 +25,16 @@
 
 using System.Numerics;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public abstract class GlazedTerracotta : Block
+	public abstract class GlazedTerracottaBase : Block
 	{
 		[StateRange(0, 5)] public virtual int FacingDirection { get; set; } = 0;
 
-		public GlazedTerracotta() : base()
+		public GlazedTerracottaBase() : base()
 		{
 		}
 

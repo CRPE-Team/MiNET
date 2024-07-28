@@ -9,7 +9,7 @@ namespace MiNET.Net.Crafting
 	{
 		public void Write(Packet packet)
 		{
-			packet.WriteUnsignedVarInt((uint) Count);
+			packet.WriteLength(Count);
 
 			foreach (var recipe in this)
 			{
@@ -21,7 +21,7 @@ namespace MiNET.Net.Crafting
 		{
 			var recipes = new Recipes();
 
-			var count = packet.ReadUnsignedVarInt();
+			var count = packet.ReadLength();
 			for (var i = 0; i < count; i++)
 			{
 				recipes.Add(Recipe.Read(packet));
@@ -210,13 +210,13 @@ namespace MiNET.Net.Crafting
 		{
 			packet.Write(Id.ToString());
 
-			packet.WriteUnsignedVarInt((uint) Input.Count);
+			packet.WriteLength(Input.Count);
 			foreach (var ingredient in Input)
 			{
 				packet.Write(ingredient);
 			}
 
-			packet.WriteUnsignedVarInt((uint) Output.Count);
+			packet.WriteLength(Output.Count);
 			foreach (Item item in Output)
 			{
 				packet.Write(item, false);
@@ -232,13 +232,13 @@ namespace MiNET.Net.Crafting
 		{
 			packet.ReadString(); // some unique id
 
-			var inputCount = packet.ReadUnsignedVarInt();
+			var inputCount = packet.ReadLength();
 			for (var i = 0; i < inputCount; i++)
 			{
 				recipe.Input.Add(RecipeIngredient.Read(packet));
 			}
 
-			var outputCount = packet.ReadUnsignedVarInt();
+			var outputCount = packet.ReadLength();
 			for (var i = 0; i < outputCount; i++)
 			{
 				recipe.Output.Add(packet.ReadItem(false));
@@ -308,10 +308,16 @@ namespace MiNET.Net.Crafting
 	public abstract class ShapedRecipeBase : Recipe
 	{
 		public int UniqueId { get; set; }
+
 		public int Width { get; set; }
+
 		public int Height { get; set; }
+
 		public RecipeIngredient[] Input { get; set; }
+
 		public List<Item> Output { get; set; }
+
+		public bool IsSymmetric { get; set; }
 
 		public ShapedRecipeBase(int width, int height)
 		{
@@ -349,7 +355,7 @@ namespace MiNET.Net.Crafting
 				}
 			}
 
-			packet.WriteUnsignedVarInt((uint) Output.Count);
+			packet.WriteLength(Output.Count);
 			foreach (var item in Output)
 			{
 				packet.Write(item, false);
@@ -358,6 +364,7 @@ namespace MiNET.Net.Crafting
 			packet.Write(Id);
 			packet.Write(Block);
 			packet.WriteSignedVarInt(Priority);
+			packet.Write(IsSymmetric);
 			packet.WriteVarInt(UniqueId);
 		}
 
@@ -371,7 +378,7 @@ namespace MiNET.Net.Crafting
 				}
 			}
 
-			var outputCount = packet.ReadUnsignedVarInt();
+			var outputCount = packet.ReadLength();
 			for (var i = 0; i < outputCount; i++)
 			{
 				recipe.Output.Add(packet.ReadItem(false));
@@ -380,6 +387,7 @@ namespace MiNET.Net.Crafting
 			recipe.Id = packet.ReadUUID();
 			recipe.Block = packet.ReadString();
 			recipe.Priority = packet.ReadSignedVarInt();
+			recipe.IsSymmetric = packet.ReadBool();
 			recipe.UniqueId = packet.ReadVarInt();
 
 			return recipe;
@@ -448,6 +456,7 @@ namespace MiNET.Net.Crafting
 		protected override void WriteData(Packet packet)
 		{
 			packet.WriteSignedVarInt(Input.RuntimeId);
+
 			if (Type == RecipeType.FurnaceData)
 			{
 				packet.WriteSignedVarInt(Input.Metadata);
@@ -564,14 +573,32 @@ namespace MiNET.Net.Crafting
 		}
 	}
 
-	public class PotionContainerChangeRecipe
+	public class PotionContainerChangeRecipe : IPacketDataObject
 	{
 		public int Input { get; set; }
 		public int Ingredient { get; set; }
 		public int Output { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.Write(Input);
+			packet.Write(Ingredient);
+			packet.Write(Output);
+		}
+
+		public static PotionContainerChangeRecipe Read(Packet packet)
+		{
+			var recipe = new PotionContainerChangeRecipe();
+
+			recipe.Input = packet.ReadVarInt();
+			recipe.Ingredient = packet.ReadVarInt();
+			recipe.Output = packet.ReadVarInt();
+
+			return recipe;
+		}
 	}
 
-	public class PotionTypeRecipe
+	public class PotionTypeRecipe : IPacketDataObject
 	{
 		public int Input { get; set; }
 		public int InputMeta { get; set; }
@@ -579,9 +606,33 @@ namespace MiNET.Net.Crafting
 		public int IngredientMeta { get; set; }
 		public int Output { get; set; }
 		public int OutputMeta { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.Write(Input);
+			packet.Write(InputMeta);
+			packet.Write(Ingredient);
+			packet.Write(IngredientMeta);
+			packet.Write(Output);
+			packet.Write(OutputMeta);
+		}
+
+		public static PotionTypeRecipe Read(Packet packet)
+		{
+			var recipe = new PotionTypeRecipe();
+
+			recipe.Input = packet.ReadVarInt();
+			recipe.InputMeta = packet.ReadVarInt();
+			recipe.Ingredient = packet.ReadVarInt();
+			recipe.IngredientMeta = packet.ReadVarInt();
+			recipe.Output = packet.ReadVarInt();
+			recipe.OutputMeta = packet.ReadVarInt();
+
+			return recipe;
+		}
 	}
 
-	public class MaterialReducerRecipe
+	public class MaterialReducerRecipe : IPacketDataObject
 	{
 		public int Input { get; set; }
 		public int InputMeta { get; set; }
@@ -616,6 +667,38 @@ namespace MiNET.Net.Crafting
 				ItemId = itemId;
 				ItemCount = itemCount;
 			}
+		}
+
+		public void Write(Packet packet)
+		{
+			packet.WriteVarInt((Input << 16) | InputMeta);
+			packet.WriteLength(Output.Length);
+
+			foreach (var output in Output)
+			{
+				packet.WriteVarInt(output.ItemId);
+				packet.WriteVarInt(output.ItemCount);
+			}
+		}
+
+		public static MaterialReducerRecipe Read(Packet packet)
+		{
+			var inputIdAndMeta = packet.ReadVarInt();
+			var inputId = inputIdAndMeta >> 16;
+			var inputMeta = inputIdAndMeta & 0x7fff;
+
+			var outputCount = packet.ReadLength();
+			var outputs = new MaterialReducerRecipeOutput[outputCount];
+
+			for (int i = 0; i < outputs.Length; i++)
+			{
+				var itemId = packet.ReadVarInt();
+				var itemCount = packet.ReadVarInt();
+
+				outputs[i] = new MaterialReducerRecipeOutput(itemId, itemCount);
+			}
+
+			return new MaterialReducerRecipe(inputId, inputMeta, outputs);
 		}
 	}
 

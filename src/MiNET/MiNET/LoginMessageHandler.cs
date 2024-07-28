@@ -38,6 +38,7 @@ using MiNET.Net;
 using MiNET.Net.RakNet;
 using MiNET.Utils;
 using MiNET.Utils.Cryptography;
+using MiNET.Utils.IO;
 using MiNET.Utils.Skins;
 using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Crypto.Agreement;
@@ -88,17 +89,19 @@ namespace MiNET
 				return;
 			}
 
+			var compressionAlgorithm = CompressionAlgorithm.ZLib;
+
 			McpeNetworkSettings settingsPacket = McpeNetworkSettings.CreateObject();
-			settingsPacket.compressionAlgorithm = 0;//zlib
-			settingsPacket.compressionThreshold = 1;
+			settingsPacket.compressionAlgorithm = (short) compressionAlgorithm;
+			settingsPacket.compressionThreshold = _session.CompressionManager.CompressionThreshold;
 			settingsPacket.clientThrottleEnabled = false;
 			settingsPacket.clientThrottleScalar = 0;
 			settingsPacket.clientThrottleThreshold = 0;
 			settingsPacket.ForceClear = true; // Must be!
 
 			_session.SendPrepareDirectPacket(settingsPacket);
-			//Thread.Sleep(1000);
-			_session.EnableCompression = true;
+
+			_session.CompressionManager.CompressionAlgorithm = compressionAlgorithm;
 		}
 
 		public virtual void HandleMcpeLogin(McpeLogin message)
@@ -606,11 +609,6 @@ namespace MiNET
 		}
 
 		/// <inheritdoc />
-		public void HandleMcpeFilterTextPacket(McpeFilterTextPacket message)
-		{
-		}
-
-		/// <inheritdoc />
 		public void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message)
 		{
 			
@@ -692,10 +690,6 @@ namespace MiNET
 		{
 		}
 
-		public void HandleMcpeCraftingEvent(McpeCraftingEvent message)
-		{
-		}
-
 		public void HandleMcpeAdventureSettings(McpeAdventureSettings message)
 		{
 		}
@@ -717,10 +711,6 @@ namespace MiNET
 		}
 
 		public void HandleMcpeRequestChunkRadius(McpeRequestChunkRadius message)
-		{
-		}
-
-		public void HandleMcpeItemFrameDropItem(McpeItemFrameDropItem message)
 		{
 		}
 
@@ -781,6 +771,22 @@ namespace MiNET
 		}
 
 		public void HandleMcpeScriptCustomEvent(McpeScriptCustomEvent message)
+		{
+		}
+
+		public void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message)
+		{
+		}
+
+		public void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message)
+		{
+		}
+
+		public void HandleMcpeServerPlayerPostMovePosition(McpeServerPlayerPostMovePosition message)
+		{
+		}
+
+		public void HandleMcpeBossEvent(McpeBossEvent message)
 		{
 		}
 	}

@@ -23,12 +23,22 @@
 
 #endregion
 
+using MiNET.Items;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
-	public partial class PinkGlazedTerracotta : GlazedTerracotta
+	public abstract class StainedGlassPaneBase : Block
 	{
-		public PinkGlazedTerracotta() : base()
+		public StainedGlassPaneBase() : base()
 		{
+			IsTransparent = true; // I should hope so at least
+			BlastResistance = 1.5f;
+		}
+
+		public override Item[] GetDrops(Level world, Item tool)
+		{
+			return new Item[0]; // No drops
 		}
 	}
 }

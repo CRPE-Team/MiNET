@@ -172,7 +172,7 @@ namespace MiNET.Worlds
 
 						if (y < waterLevel) //FlowingWater :)
 						{
-							if (BlockFactory.IsBlock<Grass>(chunk.GetBlockRuntimeId(x, y, z)) || BlockFactory.IsBlock<Dirt>(chunk.GetBlockRuntimeId(x, y, z))) //Grass or Dirt?
+							if (BlockFactory.IsBlock<GrassBlock>(chunk.GetBlockRuntimeId(x, y, z)) || BlockFactory.IsBlock<Dirt>(chunk.GetBlockRuntimeId(x, y, z))) //Grass or Dirt?
 							{
 								if (GetRandomNumber(1, 40) == 5 && y < waterLevel - 4)
 									chunk.SetBlock(x, y, z, new Clay()); //Clay
@@ -186,7 +186,7 @@ namespace MiNET.Worlds
 						if (y <= dirtHeight && y >= stoneHeight)
 						{
 							chunk.SetBlock(x, y, z, new Dirt()); //Dirt
-							chunk.SetBlock(x, y + 1, z, new Grass()); //Grass Block
+							chunk.SetBlock(x, y + 1, z, new GrassBlock()); //Grass Block
 							if (y > waterLevel)
 							{
 								//Grass
@@ -210,7 +210,7 @@ namespace MiNET.Worlds
 									{
 										if (y < waterLevel + 2)
 											break;
-										if (BlockFactory.IsBlock<Grass>(chunk.GetBlockRuntimeId(treeBasePositions[pos, 0], y + 1, treeBasePositions[pos, 1])))
+										if (BlockFactory.IsBlock<GrassBlock>(chunk.GetBlockRuntimeId(treeBasePositions[pos, 0], y + 1, treeBasePositions[pos, 1])))
 										{
 											if (y == dirtHeight)
 												GenerateTree(chunk, treeBasePositions[pos, 0], y + 1, treeBasePositions[pos, 1]);
@@ -233,22 +233,22 @@ namespace MiNET.Worlds
 		{
 			int treeheight = GetRandomNumber(4, 5);
 
-			chunk.SetBlock(x, treebase + treeheight + 2, z, new Leaves()); //Top leave
+			chunk.SetBlock(x, treebase + treeheight + 2, z, new OakLeaves()); //Top leave
 
-			chunk.SetBlock(x, treebase + treeheight + 1, z + 1, new Leaves());
-			chunk.SetBlock(x, treebase + treeheight + 1, z - 1, new Leaves());
-			chunk.SetBlock(x + 1, treebase + treeheight + 1, z, new Leaves());
-			chunk.SetBlock(x - 1, treebase + treeheight + 1, z, new Leaves());
+			chunk.SetBlock(x, treebase + treeheight + 1, z + 1, new OakLeaves());
+			chunk.SetBlock(x, treebase + treeheight + 1, z - 1, new OakLeaves());
+			chunk.SetBlock(x + 1, treebase + treeheight + 1, z, new OakLeaves());
+			chunk.SetBlock(x - 1, treebase + treeheight + 1, z, new OakLeaves());
 
-			chunk.SetBlock(x, treebase + treeheight, z + 1, new Leaves());
-			chunk.SetBlock(x, treebase + treeheight, z - 1, new Leaves());
-			chunk.SetBlock(x + 1, treebase + treeheight, z, new Leaves());
-			chunk.SetBlock(x - 1, treebase + treeheight, z, new Leaves());
+			chunk.SetBlock(x, treebase + treeheight, z + 1, new OakLeaves());
+			chunk.SetBlock(x, treebase + treeheight, z - 1, new OakLeaves());
+			chunk.SetBlock(x + 1, treebase + treeheight, z, new OakLeaves());
+			chunk.SetBlock(x - 1, treebase + treeheight, z, new OakLeaves());
 
-			chunk.SetBlock(x + 1, treebase + treeheight, z + 1, new Leaves());
-			chunk.SetBlock(x - 1, treebase + treeheight, z - 1, new Leaves());
-			chunk.SetBlock(x + 1, treebase + treeheight, z - 1, new Leaves());
-			chunk.SetBlock(x - 1, treebase + treeheight, z + 1, new Leaves());
+			chunk.SetBlock(x + 1, treebase + treeheight, z + 1, new OakLeaves());
+			chunk.SetBlock(x - 1, treebase + treeheight, z - 1, new OakLeaves());
+			chunk.SetBlock(x + 1, treebase + treeheight, z - 1, new OakLeaves());
+			chunk.SetBlock(x - 1, treebase + treeheight, z + 1, new OakLeaves());
 
 			for (int i = 0; i <= treeheight; i++)
 			{

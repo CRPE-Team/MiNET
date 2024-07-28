@@ -23,12 +23,24 @@
 
 #endregion
 
+using MiNET.Items;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
-	public partial class YellowGlazedTerracotta : GlazedTerracotta
+	public abstract class PlanksBase : Block
 	{
-		public YellowGlazedTerracotta() : base()
+		public PlanksBase() : base()
 		{
+			FuelEfficiency = 15;
+			BlastResistance = 15;
+			Hardness = 2;
+			IsFlammable = true;
+		}
+
+		public override Item GetItem(Level world, bool blockItem = false)
+		{
+			return ItemFactory.GetItem(this);
 		}
 	}
 }

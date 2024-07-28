@@ -28,11 +28,11 @@ using System.IO;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiNET.Entities;
+using MiNET.Test.Utils;
 using MiNET.Utils.Skins;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using TestPlugin.Code4Fun;
 
 namespace MiNET.Test
 {
@@ -62,7 +62,7 @@ namespace MiNET.Test
 
 			GeometryModel geometryModel = JsonConvert.DeserializeObject<GeometryModel>(json, settings);
 
-			var state = new Code4FunPlugin.GravityGeometryBehavior(fake, geometryModel);
+			var state = new GravityGeometryBehavior(fake, geometryModel);
 			state.FakeMeltTicking(fake, new PlayerEventArgs(null));
 		}
 

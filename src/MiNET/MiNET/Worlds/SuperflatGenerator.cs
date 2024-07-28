@@ -44,7 +44,7 @@ namespace MiNET.Worlds
 			switch (dimension)
 			{
 				case Dimension.Overworld:
-					Seed = Config.GetProperty("superflat.overworld", "3;minecraft:bedrock,2*minecraft:dirt,minecraft:grass;1;village");
+					Seed = Config.GetProperty("superflat.overworld", "3;minecraft:bedrock,2*minecraft:dirt,minecraft:grass_block;1;village");
 					break;
 				case Dimension.Nether:
 					Seed = Config.GetProperty("superflat.nether", "3;minecraft:bedrock,2*minecraft:netherrack,3*minecraft:lava,2*minecraft:netherrack,20*minecraft:air,minecraft:bedrock;1;village");

@@ -53,7 +53,7 @@ namespace MiNET.Entities.World
 			return new MetadataDictionary
 			{
 				[(int) MetadataFlags.EntityFlags] = new MetadataLong(GetDataValue()),
-				[(int) MetadataFlags.DataFuseLength] = new MetadataInt(Fuse)
+				[(int) MetadataFlags.FuseTime] = new MetadataInt(Fuse)
 			};
 		}
 

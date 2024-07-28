@@ -103,6 +103,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class AcaciaDoubleSlab : DoubleWoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:acacia_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class AcaciaFence : Block
 	{
 		public override string Id => "minecraft:acacia_fence";
@@ -214,6 +247,47 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class AcaciaLeaves : LeavesBase
+	{
+		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
+		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
+
+		public override string Id => "minecraft:acacia_leaves";
+
+		[StateBit]
+		public override bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
+
+		[StateBit]
+		public override bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "persistent_bit":
+						NotifyStateUpdate(_persistentBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "update_bit":
+						NotifyStateUpdate(_updateBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _persistentBit;
+			yield return _updateBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _persistentBit, _updateBit);
+		} // method
+	} // class
+
 	public partial class AcaciaLog : LogBase
 	{
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
@@ -247,6 +321,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class AcaciaPlanks : PlanksBase
+	{
+		public override string Id => "minecraft:acacia_planks";
+	} // class
+
 	public partial class AcaciaPressurePlate : Block
 	{
 		private readonly BlockStateInt _redstoneSignal = new BlockStateInt() { Name = "redstone_signal", Value = 0 };
@@ -277,6 +356,72 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _redstoneSignal);
+		} // method
+	} // class
+
+	public partial class AcaciaSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:acacia_sapling";
+
+		[StateBit]
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+	} // class
+
+	public partial class AcaciaSlab : WoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:acacia_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -436,6 +581,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class AcaciaWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:acacia_wood";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
 	public partial class ActivatorRail : Block
 	{
 		private readonly BlockStateByte _railDataBit = new BlockStateByte() { Name = "rail_data_bit", Value = 0 };
@@ -482,6 +660,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:air";
 	} // class
 
+	public partial class Allium : Block
+	{
+		public override string Id => "minecraft:allium";
+	} // class
+
 	public partial class Allow : Block
 	{
 		public override string Id => "minecraft:allow";
@@ -494,12 +677,12 @@ namespace MiNET.Blocks
 
 	public partial class AmethystCluster : Block
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _blockFace = new BlockStateString() { Name = "minecraft:block_face", Value = "down" };
 
 		public override string Id => "minecraft:amethyst_cluster";
 
-		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("down", "east", "north", "south", "up", "west")]
+		public string BlockFace { get => _blockFace.Value; set => NotifyStateUpdate(_blockFace, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -507,8 +690,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:block_face":
+						NotifyStateUpdate(_blockFace, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -516,18 +699,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _blockFace;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _blockFace);
 		} // method
 	} // class
 
 	public partial class AncientDebris : Block
 	{
 		public override string Id => "minecraft:ancient_debris";
+	} // class
+
+	public partial class Andesite : Block
+	{
+		public override string Id => "minecraft:andesite";
 	} // class
 
 	public partial class AndesiteStairs
@@ -574,15 +762,15 @@ namespace MiNET.Blocks
 	public partial class Anvil : Block
 	{
 		private readonly BlockStateString _damage = new BlockStateString() { Name = "damage", Value = "undamaged" };
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:anvil";
 
 		[StateEnum("broken", "slightly_damaged", "undamaged", "very_damaged")]
 		public string Damage { get => _damage.Value; set => NotifyStateUpdate(_damage, value); }
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -593,8 +781,8 @@ namespace MiNET.Blocks
 					case BlockStateString s when s.Name == "damage":
 						NotifyStateUpdate(_damage, s.Value);
 						break;
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -603,12 +791,12 @@ namespace MiNET.Blocks
 		protected override IEnumerable<IBlockState> GetStates()
 		{
 			yield return _damage;
-			yield return _direction;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _damage, _direction);
+			return HashCode.Combine(Id, _damage, _cardinalDirection);
 		} // method
 	} // class
 
@@ -617,7 +805,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:azalea";
 	} // class
 
-	public partial class AzaleaLeaves : Block
+	public partial class AzaleaLeaves : LeavesBase
 	{
 		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
 		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
@@ -625,10 +813,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:azalea_leaves";
 
 		[StateBit]
-		public bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
+		public override bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
 
 		[StateBit]
-		public bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
+		public override bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -697,6 +885,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _persistentBit, _updateBit);
 		} // method
+	} // class
+
+	public partial class AzureBluet : Block
+	{
+		public override string Id => "minecraft:azure_bluet";
 	} // class
 
 	public partial class Bamboo : Block
@@ -879,14 +1072,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooDoubleSlab : DoubleSlabBase
+	public partial class BambooDoubleSlab : DoubleWoodenSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:bamboo_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -894,8 +1087,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -903,12 +1096,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -1030,12 +1223,12 @@ namespace MiNET.Blocks
 
 	public partial class BambooMosaicDoubleSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:bamboo_mosaic_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1043,8 +1236,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -1052,23 +1245,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
 	public partial class BambooMosaicSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:bamboo_mosaic_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1076,8 +1269,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -1085,12 +1278,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -1135,7 +1328,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooPlanks : Block
+	public partial class BambooPlanks : PlanksBase
 	{
 		public override string Id => "minecraft:bamboo_planks";
 	} // class
@@ -1173,18 +1366,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooSapling : Block
+	public partial class BambooSapling : SaplingBase
 	{
 		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
-		private readonly BlockStateString _saplingType = new BlockStateString() { Name = "sapling_type", Value = "oak" };
 
 		public override string Id => "minecraft:bamboo_sapling";
 
 		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
-
-		[StateEnum("acacia", "birch", "dark_oak", "jungle", "oak", "spruce")]
-		public string SaplingType { get => _saplingType.Value; set => NotifyStateUpdate(_saplingType, value); }
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1195,9 +1384,6 @@ namespace MiNET.Blocks
 					case BlockStateByte s when s.Name == "age_bit":
 						NotifyStateUpdate(_ageBit, s.Value);
 						break;
-					case BlockStateString s when s.Name == "sapling_type":
-						NotifyStateUpdate(_saplingType, s.Value);
-						break;
 				} // switch
 			} // foreach
 		} // method
@@ -1205,23 +1391,22 @@ namespace MiNET.Blocks
 		protected override IEnumerable<IBlockState> GetStates()
 		{
 			yield return _ageBit;
-			yield return _saplingType;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _ageBit, _saplingType);
+			return HashCode.Combine(Id, _ageBit);
 		} // method
 	} // class
 
-	public partial class BambooSlab : SlabBase
+	public partial class BambooSlab : WoodenSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:bamboo_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1229,8 +1414,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -1238,12 +1423,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -1737,7 +1922,7 @@ namespace MiNET.Blocks
 	{
 		private readonly BlockStateByte _bigDripleafHead = new BlockStateByte() { Name = "big_dripleaf_head", Value = 0 };
 		private readonly BlockStateString _bigDripleafTilt = new BlockStateString() { Name = "big_dripleaf_tilt", Value = "none" };
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:big_dripleaf";
 
@@ -1747,8 +1932,8 @@ namespace MiNET.Blocks
 		[StateEnum("full_tilt", "none", "partial_tilt", "unstable")]
 		public string BigDripleafTilt { get => _bigDripleafTilt.Value; set => NotifyStateUpdate(_bigDripleafTilt, value); }
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1762,8 +1947,8 @@ namespace MiNET.Blocks
 					case BlockStateString s when s.Name == "big_dripleaf_tilt":
 						NotifyStateUpdate(_bigDripleafTilt, s.Value);
 						break;
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -1773,12 +1958,12 @@ namespace MiNET.Blocks
 		{
 			yield return _bigDripleafHead;
 			yield return _bigDripleafTilt;
-			yield return _direction;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _bigDripleafHead, _bigDripleafTilt, _direction);
+			return HashCode.Combine(Id, _bigDripleafHead, _bigDripleafTilt, _cardinalDirection);
 		} // method
 	} // class
 
@@ -1877,6 +2062,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+	} // class
+
+	public partial class BirchDoubleSlab : DoubleWoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:birch_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -1991,6 +2209,47 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class BirchLeaves : LeavesBase
+	{
+		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
+		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
+
+		public override string Id => "minecraft:birch_leaves";
+
+		[StateBit]
+		public override bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
+
+		[StateBit]
+		public override bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "persistent_bit":
+						NotifyStateUpdate(_persistentBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "update_bit":
+						NotifyStateUpdate(_updateBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _persistentBit;
+			yield return _updateBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _persistentBit, _updateBit);
+		} // method
+	} // class
+
 	public partial class BirchLog : LogBase
 	{
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
@@ -2024,6 +2283,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class BirchPlanks : PlanksBase
+	{
+		public override string Id => "minecraft:birch_planks";
+	} // class
+
 	public partial class BirchPressurePlate : Block
 	{
 		private readonly BlockStateInt _redstoneSignal = new BlockStateInt() { Name = "redstone_signal", Value = 0 };
@@ -2054,6 +2318,72 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _redstoneSignal);
+		} // method
+	} // class
+
+	public partial class BirchSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:birch_sapling";
+
+		[StateBit]
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+	} // class
+
+	public partial class BirchSlab : WoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:birch_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -2213,6 +2543,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class BirchWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:birch_wood";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
 	public partial class BlackCandle : Block
 	{
 		private readonly BlockStateInt _candles = new BlockStateInt() { Name = "candles", Value = 0 };
@@ -2292,7 +2655,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:black_carpet";
 	} // class
 
-	public partial class BlackGlazedTerracotta
+	public partial class BlackConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:black_concrete";
+	} // class
+
+	public partial class BlackConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:black_concrete_powder";
+	} // class
+
+	public partial class BlackGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -2325,6 +2698,26 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class BlackShulkerBox : Block
+	{
+		public override string Id => "minecraft:black_shulker_box";
+	} // class
+
+	public partial class BlackStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:black_stained_glass";
+	} // class
+
+	public partial class BlackStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:black_stained_glass_pane";
+	} // class
+
+	public partial class BlackTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:black_terracotta";
+	} // class
+
 	public partial class BlackWool : WoolBase
 	{
 		public override string Id => "minecraft:black_wool";
@@ -2337,12 +2730,12 @@ namespace MiNET.Blocks
 
 	public partial class BlackstoneDoubleSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:blackstone_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2350,8 +2743,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -2359,23 +2752,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
 	public partial class BlackstoneSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:blackstone_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2383,8 +2776,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -2392,12 +2785,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -2509,12 +2902,12 @@ namespace MiNET.Blocks
 
 	public partial class BlastFurnace
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:blast_furnace";
 
-		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2522,8 +2915,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -2531,12 +2924,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -2619,7 +3012,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:blue_carpet";
 	} // class
 
-	public partial class BlueGlazedTerracotta
+	public partial class BlueConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:blue_concrete";
+	} // class
+
+	public partial class BlueConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:blue_concrete_powder";
+	} // class
+
+	public partial class BlueGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -2655,6 +3058,31 @@ namespace MiNET.Blocks
 	public partial class BlueIce : Block
 	{
 		public override string Id => "minecraft:blue_ice";
+	} // class
+
+	public partial class BlueOrchid : Block
+	{
+		public override string Id => "minecraft:blue_orchid";
+	} // class
+
+	public partial class BlueShulkerBox : Block
+	{
+		public override string Id => "minecraft:blue_shulker_box";
+	} // class
+
+	public partial class BlueStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:blue_stained_glass";
+	} // class
+
+	public partial class BlueStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:blue_stained_glass_pane";
+	} // class
+
+	public partial class BlueTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:blue_terracotta";
 	} // class
 
 	public partial class BlueWool : WoolBase
@@ -2776,6 +3204,39 @@ namespace MiNET.Blocks
 	public partial class BrainCoral : Block
 	{
 		public override string Id => "minecraft:brain_coral";
+	} // class
+
+	public partial class BrainCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:brain_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class BrewingStand : Block
@@ -2952,7 +3413,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:brown_carpet";
 	} // class
 
-	public partial class BrownGlazedTerracotta
+	public partial class BrownConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:brown_concrete";
+	} // class
+
+	public partial class BrownConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:brown_concrete_powder";
+	} // class
+
+	public partial class BrownGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -3023,6 +3494,26 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class BrownShulkerBox : Block
+	{
+		public override string Id => "minecraft:brown_shulker_box";
+	} // class
+
+	public partial class BrownStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:brown_stained_glass";
+	} // class
+
+	public partial class BrownStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:brown_stained_glass_pane";
+	} // class
+
+	public partial class BrownTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:brown_terracotta";
+	} // class
+
 	public partial class BrownWool : WoolBase
 	{
 		public override string Id => "minecraft:brown_wool";
@@ -3064,6 +3555,39 @@ namespace MiNET.Blocks
 	public partial class BubbleCoral : Block
 	{
 		public override string Id => "minecraft:bubble_coral";
+	} // class
+
+	public partial class BubbleCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:bubble_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class BuddingAmethyst : Block
@@ -3144,13 +3668,13 @@ namespace MiNET.Blocks
 
 	public partial class CalibratedSculkSensor : Block
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 		private readonly BlockStateInt _sculkSensorPhase = new BlockStateInt() { Name = "sculk_sensor_phase", Value = 0 };
 
 		public override string Id => "minecraft:calibrated_sculk_sensor";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		[StateRange(0, 2)]
 		public int SculkSensorPhase { get => _sculkSensorPhase.Value; set => NotifyStateUpdate(_sculkSensorPhase, value); }
@@ -3161,8 +3685,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateInt s when s.Name == "sculk_sensor_phase":
 						NotifyStateUpdate(_sculkSensorPhase, s.Value);
@@ -3173,13 +3697,13 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
+			yield return _cardinalDirection;
 			yield return _sculkSensorPhase;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _sculkSensorPhase);
+			return HashCode.Combine(Id, _cardinalDirection, _sculkSensorPhase);
 		} // method
 	} // class
 
@@ -3190,16 +3714,16 @@ namespace MiNET.Blocks
 
 	public partial class Campfire : Block
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
 		private readonly BlockStateByte _extinguished = new BlockStateByte() { Name = "extinguished", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:campfire";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
-
 		[StateBit]
 		public bool Extinguished { get => Convert.ToBoolean(_extinguished.Value); set => NotifyStateUpdate(_extinguished, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3207,11 +3731,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == "extinguished":
 						NotifyStateUpdate(_extinguished, s.Value);
+						break;
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -3219,13 +3743,13 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _extinguished;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _extinguished);
+			return HashCode.Combine(Id, _extinguished, _cardinalDirection);
 		} // method
 	} // class
 
@@ -3732,14 +4256,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherryDoubleSlab : DoubleSlabBase
+	public partial class CherryDoubleSlab : DoubleWoodenSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:cherry_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3747,8 +4271,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -3756,12 +4280,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -3876,7 +4400,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherryLeaves : Block
+	public partial class CherryLeaves : LeavesBase
 	{
 		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
 		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
@@ -3884,10 +4408,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cherry_leaves";
 
 		[StateBit]
-		public bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
+		public override bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
 
 		[StateBit]
-		public bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
+		public override bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3950,7 +4474,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherryPlanks : Block
+	public partial class CherryPlanks : PlanksBase
 	{
 		public override string Id => "minecraft:cherry_planks";
 	} // class
@@ -3988,14 +4512,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherrySapling : Block
+	public partial class CherrySapling : SaplingBase
 	{
 		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
 
 		public override string Id => "minecraft:cherry_sapling";
 
 		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4021,14 +4545,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherrySlab : SlabBase
+	public partial class CherrySlab : WoodenSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:cherry_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4036,8 +4560,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -4045,12 +4569,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -4253,12 +4777,12 @@ namespace MiNET.Blocks
 
 	public partial class Chest
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "north" };
 
 		public override string Id => "minecraft:chest";
 
-		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4266,8 +4790,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -4275,12 +4799,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -4325,6 +4849,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class ChiseledCopper : Block
+	{
+		public override string Id => "minecraft:chiseled_copper";
+	} // class
+
 	public partial class ChiseledDeepslate : Block
 	{
 		public override string Id => "minecraft:chiseled_deepslate";
@@ -4338,6 +4867,16 @@ namespace MiNET.Blocks
 	public partial class ChiseledPolishedBlackstone : Block
 	{
 		public override string Id => "minecraft:chiseled_polished_blackstone";
+	} // class
+
+	public partial class ChiseledTuff : Block
+	{
+		public override string Id => "minecraft:chiseled_tuff";
+	} // class
+
+	public partial class ChiseledTuffBricks : Block
+	{
+		public override string Id => "minecraft:chiseled_tuff_bricks";
 	} // class
 
 	public partial class ChorusFlower : Block
@@ -4405,12 +4944,12 @@ namespace MiNET.Blocks
 
 	public partial class CobbledDeepslateDoubleSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:cobbled_deepslate_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4418,8 +4957,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -4427,23 +4966,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
 	public partial class CobbledDeepslateSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:cobbled_deepslate_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4451,8 +4990,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -4460,12 +4999,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -4850,72 +5389,6 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Concrete : Block
-	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
-
-		public override string Id => "minecraft:concrete";
-
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
-		} // method
-	} // class
-
-	public partial class ConcretePowder : Block
-	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
-
-		public override string Id => "minecraft:concrete_powder";
-
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
-		} // method
-	} // class
-
 	public partial class Conduit : Block
 	{
 		public override string Id => "minecraft:conduit";
@@ -4926,9 +5399,161 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:copper_block";
 	} // class
 
+	public partial class CopperBulb : Block
+	{
+		private readonly BlockStateByte _lit = new BlockStateByte() { Name = "lit", Value = 0 };
+		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
+
+		public override string Id => "minecraft:copper_bulb";
+
+		[StateBit]
+		public bool Lit { get => Convert.ToBoolean(_lit.Value); set => NotifyStateUpdate(_lit, value); }
+
+		[StateBit]
+		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "lit":
+						NotifyStateUpdate(_lit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "powered_bit":
+						NotifyStateUpdate(_poweredBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _lit;
+			yield return _poweredBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _lit, _poweredBit);
+		} // method
+	} // class
+
+	public partial class CopperDoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _doorHingeBit = new BlockStateByte() { Name = "door_hinge_bit", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upperBlockBit = new BlockStateByte() { Name = "upper_block_bit", Value = 0 };
+
+		public override string Id => "minecraft:copper_door";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "door_hinge_bit":
+						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upper_block_bit":
+						NotifyStateUpdate(_upperBlockBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _doorHingeBit;
+			yield return _openBit;
+			yield return _upperBlockBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+	} // class
+
+	public partial class CopperGrate : Block
+	{
+		public override string Id => "minecraft:copper_grate";
+	} // class
+
 	public partial class CopperOre : Block
 	{
 		public override string Id => "minecraft:copper_ore";
+	} // class
+
+	public partial class CopperTrapdoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+
+		public override string Id => "minecraft:copper_trapdoor";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _openBit;
+			yield return _upsideDownBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _openBit, _upsideDownBit);
+		} // method
 	} // class
 
 	public partial class CoralBlock : Block
@@ -4969,88 +5594,6 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _coralColor, _deadBit);
-		} // method
-	} // class
-
-	public partial class CoralFan : Block
-	{
-		private readonly BlockStateString _coralColor = new BlockStateString() { Name = "coral_color", Value = "blue" };
-		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 0 };
-
-		public override string Id => "minecraft:coral_fan";
-
-		[StateEnum("blue", "pink", "purple", "red", "yellow")]
-		public string CoralColor { get => _coralColor.Value; set => NotifyStateUpdate(_coralColor, value); }
-
-		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "coral_color":
-						NotifyStateUpdate(_coralColor, s.Value);
-						break;
-					case BlockStateInt s when s.Name == "coral_fan_direction":
-						NotifyStateUpdate(_coralFanDirection, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _coralColor;
-			yield return _coralFanDirection;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _coralColor, _coralFanDirection);
-		} // method
-	} // class
-
-	public partial class CoralFanDead : Block
-	{
-		private readonly BlockStateString _coralColor = new BlockStateString() { Name = "coral_color", Value = "blue" };
-		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 0 };
-
-		public override string Id => "minecraft:coral_fan_dead";
-
-		[StateEnum("blue", "pink", "purple", "red", "yellow")]
-		public string CoralColor { get => _coralColor.Value; set => NotifyStateUpdate(_coralColor, value); }
-
-		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "coral_color":
-						NotifyStateUpdate(_coralColor, s.Value);
-						break;
-					case BlockStateInt s when s.Name == "coral_fan_direction":
-						NotifyStateUpdate(_coralFanDirection, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _coralColor;
-			yield return _coralFanDirection;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _coralColor, _coralFanDirection);
 		} // method
 	} // class
 
@@ -5201,6 +5744,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class Cornflower : Block
+	{
+		public override string Id => "minecraft:cornflower";
+	} // class
+
 	public partial class CrackedDeepslateBricks : Block
 	{
 		public override string Id => "minecraft:cracked_deepslate_bricks";
@@ -5219,6 +5767,55 @@ namespace MiNET.Blocks
 	public partial class CrackedPolishedBlackstoneBricks : Block
 	{
 		public override string Id => "minecraft:cracked_polished_blackstone_bricks";
+	} // class
+
+	public partial class Crafter : Block
+	{
+		private readonly BlockStateByte _crafting = new BlockStateByte() { Name = "crafting", Value = 0 };
+		private readonly BlockStateString _orientation = new BlockStateString() { Name = "orientation", Value = "down_east" };
+		private readonly BlockStateByte _triggeredBit = new BlockStateByte() { Name = "triggered_bit", Value = 0 };
+
+		public override string Id => "minecraft:crafter";
+
+		[StateBit]
+		public bool Crafting { get => Convert.ToBoolean(_crafting.Value); set => NotifyStateUpdate(_crafting, value); }
+
+		[StateEnum("down_east", "down_north", "down_south", "down_west", "east_up", "north_up", "south_up", "up_east", "up_north", "up_south", "up_west", "west_up")]
+		public string Orientation { get => _orientation.Value; set => NotifyStateUpdate(_orientation, value); }
+
+		[StateBit]
+		public bool TriggeredBit { get => Convert.ToBoolean(_triggeredBit.Value); set => NotifyStateUpdate(_triggeredBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "crafting":
+						NotifyStateUpdate(_crafting, s.Value);
+						break;
+					case BlockStateString s when s.Name == "orientation":
+						NotifyStateUpdate(_orientation, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "triggered_bit":
+						NotifyStateUpdate(_triggeredBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _crafting;
+			yield return _orientation;
+			yield return _triggeredBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _crafting, _orientation, _triggeredBit);
+		} // method
 	} // class
 
 	public partial class CraftingTable : Block
@@ -5324,14 +5921,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CrimsonDoubleSlab : DoubleSlabBase
+	public partial class CrimsonDoubleSlab : DoubleWoodenSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:crimson_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5339,8 +5936,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -5348,12 +5945,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -5511,7 +6108,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:crimson_nylium";
 	} // class
 
-	public partial class CrimsonPlanks : Block
+	public partial class CrimsonPlanks : PlanksBase
 	{
 		public override string Id => "minecraft:crimson_planks";
 	} // class
@@ -5554,14 +6151,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:crimson_roots";
 	} // class
 
-	public partial class CrimsonSlab : SlabBase
+	public partial class CrimsonSlab : WoodenSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:crimson_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5569,8 +6166,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -5578,12 +6175,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -5788,12 +6385,12 @@ namespace MiNET.Blocks
 
 	public partial class CutCopperSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5801,8 +6398,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -5810,12 +6407,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -5939,7 +6536,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cyan_carpet";
 	} // class
 
-	public partial class CyanGlazedTerracotta
+	public partial class CyanConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:cyan_concrete";
+	} // class
+
+	public partial class CyanConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:cyan_concrete_powder";
+	} // class
+
+	public partial class CyanGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -5970,6 +6577,26 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class CyanShulkerBox : Block
+	{
+		public override string Id => "minecraft:cyan_shulker_box";
+	} // class
+
+	public partial class CyanStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:cyan_stained_glass";
+	} // class
+
+	public partial class CyanStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:cyan_stained_glass_pane";
+	} // class
+
+	public partial class CyanTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:cyan_terracotta";
 	} // class
 
 	public partial class CyanWool : WoolBase
@@ -6072,6 +6699,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+	} // class
+
+	public partial class DarkOakDoubleSlab : DoubleWoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:dark_oak_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -6186,6 +6846,47 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class DarkOakLeaves : LeavesBase
+	{
+		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
+		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
+
+		public override string Id => "minecraft:dark_oak_leaves";
+
+		[StateBit]
+		public override bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
+
+		[StateBit]
+		public override bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "persistent_bit":
+						NotifyStateUpdate(_persistentBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "update_bit":
+						NotifyStateUpdate(_updateBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _persistentBit;
+			yield return _updateBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _persistentBit, _updateBit);
+		} // method
+	} // class
+
 	public partial class DarkOakLog : LogBase
 	{
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
@@ -6219,6 +6920,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class DarkOakPlanks : PlanksBase
+	{
+		public override string Id => "minecraft:dark_oak_planks";
+	} // class
+
 	public partial class DarkOakPressurePlate : Block
 	{
 		private readonly BlockStateInt _redstoneSignal = new BlockStateInt() { Name = "redstone_signal", Value = 0 };
@@ -6249,6 +6955,72 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _redstoneSignal);
+		} // method
+	} // class
+
+	public partial class DarkOakSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:dark_oak_sapling";
+
+		[StateBit]
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+	} // class
+
+	public partial class DarkOakSlab : WoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:dark_oak_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -6339,6 +7111,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _direction, _openBit, _upsideDownBit);
+		} // method
+	} // class
+
+	public partial class DarkOakWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:dark_oak_wood";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
 		} // method
 	} // class
 
@@ -6520,9 +7325,75 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_brain_coral";
 	} // class
 
+	public partial class DeadBrainCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_brain_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
 	public partial class DeadBubbleCoral : Block
 	{
 		public override string Id => "minecraft:dead_bubble_coral";
+	} // class
+
+	public partial class DeadBubbleCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_bubble_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class DeadFireCoral : Block
@@ -6530,14 +7401,113 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_fire_coral";
 	} // class
 
+	public partial class DeadFireCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_fire_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
 	public partial class DeadHornCoral : Block
 	{
 		public override string Id => "minecraft:dead_horn_coral";
 	} // class
 
+	public partial class DeadHornCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_horn_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
 	public partial class DeadTubeCoral : Block
 	{
 		public override string Id => "minecraft:dead_tube_coral";
+	} // class
+
+	public partial class DeadTubeCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 0 };
+
+		public override string Id => "minecraft:dead_tube_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class Deadbush : Block
@@ -6613,12 +7583,12 @@ namespace MiNET.Blocks
 
 	public partial class DeepslateBrickDoubleSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:deepslate_brick_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6626,8 +7596,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -6635,23 +7605,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
 	public partial class DeepslateBrickSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:deepslate_brick_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6659,8 +7629,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -6668,12 +7638,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -6830,12 +7800,12 @@ namespace MiNET.Blocks
 
 	public partial class DeepslateTileDoubleSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:deepslate_tile_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6843,8 +7813,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -6852,23 +7822,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
 	public partial class DeepslateTileSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:deepslate_tile_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6876,8 +7846,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -6885,12 +7855,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -7061,6 +8031,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:diamond_ore";
 	} // class
 
+	public partial class Diorite : Block
+	{
+		public override string Id => "minecraft:diorite";
+	} // class
+
 	public partial class DioriteStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -7183,12 +8158,12 @@ namespace MiNET.Blocks
 
 	public partial class DoubleCutCopperSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:double_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7196,8 +8171,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -7205,12 +8180,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -7257,16 +8232,16 @@ namespace MiNET.Blocks
 
 	public partial class DoubleStoneBlockSlab : DoubleSlabBase
 	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 		private readonly BlockStateString _stoneSlabType = new BlockStateString() { Name = "stone_slab_type", Value = "smooth_stone" };
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
 
 		public override string Id => "minecraft:double_stone_block_slab";
 
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
 		[StateEnum("brick", "cobblestone", "nether_brick", "quartz", "sandstone", "smooth_stone", "stone_brick", "wood")]
 		public string StoneSlabType { get => _stoneSlabType.Value; set => NotifyStateUpdate(_stoneSlabType, value); }
-
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7274,11 +8249,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
 					case BlockStateString s when s.Name == "stone_slab_type":
 						NotifyStateUpdate(_stoneSlabType, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -7286,28 +8261,28 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
+			yield return _verticalHalf;
 			yield return _stoneSlabType;
-			yield return _topSlotBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _stoneSlabType, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType);
 		} // method
 	} // class
 
 	public partial class DoubleStoneBlockSlab2 : DoubleSlabBase
 	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 		private readonly BlockStateString _stoneSlabType2 = new BlockStateString() { Name = "stone_slab_type_2", Value = "red_sandstone" };
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
 
 		public override string Id => "minecraft:double_stone_block_slab2";
 
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
 		[StateEnum("mossy_cobblestone", "prismarine_brick", "prismarine_dark", "prismarine_rough", "purpur", "red_nether_brick", "red_sandstone", "smooth_sandstone")]
 		public string StoneSlabType2 { get => _stoneSlabType2.Value; set => NotifyStateUpdate(_stoneSlabType2, value); }
-
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7315,11 +8290,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
 					case BlockStateString s when s.Name == "stone_slab_type_2":
 						NotifyStateUpdate(_stoneSlabType2, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -7327,28 +8302,28 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
+			yield return _verticalHalf;
 			yield return _stoneSlabType2;
-			yield return _topSlotBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _stoneSlabType2, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType2);
 		} // method
 	} // class
 
 	public partial class DoubleStoneBlockSlab3 : DoubleSlabBase
 	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 		private readonly BlockStateString _stoneSlabType3 = new BlockStateString() { Name = "stone_slab_type_3", Value = "end_stone_brick" };
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
 
 		public override string Id => "minecraft:double_stone_block_slab3";
 
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
 		[StateEnum("andesite", "diorite", "end_stone_brick", "granite", "polished_andesite", "polished_diorite", "polished_granite", "smooth_red_sandstone")]
 		public string StoneSlabType3 { get => _stoneSlabType3.Value; set => NotifyStateUpdate(_stoneSlabType3, value); }
-
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7356,11 +8331,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
 					case BlockStateString s when s.Name == "stone_slab_type_3":
 						NotifyStateUpdate(_stoneSlabType3, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -7368,95 +8343,54 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
+			yield return _verticalHalf;
 			yield return _stoneSlabType3;
-			yield return _topSlotBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _stoneSlabType3, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType3);
 		} // method
 	} // class
 
 	public partial class DoubleStoneBlockSlab4 : DoubleSlabBase
 	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 		private readonly BlockStateString _stoneSlabType4 = new BlockStateString() { Name = "stone_slab_type_4", Value = "mossy_stone_brick" };
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
 
 		public override string Id => "minecraft:double_stone_block_slab4";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		[StateEnum("cut_red_sandstone", "cut_sandstone", "mossy_stone_brick", "smooth_quartz", "stone")]
 		public string StoneSlabType4 { get => _stoneSlabType4.Value; set => NotifyStateUpdate(_stoneSlabType4, value); }
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
-
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
 			foreach (var state in states)
 			{
 				switch (state)
 				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
 					case BlockStateString s when s.Name == "stone_slab_type_4":
 						NotifyStateUpdate(_stoneSlabType4, s.Value);
 						break;
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
-						break;
 				} // switch
 			} // foreach
 		} // method
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
+			yield return _verticalHalf;
 			yield return _stoneSlabType4;
-			yield return _topSlotBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _stoneSlabType4, _topSlotBit);
-		} // method
-	} // class
-
-	public partial class DoubleWoodenSlab : DoubleSlabBase
-	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
-		private readonly BlockStateString _woodType = new BlockStateString() { Name = "wood_type", Value = "oak" };
-
-		public override string Id => "minecraft:double_wooden_slab";
-
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
-
-		[StateEnum("acacia", "birch", "dark_oak", "jungle", "oak", "spruce")]
-		public string WoodType { get => _woodType.Value; set => NotifyStateUpdate(_woodType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
-						break;
-					case BlockStateString s when s.Name == "wood_type":
-						NotifyStateUpdate(_woodType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _topSlotBit;
-			yield return _woodType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _topSlotBit, _woodType);
+			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType4);
 		} // method
 	} // class
 
@@ -8184,16 +9118,16 @@ namespace MiNET.Blocks
 
 	public partial class EndPortalFrame : Block
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
 		private readonly BlockStateByte _endPortalEyeBit = new BlockStateByte() { Name = "end_portal_eye_bit", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:end_portal_frame";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
-
 		[StateBit]
 		public bool EndPortalEyeBit { get => Convert.ToBoolean(_endPortalEyeBit.Value); set => NotifyStateUpdate(_endPortalEyeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8201,11 +9135,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == "end_portal_eye_bit":
 						NotifyStateUpdate(_endPortalEyeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -8213,13 +9147,13 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _endPortalEyeBit;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _endPortalEyeBit);
+			return HashCode.Combine(Id, _endPortalEyeBit, _cardinalDirection);
 		} // method
 	} // class
 
@@ -8263,12 +9197,12 @@ namespace MiNET.Blocks
 
 	public partial class EnderChest
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "north" };
 
 		public override string Id => "minecraft:ender_chest";
 
-		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8276,8 +9210,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -8285,18 +9219,175 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
+	} // class
+
+	public partial class ExposedChiseledCopper : Block
+	{
+		public override string Id => "minecraft:exposed_chiseled_copper";
 	} // class
 
 	public partial class ExposedCopper : Block
 	{
 		public override string Id => "minecraft:exposed_copper";
+	} // class
+
+	public partial class ExposedCopperBulb : Block
+	{
+		private readonly BlockStateByte _lit = new BlockStateByte() { Name = "lit", Value = 0 };
+		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
+
+		public override string Id => "minecraft:exposed_copper_bulb";
+
+		[StateBit]
+		public bool Lit { get => Convert.ToBoolean(_lit.Value); set => NotifyStateUpdate(_lit, value); }
+
+		[StateBit]
+		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "lit":
+						NotifyStateUpdate(_lit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "powered_bit":
+						NotifyStateUpdate(_poweredBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _lit;
+			yield return _poweredBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _lit, _poweredBit);
+		} // method
+	} // class
+
+	public partial class ExposedCopperDoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _doorHingeBit = new BlockStateByte() { Name = "door_hinge_bit", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upperBlockBit = new BlockStateByte() { Name = "upper_block_bit", Value = 0 };
+
+		public override string Id => "minecraft:exposed_copper_door";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "door_hinge_bit":
+						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upper_block_bit":
+						NotifyStateUpdate(_upperBlockBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _doorHingeBit;
+			yield return _openBit;
+			yield return _upperBlockBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+	} // class
+
+	public partial class ExposedCopperGrate : Block
+	{
+		public override string Id => "minecraft:exposed_copper_grate";
+	} // class
+
+	public partial class ExposedCopperTrapdoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+
+		public override string Id => "minecraft:exposed_copper_trapdoor";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _openBit;
+			yield return _upsideDownBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _openBit, _upsideDownBit);
+		} // method
 	} // class
 
 	public partial class ExposedCutCopper : Block
@@ -8306,12 +9397,12 @@ namespace MiNET.Blocks
 
 	public partial class ExposedCutCopperSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:exposed_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8319,8 +9410,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -8328,12 +9419,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -8380,12 +9471,12 @@ namespace MiNET.Blocks
 
 	public partial class ExposedDoubleCutCopperSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:exposed_double_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8393,8 +9484,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -8402,12 +9493,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -8529,6 +9620,39 @@ namespace MiNET.Blocks
 	public partial class FireCoral : Block
 	{
 		public override string Id => "minecraft:fire_coral";
+	} // class
+
+	public partial class FireCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:fire_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class FletchingTable : Block
@@ -8729,12 +9853,12 @@ namespace MiNET.Blocks
 
 	public partial class Furnace
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:furnace";
 
-		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8742,8 +9866,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -8751,12 +9875,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -8918,6 +10042,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class Granite : Block
+	{
+		public override string Id => "minecraft:granite";
+	} // class
+
 	public partial class GraniteStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -8959,9 +10088,9 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Grass : Block
+	public partial class GrassBlock : Block
 	{
-		public override string Id => "minecraft:grass";
+		public override string Id => "minecraft:grass_block";
 	} // class
 
 	public partial class GrassPath : Block
@@ -9053,7 +10182,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:gray_carpet";
 	} // class
 
-	public partial class GrayGlazedTerracotta
+	public partial class GrayConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:gray_concrete";
+	} // class
+
+	public partial class GrayConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:gray_concrete_powder";
+	} // class
+
+	public partial class GrayGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -9084,6 +10223,26 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class GrayShulkerBox : Block
+	{
+		public override string Id => "minecraft:gray_shulker_box";
+	} // class
+
+	public partial class GrayStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:gray_stained_glass";
+	} // class
+
+	public partial class GrayStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:gray_stained_glass_pane";
+	} // class
+
+	public partial class GrayTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:gray_terracotta";
 	} // class
 
 	public partial class GrayWool : WoolBase
@@ -9170,7 +10329,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:green_carpet";
 	} // class
 
-	public partial class GreenGlazedTerracotta
+	public partial class GreenConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:green_concrete";
+	} // class
+
+	public partial class GreenConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:green_concrete_powder";
+	} // class
+
+	public partial class GreenGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -9201,6 +10370,26 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class GreenShulkerBox : Block
+	{
+		public override string Id => "minecraft:green_shulker_box";
+	} // class
+
+	public partial class GreenStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:green_stained_glass";
+	} // class
+
+	public partial class GreenStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:green_stained_glass_pane";
+	} // class
+
+	public partial class GreenTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:green_terracotta";
 	} // class
 
 	public partial class GreenWool : WoolBase
@@ -9254,6 +10443,46 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:hanging_roots";
 	} // class
 
+	public partial class HardBlackStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_black_stained_glass";
+	} // class
+
+	public partial class HardBlackStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_black_stained_glass_pane";
+	} // class
+
+	public partial class HardBlueStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_blue_stained_glass";
+	} // class
+
+	public partial class HardBlueStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_blue_stained_glass_pane";
+	} // class
+
+	public partial class HardBrownStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_brown_stained_glass";
+	} // class
+
+	public partial class HardBrownStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_brown_stained_glass_pane";
+	} // class
+
+	public partial class HardCyanStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_cyan_stained_glass";
+	} // class
+
+	public partial class HardCyanStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_cyan_stained_glass_pane";
+	} // class
+
 	public partial class HardGlass : Block
 	{
 		public override string Id => "minecraft:hard_glass";
@@ -9264,70 +10493,124 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:hard_glass_pane";
 	} // class
 
-	public partial class HardStainedGlass : Block
+	public partial class HardGrayStainedGlass : StainedGlassBase
 	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
-
-		public override string Id => "minecraft:hard_stained_glass";
-
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
-		} // method
+		public override string Id => "minecraft:hard_gray_stained_glass";
 	} // class
 
-	public partial class HardStainedGlassPane : Block
+	public partial class HardGrayStainedGlassPane : StainedGlassPaneBase
 	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
+		public override string Id => "minecraft:hard_gray_stained_glass_pane";
+	} // class
 
-		public override string Id => "minecraft:hard_stained_glass_pane";
+	public partial class HardGreenStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_green_stained_glass";
+	} // class
 
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
+	public partial class HardGreenStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_green_stained_glass_pane";
+	} // class
 
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
+	public partial class HardLightBlueStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_light_blue_stained_glass";
+	} // class
 
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
+	public partial class HardLightBlueStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_light_blue_stained_glass_pane";
+	} // class
 
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
-		} // method
+	public partial class HardLightGrayStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_light_gray_stained_glass";
+	} // class
+
+	public partial class HardLightGrayStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_light_gray_stained_glass_pane";
+	} // class
+
+	public partial class HardLimeStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_lime_stained_glass";
+	} // class
+
+	public partial class HardLimeStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_lime_stained_glass_pane";
+	} // class
+
+	public partial class HardMagentaStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_magenta_stained_glass";
+	} // class
+
+	public partial class HardMagentaStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_magenta_stained_glass_pane";
+	} // class
+
+	public partial class HardOrangeStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_orange_stained_glass";
+	} // class
+
+	public partial class HardOrangeStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_orange_stained_glass_pane";
+	} // class
+
+	public partial class HardPinkStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_pink_stained_glass";
+	} // class
+
+	public partial class HardPinkStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_pink_stained_glass_pane";
+	} // class
+
+	public partial class HardPurpleStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_purple_stained_glass";
+	} // class
+
+	public partial class HardPurpleStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_purple_stained_glass_pane";
+	} // class
+
+	public partial class HardRedStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_red_stained_glass";
+	} // class
+
+	public partial class HardRedStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_red_stained_glass_pane";
+	} // class
+
+	public partial class HardWhiteStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_white_stained_glass";
+	} // class
+
+	public partial class HardWhiteStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_white_stained_glass_pane";
+	} // class
+
+	public partial class HardYellowStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:hard_yellow_stained_glass";
+	} // class
+
+	public partial class HardYellowStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:hard_yellow_stained_glass_pane";
 	} // class
 
 	public partial class HardenedClay : Block
@@ -9374,6 +10657,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _deprecated, _pillarAxis);
 		} // method
+	} // class
+
+	public partial class HeavyCore : Block
+	{
+		public override string Id => "minecraft:heavy_core";
 	} // class
 
 	public partial class HeavyWeightedPressurePlate : Block
@@ -9463,6 +10751,39 @@ namespace MiNET.Blocks
 	public partial class HornCoral : Block
 	{
 		public override string Id => "minecraft:horn_coral";
+	} // class
+
+	public partial class HornCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:horn_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class Ice : Block
@@ -9783,6 +11104,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class JungleDoubleSlab : DoubleWoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:jungle_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class JungleFence : Block
 	{
 		public override string Id => "minecraft:jungle_fence";
@@ -9894,6 +11248,47 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class JungleLeaves : LeavesBase
+	{
+		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
+		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
+
+		public override string Id => "minecraft:jungle_leaves";
+
+		[StateBit]
+		public override bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
+
+		[StateBit]
+		public override bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "persistent_bit":
+						NotifyStateUpdate(_persistentBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "update_bit":
+						NotifyStateUpdate(_updateBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _persistentBit;
+			yield return _updateBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _persistentBit, _updateBit);
+		} // method
+	} // class
+
 	public partial class JungleLog : LogBase
 	{
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
@@ -9927,6 +11322,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class JunglePlanks : PlanksBase
+	{
+		public override string Id => "minecraft:jungle_planks";
+	} // class
+
 	public partial class JunglePressurePlate : Block
 	{
 		private readonly BlockStateInt _redstoneSignal = new BlockStateInt() { Name = "redstone_signal", Value = 0 };
@@ -9957,6 +11357,72 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _redstoneSignal);
+		} // method
+	} // class
+
+	public partial class JungleSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:jungle_sapling";
+
+		[StateBit]
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+	} // class
+
+	public partial class JungleSlab : WoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:jungle_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -10116,6 +11582,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class JungleWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:jungle_wood";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
 	public partial class Kelp : Block
 	{
 		private readonly BlockStateInt _kelpAge = new BlockStateInt() { Name = "kelp_age", Value = 0 };
@@ -10227,12 +11726,12 @@ namespace MiNET.Blocks
 
 	public partial class LargeAmethystBud : Block
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _blockFace = new BlockStateString() { Name = "minecraft:block_face", Value = "down" };
 
 		public override string Id => "minecraft:large_amethyst_bud";
 
-		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("down", "east", "north", "south", "up", "west")]
+		public string BlockFace { get => _blockFace.Value; set => NotifyStateUpdate(_blockFace, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10240,8 +11739,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:block_face":
+						NotifyStateUpdate(_blockFace, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -10249,12 +11748,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _blockFace;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _blockFace);
 		} // method
 	} // class
 
@@ -10291,113 +11790,15 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Leaves : Block
-	{
-		private readonly BlockStateString _oldLeafType = new BlockStateString() { Name = "old_leaf_type", Value = "oak" };
-		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
-		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
-
-		public override string Id => "minecraft:leaves";
-
-		[StateEnum("birch", "jungle", "oak", "spruce")]
-		public string OldLeafType { get => _oldLeafType.Value; set => NotifyStateUpdate(_oldLeafType, value); }
-
-		[StateBit]
-		public bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
-
-		[StateBit]
-		public bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "old_leaf_type":
-						NotifyStateUpdate(_oldLeafType, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "persistent_bit":
-						NotifyStateUpdate(_persistentBit, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "update_bit":
-						NotifyStateUpdate(_updateBit, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _oldLeafType;
-			yield return _persistentBit;
-			yield return _updateBit;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _oldLeafType, _persistentBit, _updateBit);
-		} // method
-	} // class
-
-	public partial class Leaves2 : Block
-	{
-		private readonly BlockStateString _newLeafType = new BlockStateString() { Name = "new_leaf_type", Value = "acacia" };
-		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
-		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
-
-		public override string Id => "minecraft:leaves2";
-
-		[StateEnum("acacia", "dark_oak")]
-		public string NewLeafType { get => _newLeafType.Value; set => NotifyStateUpdate(_newLeafType, value); }
-
-		[StateBit]
-		public bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
-
-		[StateBit]
-		public bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "new_leaf_type":
-						NotifyStateUpdate(_newLeafType, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "persistent_bit":
-						NotifyStateUpdate(_persistentBit, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "update_bit":
-						NotifyStateUpdate(_updateBit, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _newLeafType;
-			yield return _persistentBit;
-			yield return _updateBit;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _newLeafType, _persistentBit, _updateBit);
-		} // method
-	} // class
-
 	public partial class Lectern : Block
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
 
 		public override string Id => "minecraft:lectern";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		[StateBit]
 		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
@@ -10408,8 +11809,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == "powered_bit":
 						NotifyStateUpdate(_poweredBit, s.Value);
@@ -10420,13 +11821,13 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
+			yield return _cardinalDirection;
 			yield return _poweredBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _poweredBit);
+			return HashCode.Combine(Id, _cardinalDirection, _poweredBit);
 		} // method
 	} // class
 
@@ -10583,7 +11984,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:light_blue_carpet";
 	} // class
 
-	public partial class LightBlueGlazedTerracotta
+	public partial class LightBlueConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:light_blue_concrete";
+	} // class
+
+	public partial class LightBlueConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:light_blue_concrete_powder";
+	} // class
+
+	public partial class LightBlueGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -10614,6 +12025,26 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class LightBlueShulkerBox : Block
+	{
+		public override string Id => "minecraft:light_blue_shulker_box";
+	} // class
+
+	public partial class LightBlueStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:light_blue_stained_glass";
+	} // class
+
+	public partial class LightBlueStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:light_blue_stained_glass_pane";
+	} // class
+
+	public partial class LightBlueTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:light_blue_terracotta";
 	} // class
 
 	public partial class LightBlueWool : WoolBase
@@ -10700,6 +12131,36 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:light_gray_carpet";
 	} // class
 
+	public partial class LightGrayConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:light_gray_concrete";
+	} // class
+
+	public partial class LightGrayConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:light_gray_concrete_powder";
+	} // class
+
+	public partial class LightGrayShulkerBox : Block
+	{
+		public override string Id => "minecraft:light_gray_shulker_box";
+	} // class
+
+	public partial class LightGrayStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:light_gray_stained_glass";
+	} // class
+
+	public partial class LightGrayStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:light_gray_stained_glass_pane";
+	} // class
+
+	public partial class LightGrayTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:light_gray_terracotta";
+	} // class
+
 	public partial class LightGrayWool : WoolBase
 	{
 		public override string Id => "minecraft:light_gray_wool";
@@ -10769,6 +12230,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class LilyOfTheValley : Block
+	{
+		public override string Id => "minecraft:lily_of_the_valley";
 	} // class
 
 	public partial class LimeCandle : Block
@@ -10850,7 +12316,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:lime_carpet";
 	} // class
 
-	public partial class LimeGlazedTerracotta
+	public partial class LimeConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:lime_concrete";
+	} // class
+
+	public partial class LimeConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:lime_concrete_powder";
+	} // class
+
+	public partial class LimeGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -10883,6 +12359,26 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class LimeShulkerBox : Block
+	{
+		public override string Id => "minecraft:lime_shulker_box";
+	} // class
+
+	public partial class LimeStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:lime_stained_glass";
+	} // class
+
+	public partial class LimeStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:lime_stained_glass_pane";
+	} // class
+
+	public partial class LimeTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:lime_terracotta";
+	} // class
+
 	public partial class LimeWool : WoolBase
 	{
 		public override string Id => "minecraft:lime_wool";
@@ -10890,12 +12386,12 @@ namespace MiNET.Blocks
 
 	public partial class LitBlastFurnace
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:lit_blast_furnace";
 
-		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10903,8 +12399,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -10912,12 +12408,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -10928,12 +12424,12 @@ namespace MiNET.Blocks
 
 	public partial class LitFurnace
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:lit_furnace";
 
-		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10941,8 +12437,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -10950,12 +12446,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -11004,12 +12500,12 @@ namespace MiNET.Blocks
 
 	public partial class LitSmoker : Block
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:lit_smoker";
 
-		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11017,8 +12513,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -11026,12 +12522,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -11152,7 +12648,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:magenta_carpet";
 	} // class
 
-	public partial class MagentaGlazedTerracotta
+	public partial class MagentaConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:magenta_concrete";
+	} // class
+
+	public partial class MagentaConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:magenta_concrete_powder";
+	} // class
+
+	public partial class MagentaGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -11183,6 +12689,26 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class MagentaShulkerBox : Block
+	{
+		public override string Id => "minecraft:magenta_shulker_box";
+	} // class
+
+	public partial class MagentaStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:magenta_stained_glass";
+	} // class
+
+	public partial class MagentaStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:magenta_stained_glass_pane";
+	} // class
+
+	public partial class MagentaTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:magenta_terracotta";
 	} // class
 
 	public partial class MagentaWool : WoolBase
@@ -11293,14 +12819,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MangroveDoubleSlab : DoubleSlabBase
+	public partial class MangroveDoubleSlab : DoubleWoodenSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:mangrove_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11308,8 +12834,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -11317,12 +12843,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -11437,7 +12963,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MangroveLeaves : Block
+	public partial class MangroveLeaves : LeavesBase
 	{
 		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
 		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
@@ -11445,10 +12971,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mangrove_leaves";
 
 		[StateBit]
-		public bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
+		public override bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
 
 		[StateBit]
-		public bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
+		public override bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11511,7 +13037,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MangrovePlanks : Block
+	public partial class MangrovePlanks : PlanksBase
 	{
 		public override string Id => "minecraft:mangrove_planks";
 	} // class
@@ -11595,14 +13121,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mangrove_roots";
 	} // class
 
-	public partial class MangroveSlab : SlabBase
+	public partial class MangroveSlab : WoodenSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:mangrove_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11610,8 +13136,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -11619,12 +13145,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -11827,12 +13353,12 @@ namespace MiNET.Blocks
 
 	public partial class MediumAmethystBud : Block
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _blockFace = new BlockStateString() { Name = "minecraft:block_face", Value = "down" };
 
 		public override string Id => "minecraft:medium_amethyst_bud";
 
-		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("down", "east", "north", "south", "up", "west")]
+		public string BlockFace { get => _blockFace.Value; set => NotifyStateUpdate(_blockFace, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11840,8 +13366,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:block_face":
+						NotifyStateUpdate(_blockFace, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -11849,12 +13375,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _blockFace;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _blockFace);
 		} // method
 	} // class
 
@@ -12051,12 +13577,12 @@ namespace MiNET.Blocks
 
 	public partial class MudBrickDoubleSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:mud_brick_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12064,8 +13590,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -12073,23 +13599,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
 	public partial class MudBrickSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:mud_brick_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12097,8 +13623,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -12106,12 +13632,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -12424,6 +13950,39 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:noteblock";
 	} // class
 
+	public partial class OakDoubleSlab : DoubleWoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:oak_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class OakFence : Block
 	{
 		public override string Id => "minecraft:oak_fence";
@@ -12486,6 +14045,47 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class OakLeaves : LeavesBase
+	{
+		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
+		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
+
+		public override string Id => "minecraft:oak_leaves";
+
+		[StateBit]
+		public override bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
+
+		[StateBit]
+		public override bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "persistent_bit":
+						NotifyStateUpdate(_persistentBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "update_bit":
+						NotifyStateUpdate(_updateBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _persistentBit;
+			yield return _updateBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _persistentBit, _updateBit);
+		} // method
+	} // class
+
 	public partial class OakLog : LogBase
 	{
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
@@ -12516,6 +14116,77 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
+	public partial class OakPlanks : PlanksBase
+	{
+		public override string Id => "minecraft:oak_planks";
+	} // class
+
+	public partial class OakSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:oak_sapling";
+
+		[StateBit]
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+	} // class
+
+	public partial class OakSlab : WoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:oak_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -12560,15 +14231,48 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class OakWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:oak_wood";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
 	public partial class Observer : Block
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _facingDirection = new BlockStateString() { Name = "minecraft:facing_direction", Value = "down" };
 		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
 
 		public override string Id => "minecraft:observer";
 
-		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("down", "east", "north", "south", "up", "west")]
+		public string FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateBit]
 		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
@@ -12579,7 +14283,7 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
+					case BlockStateString s when s.Name == "minecraft:facing_direction":
 						NotifyStateUpdate(_facingDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == "powered_bit":
@@ -12718,7 +14422,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:orange_carpet";
 	} // class
 
-	public partial class OrangeGlazedTerracotta
+	public partial class OrangeConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:orange_concrete";
+	} // class
+
+	public partial class OrangeConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:orange_concrete_powder";
+	} // class
+
+	public partial class OrangeGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -12751,14 +14465,201 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class OrangeShulkerBox : Block
+	{
+		public override string Id => "minecraft:orange_shulker_box";
+	} // class
+
+	public partial class OrangeStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:orange_stained_glass";
+	} // class
+
+	public partial class OrangeStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:orange_stained_glass_pane";
+	} // class
+
+	public partial class OrangeTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:orange_terracotta";
+	} // class
+
+	public partial class OrangeTulip : Block
+	{
+		public override string Id => "minecraft:orange_tulip";
+	} // class
+
 	public partial class OrangeWool : WoolBase
 	{
 		public override string Id => "minecraft:orange_wool";
 	} // class
 
+	public partial class OxeyeDaisy : Block
+	{
+		public override string Id => "minecraft:oxeye_daisy";
+	} // class
+
+	public partial class OxidizedChiseledCopper : Block
+	{
+		public override string Id => "minecraft:oxidized_chiseled_copper";
+	} // class
+
 	public partial class OxidizedCopper : Block
 	{
 		public override string Id => "minecraft:oxidized_copper";
+	} // class
+
+	public partial class OxidizedCopperBulb : Block
+	{
+		private readonly BlockStateByte _lit = new BlockStateByte() { Name = "lit", Value = 0 };
+		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
+
+		public override string Id => "minecraft:oxidized_copper_bulb";
+
+		[StateBit]
+		public bool Lit { get => Convert.ToBoolean(_lit.Value); set => NotifyStateUpdate(_lit, value); }
+
+		[StateBit]
+		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "lit":
+						NotifyStateUpdate(_lit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "powered_bit":
+						NotifyStateUpdate(_poweredBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _lit;
+			yield return _poweredBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _lit, _poweredBit);
+		} // method
+	} // class
+
+	public partial class OxidizedCopperDoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _doorHingeBit = new BlockStateByte() { Name = "door_hinge_bit", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upperBlockBit = new BlockStateByte() { Name = "upper_block_bit", Value = 0 };
+
+		public override string Id => "minecraft:oxidized_copper_door";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "door_hinge_bit":
+						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upper_block_bit":
+						NotifyStateUpdate(_upperBlockBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _doorHingeBit;
+			yield return _openBit;
+			yield return _upperBlockBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+	} // class
+
+	public partial class OxidizedCopperGrate : Block
+	{
+		public override string Id => "minecraft:oxidized_copper_grate";
+	} // class
+
+	public partial class OxidizedCopperTrapdoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+
+		public override string Id => "minecraft:oxidized_copper_trapdoor";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _openBit;
+			yield return _upsideDownBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _openBit, _upsideDownBit);
+		} // method
 	} // class
 
 	public partial class OxidizedCutCopper : Block
@@ -12768,12 +14669,12 @@ namespace MiNET.Blocks
 
 	public partial class OxidizedCutCopperSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:oxidized_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12781,8 +14682,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -12790,12 +14691,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -12842,12 +14743,12 @@ namespace MiNET.Blocks
 
 	public partial class OxidizedDoubleCutCopperSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:oxidized_double_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12855,8 +14756,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -12864,12 +14765,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -12995,7 +14896,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:pink_carpet";
 	} // class
 
-	public partial class PinkGlazedTerracotta
+	public partial class PinkConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:pink_concrete";
+	} // class
+
+	public partial class PinkConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:pink_concrete_powder";
+	} // class
+
+	public partial class PinkGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -13030,16 +14941,16 @@ namespace MiNET.Blocks
 
 	public partial class PinkPetals : Block
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
 		private readonly BlockStateInt _growth = new BlockStateInt() { Name = "growth", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:pink_petals";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
-
 		[StateRange(0, 7)]
 		public int Growth { get => _growth.Value; set => NotifyStateUpdate(_growth, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13047,11 +14958,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateInt s when s.Name == "growth":
 						NotifyStateUpdate(_growth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -13059,14 +14970,39 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _growth;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _growth);
+			return HashCode.Combine(Id, _growth, _cardinalDirection);
 		} // method
+	} // class
+
+	public partial class PinkShulkerBox : Block
+	{
+		public override string Id => "minecraft:pink_shulker_box";
+	} // class
+
+	public partial class PinkStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:pink_stained_glass";
+	} // class
+
+	public partial class PinkStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:pink_stained_glass_pane";
+	} // class
+
+	public partial class PinkTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:pink_terracotta";
+	} // class
+
+	public partial class PinkTulip : Block
+	{
+		public override string Id => "minecraft:pink_tulip";
 	} // class
 
 	public partial class PinkWool : WoolBase
@@ -13214,39 +15150,6 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Planks : Block
-	{
-		private readonly BlockStateString _woodType = new BlockStateString() { Name = "wood_type", Value = "oak" };
-
-		public override string Id => "minecraft:planks";
-
-		[StateEnum("acacia", "birch", "dark_oak", "jungle", "oak", "spruce")]
-		public string WoodType { get => _woodType.Value; set => NotifyStateUpdate(_woodType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "wood_type":
-						NotifyStateUpdate(_woodType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _woodType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _woodType);
-		} // method
-	} // class
-
 	public partial class Podzol : Block
 	{
 		public override string Id => "minecraft:podzol";
@@ -13291,6 +15194,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _dripstoneThickness, _hanging);
 		} // method
+	} // class
+
+	public partial class PolishedAndesite : Block
+	{
+		public override string Id => "minecraft:polished_andesite";
 	} // class
 
 	public partial class PolishedAndesiteStairs
@@ -13374,12 +15282,12 @@ namespace MiNET.Blocks
 
 	public partial class PolishedBlackstoneBrickDoubleSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:polished_blackstone_brick_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13387,8 +15295,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -13396,23 +15304,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
 	public partial class PolishedBlackstoneBrickSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:polished_blackstone_brick_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13420,8 +15328,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -13429,12 +15337,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -13592,12 +15500,12 @@ namespace MiNET.Blocks
 
 	public partial class PolishedBlackstoneDoubleSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:polished_blackstone_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13605,8 +15513,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -13614,12 +15522,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -13658,12 +15566,12 @@ namespace MiNET.Blocks
 
 	public partial class PolishedBlackstoneSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:polished_blackstone_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13671,8 +15579,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -13680,12 +15588,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -13802,12 +15710,12 @@ namespace MiNET.Blocks
 
 	public partial class PolishedDeepslateDoubleSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:polished_deepslate_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13815,8 +15723,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -13824,23 +15732,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
 	public partial class PolishedDeepslateSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:polished_deepslate_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13848,8 +15756,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -13857,12 +15765,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -13972,6 +15880,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class PolishedDiorite : Block
+	{
+		public override string Id => "minecraft:polished_diorite";
+	} // class
+
 	public partial class PolishedDioriteStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -14013,6 +15926,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class PolishedGranite : Block
+	{
+		public override string Id => "minecraft:polished_granite";
+	} // class
+
 	public partial class PolishedGraniteStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -14052,6 +15970,188 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
 		} // method
+	} // class
+
+	public partial class PolishedTuff : Block
+	{
+		public override string Id => "minecraft:polished_tuff";
+	} // class
+
+	public partial class PolishedTuffDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:polished_tuff_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class PolishedTuffSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:polished_tuff_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class PolishedTuffStairs : Block
+	{
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+		private readonly BlockStateInt _weirdoDirection = new BlockStateInt() { Name = "weirdo_direction", Value = 0 };
+
+		public override string Id => "minecraft:polished_tuff_stairs";
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		[StateRange(0, 3)]
+		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+					case BlockStateInt s when s.Name == "weirdo_direction":
+						NotifyStateUpdate(_weirdoDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _upsideDownBit;
+			yield return _weirdoDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class PolishedTuffWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 0 };
+
+		public override string Id => "minecraft:polished_tuff_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
+	} // class
+
+	public partial class Poppy : Block
+	{
+		public override string Id => "minecraft:poppy";
 	} // class
 
 	public partial class Portal : Block
@@ -14127,14 +16227,14 @@ namespace MiNET.Blocks
 
 	public partial class PoweredComparator
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 		private readonly BlockStateByte _outputLitBit = new BlockStateByte() { Name = "output_lit_bit", Value = 0 };
 		private readonly BlockStateByte _outputSubtractBit = new BlockStateByte() { Name = "output_subtract_bit", Value = 0 };
 
 		public override string Id => "minecraft:powered_comparator";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		[StateBit]
 		public bool OutputLitBit { get => Convert.ToBoolean(_outputLitBit.Value); set => NotifyStateUpdate(_outputLitBit, value); }
@@ -14148,8 +16248,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == "output_lit_bit":
 						NotifyStateUpdate(_outputLitBit, s.Value);
@@ -14163,26 +16263,26 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
+			yield return _cardinalDirection;
 			yield return _outputLitBit;
 			yield return _outputSubtractBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _outputLitBit, _outputSubtractBit);
+			return HashCode.Combine(Id, _cardinalDirection, _outputLitBit, _outputSubtractBit);
 		} // method
 	} // class
 
 	public partial class PoweredRepeater
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 		private readonly BlockStateInt _repeaterDelay = new BlockStateInt() { Name = "repeater_delay", Value = 0 };
 
 		public override string Id => "minecraft:powered_repeater";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		[StateRange(0, 3)]
 		public int RepeaterDelay { get => _repeaterDelay.Value; set => NotifyStateUpdate(_repeaterDelay, value); }
@@ -14193,8 +16293,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateInt s when s.Name == "repeater_delay":
 						NotifyStateUpdate(_repeaterDelay, s.Value);
@@ -14205,13 +16305,13 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
+			yield return _cardinalDirection;
 			yield return _repeaterDelay;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _repeaterDelay);
+			return HashCode.Combine(Id, _cardinalDirection, _repeaterDelay);
 		} // method
 	} // class
 
@@ -14483,7 +16583,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:purple_carpet";
 	} // class
 
-	public partial class PurpleGlazedTerracotta
+	public partial class PurpleConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:purple_concrete";
+	} // class
+
+	public partial class PurpleConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:purple_concrete_powder";
+	} // class
+
+	public partial class PurpleGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -14514,6 +16624,26 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class PurpleShulkerBox : Block
+	{
+		public override string Id => "minecraft:purple_shulker_box";
+	} // class
+
+	public partial class PurpleStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:purple_stained_glass";
+	} // class
+
+	public partial class PurpleStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:purple_stained_glass_pane";
+	} // class
+
+	public partial class PurpleTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:purple_terracotta";
 	} // class
 
 	public partial class PurpleWool : WoolBase
@@ -14822,40 +16952,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:red_carpet";
 	} // class
 
-	public partial class RedFlower : Block
+	public partial class RedConcrete : ConcreteBase
 	{
-		private readonly BlockStateString _flowerType = new BlockStateString() { Name = "flower_type", Value = "poppy" };
-
-		public override string Id => "minecraft:red_flower";
-
-		[StateEnum("allium", "cornflower", "houstonia", "lily_of_the_valley", "orchid", "oxeye", "poppy", "tulip_orange", "tulip_pink", "tulip_red", "tulip_white")]
-		public string FlowerType { get => _flowerType.Value; set => NotifyStateUpdate(_flowerType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "flower_type":
-						NotifyStateUpdate(_flowerType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _flowerType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _flowerType);
-		} // method
+		public override string Id => "minecraft:red_concrete";
 	} // class
 
-	public partial class RedGlazedTerracotta
+	public partial class RedConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:red_concrete_powder";
+	} // class
+
+	public partial class RedGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -15044,6 +17151,31 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
 		} // method
+	} // class
+
+	public partial class RedShulkerBox : Block
+	{
+		public override string Id => "minecraft:red_shulker_box";
+	} // class
+
+	public partial class RedStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:red_stained_glass";
+	} // class
+
+	public partial class RedStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:red_stained_glass_pane";
+	} // class
+
+	public partial class RedTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:red_terracotta";
+	} // class
+
+	public partial class RedTulip : Block
+	{
+		public override string Id => "minecraft:red_tulip";
 	} // class
 
 	public partial class RedWool : WoolBase
@@ -15356,47 +17488,6 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Sapling : Block
-	{
-		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
-		private readonly BlockStateString _saplingType = new BlockStateString() { Name = "sapling_type", Value = "oak" };
-
-		public override string Id => "minecraft:sapling";
-
-		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
-
-		[StateEnum("acacia", "birch", "dark_oak", "jungle", "oak", "spruce")]
-		public string SaplingType { get => _saplingType.Value; set => NotifyStateUpdate(_saplingType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateByte s when s.Name == "age_bit":
-						NotifyStateUpdate(_ageBit, s.Value);
-						break;
-					case BlockStateString s when s.Name == "sapling_type":
-						NotifyStateUpdate(_saplingType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _ageBit;
-			yield return _saplingType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _ageBit, _saplingType);
-		} // method
-	} // class
-
 	public partial class Scaffolding : Block
 	{
 		private readonly BlockStateInt _stability = new BlockStateInt() { Name = "stability", Value = 0 };
@@ -15667,40 +17758,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:shroomlight";
 	} // class
 
-	public partial class ShulkerBox
-	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
-
-		public override string Id => "minecraft:shulker_box";
-
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
-		} // method
-	} // class
-
-	public partial class SilverGlazedTerracotta
+	public partial class SilverGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -15773,12 +17831,12 @@ namespace MiNET.Blocks
 
 	public partial class SmallAmethystBud : Block
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _blockFace = new BlockStateString() { Name = "minecraft:block_face", Value = "down" };
 
 		public override string Id => "minecraft:small_amethyst_bud";
 
-		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("down", "east", "north", "south", "up", "west")]
+		public string BlockFace { get => _blockFace.Value; set => NotifyStateUpdate(_blockFace, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -15786,8 +17844,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:block_face":
+						NotifyStateUpdate(_blockFace, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -15795,24 +17853,24 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _blockFace;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _blockFace);
 		} // method
 	} // class
 
 	public partial class SmallDripleafBlock : Block
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 		private readonly BlockStateByte _upperBlockBit = new BlockStateByte() { Name = "upper_block_bit", Value = 0 };
 
 		public override string Id => "minecraft:small_dripleaf_block";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		[StateBit]
 		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
@@ -15823,8 +17881,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == "upper_block_bit":
 						NotifyStateUpdate(_upperBlockBit, s.Value);
@@ -15835,13 +17893,13 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
+			yield return _cardinalDirection;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _upperBlockBit);
+			return HashCode.Combine(Id, _cardinalDirection, _upperBlockBit);
 		} // method
 	} // class
 
@@ -15852,12 +17910,12 @@ namespace MiNET.Blocks
 
 	public partial class Smoker : Block
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:smoker";
 
-		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -15865,8 +17923,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -15874,12 +17932,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -16097,16 +18155,16 @@ namespace MiNET.Blocks
 
 	public partial class SoulCampfire : Block
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
 		private readonly BlockStateByte _extinguished = new BlockStateByte() { Name = "extinguished", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:soul_campfire";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
-
 		[StateBit]
 		public bool Extinguished { get => Convert.ToBoolean(_extinguished.Value); set => NotifyStateUpdate(_extinguished, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -16114,11 +18172,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == "extinguished":
 						NotifyStateUpdate(_extinguished, s.Value);
+						break;
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -16126,13 +18184,13 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _extinguished;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _extinguished);
+			return HashCode.Combine(Id, _extinguished, _cardinalDirection);
 		} // method
 	} // class
 
@@ -16381,6 +18439,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class SpruceDoubleSlab : DoubleWoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:spruce_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class SpruceFence : Block
 	{
 		public override string Id => "minecraft:spruce_fence";
@@ -16492,6 +18583,47 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class SpruceLeaves : LeavesBase
+	{
+		private readonly BlockStateByte _persistentBit = new BlockStateByte() { Name = "persistent_bit", Value = 0 };
+		private readonly BlockStateByte _updateBit = new BlockStateByte() { Name = "update_bit", Value = 0 };
+
+		public override string Id => "minecraft:spruce_leaves";
+
+		[StateBit]
+		public override bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
+
+		[StateBit]
+		public override bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "persistent_bit":
+						NotifyStateUpdate(_persistentBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "update_bit":
+						NotifyStateUpdate(_updateBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _persistentBit;
+			yield return _updateBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _persistentBit, _updateBit);
+		} // method
+	} // class
+
 	public partial class SpruceLog : LogBase
 	{
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
@@ -16525,6 +18657,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class SprucePlanks : PlanksBase
+	{
+		public override string Id => "minecraft:spruce_planks";
+	} // class
+
 	public partial class SprucePressurePlate : Block
 	{
 		private readonly BlockStateInt _redstoneSignal = new BlockStateInt() { Name = "redstone_signal", Value = 0 };
@@ -16555,6 +18692,72 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _redstoneSignal);
+		} // method
+	} // class
+
+	public partial class SpruceSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:spruce_sapling";
+
+		[StateBit]
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+	} // class
+
+	public partial class SpruceSlab : WoodenSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:spruce_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -16714,14 +18917,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class StainedGlass
+	public partial class SpruceWood : LogBase
 	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
 
-		public override string Id => "minecraft:stained_glass";
+		public override string Id => "minecraft:spruce_wood";
 
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -16729,8 +18932,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -16738,78 +18941,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _color;
+			yield return _pillarAxis;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _color);
-		} // method
-	} // class
-
-	public partial class StainedGlassPane : Block
-	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
-
-		public override string Id => "minecraft:stained_glass_pane";
-
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
-		} // method
-	} // class
-
-	public partial class StainedHardenedClay : Block
-	{
-		private readonly BlockStateString _color = new BlockStateString() { Name = "color", Value = "white" };
-
-		public override string Id => "minecraft:stained_hardened_clay";
-
-		[StateEnum("black", "blue", "brown", "cyan", "gray", "green", "light_blue", "lime", "magenta", "orange", "pink", "purple", "red", "silver", "white", "yellow")]
-		public string Color { get => _color.Value; set => NotifyStateUpdate(_color, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "color":
-						NotifyStateUpdate(_color, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _color;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _color);
+			return HashCode.Combine(Id, _pillarAxis);
 		} // method
 	} // class
 
@@ -16947,49 +19084,21 @@ namespace MiNET.Blocks
 
 	public partial class Stone : Block
 	{
-		private readonly BlockStateString _stoneType = new BlockStateString() { Name = "stone_type", Value = "stone" };
-
 		public override string Id => "minecraft:stone";
-
-		[StateEnum("andesite", "andesite_smooth", "diorite", "diorite_smooth", "granite", "granite_smooth", "stone")]
-		public string StoneType { get => _stoneType.Value; set => NotifyStateUpdate(_stoneType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "stone_type":
-						NotifyStateUpdate(_stoneType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _stoneType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _stoneType);
-		} // method
 	} // class
 
 	public partial class StoneBlockSlab : SlabBase
 	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 		private readonly BlockStateString _stoneSlabType = new BlockStateString() { Name = "stone_slab_type", Value = "smooth_stone" };
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
 
 		public override string Id => "minecraft:stone_block_slab";
 
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
 		[StateEnum("brick", "cobblestone", "nether_brick", "quartz", "sandstone", "smooth_stone", "stone_brick", "wood")]
 		public string StoneSlabType { get => _stoneSlabType.Value; set => NotifyStateUpdate(_stoneSlabType, value); }
-
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -16997,11 +19106,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
 					case BlockStateString s when s.Name == "stone_slab_type":
 						NotifyStateUpdate(_stoneSlabType, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -17009,28 +19118,28 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
+			yield return _verticalHalf;
 			yield return _stoneSlabType;
-			yield return _topSlotBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _stoneSlabType, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType);
 		} // method
 	} // class
 
 	public partial class StoneBlockSlab2 : SlabBase
 	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 		private readonly BlockStateString _stoneSlabType2 = new BlockStateString() { Name = "stone_slab_type_2", Value = "red_sandstone" };
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
 
 		public override string Id => "minecraft:stone_block_slab2";
 
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
 		[StateEnum("mossy_cobblestone", "prismarine_brick", "prismarine_dark", "prismarine_rough", "purpur", "red_nether_brick", "red_sandstone", "smooth_sandstone")]
 		public string StoneSlabType2 { get => _stoneSlabType2.Value; set => NotifyStateUpdate(_stoneSlabType2, value); }
-
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17038,11 +19147,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
 					case BlockStateString s when s.Name == "stone_slab_type_2":
 						NotifyStateUpdate(_stoneSlabType2, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -17050,28 +19159,28 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
+			yield return _verticalHalf;
 			yield return _stoneSlabType2;
-			yield return _topSlotBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _stoneSlabType2, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType2);
 		} // method
 	} // class
 
 	public partial class StoneBlockSlab3 : SlabBase
 	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 		private readonly BlockStateString _stoneSlabType3 = new BlockStateString() { Name = "stone_slab_type_3", Value = "end_stone_brick" };
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
 
 		public override string Id => "minecraft:stone_block_slab3";
 
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
 		[StateEnum("andesite", "diorite", "end_stone_brick", "granite", "polished_andesite", "polished_diorite", "polished_granite", "smooth_red_sandstone")]
 		public string StoneSlabType3 { get => _stoneSlabType3.Value; set => NotifyStateUpdate(_stoneSlabType3, value); }
-
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17079,11 +19188,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
 					case BlockStateString s when s.Name == "stone_slab_type_3":
 						NotifyStateUpdate(_stoneSlabType3, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -17091,28 +19200,28 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
+			yield return _verticalHalf;
 			yield return _stoneSlabType3;
-			yield return _topSlotBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _stoneSlabType3, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType3);
 		} // method
 	} // class
 
 	public partial class StoneBlockSlab4 : SlabBase
 	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 		private readonly BlockStateString _stoneSlabType4 = new BlockStateString() { Name = "stone_slab_type_4", Value = "mossy_stone_brick" };
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
 
 		public override string Id => "minecraft:stone_block_slab4";
 
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
 		[StateEnum("cut_red_sandstone", "cut_sandstone", "mossy_stone_brick", "smooth_quartz", "stone")]
 		public string StoneSlabType4 { get => _stoneSlabType4.Value; set => NotifyStateUpdate(_stoneSlabType4, value); }
-
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17120,11 +19229,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
 					case BlockStateString s when s.Name == "stone_slab_type_4":
 						NotifyStateUpdate(_stoneSlabType4, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -17132,13 +19241,13 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
+			yield return _verticalHalf;
 			yield return _stoneSlabType4;
-			yield return _topSlotBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _stoneSlabType4, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType4);
 		} // method
 	} // class
 
@@ -17338,12 +19447,12 @@ namespace MiNET.Blocks
 
 	public partial class StonecutterBlock : Block
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "north" };
 
 		public override string Id => "minecraft:stonecutter_block";
 
-		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17351,8 +19460,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -17360,12 +19469,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -17374,6 +19483,39 @@ namespace MiNET.Blocks
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
 
 		public override string Id => "minecraft:stripped_acacia_log";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
+	public partial class StrippedAcaciaWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:stripped_acacia_wood";
 
 		[StateEnum("x", "y", "z")]
 		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
@@ -17440,6 +19582,39 @@ namespace MiNET.Blocks
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
 
 		public override string Id => "minecraft:stripped_birch_log";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
+	public partial class StrippedBirchWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:stripped_birch_wood";
 
 		[StateEnum("x", "y", "z")]
 		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
@@ -17633,11 +19808,77 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class StrippedDarkOakWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:stripped_dark_oak_wood";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
 	public partial class StrippedJungleLog : LogBase
 	{
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
 
 		public override string Id => "minecraft:stripped_jungle_log";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
+	public partial class StrippedJungleWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:stripped_jungle_wood";
 
 		[StateEnum("x", "y", "z")]
 		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
@@ -17765,11 +20006,77 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class StrippedOakWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:stripped_oak_wood";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
 	public partial class StrippedSpruceLog : LogBase
 	{
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
 
 		public override string Id => "minecraft:stripped_spruce_log";
+
+		[StateEnum("x", "y", "z")]
+		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
+	public partial class StrippedSpruceWood : LogBase
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
+
+		public override string Id => "minecraft:stripped_spruce_wood";
 
 		[StateEnum("x", "y", "z")]
 		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
@@ -18251,12 +20558,12 @@ namespace MiNET.Blocks
 
 	public partial class TrappedChest
 	{
-		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "north" };
 
 		public override string Id => "minecraft:trapped_chest";
 
-		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -18264,8 +20571,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "facing_direction":
-						NotifyStateUpdate(_facingDirection, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -18273,12 +20580,45 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _facingDirection;
+			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _facingDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
+		} // method
+	} // class
+
+	public partial class TrialSpawner : Block
+	{
+		private readonly BlockStateInt _trialSpawnerState = new BlockStateInt() { Name = "trial_spawner_state", Value = 0 };
+
+		public override string Id => "minecraft:trial_spawner";
+
+		[StateRange(0, 5)]
+		public int TrialSpawnerState { get => _trialSpawnerState.Value; set => NotifyStateUpdate(_trialSpawnerState, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "trial_spawner_state":
+						NotifyStateUpdate(_trialSpawnerState, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _trialSpawnerState;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _trialSpawnerState);
 		} // method
 	} // class
 
@@ -18393,9 +20733,391 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:tube_coral";
 	} // class
 
+	public partial class TubeCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 0 };
+
+		public override string Id => "minecraft:tube_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
 	public partial class Tuff : Block
 	{
 		public override string Id => "minecraft:tuff";
+	} // class
+
+	public partial class TuffBrickDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:tuff_brick_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class TuffBrickSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:tuff_brick_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class TuffBrickStairs : Block
+	{
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+		private readonly BlockStateInt _weirdoDirection = new BlockStateInt() { Name = "weirdo_direction", Value = 0 };
+
+		public override string Id => "minecraft:tuff_brick_stairs";
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		[StateRange(0, 3)]
+		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+					case BlockStateInt s when s.Name == "weirdo_direction":
+						NotifyStateUpdate(_weirdoDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _upsideDownBit;
+			yield return _weirdoDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class TuffBrickWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 0 };
+
+		public override string Id => "minecraft:tuff_brick_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
+	} // class
+
+	public partial class TuffBricks : Block
+	{
+		public override string Id => "minecraft:tuff_bricks";
+	} // class
+
+	public partial class TuffDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:tuff_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class TuffSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:tuff_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class TuffStairs : Block
+	{
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+		private readonly BlockStateInt _weirdoDirection = new BlockStateInt() { Name = "weirdo_direction", Value = 0 };
+
+		public override string Id => "minecraft:tuff_stairs";
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		[StateRange(0, 3)]
+		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+					case BlockStateInt s when s.Name == "weirdo_direction":
+						NotifyStateUpdate(_weirdoDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _upsideDownBit;
+			yield return _weirdoDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class TuffWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 0 };
+
+		public override string Id => "minecraft:tuff_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
 	} // class
 
 	public partial class TurtleEgg : Block
@@ -18550,14 +21272,14 @@ namespace MiNET.Blocks
 
 	public partial class UnpoweredComparator
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 		private readonly BlockStateByte _outputLitBit = new BlockStateByte() { Name = "output_lit_bit", Value = 0 };
 		private readonly BlockStateByte _outputSubtractBit = new BlockStateByte() { Name = "output_subtract_bit", Value = 0 };
 
 		public override string Id => "minecraft:unpowered_comparator";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		[StateBit]
 		public bool OutputLitBit { get => Convert.ToBoolean(_outputLitBit.Value); set => NotifyStateUpdate(_outputLitBit, value); }
@@ -18571,8 +21293,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == "output_lit_bit":
 						NotifyStateUpdate(_outputLitBit, s.Value);
@@ -18586,26 +21308,26 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
+			yield return _cardinalDirection;
 			yield return _outputLitBit;
 			yield return _outputSubtractBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _outputLitBit, _outputSubtractBit);
+			return HashCode.Combine(Id, _cardinalDirection, _outputLitBit, _outputSubtractBit);
 		} // method
 	} // class
 
 	public partial class UnpoweredRepeater
 	{
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 		private readonly BlockStateInt _repeaterDelay = new BlockStateInt() { Name = "repeater_delay", Value = 0 };
 
 		public override string Id => "minecraft:unpowered_repeater";
 
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		[StateRange(0, 3)]
 		public int RepeaterDelay { get => _repeaterDelay.Value; set => NotifyStateUpdate(_repeaterDelay, value); }
@@ -18616,8 +21338,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateInt s when s.Name == "repeater_delay":
 						NotifyStateUpdate(_repeaterDelay, s.Value);
@@ -18628,13 +21350,54 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
+			yield return _cardinalDirection;
 			yield return _repeaterDelay;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _repeaterDelay);
+			return HashCode.Combine(Id, _cardinalDirection, _repeaterDelay);
+		} // method
+	} // class
+
+	public partial class Vault : Block
+	{
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
+		private readonly BlockStateString _vaultState = new BlockStateString() { Name = "vault_state", Value = "inactive" };
+
+		public override string Id => "minecraft:vault";
+
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+
+		[StateEnum("active", "ejecting", "inactive", "unlocking")]
+		public string VaultState { get => _vaultState.Value; set => NotifyStateUpdate(_vaultState, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
+						break;
+					case BlockStateString s when s.Name == "vault_state":
+						NotifyStateUpdate(_vaultState, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _cardinalDirection;
+			yield return _vaultState;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _cardinalDirection, _vaultState);
 		} // method
 	} // class
 
@@ -18868,14 +21631,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WarpedDoubleSlab : DoubleSlabBase
+	public partial class WarpedDoubleSlab : DoubleWoodenSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:warped_double_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -18883,8 +21646,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -18892,12 +21655,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -19055,7 +21818,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:warped_nylium";
 	} // class
 
-	public partial class WarpedPlanks : Block
+	public partial class WarpedPlanks : PlanksBase
 	{
 		public override string Id => "minecraft:warped_planks";
 	} // class
@@ -19098,14 +21861,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:warped_roots";
 	} // class
 
-	public partial class WarpedSlab : SlabBase
+	public partial class WarpedSlab : WoodenSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:warped_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19113,8 +21876,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19122,12 +21885,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -19363,9 +22126,166 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waterlily";
 	} // class
 
+	public partial class WaxedChiseledCopper : Block
+	{
+		public override string Id => "minecraft:waxed_chiseled_copper";
+	} // class
+
 	public partial class WaxedCopper : Block
 	{
 		public override string Id => "minecraft:waxed_copper";
+	} // class
+
+	public partial class WaxedCopperBulb : Block
+	{
+		private readonly BlockStateByte _lit = new BlockStateByte() { Name = "lit", Value = 0 };
+		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_copper_bulb";
+
+		[StateBit]
+		public bool Lit { get => Convert.ToBoolean(_lit.Value); set => NotifyStateUpdate(_lit, value); }
+
+		[StateBit]
+		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "lit":
+						NotifyStateUpdate(_lit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "powered_bit":
+						NotifyStateUpdate(_poweredBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _lit;
+			yield return _poweredBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _lit, _poweredBit);
+		} // method
+	} // class
+
+	public partial class WaxedCopperDoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _doorHingeBit = new BlockStateByte() { Name = "door_hinge_bit", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upperBlockBit = new BlockStateByte() { Name = "upper_block_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_copper_door";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "door_hinge_bit":
+						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upper_block_bit":
+						NotifyStateUpdate(_upperBlockBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _doorHingeBit;
+			yield return _openBit;
+			yield return _upperBlockBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+	} // class
+
+	public partial class WaxedCopperGrate : Block
+	{
+		public override string Id => "minecraft:waxed_copper_grate";
+	} // class
+
+	public partial class WaxedCopperTrapdoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_copper_trapdoor";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _openBit;
+			yield return _upsideDownBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _openBit, _upsideDownBit);
+		} // method
 	} // class
 
 	public partial class WaxedCutCopper : Block
@@ -19375,12 +22295,12 @@ namespace MiNET.Blocks
 
 	public partial class WaxedCutCopperSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:waxed_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19388,8 +22308,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19397,12 +22317,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -19449,12 +22369,12 @@ namespace MiNET.Blocks
 
 	public partial class WaxedDoubleCutCopperSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:waxed_double_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19462,8 +22382,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19471,18 +22391,175 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
+	} // class
+
+	public partial class WaxedExposedChiseledCopper : Block
+	{
+		public override string Id => "minecraft:waxed_exposed_chiseled_copper";
 	} // class
 
 	public partial class WaxedExposedCopper : Block
 	{
 		public override string Id => "minecraft:waxed_exposed_copper";
+	} // class
+
+	public partial class WaxedExposedCopperBulb : Block
+	{
+		private readonly BlockStateByte _lit = new BlockStateByte() { Name = "lit", Value = 0 };
+		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_exposed_copper_bulb";
+
+		[StateBit]
+		public bool Lit { get => Convert.ToBoolean(_lit.Value); set => NotifyStateUpdate(_lit, value); }
+
+		[StateBit]
+		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "lit":
+						NotifyStateUpdate(_lit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "powered_bit":
+						NotifyStateUpdate(_poweredBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _lit;
+			yield return _poweredBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _lit, _poweredBit);
+		} // method
+	} // class
+
+	public partial class WaxedExposedCopperDoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _doorHingeBit = new BlockStateByte() { Name = "door_hinge_bit", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upperBlockBit = new BlockStateByte() { Name = "upper_block_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_exposed_copper_door";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "door_hinge_bit":
+						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upper_block_bit":
+						NotifyStateUpdate(_upperBlockBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _doorHingeBit;
+			yield return _openBit;
+			yield return _upperBlockBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+	} // class
+
+	public partial class WaxedExposedCopperGrate : Block
+	{
+		public override string Id => "minecraft:waxed_exposed_copper_grate";
+	} // class
+
+	public partial class WaxedExposedCopperTrapdoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_exposed_copper_trapdoor";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _openBit;
+			yield return _upsideDownBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _openBit, _upsideDownBit);
+		} // method
 	} // class
 
 	public partial class WaxedExposedCutCopper : Block
@@ -19492,12 +22569,12 @@ namespace MiNET.Blocks
 
 	public partial class WaxedExposedCutCopperSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:waxed_exposed_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19505,8 +22582,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19514,12 +22591,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -19566,12 +22643,12 @@ namespace MiNET.Blocks
 
 	public partial class WaxedExposedDoubleCutCopperSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:waxed_exposed_double_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19579,8 +22656,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19588,18 +22665,175 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
+	} // class
+
+	public partial class WaxedOxidizedChiseledCopper : Block
+	{
+		public override string Id => "minecraft:waxed_oxidized_chiseled_copper";
 	} // class
 
 	public partial class WaxedOxidizedCopper : Block
 	{
 		public override string Id => "minecraft:waxed_oxidized_copper";
+	} // class
+
+	public partial class WaxedOxidizedCopperBulb : Block
+	{
+		private readonly BlockStateByte _lit = new BlockStateByte() { Name = "lit", Value = 0 };
+		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_oxidized_copper_bulb";
+
+		[StateBit]
+		public bool Lit { get => Convert.ToBoolean(_lit.Value); set => NotifyStateUpdate(_lit, value); }
+
+		[StateBit]
+		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "lit":
+						NotifyStateUpdate(_lit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "powered_bit":
+						NotifyStateUpdate(_poweredBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _lit;
+			yield return _poweredBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _lit, _poweredBit);
+		} // method
+	} // class
+
+	public partial class WaxedOxidizedCopperDoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _doorHingeBit = new BlockStateByte() { Name = "door_hinge_bit", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upperBlockBit = new BlockStateByte() { Name = "upper_block_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_oxidized_copper_door";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "door_hinge_bit":
+						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upper_block_bit":
+						NotifyStateUpdate(_upperBlockBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _doorHingeBit;
+			yield return _openBit;
+			yield return _upperBlockBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+	} // class
+
+	public partial class WaxedOxidizedCopperGrate : Block
+	{
+		public override string Id => "minecraft:waxed_oxidized_copper_grate";
+	} // class
+
+	public partial class WaxedOxidizedCopperTrapdoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_oxidized_copper_trapdoor";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _openBit;
+			yield return _upsideDownBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _openBit, _upsideDownBit);
+		} // method
 	} // class
 
 	public partial class WaxedOxidizedCutCopper : Block
@@ -19609,12 +22843,12 @@ namespace MiNET.Blocks
 
 	public partial class WaxedOxidizedCutCopperSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:waxed_oxidized_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19622,8 +22856,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19631,12 +22865,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -19683,12 +22917,12 @@ namespace MiNET.Blocks
 
 	public partial class WaxedOxidizedDoubleCutCopperSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:waxed_oxidized_double_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19696,8 +22930,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19705,18 +22939,175 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
+	} // class
+
+	public partial class WaxedWeatheredChiseledCopper : Block
+	{
+		public override string Id => "minecraft:waxed_weathered_chiseled_copper";
 	} // class
 
 	public partial class WaxedWeatheredCopper : Block
 	{
 		public override string Id => "minecraft:waxed_weathered_copper";
+	} // class
+
+	public partial class WaxedWeatheredCopperBulb : Block
+	{
+		private readonly BlockStateByte _lit = new BlockStateByte() { Name = "lit", Value = 0 };
+		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_weathered_copper_bulb";
+
+		[StateBit]
+		public bool Lit { get => Convert.ToBoolean(_lit.Value); set => NotifyStateUpdate(_lit, value); }
+
+		[StateBit]
+		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "lit":
+						NotifyStateUpdate(_lit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "powered_bit":
+						NotifyStateUpdate(_poweredBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _lit;
+			yield return _poweredBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _lit, _poweredBit);
+		} // method
+	} // class
+
+	public partial class WaxedWeatheredCopperDoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _doorHingeBit = new BlockStateByte() { Name = "door_hinge_bit", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upperBlockBit = new BlockStateByte() { Name = "upper_block_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_weathered_copper_door";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "door_hinge_bit":
+						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upper_block_bit":
+						NotifyStateUpdate(_upperBlockBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _doorHingeBit;
+			yield return _openBit;
+			yield return _upperBlockBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+	} // class
+
+	public partial class WaxedWeatheredCopperGrate : Block
+	{
+		public override string Id => "minecraft:waxed_weathered_copper_grate";
+	} // class
+
+	public partial class WaxedWeatheredCopperTrapdoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+
+		public override string Id => "minecraft:waxed_weathered_copper_trapdoor";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _openBit;
+			yield return _upsideDownBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _openBit, _upsideDownBit);
+		} // method
 	} // class
 
 	public partial class WaxedWeatheredCutCopper : Block
@@ -19726,12 +23117,12 @@ namespace MiNET.Blocks
 
 	public partial class WaxedWeatheredCutCopperSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:waxed_weathered_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19739,8 +23130,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19748,12 +23139,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -19800,12 +23191,12 @@ namespace MiNET.Blocks
 
 	public partial class WaxedWeatheredDoubleCutCopperSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:waxed_weathered_double_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19813,8 +23204,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19822,18 +23213,175 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
+	} // class
+
+	public partial class WeatheredChiseledCopper : Block
+	{
+		public override string Id => "minecraft:weathered_chiseled_copper";
 	} // class
 
 	public partial class WeatheredCopper : Block
 	{
 		public override string Id => "minecraft:weathered_copper";
+	} // class
+
+	public partial class WeatheredCopperBulb : Block
+	{
+		private readonly BlockStateByte _lit = new BlockStateByte() { Name = "lit", Value = 0 };
+		private readonly BlockStateByte _poweredBit = new BlockStateByte() { Name = "powered_bit", Value = 0 };
+
+		public override string Id => "minecraft:weathered_copper_bulb";
+
+		[StateBit]
+		public bool Lit { get => Convert.ToBoolean(_lit.Value); set => NotifyStateUpdate(_lit, value); }
+
+		[StateBit]
+		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "lit":
+						NotifyStateUpdate(_lit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "powered_bit":
+						NotifyStateUpdate(_poweredBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _lit;
+			yield return _poweredBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _lit, _poweredBit);
+		} // method
+	} // class
+
+	public partial class WeatheredCopperDoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _doorHingeBit = new BlockStateByte() { Name = "door_hinge_bit", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upperBlockBit = new BlockStateByte() { Name = "upper_block_bit", Value = 0 };
+
+		public override string Id => "minecraft:weathered_copper_door";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "door_hinge_bit":
+						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upper_block_bit":
+						NotifyStateUpdate(_upperBlockBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _doorHingeBit;
+			yield return _openBit;
+			yield return _upperBlockBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+	} // class
+
+	public partial class WeatheredCopperGrate : Block
+	{
+		public override string Id => "minecraft:weathered_copper_grate";
+	} // class
+
+	public partial class WeatheredCopperTrapdoor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+		private readonly BlockStateByte _openBit = new BlockStateByte() { Name = "open_bit", Value = 0 };
+		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
+
+		public override string Id => "minecraft:weathered_copper_trapdoor";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		[StateBit]
+		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "open_bit":
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "upside_down_bit":
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _openBit;
+			yield return _upsideDownBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _openBit, _upsideDownBit);
+		} // method
 	} // class
 
 	public partial class WeatheredCutCopper : Block
@@ -19843,12 +23391,12 @@ namespace MiNET.Blocks
 
 	public partial class WeatheredCutCopperSlab : SlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:weathered_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19856,8 +23404,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19865,12 +23413,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -19917,12 +23465,12 @@ namespace MiNET.Blocks
 
 	public partial class WeatheredDoubleCutCopperSlab : DoubleSlabBase
 	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
 
 		public override string Id => "minecraft:weathered_double_cut_copper_slab";
 
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19930,8 +23478,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -19939,12 +23487,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _topSlotBit;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _topSlotBit);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -20098,7 +23646,17 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:white_carpet";
 	} // class
 
-	public partial class WhiteGlazedTerracotta
+	public partial class WhiteConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:white_concrete";
+	} // class
+
+	public partial class WhiteConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:white_concrete_powder";
+	} // class
+
+	public partial class WhiteGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -20131,6 +23689,31 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class WhiteShulkerBox : Block
+	{
+		public override string Id => "minecraft:white_shulker_box";
+	} // class
+
+	public partial class WhiteStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:white_stained_glass";
+	} // class
+
+	public partial class WhiteStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:white_stained_glass_pane";
+	} // class
+
+	public partial class WhiteTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:white_terracotta";
+	} // class
+
+	public partial class WhiteTulip : Block
+	{
+		public override string Id => "minecraft:white_tulip";
+	} // class
+
 	public partial class WhiteWool : WoolBase
 	{
 		public override string Id => "minecraft:white_wool";
@@ -20139,55 +23722,6 @@ namespace MiNET.Blocks
 	public partial class WitherRose : Block
 	{
 		public override string Id => "minecraft:wither_rose";
-	} // class
-
-	public partial class Wood : LogBase
-	{
-		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "x" };
-		private readonly BlockStateByte _strippedBit = new BlockStateByte() { Name = "stripped_bit", Value = 0 };
-		private readonly BlockStateString _woodType = new BlockStateString() { Name = "wood_type", Value = "oak" };
-
-		public override string Id => "minecraft:wood";
-
-		[StateEnum("x", "y", "z")]
-		public override string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
-
-		[StateBit]
-		public bool StrippedBit { get => Convert.ToBoolean(_strippedBit.Value); set => NotifyStateUpdate(_strippedBit, value); }
-
-		[StateEnum("acacia", "birch", "dark_oak", "jungle", "oak", "spruce")]
-		public string WoodType { get => _woodType.Value; set => NotifyStateUpdate(_woodType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "pillar_axis":
-						NotifyStateUpdate(_pillarAxis, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "stripped_bit":
-						NotifyStateUpdate(_strippedBit, s.Value);
-						break;
-					case BlockStateString s when s.Name == "wood_type":
-						NotifyStateUpdate(_woodType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _pillarAxis;
-			yield return _strippedBit;
-			yield return _woodType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _pillarAxis, _strippedBit, _woodType);
-		} // method
 	} // class
 
 	public partial class WoodenButton
@@ -20321,47 +23855,6 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WoodenSlab : SlabBase
-	{
-		private readonly BlockStateByte _topSlotBit = new BlockStateByte() { Name = "top_slot_bit", Value = 0 };
-		private readonly BlockStateString _woodType = new BlockStateString() { Name = "wood_type", Value = "oak" };
-
-		public override string Id => "minecraft:wooden_slab";
-
-		[StateBit]
-		public override bool TopSlotBit { get => Convert.ToBoolean(_topSlotBit.Value); set => NotifyStateUpdate(_topSlotBit, value); }
-
-		[StateEnum("acacia", "birch", "dark_oak", "jungle", "oak", "spruce")]
-		public string WoodType { get => _woodType.Value; set => NotifyStateUpdate(_woodType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateByte s when s.Name == "top_slot_bit":
-						NotifyStateUpdate(_topSlotBit, s.Value);
-						break;
-					case BlockStateString s when s.Name == "wood_type":
-						NotifyStateUpdate(_woodType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _topSlotBit;
-			yield return _woodType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _topSlotBit, _woodType);
-		} // method
-	} // class
-
 	public partial class YellowCandle : Block
 	{
 		private readonly BlockStateInt _candles = new BlockStateInt() { Name = "candles", Value = 0 };
@@ -20441,12 +23934,22 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:yellow_carpet";
 	} // class
 
+	public partial class YellowConcrete : ConcreteBase
+	{
+		public override string Id => "minecraft:yellow_concrete";
+	} // class
+
+	public partial class YellowConcretePowder : ConcretePowderBase
+	{
+		public override string Id => "minecraft:yellow_concrete_powder";
+	} // class
+
 	public partial class YellowFlower : Block
 	{
 		public override string Id => "minecraft:yellow_flower";
 	} // class
 
-	public partial class YellowGlazedTerracotta
+	public partial class YellowGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
 
@@ -20477,6 +23980,26 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class YellowShulkerBox : Block
+	{
+		public override string Id => "minecraft:yellow_shulker_box";
+	} // class
+
+	public partial class YellowStainedGlass : StainedGlassBase
+	{
+		public override string Id => "minecraft:yellow_stained_glass";
+	} // class
+
+	public partial class YellowStainedGlassPane : StainedGlassPaneBase
+	{
+		public override string Id => "minecraft:yellow_stained_glass_pane";
+	} // class
+
+	public partial class YellowTerracotta : TerracottaBase
+	{
+		public override string Id => "minecraft:yellow_terracotta";
 	} // class
 
 	public partial class YellowWool : WoolBase

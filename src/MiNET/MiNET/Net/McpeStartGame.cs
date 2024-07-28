@@ -35,12 +35,13 @@ namespace MiNET.Net
 
 		public int generator; // = null;
 		public int gamemode; // = null;
+		public bool hardcore; // = null;
 		public int difficulty; // = null;
 		public int x; // = null;
 		public int y; // = null;
 		public int z; // = null;
 		public bool hasAchievementsDisabled; // = null;
-		public bool editorWorld;
+		public int editorWorldType;
 		public bool createdInEditorMode; // = null;
 		public bool exportedFromEditorMode; // = null;
 		public int time; // = null;
@@ -91,6 +92,7 @@ namespace MiNET.Net
 
 			packet.WriteSignedVarInt(generator);
 			packet.WriteSignedVarInt(gamemode);
+			packet.Write(hardcore);
 			packet.WriteSignedVarInt(difficulty);
 
 			packet.WriteSignedVarInt(x);
@@ -98,7 +100,7 @@ namespace MiNET.Net
 			packet.WriteSignedVarInt(z);
 
 			packet.Write(hasAchievementsDisabled);
-			packet.Write(editorWorld);
+			packet.WriteVarInt(editorWorldType);
 			packet.Write(createdInEditorMode);
 			packet.Write(exportedFromEditorMode);
 			packet.WriteSignedVarInt(time);
@@ -150,6 +152,7 @@ namespace MiNET.Net
 
 			generator = packet.ReadSignedVarInt();
 			gamemode = packet.ReadSignedVarInt();
+			hardcore = packet.ReadBool();
 			difficulty = packet.ReadSignedVarInt();
 
 			x = packet.ReadSignedVarInt();
@@ -157,7 +160,7 @@ namespace MiNET.Net
 			z = packet.ReadSignedVarInt();
 
 			hasAchievementsDisabled = packet.ReadBool();
-			editorWorld = packet.ReadBool();
+			editorWorldType = packet.ReadVarInt();
 			createdInEditorMode = packet.ReadBool();
 			exportedFromEditorMode= packet.ReadBool();
 			time = packet.ReadSignedVarInt();
@@ -231,7 +234,7 @@ namespace MiNET.Net
 		public int enchantmentSeed; // = null;
 		public BlockPalette blockPalette; // = null;
 		public ulong blockPaletteChecksum;
-		public Itemstates itemstates; // = null;
+		public ItemStates itemstates; // = null;
 		public string multiplayerCorrelationId; // = null;
 		public bool enableNewInventorySystem; // = null;
 		public string serverVersion; // = null;
@@ -316,7 +319,7 @@ namespace MiNET.Net
 				return;
 			}
 			
-			itemstates = ReadItemstates();
+			itemstates = ReadItemStates();
 			
 			multiplayerCorrelationId = ReadString();
 			enableNewInventorySystem = ReadBool();
@@ -348,7 +351,7 @@ namespace MiNET.Net
 			currentTick=default(long);
 			enchantmentSeed=default(int);
 			blockPalette=default(BlockPalette);
-			itemstates=default(Itemstates);
+			itemstates=default(ItemStates);
 			multiplayerCorrelationId=default(string);
 			enableNewInventorySystem=default(bool);
 			serverVersion=default(string);

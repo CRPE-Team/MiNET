@@ -716,6 +716,22 @@ namespace MiNET
 					Level.UseItem(this, Inventory.GetItemInHand(), message.coordinates, (BlockFace) message.face);
 					break;
 				}
+				case PlayerAction.StartFlying:
+				{
+					if (!AllowFly && !GameMode.AllowsFlying())
+					{
+						SendAbilities();
+						return;
+					}
+
+					IsFlying = true;
+					break;
+				}
+				case PlayerAction.StopFlying:
+				{
+					IsFlying = false;
+					break;
+				}
 				case PlayerAction.GetUpdatedBlock:
 				case PlayerAction.DropItem:
 				case PlayerAction.Respawn:
@@ -731,8 +747,6 @@ namespace MiNET
 				case PlayerAction.MissedSwing:
 				case PlayerAction.StartCrawling:
 				case PlayerAction.StopCrawling:
-				case PlayerAction.StartFlying:
-				case PlayerAction.StopFlying:
 				{
 					break;
 				}
@@ -836,91 +850,43 @@ namespace MiNET
 			SendPacket(packet);
 		}
 
-		private AbilityLayers GetAbilities()
+		protected virtual AbilityLayers GetAbilities()
 		{
-			PlayerAbility abilities = 0;
-			PlayerAbility values = 0;
+			var abilities = new Dictionary<PlayerAbility, bool>();
 
-			if (AllowFly || GameMode.AllowsFlying())
+			var mayFly = AllowFly || GameMode.AllowsFlying();
+			abilities.Add(PlayerAbility.MayFly, mayFly);
+			abilities.Add(PlayerAbility.Flying, mayFly && IsFlying);
+
+			abilities.Add(PlayerAbility.NoClip, IsNoClip || IsSpectator || !GameMode.HasCollision());
+			abilities.Add(PlayerAbility.Invulnerable, !GameMode.AllowsTakingDamage());
+			abilities.Add(PlayerAbility.InstantBuild, GameMode.HasCreativeInventory());
+
+			var mayEditWorld = IsWorldBuilder || GameMode.AllowsEditing();
+			abilities.Add(PlayerAbility.Build, mayEditWorld);
+			abilities.Add(PlayerAbility.Mine, mayEditWorld);
+
+			var mayInteract = GameMode.AllowsInteraction() || IsSpectator;
+			abilities.Add(PlayerAbility.DoorsAndSwitches, mayInteract);
+			abilities.Add(PlayerAbility.OpenContainers, mayInteract);
+			abilities.Add(PlayerAbility.AttackPlayers, mayInteract);
+			abilities.Add(PlayerAbility.AttackMobs, mayInteract);
+
+			abilities.Add(PlayerAbility.OperatorCommands, PermissionLevel == PermissionLevel.Operator);
+			abilities.Add(PlayerAbility.Muted, IsMuted);
+
+			var layers = new AbilityLayers()
 			{
-				abilities |= PlayerAbility.MayFly;
-
-				if (IsFlying)
+				new AbilityLayer()
 				{
-					abilities |= PlayerAbility.Flying;
+					Type = AbilityLayerType.Base,
+					Abilities = abilities,
+					FlySpeed = 0.05f,
+					WalkSpeed = 0.1f
 				}
-			}
-
-			if (IsNoClip || !GameMode.HasCollision())
-			{
-				abilities |= PlayerAbility.NoClip;
-			}
-
-			if (!GameMode.AllowsTakingDamage())
-			{
-				abilities |= PlayerAbility.Invulnerable;
-			}
-
-			if (GameMode.HasCreativeInventory())
-			{
-				abilities |= PlayerAbility.InstantBuild;
-			}
-
-			if (IsWorldBuilder || GameMode.AllowsEditing())
-			{
-				abilities |= PlayerAbility.Build | PlayerAbility.Mine;
-			}
-
-			if (GameMode.AllowsInteraction())
-			{
-				abilities |= PlayerAbility.DoorsAndSwitches | PlayerAbility.OpenContainers | PlayerAbility.AttackPlayers | PlayerAbility.AttackMobs;
-			}
-
-			if (PermissionLevel == PermissionLevel.Operator)
-			{
-				abilities |= PlayerAbility.OperatorCommands;
-			}
-
-			if (IsMuted)
-			{
-				abilities |= PlayerAbility.Muted;
-			}
-
-			var layers = new AbilityLayers();
-
-			var baseLayer = new AbilityLayer()
-			{
-				Type = AbilityLayerType.Base,
-				Abilities = abilities,
-				Values = (uint) abilities,
-				FlySpeed = 0.05f,
-				WalkSpeed = 0.1f
 			};
 
-			layers.Add(baseLayer);
-
 			return layers;
-		}
-
-		private uint GetAdventureFlags()
-		{
-			uint flags = 0;
-			if (IsWorldImmutable || GameMode == GameMode.Adventure) flags |= 0x01; // Immutable World (Remove hit markers client-side).
-			if (IsNoPvp || IsSpectator || GameMode == GameMode.Spectator) flags |= 0x02; // No PvP (Remove hit markers client-side).
-			if (IsNoPvm || IsSpectator || GameMode == GameMode.Spectator) flags |= 0x04; // No PvM (Remove hit markers client-side).
-			if (IsNoMvp || IsSpectator || GameMode == GameMode.Spectator) flags |= 0x08;
-
-			if (IsAutoJump) flags |= 0x20;
-
-			if (AllowFly || GameMode == GameMode.Creative) flags |= 0x40;
-
-			if (IsNoClip || IsSpectator || GameMode == GameMode.Spectator) flags |= 0x80; // No clip
-
-			if (IsWorldBuilder) flags |= 0x100; // Worldbuilder
-
-			if (IsFlying) flags |= 0x200;
-			if (IsMuted) flags |= 0x400; // Mute
-			return flags;
 		}
 
 		public PermissionLevel PermissionLevel { get; set; } = PermissionLevel.Operator;
@@ -935,7 +901,8 @@ namespace MiNET
 		public void SetSpectator(bool isSpectator)
 		{
 			IsSpectator = isSpectator;
-			SendAdventureSettings();
+
+			SendAbilities();
 		}
 
 		public bool IsAutoJump { get; set; }
@@ -1906,10 +1873,7 @@ namespace MiNET
 		{
 			if (!UseCreativeInventory) return;
 
-			var creativeContent = McpeCreativeContent.CreateObject();
-			creativeContent.input = InventoryUtils.GetCreativeMetadataSlots();
-
-			SendPacket(creativeContent);
+			SendPacket(InventoryUtils.GetCreativeInventoryData());
 		}
 
 		private void SendChunkRadiusUpdate()
@@ -2234,17 +2198,6 @@ namespace MiNET
 		}
 
 		/// <inheritdoc />
-		public void HandleMcpeFilterTextPacket(McpeFilterTextPacket message)
-		{
-			// Allow anvil renaming to work - this packet must be sent in response
-			// You could also modify the contents to change the outcome.
-			var packet = McpeFilterTextPacket.CreateObject();
-			packet.text = message.text;
-			packet.fromServer = true;
-			SendPacket(packet);
-		}
-
-		/// <inheritdoc />
 		public void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message)
 		{
 			
@@ -2296,33 +2249,11 @@ namespace MiNET
 
 		public virtual void HandleMcpeRequestAbility(McpeRequestAbility message)
 		{
-			if (message.ability == 18) // flying??
-			{
-				var isFlying = (bool) message.Value;
-
-				if (isFlying && !AllowFly && !GameMode.AllowsFlying())
-				{
-					SendAbilities();
-					return;
-				}
-
-				IsFlying = isFlying;
-				return;
-			}
+			Log.Debug($"Request abilities ability=[{message.ability}], value=[{message.Value}]");
 		}
 
 		public virtual void HandleMcpeMobArmorEquipment(McpeMobArmorEquipment message)
 		{
-		}
-
-		public virtual void HandleMcpeItemFrameDropItem(McpeItemFrameDropItem message)
-		{
-			Log.Debug($"Drops item frame at {message.coordinates}");
-			if (Level.GetBlock(message.coordinates) is Frame frame)
-			{
-				Log.Debug($"Drops from frame {frame}");
-				frame.ClearItem(Level);
-			}
 		}
 
 		public virtual void HandleMcpeMobEquipment(McpeMobEquipment message)
@@ -2450,11 +2381,6 @@ namespace MiNET
 		{
 		}
 
-		public virtual void HandleMcpeCraftingEvent(McpeCraftingEvent message)
-		{
-
-		}
-
 		public virtual void HandleMcpeInventoryTransaction(McpeInventoryTransaction message)
 		{
 			switch (message.transaction)
@@ -2506,7 +2432,7 @@ namespace MiNET
 				Log.Warn($"Attack item mismatch. Expected {itemInHand}, but client reported {transaction.Item}");
 			}
 
-			if (!Level.TryGetEntity(transaction.EntityId, out Entity target)) return;
+			if (!Level.TryGetEntity(transaction.RuntimeEntityId, out Entity target)) return;
 			target.DoItemInteraction(this, itemInHand);
 		}
 
@@ -2514,7 +2440,7 @@ namespace MiNET
 		{
 			DoInteraction((int) transaction.ActionType, this);
 
-			if (!Level.TryGetEntity(transaction.EntityId, out Entity target)) return;
+			if (!Level.TryGetEntity(transaction.RuntimeEntityId, out Entity target)) return;
 			target.DoInteraction((int) transaction.ActionType, this);
 		}
 
@@ -2526,7 +2452,7 @@ namespace MiNET
 				Log.Warn($"Attack item mismatch. Expected {itemInHand}, but client reported {transaction.Item}");
 			}
 
-			if (!Level.TryGetEntity(transaction.EntityId, out Entity target)) return;
+			if (!Level.TryGetEntity(transaction.RuntimeEntityId, out Entity target)) return;
 
 
 			LastAttackTarget = target;
@@ -3007,7 +2933,7 @@ namespace MiNET
 			startGame.movementType = 0;
 
 			//startGame.blockPalette = BlockFactory.BlockPalette;
-			startGame.itemstates = ItemFactory.Itemstates;
+			startGame.itemstates = ItemFactory.ItemStates;
 
 			startGame.enableNewInventorySystem = true;
 			startGame.blockPaletteChecksum = 0;
@@ -3430,8 +3356,8 @@ namespace MiNET
 		public override MetadataDictionary GetMetadata()
 		{
 			var metadata = base.GetMetadata();
-			metadata[(int) MetadataFlags.NameTag] = new MetadataString(NameTag ?? Username);
-			metadata[(int) MetadataFlags.ButtonText] = new MetadataString(ButtonText ?? string.Empty);
+			metadata[(int) MetadataFlags.Name] = new MetadataString(NameTag ?? Username);
+			metadata[(int) MetadataFlags.InteractText] = new MetadataString(ButtonText ?? string.Empty);
 			metadata[(int) MetadataFlags.PlayerFlags] = new MetadataByte((byte) (IsSleeping ? 0b10 : 0));
 			metadata[(int) MetadataFlags.BedPosition] = new MetadataIntCoordinates((int) SpawnPosition.X, (int) SpawnPosition.Y, (int) SpawnPosition.Z);
 
@@ -3469,14 +3395,14 @@ namespace MiNET
 
 			{
 				var playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerRemoveRecords {this};
+				playerList.records = new PlayerRemoveRecords(this);
 				Level.RelayBroadcast(Level.CreateMcpeBatch(playerList.Encode())); // Replace with records, to remove need for player and encode
 				playerList.records = null;
 				playerList.PutPool();
 			}
 			{
 				var playerList = McpePlayerList.CreateObject();
-				playerList.records = new PlayerAddRecords {this};
+				playerList.records = new PlayerAddRecords(this);
 				Level.RelayBroadcast(Level.CreateMcpeBatch(playerList.Encode())); // Replace with records, to remove need for player and encode
 				playerList.records = null;
 				playerList.PutPool();
@@ -3877,6 +3803,30 @@ namespace MiNET
 		{
 		}
 
+		public virtual void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message)
+		{
+		}
+
+		public virtual void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message)
+		{
+			Log.Debug($"InvOpt: leftTab={(McpeSetPlayerInventoryOptions.InventoryLeftTab) message.leftTab}; " +
+				$"rightTab={(McpeSetPlayerInventoryOptions.InventoryRightTab) message.rightTab}; " +
+				$"filtering={message.filtering}; " +
+				$"inventoryLayout={(McpeSetPlayerInventoryOptions.InventoryLayout) message.inventoryLayout}; " +
+				$"craftingLayout={(McpeSetPlayerInventoryOptions.InventoryLayout) message.craftingLayout}");
+		}
+
+		public virtual void HandleMcpeServerPlayerPostMovePosition(McpeServerPlayerPostMovePosition message)
+		{
+		}
+
+		public virtual void HandleMcpeBossEvent(McpeBossEvent message)
+		{
+			Log.Debug($"BossEvent: bossEntityId={message.bossEntityId}, eventType={message.eventType}, " +
+				$"playerId={message.playerId}, title={message.title}, " +
+				$"unknown6={message.unknown6}, healthPercent={message.healthPercent}, " +
+				$"overlay={message.overlay}, color={message.color}");
+		}
 	}
 
 	public class PlayerEventArgs : EventArgs

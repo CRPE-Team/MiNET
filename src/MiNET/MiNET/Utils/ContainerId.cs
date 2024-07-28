@@ -66,5 +66,6 @@
 		Cursor = 59,
 		CreatedOutput = 60,
 		SmithingTableTemplate = 61,
+		Crafter = 62,
 	}
 }

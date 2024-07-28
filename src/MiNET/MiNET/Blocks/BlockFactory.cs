@@ -396,6 +396,12 @@ namespace MiNET.Blocks
 
 				var block = (Block) Activator.CreateInstance(type);
 
+				if (string.IsNullOrEmpty(block.Id))
+				{
+					Log.Error($"Detected block without id [{type}]");
+					continue;
+				}
+
 				idToType[block.Id] = type;
 				typeToId[type] = block.Id;
 			}

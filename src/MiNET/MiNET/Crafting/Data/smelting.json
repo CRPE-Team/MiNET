@@ -540,192 +540,6 @@
     {
         "block": "furnace",
         "input": {
-            "block_states": "CgAACAUAY29sb3IDAHJlZAA=",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:red_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IEAGJsdWUA",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:blue_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IEAGN5YW4A",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:cyan_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IEAGdyYXkA",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:gray_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IEAGxpbWUA",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:lime_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IEAHBpbmsA",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:pink_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IFAGJsYWNrAA==",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:black_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IFAGJyb3duAA==",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:brown_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IFAGdyZWVuAA==",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:green_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IFAHdoaXRlAA==",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:white_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IGAG9yYW5nZQA=",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:orange_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IGAHB1cnBsZQA=",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:purple_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IGAHNpbHZlcgA=",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:silver_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IGAHllbGxvdwA=",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:yellow_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IHAG1hZ2VudGEA",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:magenta_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAUAY29sb3IKAGxpZ2h0X2JsdWUA",
-            "name": "minecraft:stained_hardened_clay"
-        },
-        "output": {
-            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
-            "name": "minecraft:light_blue_glazed_terracotta"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAoAc3RvbmVfdHlwZQUAc3RvbmUA",
-            "name": "minecraft:stone"
-        },
-        "output": {
-            "name": "minecraft:smooth_stone"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
             "block_states": "CgAACAsAY2hpc2VsX3R5cGUHAGRlZmF1bHQICwBwaWxsYXJfYXhpcwEAeQA=",
             "name": "minecraft:quartz_block"
         },
@@ -759,7 +573,27 @@
         "block": "furnace",
         "input": {
             "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:acacia_wood"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
             "name": "minecraft:birch_log"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:birch_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -779,7 +613,27 @@
         "block": "furnace",
         "input": {
             "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:dark_oak_wood"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
             "name": "minecraft:jungle_log"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:jungle_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -799,6 +653,16 @@
         "block": "furnace",
         "input": {
             "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:oak_wood"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
             "name": "minecraft:spruce_log"
         },
         "output": {
@@ -808,8 +672,8 @@
     {
         "block": "furnace",
         "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQACAkAd29vZF90eXBlAwBvYWsA",
-            "name": "minecraft:wood"
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:spruce_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -818,8 +682,8 @@
     {
         "block": "furnace",
         "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQACAkAd29vZF90eXBlBQBiaXJjaAA=",
-            "name": "minecraft:wood"
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:stripped_acacia_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -828,8 +692,8 @@
     {
         "block": "furnace",
         "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQACAkAd29vZF90eXBlBgBhY2FjaWEA",
-            "name": "minecraft:wood"
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:stripped_birch_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -838,8 +702,8 @@
     {
         "block": "furnace",
         "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQACAkAd29vZF90eXBlBgBqdW5nbGUA",
-            "name": "minecraft:wood"
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:stripped_dark_oak_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -848,8 +712,8 @@
     {
         "block": "furnace",
         "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQACAkAd29vZF90eXBlBgBzcHJ1Y2UA",
-            "name": "minecraft:wood"
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:stripped_jungle_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -858,8 +722,8 @@
     {
         "block": "furnace",
         "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQACAkAd29vZF90eXBlCABkYXJrX29hawA=",
-            "name": "minecraft:wood"
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:stripped_oak_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -868,58 +732,8 @@
     {
         "block": "furnace",
         "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQBCAkAd29vZF90eXBlAwBvYWsA",
-            "name": "minecraft:wood"
-        },
-        "output": {
-            "name": "minecraft:charcoal"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQBCAkAd29vZF90eXBlBQBiaXJjaAA=",
-            "name": "minecraft:wood"
-        },
-        "output": {
-            "name": "minecraft:charcoal"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQBCAkAd29vZF90eXBlBgBhY2FjaWEA",
-            "name": "minecraft:wood"
-        },
-        "output": {
-            "name": "minecraft:charcoal"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQBCAkAd29vZF90eXBlBgBqdW5nbGUA",
-            "name": "minecraft:wood"
-        },
-        "output": {
-            "name": "minecraft:charcoal"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQBCAkAd29vZF90eXBlBgBzcHJ1Y2UA",
-            "name": "minecraft:wood"
-        },
-        "output": {
-            "name": "minecraft:charcoal"
-        }
-    },
-    {
-        "block": "furnace",
-        "input": {
-            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkBDABzdHJpcHBlZF9iaXQBCAkAd29vZF90eXBlCABkYXJrX29hawA=",
-            "name": "minecraft:wood"
+            "block_states": "CgAACAsAcGlsbGFyX2F4aXMBAHkA",
+            "name": "minecraft:stripped_spruce_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -941,6 +755,16 @@
         "input": {
             "meta": 32767,
             "name": "minecraft:acacia_log"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
+            "name": "minecraft:acacia_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -981,6 +805,16 @@
         "input": {
             "meta": 32767,
             "name": "minecraft:birch_log"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
+            "name": "minecraft:birch_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -1084,7 +918,6 @@
             "name": "minecraft:cobblestone"
         },
         "output": {
-            "block_states": "CgAACAoAc3RvbmVfdHlwZQUAc3RvbmUA",
             "name": "minecraft:stone"
         }
     },
@@ -1113,6 +946,16 @@
         "input": {
             "meta": 32767,
             "name": "minecraft:dark_oak_log"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
+            "name": "minecraft:dark_oak_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -1392,6 +1235,16 @@
         "block": "furnace",
         "input": {
             "meta": 32767,
+            "name": "minecraft:jungle_wood"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
             "name": "minecraft:kelp"
         },
         "output": {
@@ -1473,6 +1326,16 @@
         "input": {
             "meta": 32767,
             "name": "minecraft:oak_log"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
+            "name": "minecraft:oak_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -1634,6 +1497,16 @@
         "block": "furnace",
         "input": {
             "meta": 32767,
+            "name": "minecraft:spruce_wood"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
             "name": "minecraft:stripped_acacia_log"
         },
         "output": {
@@ -1644,7 +1517,27 @@
         "block": "furnace",
         "input": {
             "meta": 32767,
+            "name": "minecraft:stripped_acacia_wood"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
             "name": "minecraft:stripped_birch_log"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
+            "name": "minecraft:stripped_birch_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -1684,7 +1577,27 @@
         "block": "furnace",
         "input": {
             "meta": 32767,
+            "name": "minecraft:stripped_dark_oak_wood"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
             "name": "minecraft:stripped_jungle_log"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
+            "name": "minecraft:stripped_jungle_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
@@ -1724,6 +1637,16 @@
         "block": "furnace",
         "input": {
             "meta": 32767,
+            "name": "minecraft:stripped_oak_wood"
+        },
+        "output": {
+            "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "meta": 32767,
             "name": "minecraft:stripped_spruce_log"
         },
         "output": {
@@ -1734,10 +1657,40 @@
         "block": "furnace",
         "input": {
             "meta": 32767,
-            "name": "minecraft:wood"
+            "name": "minecraft:stripped_spruce_wood"
         },
         "output": {
             "name": "minecraft:charcoal"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:black_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:black_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:blue_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:blue_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:brown_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:brown_glazed_terracotta"
         }
     },
     {
@@ -1779,6 +1732,16 @@
     {
         "block": "furnace",
         "input": {
+            "name": "minecraft:cyan_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:cyan_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
             "name": "minecraft:golden_boots"
         },
         "output": {
@@ -1815,6 +1778,26 @@
     {
         "block": "furnace",
         "input": {
+            "name": "minecraft:gray_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:gray_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:green_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:green_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
             "name": "minecraft:iron_boots"
         },
         "output": {
@@ -1846,6 +1829,115 @@
         },
         "output": {
             "name": "minecraft:iron_nugget"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:light_blue_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:light_blue_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:light_gray_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:silver_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:lime_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:lime_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:magenta_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:magenta_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:orange_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:orange_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:pink_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:pink_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:purple_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:purple_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:red_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:red_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:stone"
+        },
+        "output": {
+            "name": "minecraft:smooth_stone"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:white_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:white_glazed_terracotta"
+        }
+    },
+    {
+        "block": "furnace",
+        "input": {
+            "name": "minecraft:yellow_terracotta"
+        },
+        "output": {
+            "block_states": "CgAAAxAAZmFjaW5nX2RpcmVjdGlvbgAAAAAA",
+            "name": "minecraft:yellow_glazed_terracotta"
         }
     },
     {

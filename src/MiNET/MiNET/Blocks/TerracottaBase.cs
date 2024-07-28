@@ -25,10 +25,12 @@
 
 namespace MiNET.Blocks
 {
-	public partial class SilverGlazedTerracotta : GlazedTerracotta
+	public abstract class TerracottaBase : Block
 	{
-		public SilverGlazedTerracotta() : base()
+		public TerracottaBase() : base()
 		{
+			BlastResistance = 30;
+			Hardness = 1.25f;
 		}
 	}
 }
