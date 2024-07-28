@@ -37,7 +37,7 @@ using MiNET.Utils;
 namespace MiNET.Test
 {
 	[TestClass]
-	[Ignore("Manual code generation")]
+	//[Ignore("Manual code generation")]
 	public class GenerateBlocksTests
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(GenerateBlocksTests));
@@ -54,12 +54,12 @@ namespace MiNET.Test
 				}
 			}
 
-			Item item = ItemFactory.GetItem("minecraft:sapling");
-			Assert.AreEqual("minecraft:sapling", item.Id);
+			Item item = ItemFactory.GetItem("minecraft:oak_sapling");
+			Assert.AreEqual("minecraft:oak_sapling", item.Id);
 			Assert.IsInstanceOfType(item, typeof(ItemBlock));
 
 			var itemBlock = item as ItemBlock;
-			Assert.IsInstanceOfType(itemBlock.Block, typeof(SaplingBase));
+			Assert.IsInstanceOfType(itemBlock.Block, typeof(OakSapling));
 		}
 
 		[TestMethod]
