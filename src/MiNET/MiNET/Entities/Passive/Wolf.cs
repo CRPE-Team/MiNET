@@ -128,29 +128,29 @@ namespace MiNET.Entities.Passive
 		public override MetadataDictionary GetMetadata()
 		{
 			MetadataDictionary metadata = base.GetMetadata();
-			metadata[1] = new MetadataInt(12);
-			metadata[2] = new MetadataInt(0);
-			metadata[(int) MetadataFlags.Color] = new MetadataByte(CollarColor);
-			//metadata[4] = new MetadataString("Testing");
+			metadata[(int) MetadataFlags.StructuralIntegrity] = new MetadataInt(12);
+			metadata[(int) MetadataFlags.Variant] = new MetadataInt(0);
+			metadata[(int) MetadataFlags.ColorIndex] = new MetadataByte(CollarColor);
+			metadata[(int) MetadataFlags.AirSupply] = new MetadataShort(300);
+			metadata[(int) MetadataFlags.EffectColor] = new MetadataInt(0);
+			metadata[(int) MetadataFlags.Reserved009] = new MetadataByte(0);
+			metadata[(int) MetadataFlags.Scale] = new MetadataLong(0);
+			metadata[(int) MetadataFlags.HasNpc] = new MetadataFloat(1.0f);
+			metadata[(int) MetadataFlags.ContainerType] = new MetadataShort(300);
+			metadata[(int) MetadataFlags.ContainerSize] = new MetadataInt(0);
+			metadata[(int) MetadataFlags.ContainerStrengthModifier] = new MetadataByte(0);
+			metadata[(int) MetadataFlags.BlockTarget] = new MetadataInt(0);
+			metadata[(int) MetadataFlags.CollisionBoxWidth] = new MetadataFloat(0.6f);
+			metadata[(int) MetadataFlags.CollisionBoxHeight] = new MetadataFloat(0.8f);
+			metadata[(int) MetadataFlags.RiderSeatPosition] = new MetadataVector3(0, 0, 0);
+			metadata[(int) MetadataFlags.SeatLockPassengerRotation] = new MetadataByte(0);
+			metadata[(int) MetadataFlags.SeatLockPassengerRotationDegrees] = new MetadataFloat(0f);
+			metadata[(int) MetadataFlags.SeatRotationOffset] = new MetadataFloat(0f);
+
 			if (Owner != null)
 			{
 				metadata[(int) MetadataFlags.Owner] = new MetadataLong(Owner.EntityId);
 			}
-			metadata[7] = new MetadataShort(300);
-			metadata[8] = new MetadataInt(0);
-			metadata[9] = new MetadataByte(0);
-			metadata[38] = new MetadataLong(0);
-			metadata[39] = new MetadataFloat(1.0f);
-			metadata[44] = new MetadataShort(300);
-			metadata[45] = new MetadataInt(0);
-			metadata[46] = new MetadataByte(0);
-			metadata[47] = new MetadataInt(0);
-			metadata[53] = new MetadataFloat(0.6f);
-			metadata[54] = new MetadataFloat(0.8f);
-			metadata[56] = new MetadataVector3(0, 0, 0);
-			metadata[57] = new MetadataByte(0);
-			metadata[58] = new MetadataFloat(0f);
-			metadata[59] = new MetadataFloat(0f);
 
 			return metadata;
 		}

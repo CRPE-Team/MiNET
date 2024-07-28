@@ -160,9 +160,7 @@ namespace MiNET.Blocks
 								{
 									if (rnd.Next(2) == 0)
 									{
-										var flower = new RedFlower();
-										flower.FlowerType = "poppy";
-										block = flower;
+										block = new Poppy();
 									}
 									else
 									{

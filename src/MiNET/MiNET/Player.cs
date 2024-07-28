@@ -2198,17 +2198,6 @@ namespace MiNET
 		}
 
 		/// <inheritdoc />
-		public void HandleMcpeFilterTextPacket(McpeFilterTextPacket message)
-		{
-			// Allow anvil renaming to work - this packet must be sent in response
-			// You could also modify the contents to change the outcome.
-			var packet = McpeFilterTextPacket.CreateObject();
-			packet.text = message.text;
-			packet.fromServer = true;
-			SendPacket(packet);
-		}
-
-		/// <inheritdoc />
 		public void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message)
 		{
 			
@@ -3367,8 +3356,8 @@ namespace MiNET
 		public override MetadataDictionary GetMetadata()
 		{
 			var metadata = base.GetMetadata();
-			metadata[(int) MetadataFlags.NameTag] = new MetadataString(NameTag ?? Username);
-			metadata[(int) MetadataFlags.ButtonText] = new MetadataString(ButtonText ?? string.Empty);
+			metadata[(int) MetadataFlags.Name] = new MetadataString(NameTag ?? Username);
+			metadata[(int) MetadataFlags.InteractText] = new MetadataString(ButtonText ?? string.Empty);
 			metadata[(int) MetadataFlags.PlayerFlags] = new MetadataByte((byte) (IsSleeping ? 0b10 : 0));
 			metadata[(int) MetadataFlags.BedPosition] = new MetadataIntCoordinates((int) SpawnPosition.X, (int) SpawnPosition.Y, (int) SpawnPosition.Z);
 

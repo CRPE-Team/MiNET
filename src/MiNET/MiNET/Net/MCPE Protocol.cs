@@ -45,8 +45,8 @@ namespace MiNET.Net
 {
 	public class McpeProtocolInfo
 	{
-		public const int ProtocolVersion = 662;
-		public const string GameVersion = "1.20.70";
+		public const int ProtocolVersion = 671;
+		public const string GameVersion = "1.20.80";
 	}
 
 	public interface IMcpeMessageHandler
@@ -107,7 +107,6 @@ namespace MiNET.Net
 		void HandleMcpeItemStackRequest(McpeItemStackRequest message);
 		void HandleMcpeUpdatePlayerGameType(McpeUpdatePlayerGameType message);
 		void HandleMcpePacketViolationWarning(McpePacketViolationWarning message);
-		void HandleMcpeFilterTextPacket(McpeFilterTextPacket message);
 		void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message);
 		void HandleMcpeSubChunkRequestPacket(McpeSubChunkRequestPacket message);
 		void HandleMcpeRequestAbility(McpeRequestAbility message);
@@ -238,7 +237,6 @@ namespace MiNET.Net
 		void HandleMcpePlayerEnchantOptions(McpePlayerEnchantOptions message);
 		void HandleMcpeItemStackResponse(McpeItemStackResponse message);
 		void HandleMcpeItemComponent(McpeItemComponent message);
-		void HandleMcpeFilterTextPacket(McpeFilterTextPacket message);
 		void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message);
 		void HandleMcpeSubChunkPacket(McpeSubChunkPacket message);
 		void HandleMcpeDimensionData(McpeDimensionData message);
@@ -626,9 +624,6 @@ namespace MiNET.Net
 				case McpeItemComponent msg:
 					_messageHandler.HandleMcpeItemComponent(msg);
 					break;
-				case McpeFilterTextPacket msg:
-					_messageHandler.HandleMcpeFilterTextPacket(msg);
-					break;
 				case McpeUpdateSubChunkBlocksPacket msg:
 					_messageHandler.HandleMcpeUpdateSubChunkBlocksPacket(msg);
 					break;
@@ -1010,8 +1005,6 @@ namespace MiNET.Net
 						return McpePacketViolationWarning.CreateObject().Decode(buffer);
 					case 0xa2:
 						return McpeItemComponent.CreateObject().Decode(buffer);
-					case 0xa3:
-						return McpeFilterTextPacket.CreateObject().Decode(buffer);
 					case 0xac:
 						return McpeUpdateSubChunkBlocksPacket.CreateObject().Decode(buffer);
 					case 0xae:
@@ -2286,6 +2279,7 @@ namespace MiNET.Net
 		public string gameVersion; // = null;
 		public Experiments experiments; // = null;
 		public bool experimentsPreviouslyToggled; // = null;
+		public bool useVanillaEditorPacks; // = null;
 
 		public McpeResourcePackStack()
 		{
@@ -2305,6 +2299,7 @@ namespace MiNET.Net
 			Write(gameVersion);
 			Write(experiments);
 			Write(experimentsPreviouslyToggled);
+			Write(useVanillaEditorPacks);
 
 			AfterEncode();
 		}
@@ -2324,6 +2319,7 @@ namespace MiNET.Net
 			gameVersion = ReadString();
 			experiments = ReadExperiments();
 			experimentsPreviouslyToggled = ReadBool();
+			useVanillaEditorPacks = ReadBool();
 
 			AfterDecode();
 		}
@@ -2341,6 +2337,7 @@ namespace MiNET.Net
 			gameVersion=default(string);
 			experiments=default(Experiments);
 			experimentsPreviouslyToggled=default(bool);
+			useVanillaEditorPacks=default(bool);
 		}
 
 	}
@@ -9655,6 +9652,9 @@ namespace MiNET.Net
 	public partial class McpeUpdatePlayerGameType : Packet<McpeUpdatePlayerGameType>
 	{
 
+		public int gameMode; // = null;
+		public ulong playerEntityUniqueId; // = null;
+		public uint tick; // = null;
 
 		public McpeUpdatePlayerGameType()
 		{
@@ -9668,6 +9668,9 @@ namespace MiNET.Net
 
 			BeforeEncode();
 
+			WriteVarInt(gameMode);
+			Write(playerEntityUniqueId);
+			WriteUnsignedVarInt(tick);
 
 			AfterEncode();
 		}
@@ -9681,6 +9684,9 @@ namespace MiNET.Net
 
 			BeforeDecode();
 
+			gameMode = ReadVarInt();
+			playerEntityUniqueId = ReadUlong();
+			tick = ReadUnsignedVarInt();
 
 			AfterDecode();
 		}
@@ -9692,6 +9698,9 @@ namespace MiNET.Net
 		{
 			base.ResetPacket();
 
+			gameMode=default(int);
+			playerEntityUniqueId=default(ulong);
+			tick=default(uint);
 		}
 
 	}
@@ -9800,58 +9809,6 @@ namespace MiNET.Net
 			base.ResetPacket();
 
 			entries=default(ItemComponentList);
-		}
-
-	}
-
-	public partial class McpeFilterTextPacket : Packet<McpeFilterTextPacket>
-	{
-
-		public string text; // = null;
-		public bool fromServer; // = null;
-
-		public McpeFilterTextPacket()
-		{
-			Id = 0xa3;
-			IsMcpe = true;
-		}
-
-		protected override void EncodePacket()
-		{
-			base.EncodePacket();
-
-			BeforeEncode();
-
-			Write(text);
-			Write(fromServer);
-
-			AfterEncode();
-		}
-
-		partial void BeforeEncode();
-		partial void AfterEncode();
-
-		protected override void DecodePacket()
-		{
-			base.DecodePacket();
-
-			BeforeDecode();
-
-			text = ReadString();
-			fromServer = ReadBool();
-
-			AfterDecode();
-		}
-
-		partial void BeforeDecode();
-		partial void AfterDecode();
-
-		protected override void ResetPacket()
-		{
-			base.ResetPacket();
-
-			text=default(string);
-			fromServer=default(bool);
 		}
 
 	}
@@ -10555,7 +10512,10 @@ namespace MiNET.Net
 			Food = 8,
 			AirBubbles = 9,
 			HorseHealth = 10,
+			StatusEffects = 11,
+			ItemText = 12
 		}
+
 		public enum HudVisibility
 		{
 			Hide = 0,

@@ -225,9 +225,6 @@ namespace MiNET.Net
 				case McpePlayerSkin msg:
 					handler.HandleMcpePlayerSkin(msg);
 					break;
-				case McpeFilterTextPacket msg:
-					handler.HandleMcpeFilterTextPacket(msg);
-					break;
 				case McpeRequestAbility msg:
 					handler.HandleMcpeRequestAbility(msg);
 					break;

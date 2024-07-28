@@ -308,10 +308,16 @@ namespace MiNET.Net.Crafting
 	public abstract class ShapedRecipeBase : Recipe
 	{
 		public int UniqueId { get; set; }
+
 		public int Width { get; set; }
+
 		public int Height { get; set; }
+
 		public RecipeIngredient[] Input { get; set; }
+
 		public List<Item> Output { get; set; }
+
+		public bool IsSymmetric { get; set; }
 
 		public ShapedRecipeBase(int width, int height)
 		{
@@ -358,6 +364,7 @@ namespace MiNET.Net.Crafting
 			packet.Write(Id);
 			packet.Write(Block);
 			packet.WriteSignedVarInt(Priority);
+			packet.Write(IsSymmetric);
 			packet.WriteVarInt(UniqueId);
 		}
 
@@ -380,6 +387,7 @@ namespace MiNET.Net.Crafting
 			recipe.Id = packet.ReadUUID();
 			recipe.Block = packet.ReadString();
 			recipe.Priority = packet.ReadSignedVarInt();
+			recipe.IsSymmetric = packet.ReadBool();
 			recipe.UniqueId = packet.ReadVarInt();
 
 			return recipe;

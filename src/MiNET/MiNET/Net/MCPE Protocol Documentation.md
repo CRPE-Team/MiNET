@@ -151,7 +151,6 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Update Player Game Type | 0x97 | 151 |   
 | Packet Violation Warning | 0x9c | 156 |   
 | Item Component | 0xa2 | 162 |   
-| Filter Text Packet | 0xa3 | 163 |   
 | Update Sub Chunk Blocks Packet | 0xac | 172 |   
 | Sub Chunk Packet | 0xae | 174 |   
 | Sub Chunk Request Packet | 0xaf | 175 |   
@@ -359,12 +358,13 @@ Wiki: [Resource Pack Stack](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
-|Must accept | bool |  |
+|Must Accept | bool |  |
 |BehaviorPackIdVersions | ResourcePackIdVersions |  |
 |ResourcePackIdVersions | ResourcePackIdVersions |  |
 |Game Version | string |  |
 |Experiments | Experiments |  |
 |Experiments Previously Toggled | bool |  |
+|Use Vanilla Editor Packs | bool |  |
 -----------------------------------------------------------------------
 ### Resource Pack Client Response (0x08)
 Wiki: [Resource Pack Client Response](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ResourcePackClientResponse)
@@ -2790,6 +2790,9 @@ Wiki: [Update Player Game Type](https://github.com/NiclasOlofsson/MiNET/wiki//Pr
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
+|Game Mode | VarInt |  |
+|Player Entity Unique Id | ulong |  |
+|Tick | UnsignedVarInt |  |
 -----------------------------------------------------------------------
 ### Packet Violation Warning (0x9c)
 Wiki: [Packet Violation Warning](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-PacketViolationWarning)
@@ -2823,22 +2826,6 @@ Wiki: [Item Component](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-It
 | Name | Type | Size |
 |:-----|:-----|:-----|
 |Entries | ItemComponentList |  |
------------------------------------------------------------------------
-### Filter Text Packet (0xa3)
-Wiki: [Filter Text Packet](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-FilterTextPacket)
-
-**Sent from server:** true  
-**Sent from client:** true
-
-
-
-
-#### Fields
-
-| Name | Type | Size |
-|:-----|:-----|:-----|
-|Text | string |  |
-|From server | bool |  |
 -----------------------------------------------------------------------
 ### Update Sub Chunk Blocks Packet (0xac)
 Wiki: [Update Sub Chunk Blocks Packet](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-UpdateSubChunkBlocksPacket)

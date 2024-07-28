@@ -359,6 +359,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class AcaciaSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:acacia_sapling";
+
+		[StateBit]
+		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+	} // class
+
 	public partial class AcaciaSlab : WoodenSlabBase
 	{
 		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
@@ -627,6 +660,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:air";
 	} // class
 
+	public partial class Allium : Block
+	{
+		public override string Id => "minecraft:allium";
+	} // class
+
 	public partial class Allow : Block
 	{
 		public override string Id => "minecraft:allow";
@@ -847,6 +885,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _persistentBit, _updateBit);
 		} // method
+	} // class
+
+	public partial class AzureBluet : Block
+	{
+		public override string Id => "minecraft:azure_bluet";
 	} // class
 
 	public partial class Bamboo : Block
@@ -1323,18 +1366,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooSapling : Block
+	public partial class BambooSapling : SaplingBase
 	{
 		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
-		private readonly BlockStateString _saplingType = new BlockStateString() { Name = "sapling_type", Value = "oak" };
 
 		public override string Id => "minecraft:bamboo_sapling";
 
 		[StateBit]
 		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
-
-		[StateEnum("acacia", "birch", "dark_oak", "jungle", "oak", "spruce")]
-		public string SaplingType { get => _saplingType.Value; set => NotifyStateUpdate(_saplingType, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1345,9 +1384,6 @@ namespace MiNET.Blocks
 					case BlockStateByte s when s.Name == "age_bit":
 						NotifyStateUpdate(_ageBit, s.Value);
 						break;
-					case BlockStateString s when s.Name == "sapling_type":
-						NotifyStateUpdate(_saplingType, s.Value);
-						break;
 				} // switch
 			} // foreach
 		} // method
@@ -1355,12 +1391,11 @@ namespace MiNET.Blocks
 		protected override IEnumerable<IBlockState> GetStates()
 		{
 			yield return _ageBit;
-			yield return _saplingType;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _ageBit, _saplingType);
+			return HashCode.Combine(Id, _ageBit);
 		} // method
 	} // class
 
@@ -2286,6 +2321,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class BirchSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:birch_sapling";
+
+		[StateBit]
+		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+	} // class
+
 	public partial class BirchSlab : WoodenSlabBase
 	{
 		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
@@ -2992,6 +3060,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:blue_ice";
 	} // class
 
+	public partial class BlueOrchid : Block
+	{
+		public override string Id => "minecraft:blue_orchid";
+	} // class
+
 	public partial class BlueShulkerBox : Block
 	{
 		public override string Id => "minecraft:blue_shulker_box";
@@ -3131,6 +3204,39 @@ namespace MiNET.Blocks
 	public partial class BrainCoral : Block
 	{
 		public override string Id => "minecraft:brain_coral";
+	} // class
+
+	public partial class BrainCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:brain_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class BrewingStand : Block
@@ -3449,6 +3555,39 @@ namespace MiNET.Blocks
 	public partial class BubbleCoral : Block
 	{
 		public override string Id => "minecraft:bubble_coral";
+	} // class
+
+	public partial class BubbleCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:bubble_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class BuddingAmethyst : Block
@@ -4373,7 +4512,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherrySapling : Block
+	public partial class CherrySapling : SaplingBase
 	{
 		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
 
@@ -5458,88 +5597,6 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CoralFan : Block
-	{
-		private readonly BlockStateString _coralColor = new BlockStateString() { Name = "coral_color", Value = "blue" };
-		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 0 };
-
-		public override string Id => "minecraft:coral_fan";
-
-		[StateEnum("blue", "pink", "purple", "red", "yellow")]
-		public string CoralColor { get => _coralColor.Value; set => NotifyStateUpdate(_coralColor, value); }
-
-		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "coral_color":
-						NotifyStateUpdate(_coralColor, s.Value);
-						break;
-					case BlockStateInt s when s.Name == "coral_fan_direction":
-						NotifyStateUpdate(_coralFanDirection, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _coralColor;
-			yield return _coralFanDirection;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _coralColor, _coralFanDirection);
-		} // method
-	} // class
-
-	public partial class CoralFanDead : Block
-	{
-		private readonly BlockStateString _coralColor = new BlockStateString() { Name = "coral_color", Value = "blue" };
-		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 0 };
-
-		public override string Id => "minecraft:coral_fan_dead";
-
-		[StateEnum("blue", "pink", "purple", "red", "yellow")]
-		public string CoralColor { get => _coralColor.Value; set => NotifyStateUpdate(_coralColor, value); }
-
-		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "coral_color":
-						NotifyStateUpdate(_coralColor, s.Value);
-						break;
-					case BlockStateInt s when s.Name == "coral_fan_direction":
-						NotifyStateUpdate(_coralFanDirection, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _coralColor;
-			yield return _coralFanDirection;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _coralColor, _coralFanDirection);
-		} // method
-	} // class
-
 	public partial class CoralFanHang : Block
 	{
 		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 0 };
@@ -5685,6 +5742,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _coralDirection, _coralHangTypeBit, _deadBit);
 		} // method
+	} // class
+
+	public partial class Cornflower : Block
+	{
+		public override string Id => "minecraft:cornflower";
 	} // class
 
 	public partial class CrackedDeepslateBricks : Block
@@ -6896,6 +6958,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class DarkOakSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:dark_oak_sapling";
+
+		[StateBit]
+		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+	} // class
+
 	public partial class DarkOakSlab : WoodenSlabBase
 	{
 		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
@@ -7230,9 +7325,75 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_brain_coral";
 	} // class
 
+	public partial class DeadBrainCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_brain_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
 	public partial class DeadBubbleCoral : Block
 	{
 		public override string Id => "minecraft:dead_bubble_coral";
+	} // class
+
+	public partial class DeadBubbleCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_bubble_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class DeadFireCoral : Block
@@ -7240,14 +7401,113 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_fire_coral";
 	} // class
 
+	public partial class DeadFireCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_fire_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
 	public partial class DeadHornCoral : Block
 	{
 		public override string Id => "minecraft:dead_horn_coral";
 	} // class
 
+	public partial class DeadHornCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_horn_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
 	public partial class DeadTubeCoral : Block
 	{
 		public override string Id => "minecraft:dead_tube_coral";
+	} // class
+
+	public partial class DeadTubeCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 0 };
+
+		public override string Id => "minecraft:dead_tube_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class Deadbush : Block
@@ -9362,6 +9622,39 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:fire_coral";
 	} // class
 
+	public partial class FireCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:fire_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
 	public partial class FletchingTable : Block
 	{
 		public override string Id => "minecraft:fletching_table";
@@ -10366,6 +10659,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class HeavyCore : Block
+	{
+		public override string Id => "minecraft:heavy_core";
+	} // class
+
 	public partial class HeavyWeightedPressurePlate : Block
 	{
 		private readonly BlockStateInt _redstoneSignal = new BlockStateInt() { Name = "redstone_signal", Value = 0 };
@@ -10453,6 +10751,39 @@ namespace MiNET.Blocks
 	public partial class HornCoral : Block
 	{
 		public override string Id => "minecraft:horn_coral";
+	} // class
+
+	public partial class HornCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
+
+		public override string Id => "minecraft:horn_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class Ice : Block
@@ -11026,6 +11357,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _redstoneSignal);
+		} // method
+	} // class
+
+	public partial class JungleSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:jungle_sapling";
+
+		[StateBit]
+		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
 		} // method
 	} // class
 
@@ -11866,6 +12230,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _facingDirection);
 		} // method
+	} // class
+
+	public partial class LilyOfTheValley : Block
+	{
+		public override string Id => "minecraft:lily_of_the_valley";
 	} // class
 
 	public partial class LimeCandle : Block
@@ -13755,6 +14124,39 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:oak_planks";
 	} // class
 
+	public partial class OakSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:oak_sapling";
+
+		[StateBit]
+		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+	} // class
+
 	public partial class OakSlab : WoodenSlabBase
 	{
 		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
@@ -14083,9 +14485,19 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:orange_terracotta";
 	} // class
 
+	public partial class OrangeTulip : Block
+	{
+		public override string Id => "minecraft:orange_tulip";
+	} // class
+
 	public partial class OrangeWool : WoolBase
 	{
 		public override string Id => "minecraft:orange_wool";
+	} // class
+
+	public partial class OxeyeDaisy : Block
+	{
+		public override string Id => "minecraft:oxeye_daisy";
 	} // class
 
 	public partial class OxidizedChiseledCopper : Block
@@ -14586,6 +14998,11 @@ namespace MiNET.Blocks
 	public partial class PinkTerracotta : TerracottaBase
 	{
 		public override string Id => "minecraft:pink_terracotta";
+	} // class
+
+	public partial class PinkTulip : Block
+	{
+		public override string Id => "minecraft:pink_tulip";
 	} // class
 
 	public partial class PinkWool : WoolBase
@@ -15732,6 +16149,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class Poppy : Block
+	{
+		public override string Id => "minecraft:poppy";
+	} // class
+
 	public partial class Portal : Block
 	{
 		private readonly BlockStateString _portalAxis = new BlockStateString() { Name = "portal_axis", Value = "unknown" };
@@ -16540,39 +16962,6 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:red_concrete_powder";
 	} // class
 
-	public partial class RedFlower : Block
-	{
-		private readonly BlockStateString _flowerType = new BlockStateString() { Name = "flower_type", Value = "poppy" };
-
-		public override string Id => "minecraft:red_flower";
-
-		[StateEnum("allium", "cornflower", "houstonia", "lily_of_the_valley", "orchid", "oxeye", "poppy", "tulip_orange", "tulip_pink", "tulip_red", "tulip_white")]
-		public string FlowerType { get => _flowerType.Value; set => NotifyStateUpdate(_flowerType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "flower_type":
-						NotifyStateUpdate(_flowerType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _flowerType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _flowerType);
-		} // method
-	} // class
-
 	public partial class RedGlazedTerracotta : GlazedTerracottaBase
 	{
 		private readonly BlockStateInt _facingDirection = new BlockStateInt() { Name = "facing_direction", Value = 0 };
@@ -16782,6 +17171,11 @@ namespace MiNET.Blocks
 	public partial class RedTerracotta : TerracottaBase
 	{
 		public override string Id => "minecraft:red_terracotta";
+	} // class
+
+	public partial class RedTulip : Block
+	{
+		public override string Id => "minecraft:red_tulip";
 	} // class
 
 	public partial class RedWool : WoolBase
@@ -17091,47 +17485,6 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
-		} // method
-	} // class
-
-	public partial class Sapling : Block
-	{
-		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
-		private readonly BlockStateString _saplingType = new BlockStateString() { Name = "sapling_type", Value = "oak" };
-
-		public override string Id => "minecraft:sapling";
-
-		[StateBit]
-		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
-
-		[StateEnum("acacia", "birch", "dark_oak", "jungle", "oak", "spruce")]
-		public string SaplingType { get => _saplingType.Value; set => NotifyStateUpdate(_saplingType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateByte s when s.Name == "age_bit":
-						NotifyStateUpdate(_ageBit, s.Value);
-						break;
-					case BlockStateString s when s.Name == "sapling_type":
-						NotifyStateUpdate(_saplingType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _ageBit;
-			yield return _saplingType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _ageBit, _saplingType);
 		} // method
 	} // class
 
@@ -18339,6 +18692,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _redstoneSignal);
+		} // method
+	} // class
+
+	public partial class SpruceSapling : SaplingBase
+	{
+		private readonly BlockStateByte _ageBit = new BlockStateByte() { Name = "age_bit", Value = 0 };
+
+		public override string Id => "minecraft:spruce_sapling";
+
+		[StateBit]
+		public bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "age_bit":
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
 		} // method
 	} // class
 
@@ -20345,6 +20731,39 @@ namespace MiNET.Blocks
 	public partial class TubeCoral : Block
 	{
 		public override string Id => "minecraft:tube_coral";
+	} // class
+
+	public partial class TubeCoralFan : Block
+	{
+		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 0 };
+
+		public override string Id => "minecraft:tube_coral_fan";
+
+		[StateRange(0, 1)]
+		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_fan_direction":
+						NotifyStateUpdate(_coralFanDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralFanDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
 	} // class
 
 	public partial class Tuff : Block
@@ -23288,6 +23707,11 @@ namespace MiNET.Blocks
 	public partial class WhiteTerracotta : TerracottaBase
 	{
 		public override string Id => "minecraft:white_terracotta";
+	} // class
+
+	public partial class WhiteTulip : Block
+	{
+		public override string Id => "minecraft:white_tulip";
 	} // class
 
 	public partial class WhiteWool : WoolBase

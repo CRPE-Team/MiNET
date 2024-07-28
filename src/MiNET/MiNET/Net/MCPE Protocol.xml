@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.20.70" protocolVersion="662">
+<protocol gameVersion="1.20.80" protocolVersion="671">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -162,12 +162,13 @@
 	</pdu>
 
 	<pdu id="0x07" online="false" client="false" server="true" name="MCPE_RESOURCE_PACK_STACK">
-		<field name="Must accept" type="bool" />
+		<field name="Must Accept" type="bool" />
 		<field name="BehaviorPackIdVersions" type="ResourcePackIdVersions" />
 		<field name="ResourcePackIdVersions" type="ResourcePackIdVersions" />
 		<field name="Game Version" type="string" />
 		<field name="Experiments" type="Experiments" />
 		<field name="Experiments Previously Toggled" type="bool" />
+		<field name="Use Vanilla Editor Packs" type="bool" />
 	</pdu>
 
 	<pdu id="0x08" online="false" client="true" server="false" name="MCPE_RESOURCE_PACK_CLIENT_RESPONSE">
@@ -1180,7 +1181,11 @@
 		<field name="Responses" type="ItemStackResponses" />
 	</pdu>
 
-	<pdu id="0x97" online="false" client="true" server="false" name="MCPE_UPDATE_PLAYER_GAME_TYPE"></pdu>
+	<pdu id="0x97" online="false" client="true" server="false" name="MCPE_UPDATE_PLAYER_GAME_TYPE">
+		<field name="Game Mode" type="VarInt" />
+		<field name="Player Entity Unique Id" type="ulong" />
+		<field name="Tick" type="UnsignedVarInt" />
+	</pdu>
 
 	<pdu id="0x9c" online="false" client="true" server="false" name="MCPE_PACKET_VIOLATION_WARNING">
 		<field name="Violation Type" type="SignedVarInt" />
@@ -1191,11 +1196,6 @@
 
 	<pdu id="0xa2" online="false" client="false" server="true" name="MCPE_ITEM_COMPONENT">
 		<field name="Entries" type="ItemComponentList" />
-	</pdu>
-	
-	<pdu id="0xa3" online="false" client="true" server="true" name="MCPE_FILTER_TEXT_PACKET">
-		<field name="Text" type="string" />
-		<field name="From server" type="bool"/>
 	</pdu>
 	
 	<pdu id="0xac" online="false" client="true" server="true" name="MCPE_UPDATE_SUB_CHUNK_BLOCKS_PACKET">

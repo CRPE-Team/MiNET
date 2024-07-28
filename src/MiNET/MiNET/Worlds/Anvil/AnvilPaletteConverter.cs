@@ -800,63 +800,14 @@ namespace MiNET.Worlds.Anvil
 
 			#endregion
 
-			#region Flowers
-
-			var flowerPlantMap = new BlockStateMapper("minecraft:red_flower",
-				context =>
-				{
-					var flowerName = context.AnvilName.Replace("minecraft:", "");
-					flowerName = flowerName switch
-					{
-						"blue_orchid" => "orchid",
-						"azure_bluet" => "houstonia",
-						"red_tulip" => "tulip_red",
-						"orange_tulip" => "tulip_orange",
-						"white_tulip" => "tulip_white",
-						"pink_tulip" => "tulip_pink",
-						"oxeye_daisy" => "oxeye",
-						_ => flowerName
-					};
-
-					context.Properties.Add(new NbtString("flower_type", flowerName));
-				},
-				upperBlockBitMap);
-
-			_mapper.Add("minecraft:poppy", flowerPlantMap);
-			_mapper.Add("minecraft:blue_orchid", flowerPlantMap);
-			_mapper.Add("minecraft:allium", flowerPlantMap);
-			_mapper.Add("minecraft:azure_bluet", flowerPlantMap);
-			_mapper.Add("minecraft:red_tulip", flowerPlantMap);
-			_mapper.Add("minecraft:orange_tulip", flowerPlantMap);
-			_mapper.Add("minecraft:white_tulip", flowerPlantMap);
-			_mapper.Add("minecraft:pink_tulip", flowerPlantMap);
-			_mapper.Add("minecraft:oxeye_daisy", flowerPlantMap);
-			_mapper.Add("minecraft:cornflower", flowerPlantMap);
-			_mapper.Add("minecraft:lily_of_the_valley", flowerPlantMap);
-
-			#endregion
-
 			#region Flower pot
 
 			var flowerPotMap = new BlockStateMapper(
 				context =>
 				{
-					var plantType = context.AnvilName.Replace("minecraft:", "").Replace("potted_", "");
-					plantType = plantType switch
-					{
-						"blue_orchid" => "orchid",
-						"azure_bluet" => "houstonia",
-						"red_tulip" => "tulip_red",
-						"orange_tulip" => "tulip_orange",
-						"white_tulip" => "tulip_white",
-						"pink_tulip" => "tulip_pink",
-						"oxeye_daisy" => "oxeye",
-						_ => plantType
-					};
-
-					var block = BlockFactory.GetBlockById($"minecraft:{plantType}") ?? new RedFlower() { FlowerType = plantType };
-
-					if (block.IsValidStates)
+					var plantType = context.AnvilName.Replace("potted_", "");
+					var block = BlockFactory.GetBlockById(plantType);
+					if (block?.IsValidStates ?? false)
 					{
 						context.Properties.Add(new NbtString("update_bit", "true"));
 					}

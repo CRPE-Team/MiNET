@@ -687,12 +687,6 @@ namespace MiNET.Client
 		}
 
 		/// <inheritdoc />
-		public virtual void HandleMcpeFilterTextPacket(McpeFilterTextPacket message)
-		{
-			
-		}
-
-		/// <inheritdoc />
 		public void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message)
 		{
 			

@@ -609,11 +609,6 @@ namespace MiNET
 		}
 
 		/// <inheritdoc />
-		public void HandleMcpeFilterTextPacket(McpeFilterTextPacket message)
-		{
-		}
-
-		/// <inheritdoc />
 		public void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message)
 		{
 			

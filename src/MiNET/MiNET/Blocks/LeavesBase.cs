@@ -90,7 +90,15 @@ namespace MiNET.Blocks
 			var rnd = new Random();
 			if (rnd.Next(20) == 0)
 			{
-				return [ItemFactory.GetItem<Sapling>(Data)];
+				return this switch
+				{
+					OakLeaves => [ItemFactory.GetItem<OakSapling>(Data)],
+					SpruceLeaves => [ItemFactory.GetItem<SpruceSapling>(Data)],
+					BirchLeaves => [ItemFactory.GetItem<BirchSapling>(Data)],
+					JungleLeaves => [ItemFactory.GetItem<JungleSapling>(Data)],
+					AcaciaLeaves => [ItemFactory.GetItem<AcaciaSapling>(Data)],
+					DarkOakLeaves => [ItemFactory.GetItem<DarkOakSapling>(Data)]
+				};
 			}
 
 			return Array.Empty<Item>();

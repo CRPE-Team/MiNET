@@ -32,9 +32,9 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class Sapling : Block
+	public abstract class SaplingBase : Block
 	{
-		public Sapling() : base()
+		public SaplingBase() : base()
 		{
 			FuelEfficiency = 5;
 			BlastResistance = 0;
@@ -93,34 +93,35 @@ namespace MiNET.Blocks
 				SmallTreeGenerator generator = null;
 				Block log = null;
 				Block leaves = null;
-				switch (SaplingType)
+
+				switch (this)
 				{
-					case "oak":
+					case OakSapling:
 						log = new OakLog();
 						leaves = new OakLeaves();
 						generator = new SmallTreeGenerator(log, leaves, 4);
 						break;
-					case "spruce":
+					case SpruceSapling:
 						log = new SpruceLog();
 						leaves = new SpruceLeaves();
 						//generator = new SmallTreeGenerator(log, leaves, 4);
 						break;
-					case "birch":
+					case BirchSapling:
 						log = new BirchLog();
 						leaves = new BirchLeaves();
 						generator = new SmallTreeGenerator(log, leaves, 5);
 						break;
-					case "jungle":
+					case JungleSapling:
 						log = new JungleLog();
 						leaves = new JungleLeaves();
 						//generator = new SmallTreeGenerator(log, leaves, 4 + new Random().Next(7));
 						break;
-					case "acacia":
+					case AcaciaSapling:
 						log = new AcaciaLog();
 						leaves = new AcaciaLeaves();
 						//generator = new SmallTreeGenerator(log, leaves, 5);
 						break;
-					case "dark_oak":
+					case DarkOakSapling:
 						log = new DarkOakLog();
 						leaves = new DarkOakLeaves();
 						//generator = new SmallTreeGenerator(log, leaves, 5);
@@ -143,7 +144,7 @@ namespace MiNET.Blocks
 	{
 		protected bool CanGrowInto(Block material)
 		{
-			return material is Air || material is LeavesBase || material is GrassBlock || material is Dirt || material is LogBase || material is Sapling || material is Vine;
+			return material is Air || material is LeavesBase || material is GrassBlock || material is Dirt || material is LogBase || material is SaplingBase || material is Vine;
 		}
 	}
 

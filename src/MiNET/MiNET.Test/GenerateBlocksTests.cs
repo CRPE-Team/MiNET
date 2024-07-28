@@ -59,7 +59,7 @@ namespace MiNET.Test
 			Assert.IsInstanceOfType(item, typeof(ItemBlock));
 
 			var itemBlock = item as ItemBlock;
-			Assert.IsInstanceOfType(itemBlock.Block, typeof(Sapling));
+			Assert.IsInstanceOfType(itemBlock.Block, typeof(SaplingBase));
 		}
 
 		[TestMethod]
@@ -501,6 +501,10 @@ namespace MiNET.Test
 			if (id.EndsWith("_leaves"))
 			{
 				return nameof(LeavesBase);
+			}
+			if (id.EndsWith("_sapling"))
+			{
+				return nameof(SaplingBase);
 			}
 
 			return nameof(Block);
