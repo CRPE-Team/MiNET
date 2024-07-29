@@ -238,10 +238,6 @@ namespace MiNET.Client
 		{
 		}
 
-		public virtual void HandleMcpeTickSync(McpeTickSync message)
-		{
-		}
-
 		public virtual void HandleMcpeLevelSoundEventOld(McpeLevelSoundEventOld message)
 		{
 		}
@@ -748,6 +744,16 @@ namespace MiNET.Client
 
 		public void HandleMcpeSetHud(McpeSetHud message)
 		{
+		}
+
+		public void HandleMcpeAwardAchievement(McpeAwardAchievement message)
+		{
+
+		}
+
+		public void HandleMcpeCloseForm(McpeCloseForm message)
+		{
+
 		}
 	}
 

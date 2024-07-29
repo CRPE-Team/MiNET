@@ -25,22 +25,14 @@
 
 using System;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class Tallgrass : Block
+	public partial class TallGrass
 	{
-		public enum TallGrassTypes
-		{
-			DeadShrub = 0,
-			TallGrass = 1,
-			Fern = 2
-		}
-
-		public Tallgrass() : base()
+		public TallGrass() : base()
 		{
 			BlastResistance = 3;
 			Hardness = 0.6f;
@@ -74,10 +66,10 @@ namespace MiNET.Blocks
 			var rnd = new Random();
 			if (rnd.NextDouble() > 0.5)
 			{
-				return new[] { new ItemWheatSeeds() };
+				return [new ItemWheatSeeds()];
 			}
 
-			return new Item[0];
+			return Array.Empty<Item>();
 		}
 	}
 }

@@ -210,9 +210,6 @@ namespace MiNET.Net
 				case McpeSetEntityData msg:
 					handler.HandleMcpeSetEntityData(msg);
 					break;
-				case McpeTickSync msg:
-					handler.HandleMcpeTickSync(msg);
-					break;
 				case McpeNpcRequest msg:
 					handler.HandleMcpeNpcRequest(msg);
 					break;

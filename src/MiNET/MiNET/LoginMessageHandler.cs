@@ -574,10 +574,6 @@ namespace MiNET
 		{
 		}
 
-		public void HandleMcpeTickSync(McpeTickSync message)
-		{
-		}
-
 		public void HandleMcpeLevelSoundEvent(McpeLevelSoundEvent message)
 		{
 		}

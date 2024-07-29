@@ -42,8 +42,7 @@ namespace MiNET.Blocks.Tests
 		[TestMethod()]
 		public void GetRuntimeIdFromBlockStateTest()
 		{
-			var block = new DoublePlant();
-			block.DoublePlantType = "grass";
+			var block = new TallGrass();
 			block.UpperBlockBit = true;
 
 			Assert.IsTrue(block.IsValidStates);

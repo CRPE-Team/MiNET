@@ -51,6 +51,14 @@ namespace MiNET.Blocks
 
 		public virtual string VerticalHalf { get; set; } = "bottom";
 
+		public SlabBase()
+		{
+			BlastResistance = 30;
+			Hardness = 2;
+			IsTransparent = true; // Partial - blocks light.
+			IsBlockingSkylight = false; // Partial - blocks light.
+		}
+
 		public override BoundingBox GetBoundingBox()
 		{
 			var bottom = (Vector3)Coordinates;

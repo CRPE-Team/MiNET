@@ -23,26 +23,51 @@
 
 #endregion
 
+using MiNET.Items;
+using MiNET.Utils.Vectors;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
-	public partial class StoneBlockSlab
+	public abstract class DoublePlantBase : Block
 	{
-		public StoneBlockSlab() : base()
+		public virtual bool UpperBlockBit { get; set; }
+
+		public DoublePlantBase() : base()
 		{
-			BlastResistance = 30;
-			Hardness = 2;
-			IsTransparent = true; // Partial - blocks light.
-			IsBlockingSkylight = false; // Partial - blocks light.
+			BlastResistance = 3;
+			Hardness = 0.6f;
+
+			IsSolid = false;
+			IsReplaceable = true;
+			IsTransparent = true;
 		}
 
-		protected override bool AreSameType(Block obj)
+		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (obj.GetType() != this.GetType()) return false;
-			var slab = obj as StoneBlockSlab;
-			if (slab == null) return false;
+			if (base.CanPlace(world, player, blockCoordinates, targetCoordinates, face))
+			{
+				Block under = world.GetBlock(Coordinates.BlockDown());
+				return under is GrassBlock || under is Dirt;
+			}
 
-			return slab.StoneSlabType == StoneSlabType;
+			return false;
+		}
+
+		public override void BlockUpdate(Level level, BlockCoordinates blockCoordinates)
+		{
+			if (Coordinates.BlockDown() == blockCoordinates)
+			{
+				level.SetAir(Coordinates);
+				UpdateBlocks(level);
+			}
+		}
+
+		public override Item[] GetDrops(Level world, Item tool)
+		{
+			if (UpperBlockBit) return base.GetDrops(world, tool);
+
+			return new Item[0];
 		}
 	}
 }

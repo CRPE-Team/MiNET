@@ -192,7 +192,7 @@ namespace MiNET.Worlds
 								//Grass
 								if (GetRandomNumber(0, 5) == 2)
 								{
-									chunk.SetBlock(x, y + 2, z, new Tallgrass(){TallGrassType = "tall"});
+									chunk.SetBlock(x, y + 2, z, new TallGrass());
 								}
 
 								//flower
@@ -200,7 +200,7 @@ namespace MiNET.Worlds
 								{
 									int meta = GetRandomNumber(0, 8);
 									//chunk.SetBlock(x, y + 2, z, 38, (byte) meta);
-									chunk.SetBlock(x, y + 2, z, new RedFlower());
+									chunk.SetBlock(x, y + 2, z, new Poppy());
 								}
 
 								for (int pos = 0; pos < trees; pos++)
