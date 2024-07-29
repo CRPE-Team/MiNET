@@ -77,10 +77,13 @@ namespace MiNET.Net
 		public int limitedWorldWidth; // = null;
 		public int limitedWorldLength; // = null;
 		public bool isNewNether; // = null;
-		public EducationUriResource eduSharedUriResource = null;
+		public EducationUriResource eduSharedUriResource; // = null;
 		public bool experimentalGameplayOverride; // = null;
 		public byte chatRestrictionLevel; // = null;
 		public bool isDisablePlayerInteractions; // = null;
+		public string serverIdentifier; // = null;
+		public string worldIdentifier; // = null;
+		public string scenarioIdentifier; // = null;
 
 
 		public void Write(Packet packet)
@@ -141,6 +144,9 @@ namespace MiNET.Net
 			packet.Write(false);
 			packet.Write(chatRestrictionLevel);
 			packet.Write(isDisablePlayerInteractions);
+			packet.Write(serverIdentifier);
+			packet.Write(worldIdentifier);
+			packet.Write(scenarioIdentifier);
 		}
 
 		public void Read(Packet packet)
@@ -210,6 +216,9 @@ namespace MiNET.Net
 			}
 			chatRestrictionLevel = packet.ReadByte();
 			isDisablePlayerInteractions = packet.ReadBool();
+			serverIdentifier = packet.ReadString();
+			worldIdentifier = packet.ReadString();
+			scenarioIdentifier = packet.ReadString();
 		}
 	}
 

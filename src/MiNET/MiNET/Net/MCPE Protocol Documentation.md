@@ -31,10 +31,11 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Player Toggle Crafter Slot Request | 0x132 | 19 |   
 | Set Player Inventory Options | 0x133 | 19 |   
 | Set Hud | 0x134 | 19 |   
+| Award Achievement | 0x135 | 19 |   
+| Close Form | 0x136 | 19 |   
 | Rider Jump | 0x14 | 20 |   
 | Update Block | 0x15 | 21 |   
 | Add Painting | 0x16 | 22 |   
-| Tick Sync | 0x17 | 23 |   
 | Level Sound Event Old | 0x18 | 24 |   
 | Level Event | 0x19 | 25 |   
 | Block Event | 0x1a | 26 |   
@@ -207,6 +208,7 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | ResourcePackIds [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ResourcePackIds) |
 | ResourcePackIdVersions [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ResourcePackIdVersions) |
 | ResourcePackInfos [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ResourcePackInfos) |
+| sbyte [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-sbyte) |
 | ScoreboardIdentityEntries [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ScoreboardIdentityEntries) |
 | ScoreEntries [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ScoreEntries) |
 | short [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-short) |
@@ -729,22 +731,6 @@ Wiki: [Add Painting](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AddP
 |Direction | SignedVarInt |  |
 |Title | string |  |
 -----------------------------------------------------------------------
-### Tick Sync (0x17)
-Wiki: [Tick Sync](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-TickSync)
-
-**Sent from server:** true  
-**Sent from client:** true
-
-
-
-
-#### Fields
-
-| Name | Type | Size |
-|:-----|:-----|:-----|
-|Request Time | long |  |
-|Response Time | long |  |
------------------------------------------------------------------------
 ### Level Sound Event Old (0x18)
 Wiki: [Level Sound Event Old](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-LevelSoundEventOld)
 
@@ -1218,7 +1204,7 @@ Wiki: [Container Open](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Co
 | Name | Type | Size |
 |:-----|:-----|:-----|
 |Window ID | byte |  |
-|Type | byte |  |
+|Type | sbyte |  |
 |Coordinates | BlockCoordinates |  |
 |Runtime Entity ID | SignedVarLong |  |
 -----------------------------------------------------------------------
@@ -1236,6 +1222,7 @@ Wiki: [Container Close](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-C
 | Name | Type | Size |
 |:-----|:-----|:-----|
 |Window ID | byte |  |
+|Window Type | sbyte |  |
 |Server | bool |  |
 -----------------------------------------------------------------------
 ### Player Hotbar (0x30)
@@ -3096,6 +3083,35 @@ Wiki: [Set Hud](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetHud)
 |:-----|:-----|:-----|
 |Hud Elements | ByteArray |  |
 |Hud Visibility | byte |  |
+-----------------------------------------------------------------------
+### Award Achievement (0x135)
+Wiki: [Award Achievement](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AwardAchievement)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Achievement Id | int |  |
+-----------------------------------------------------------------------
+### Close Form (0x136)
+Wiki: [Close Form](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-CloseForm)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
 -----------------------------------------------------------------------
 ### Alex Entity Animation (0xe0)
 Wiki: [Alex Entity Animation](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AlexEntityAnimation)

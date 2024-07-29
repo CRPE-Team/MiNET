@@ -217,12 +217,15 @@ namespace MiNET.Items
 
 		private static Dictionary<string, string[]> BuildItemTags()
 		{
-			var itemItags = ResourceUtil.ReadResource<Dictionary<string, string[]>>("item_tags.json", typeof(ItemFactory), "Data");
+			var itemTags = ResourceUtil.ReadResource<Dictionary<string, string[]>>("item_tags.json", typeof(ItemFactory), "Data");
 
 			// extending bedrock item tags for greater compatibility
-			itemItags.Add("minecraft:double_wooden_slabs", itemItags["minecraft:wooden_slabs"].Select(i => i.Replace("slab", "double_slab")).ToArray());
+			itemTags.Add("minecraft:double_wooden_slabs", itemTags["minecraft:wooden_slabs"].Select(i => i.Replace("slab", "double_slab")).ToArray());
+			itemTags.Add("minecraft:double_plants", ["minecraft:large_fern", "minecraft:lilac", "minecraft:peony", "minecraft:rose_bush", "minecraft:sunflower", "minecraft:tall_grass"]);
+			itemTags.Add("minecraft:flowers", ["minecraft:allium", "minecraft:azure_bluet", "minecraft:blue_orchid", "minecraft:cornflower", "minecraft:lily_of_the_valley", 
+				"minecraft:orange_tulip", "minecraft:oxeye_daisy", "minecraft:pink_tulip", "minecraft:poppy", "minecraft:red_tulip", "minecraft:white_tulip"]);
 
-			return itemItags;
+			return itemTags;
 		}
 
 		private static Dictionary<int, string> BuildRuntimeIdToId()

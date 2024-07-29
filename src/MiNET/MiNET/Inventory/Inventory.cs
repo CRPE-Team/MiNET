@@ -45,7 +45,7 @@ namespace MiNET.Inventory
 		public event Action<Player, ContainerInventory, byte, Item> InventoryChange;
 
 		public int Id { get; set; }
-		public byte Type { get; set; }
+		public WindowType Type { get; set; }
 		public ItemStacks Slots { get; set; }
 		public short Size { get; set; }
 		public BlockCoordinates Coordinates { get; set; }

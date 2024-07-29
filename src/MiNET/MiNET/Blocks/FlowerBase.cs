@@ -28,9 +28,9 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class RedFlower : Block
+	public abstract class FlowerBase : Block
 	{
-		public RedFlower() : base()
+		public FlowerBase() : base()
 		{
 			IsSolid = false;
 			IsTransparent = true;

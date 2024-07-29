@@ -216,6 +216,12 @@ namespace MiNET
 			SendPacket(message);
 		}
 
+		public virtual void CloseForm()
+		{
+			var message = McpeCloseForm.CreateObject();
+			SendPacket(message);
+		}
+
 		public void HandleMcpeModalFormResponse(McpeModalFormResponse message)
 		{
 			if (CurrentForm == null) Log.Warn("No current form set for player when processing response");
@@ -413,15 +419,6 @@ namespace MiNET
 					mob.BroadcastSetEntityData();
 				}
 			}
-		}
-
-		public void HandleMcpeTickSync(McpeTickSync message)
-		{
-			var msg = McpeTickSync.CreateObject();
-			msg.requestTime = message.requestTime;
-			msg.responseTime = message.responseTime;
-
-			SendPacket(msg);
 		}
 
 		public virtual void HandleMcpeSetEntityData(McpeSetEntityData message)
@@ -2324,7 +2321,7 @@ namespace MiNET
 
 				_openInventory = inventory;
 
-				if (inventory.Type == 0 && !inventory.IsOpen()) // Chest open animation
+				if (inventory.Type == WindowType.Container && !inventory.IsOpen()) // Chest open animation
 				{
 					var tileEvent = McpeBlockEvent.CreateObject();
 					tileEvent.coordinates = inventoryCoord;
@@ -2341,7 +2338,7 @@ namespace MiNET
 
 				var containerOpen = McpeContainerOpen.CreateObject();
 				containerOpen.windowId = inventory.WindowsId;
-				containerOpen.type = inventory.Type;
+				containerOpen.type = (sbyte) inventory.Type;
 				containerOpen.coordinates = inventoryCoord;
 				containerOpen.runtimeEntityId = -1;
 				SendPacket(containerOpen);
@@ -2686,8 +2683,7 @@ namespace MiNET
 
 					if (message != null && message.windowId != inventory.WindowsId) return;
 
-					// close container 
-					if (inventory.Type == 0 && !inventory.IsOpen())
+					if (inventory.Type == WindowType.Container && !inventory.IsOpen())
 					{
 						var tileEvent = McpeBlockEvent.CreateObject();
 						tileEvent.coordinates = inventory.Coordinates;
@@ -2698,6 +2694,7 @@ namespace MiNET
 
 					var closePacket = McpeContainerClose.CreateObject();
 					closePacket.windowId = inventory.WindowsId;
+					closePacket.windowType = (sbyte) inventory.Type;
 					closePacket.server = message == null ? true : false;
 					SendPacket(closePacket);
 				}
@@ -2709,6 +2706,7 @@ namespace MiNET
 				{
 					var closePacket = McpeContainerClose.CreateObject();
 					closePacket.windowId = 0;
+					closePacket.windowType = (sbyte) WindowType.Inventory;
 					closePacket.server = message == null ? true : false;
 					SendPacket(closePacket);
 
@@ -2781,8 +2779,8 @@ namespace MiNET
 					{
 						var containerOpen = McpeContainerOpen.CreateObject();
 						containerOpen.windowId = 0;
-						containerOpen.type = 255;
-						containerOpen.runtimeEntityId = EntityManager.EntityIdSelf;
+						containerOpen.type = (sbyte) WindowType.Inventory;
+						containerOpen.runtimeEntityId = EntityId;
 						SendPacket(containerOpen);
 					}
 					else if (IsRiding) // Riding; Open inventory

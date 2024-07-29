@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.20.80" protocolVersion="671">
+<protocol gameVersion="1.21.2" protocolVersion="686">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -370,11 +370,6 @@
 		<field name="Title" type="string" />
 	</pdu>
 
-	<pdu id="0x17" online="false" client="true" server="true" name="MCPE_TICK_SYNC">
-		<field name="Request Time" type="long" />
-		<field name="Response Time" type="long" />
-	</pdu>
-
 	<pdu id="0x18" online="false" client="true" server="true" name="MCPE_LEVEL_SOUND_EVENT_OLD">
 		<field name="Sound ID" type="byte" />
 		<field name="Position" type="Vector3" />
@@ -580,13 +575,14 @@
 
 	<pdu id="0x2e" online="false" client="false" server="true" name="MCPE_CONTAINER_OPEN">
 		<field name="Window ID" type="byte" />
-		<field name="Type" type="byte" />
+		<field name="Type" type="sbyte" />
 		<field name="Coordinates" type="BlockCoordinates" />
 		<field name="Runtime Entity ID" type="SignedVarLong" />
 	</pdu>
 
 	<pdu id="0x2f" online="false" client="true" server="true" name="MCPE_CONTAINER_CLOSE">
 		<field name="Window ID" type="byte" />
+		<field name="Window Type" type="sbyte" />
 		<field name="Server" type="bool" />
 	</pdu>
 
@@ -1312,6 +1308,13 @@
 
 		<field name="Hud Elements" type="ByteArray" />
 		<field name="Hud Visibility" type="byte" />
+	</pdu>
+
+	<pdu id="0x135" online="false" client="false" server="true" name="MCPE_AWARD_ACHIEVEMENT">
+		<field name="Achievement Id" type="int" />
+	</pdu>
+
+	<pdu id="0x136" online="false" client="false" server="true" name="MCPE_CLOSE_FORM">
 	</pdu>
 	
 	<pdu id="0xe0" online="false" client="false" server="true" name="MCPE_ALEX_ENTITY_ANIMATION">

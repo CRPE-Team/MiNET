@@ -445,6 +445,10 @@ namespace MiNET.Test
 							return nameof(WoodenSlabBase);
 						case "double_wooden_slabs":
 							return nameof(DoubleWoodenSlabBase);
+						case "double_plants":
+							return nameof(DoublePlantBase);
+						case "flowers":
+							return nameof(FlowerBase);
 					}
 				}
 			}

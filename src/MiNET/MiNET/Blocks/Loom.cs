@@ -51,7 +51,7 @@ namespace MiNET.Blocks
 		{
 			var containerOpen = McpeContainerOpen.CreateObject();
 			containerOpen.windowId = 24;
-			containerOpen.type = 24;
+			containerOpen.type = (sbyte) WindowType.Loom;
 			containerOpen.coordinates = blockCoordinates;
 			containerOpen.runtimeEntityId = EntityManager.EntityIdSelf;
 			player.SendPacket(containerOpen);

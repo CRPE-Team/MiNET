@@ -25,6 +25,7 @@
 
 using System.Numerics;
 using MiNET.Net;
+using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 using static MiNET.Entities.Entity;
@@ -54,7 +55,7 @@ namespace MiNET.Blocks
 			player.UsingAnvil = true;
 			var containerOpen = McpeContainerOpen.CreateObject();
 			containerOpen.windowId = 14;
-			containerOpen.type = 5;
+			containerOpen.type = (sbyte) WindowType.Anvil;
 			containerOpen.coordinates = blockCoordinates;
 			containerOpen.runtimeEntityId = EntityManager.EntityIdSelf;
 			player.SendPacket(containerOpen);

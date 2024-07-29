@@ -30,16 +30,12 @@ namespace MiNET.Blocks
 		public WoodenSlabBase() : base()
 		{
 			BlastResistance = 15;
-			Hardness = 2;
 			IsFlammable = true;
-			IsTransparent = true; // Partial - blocks light.
-			IsBlockingSkylight = false; // Partial - blocks light.
 		}
 
 		protected override bool AreSameType(Block obj)
 		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (obj.GetType() != this.GetType()) return false;
+			if (!base.AreSameType(obj)) return false;
 			var slab = obj as WoodenSlabBase;
 			if (slab == null) return false;
 

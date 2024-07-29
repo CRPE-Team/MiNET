@@ -27,18 +27,9 @@ namespace MiNET.Blocks
 {
 	public partial class StoneBlockSlab3
 	{
-		public StoneBlockSlab3() : base()
-		{
-			BlastResistance = 30;
-			Hardness = 2;
-			IsTransparent = true; // Partial - blocks light.
-			IsBlockingSkylight = false; // Partial - blocks light.
-		}
-
 		protected override bool AreSameType(Block obj)
 		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (obj.GetType() != this.GetType()) return false;
+			if (!base.AreSameType(obj)) return false;
 			var slab = obj as StoneBlockSlab3;
 			if (slab == null) return false;
 

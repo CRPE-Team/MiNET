@@ -45,8 +45,8 @@ namespace MiNET.Net
 {
 	public class McpeProtocolInfo
 	{
-		public const int ProtocolVersion = 671;
-		public const string GameVersion = "1.20.80";
+		public const int ProtocolVersion = 686;
+		public const string GameVersion = "1.21.2";
 	}
 
 	public interface IMcpeMessageHandler
@@ -61,7 +61,6 @@ namespace MiNET.Net
 		void HandleMcpeMoveEntity(McpeMoveEntity message);
 		void HandleMcpeMovePlayer(McpeMovePlayer message);
 		void HandleMcpeRiderJump(McpeRiderJump message);
-		void HandleMcpeTickSync(McpeTickSync message);
 		void HandleMcpeLevelSoundEventOld(McpeLevelSoundEventOld message);
 		void HandleMcpeEntityEvent(McpeEntityEvent message);
 		void HandleMcpeInventoryTransaction(McpeInventoryTransaction message);
@@ -136,7 +135,6 @@ namespace MiNET.Net
 		void HandleMcpeRiderJump(McpeRiderJump message);
 		void HandleMcpeUpdateBlock(McpeUpdateBlock message);
 		void HandleMcpeAddPainting(McpeAddPainting message);
-		void HandleMcpeTickSync(McpeTickSync message);
 		void HandleMcpeLevelSoundEventOld(McpeLevelSoundEventOld message);
 		void HandleMcpeLevelEvent(McpeLevelEvent message);
 		void HandleMcpeBlockEvent(McpeBlockEvent message);
@@ -247,6 +245,8 @@ namespace MiNET.Net
 		void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message);
 		void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message);
 		void HandleMcpeSetHud(McpeSetHud message);
+		void HandleMcpeAwardAchievement(McpeAwardAchievement message);
+		void HandleMcpeCloseForm(McpeCloseForm message);
 		void HandleMcpeAlexEntityAnimation(McpeAlexEntityAnimation message);
 		void HandleFtlCreatePlayer(FtlCreatePlayer message);
 	}
@@ -320,9 +320,6 @@ namespace MiNET.Net
 					break;
 				case McpeAddPainting msg:
 					_messageHandler.HandleMcpeAddPainting(msg);
-					break;
-				case McpeTickSync msg:
-					_messageHandler.HandleMcpeTickSync(msg);
 					break;
 				case McpeLevelSoundEventOld msg:
 					_messageHandler.HandleMcpeLevelSoundEventOld(msg);
@@ -654,6 +651,12 @@ namespace MiNET.Net
 				case McpeSetHud msg:
 					_messageHandler.HandleMcpeSetHud(msg);
 					break;
+				case McpeAwardAchievement msg:
+					_messageHandler.HandleMcpeAwardAchievement(msg);
+					break;
+				case McpeCloseForm msg:
+					_messageHandler.HandleMcpeCloseForm(msg);
+					break;
 				case McpeAlexEntityAnimation msg:
 					_messageHandler.HandleMcpeAlexEntityAnimation(msg);
 					break;
@@ -771,8 +774,6 @@ namespace MiNET.Net
 						return McpeUpdateBlock.CreateObject().Decode(buffer);
 					case 0x16:
 						return McpeAddPainting.CreateObject().Decode(buffer);
-					case 0x17:
-						return McpeTickSync.CreateObject().Decode(buffer);
 					case 0x18:
 						return McpeLevelSoundEventOld.CreateObject().Decode(buffer);
 					case 0x19:
@@ -1031,6 +1032,10 @@ namespace MiNET.Net
 						return McpeSetPlayerInventoryOptions.CreateObject().Decode(buffer);
 					case 0x134:
 						return McpeSetHud.CreateObject().Decode(buffer);
+					case 0x135:
+						return McpeAwardAchievement.CreateObject().Decode(buffer);
+					case 0x136:
+						return McpeCloseForm.CreateObject().Decode(buffer);
 					case 0xe0:
 						return McpeAlexEntityAnimation.CreateObject().Decode(buffer);
 				}
@@ -3382,58 +3387,6 @@ namespace MiNET.Net
 
 	}
 
-	public partial class McpeTickSync : Packet<McpeTickSync>
-	{
-
-		public long requestTime; // = null;
-		public long responseTime; // = null;
-
-		public McpeTickSync()
-		{
-			Id = 0x17;
-			IsMcpe = true;
-		}
-
-		protected override void EncodePacket()
-		{
-			base.EncodePacket();
-
-			BeforeEncode();
-
-			Write(requestTime);
-			Write(responseTime);
-
-			AfterEncode();
-		}
-
-		partial void BeforeEncode();
-		partial void AfterEncode();
-
-		protected override void DecodePacket()
-		{
-			base.DecodePacket();
-
-			BeforeDecode();
-
-			requestTime = ReadLong();
-			responseTime = ReadLong();
-
-			AfterDecode();
-		}
-
-		partial void BeforeDecode();
-		partial void AfterDecode();
-
-		protected override void ResetPacket()
-		{
-			base.ResetPacket();
-
-			requestTime=default(long);
-			responseTime=default(long);
-		}
-
-	}
-
 	public partial class McpeLevelSoundEventOld : Packet<McpeLevelSoundEventOld>
 	{
 
@@ -4740,7 +4693,7 @@ namespace MiNET.Net
 	{
 
 		public byte windowId; // = null;
-		public byte type; // = null;
+		public sbyte type; // = null;
 		public BlockCoordinates coordinates; // = null;
 		public long runtimeEntityId; // = null;
 
@@ -4774,7 +4727,7 @@ namespace MiNET.Net
 			BeforeDecode();
 
 			windowId = ReadByte();
-			type = ReadByte();
+			type = ReadSByte();
 			coordinates = ReadBlockCoordinates();
 			runtimeEntityId = ReadSignedVarLong();
 
@@ -4789,7 +4742,7 @@ namespace MiNET.Net
 			base.ResetPacket();
 
 			windowId=default(byte);
-			type=default(byte);
+			type=default(sbyte);
 			coordinates=default(BlockCoordinates);
 			runtimeEntityId=default(long);
 		}
@@ -4800,6 +4753,7 @@ namespace MiNET.Net
 	{
 
 		public byte windowId; // = null;
+		public sbyte windowType; // = null;
 		public bool server; // = null;
 
 		public McpeContainerClose()
@@ -4815,6 +4769,7 @@ namespace MiNET.Net
 			BeforeEncode();
 
 			Write(windowId);
+			Write(windowType);
 			Write(server);
 
 			AfterEncode();
@@ -4830,6 +4785,7 @@ namespace MiNET.Net
 			BeforeDecode();
 
 			windowId = ReadByte();
+			windowType = ReadSByte();
 			server = ReadBool();
 
 			AfterDecode();
@@ -4843,6 +4799,7 @@ namespace MiNET.Net
 			base.ResetPacket();
 
 			windowId=default(byte);
+			windowType=default(sbyte);
 			server=default(bool);
 		}
 
@@ -10512,10 +10469,7 @@ namespace MiNET.Net
 			Food = 8,
 			AirBubbles = 9,
 			HorseHealth = 10,
-			StatusEffects = 11,
-			ItemText = 12
 		}
-
 		public enum HudVisibility
 		{
 			Hide = 0,
@@ -10567,6 +10521,98 @@ namespace MiNET.Net
 
 			hudElements=default(byte[]);
 			hudVisibility=default(byte);
+		}
+
+	}
+
+	public partial class McpeAwardAchievement : Packet<McpeAwardAchievement>
+	{
+
+		public int achievementId; // = null;
+
+		public McpeAwardAchievement()
+		{
+			Id = 0x135;
+			IsMcpe = true;
+		}
+
+		protected override void EncodePacket()
+		{
+			base.EncodePacket();
+
+			BeforeEncode();
+
+			Write(achievementId);
+
+			AfterEncode();
+		}
+
+		partial void BeforeEncode();
+		partial void AfterEncode();
+
+		protected override void DecodePacket()
+		{
+			base.DecodePacket();
+
+			BeforeDecode();
+
+			achievementId = ReadInt();
+
+			AfterDecode();
+		}
+
+		partial void BeforeDecode();
+		partial void AfterDecode();
+
+		protected override void ResetPacket()
+		{
+			base.ResetPacket();
+
+			achievementId=default(int);
+		}
+
+	}
+
+	public partial class McpeCloseForm : Packet<McpeCloseForm>
+	{
+
+
+		public McpeCloseForm()
+		{
+			Id = 0x136;
+			IsMcpe = true;
+		}
+
+		protected override void EncodePacket()
+		{
+			base.EncodePacket();
+
+			BeforeEncode();
+
+
+			AfterEncode();
+		}
+
+		partial void BeforeEncode();
+		partial void AfterEncode();
+
+		protected override void DecodePacket()
+		{
+			base.DecodePacket();
+
+			BeforeDecode();
+
+
+			AfterDecode();
+		}
+
+		partial void BeforeDecode();
+		partial void AfterDecode();
+
+		protected override void ResetPacket()
+		{
+			base.ResetPacket();
+
 		}
 
 	}
