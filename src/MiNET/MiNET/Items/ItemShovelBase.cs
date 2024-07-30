@@ -43,7 +43,7 @@ namespace MiNET.Items
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
 			Block block = world.GetBlock(blockCoordinates);
-			if (block is Grass)
+			if (block is GrassBlock)
 			{
 				GrassPath grassPath = new GrassPath
 				{
@@ -68,7 +68,7 @@ namespace MiNET.Items
 				}
 				case ItemDamageReason.BlockInteract:
 				{
-					if (block is Grass)
+					if (block is GrassBlock)
 					{
 						Metadata++;
 						return Metadata >= GetMaxUses() - 1;

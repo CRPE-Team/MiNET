@@ -74,7 +74,6 @@ namespace MiNET.Entities
 		public bool IsOutOfWater => !IsInWater;
 		public int PotionColor { get; set; }
 		public int Variant { get; set; }
-		public int EatingHaystack { get; set; }
 
 		public long Age { get; set; }
 		public double Scale { get; set; } = 1.0;
@@ -115,35 +114,138 @@ namespace MiNET.Entities
 		public enum MetadataFlags
 		{
 			EntityFlags = 0,
+			StructuralIntegrity = 1,
 			Variant = 2,
-			Color = 3,
-			HideNameTag = 3,
-			NameTag = 4,
+			ColorIndex = 3,
+			Name = 4,
 			Owner = 5,
-			AvailableAir = 7,
-			PotionColor = 8,
-			EatingHaystack = 16,
-			FireworksType = 16,
-			MaybeAge = 24,
+			Target = 6,
+			AirSupply = 7,
+			EffectColor = 8,
+			Reserved009 = 9,
+			Reserved010 = 10,
+			Hurt = 11,
+			HurtDir = 12,
+			RowTimeLeft = 13,
+			RowTimeRight = 14,
+			Value = 15,
+			DisplayTileRuntimeId = 16,
+			DisplayOffset = 17,
+			CustomDisplay = 18,
+			Swell = 19,
+			OldSwell = 20,
+			SwellDir = 21,
+			ChargeAmount = 22,
+			CarryBlockRuntimeId = 23,
+			ClientEvent = 24,
+			UsingItem = 25,
 			PlayerFlags = 26,
+			PlayerIndex = 27,
 			BedPosition = 28,
+			XPower = 29,
+			YPower = 30,
+			ZPower = 31,
+			AuxPower = 32,
+			Fishx = 33,
+			Fishz = 34,
+			Fishangle = 35,
+			AuxValueData = 36,
+			LeashHolder = 37,
 			Scale = 38,
-			MaxAir = 42,
-			Markings = 43,
+			HasNpc = 39,
+			NpcData = 40,
+			Actions = 41,
+			AirSupplyMax = 42,
+			MarkVariant = 43,
+			ContainerType = 44,
+			ContainerSize = 45,
+			ContainerStrengthModifier = 46,
+			BlockTarget = 47,
+			Inv = 48,
+			TargetA = 49,
+			TargetB = 50,
+			TargetC = 51,
+			AerialAttack = 52,
 			CollisionBoxWidth = 53,
 			CollisionBoxHeight = 54,
-
-			DataFuseLength = 55,
-
+			FuseTime = 55,
 			RiderSeatPosition = 56,
-			RiderRotationLocked = 57,
-			RiderMaxRotation = 58,
-			RiderMinRotation = 59,
-			AlwaysShowNameTag = 81,
-
-			EntityFlags2 = 91, // same treatment as 0 flags, perhaps
-
-			ButtonText = 99,
+			SeatLockPassengerRotation = 57,
+			SeatLockPassengerRotationDegrees = 58,
+			SeatRotationOffset = 59,
+			SeatRotationOffsetDegrees = 60,
+			DataRadius = 61,
+			DataWaiting = 62,
+			DataParticle = 63,
+			PeekId = 64,
+			AttachFace = 65,
+			Attached = 66,
+			AttachPos = 67,
+			TradeTarget = 68,
+			Career = 69,
+			HasCommandBlock = 70,
+			CommandName = 71,
+			LastCommandOutput = 72,
+			TrackCommandOutput = 73,
+			Reserved074 = 74,
+			Strength = 75,
+			StrengthMax = 76,
+			DataSpellCastingColor = 77,
+			DataLifetimeTicks = 78,
+			PoseIndex = 79,
+			DataTickOffset = 80,
+			NametagAlwaysShow = 81,
+			Color2Index = 82,
+			NameAuthor = 83,
+			Score = 84,
+			BalloonAnchor = 85,
+			PuffedState = 86,
+			BubbleTime = 87,
+			Agent = 88,
+			SittingAmount = 89,
+			SittingAmountPrevious = 90,
+			EatingCounter = 91,
+			Reserved092 = 92,
+			LayingAmount = 93,
+			LayingAmountPrevious = 94,
+			DataDuration = 95,
+			DataSpawnTimeDeprecated = 96,
+			DataChangeRate = 97,
+			DataChangeOnPickup = 98,
+			DataPickupCount = 99,
+			InteractText = 100,
+			TradeTier = 101,
+			MaxTradeTier = 102,
+			TradeExperience = 103,
+			SkinId = 104,
+			SpawningFrames = 105,
+			CommandBlockTickDelay = 106,
+			CommandBlockExecuteOnFirstTick = 107,
+			AmbientSoundInterval = 108,
+			AmbientSoundIntervalRange = 109,
+			AmbientSoundEventName = 110,
+			FallDamageMultiplier = 111,
+			NameRawText = 112,
+			CanRideTarget = 113,
+			LowTierCuredTradeDiscount = 114,
+			HighTierCuredTradeDiscount = 115,
+			NearbyCuredTradeDiscount = 116,
+			NearbyCuredDiscountTimeStamp = 117,
+			Hitbox = 118,
+			IsBuoyant = 119,
+			FreezingEffectStrength = 120,
+			BuoyancyData = 121,
+			GoatHornCount = 122,
+			BaseRuntimeId = 123,
+			MovementSoundDistanceOffset = 124,
+			HeartbeatIntervalTicks = 125,
+			HeartbeatSoundEvent = 126,
+			PlayerLastDeathPos = 127,
+			PlayerLastDeathDimension = 128,
+			PlayerHasDied = 129,
+			CollisionBox = 130,
+			VisibleMobEffects = 131,
+			Count = 132
 		}
 
 		public virtual MetadataDictionary GetMetadata()
@@ -151,19 +253,18 @@ namespace MiNET.Entities
 			MetadataDictionary metadata = new MetadataDictionary();
 			metadata[(int) MetadataFlags.EntityFlags] = new MetadataLong(GetDataValue());
 			metadata[1] = new MetadataInt(1);
-			metadata[(int) MetadataFlags.HideNameTag] = new MetadataByte(!HideNameTag);
-			metadata[(int) MetadataFlags.NameTag] = new MetadataString(NameTag ?? string.Empty);
-			metadata[(int) MetadataFlags.AvailableAir] = new MetadataShort(HealthManager.Air);
-			metadata[(int) MetadataFlags.PotionColor] = new MetadataInt(PotionColor);
+			metadata[(int) MetadataFlags.Name] = new MetadataString(NameTag ?? string.Empty);
+			metadata[(int) MetadataFlags.AirSupply] = new MetadataShort(HealthManager.Air);
+			metadata[(int) MetadataFlags.EffectColor] = new MetadataInt(PotionColor);
 			metadata[(int) MetadataFlags.Scale] = new MetadataFloat(Scale); // Scale
-			metadata[(int) MetadataFlags.MaxAir] = new MetadataShort(HealthManager.MaxAir);
+			metadata[(int) MetadataFlags.AirSupplyMax] = new MetadataShort(HealthManager.MaxAir);
 			metadata[(int) MetadataFlags.CollisionBoxWidth] = new MetadataFloat(Width); // Collision box height
 			metadata[(int) MetadataFlags.CollisionBoxHeight] = new MetadataFloat(Height); // Collision box width
 			metadata[(int) MetadataFlags.RiderSeatPosition] = new MetadataVector3(RiderSeatPosition);
-			metadata[(int) MetadataFlags.RiderRotationLocked] = new MetadataByte(RiderRotationLocked);
-			metadata[(int) MetadataFlags.RiderMaxRotation] = new MetadataFloat(RiderMaxRotation);
-			metadata[(int) MetadataFlags.RiderMinRotation] = new MetadataFloat(RiderMinRotation);
-			metadata[(int) MetadataFlags.AlwaysShowNameTag] = new MetadataByte(IsAlwaysShowName);
+			metadata[(int) MetadataFlags.SeatLockPassengerRotation] = new MetadataByte(RiderRotationLocked);
+			metadata[(int) MetadataFlags.SeatLockPassengerRotationDegrees] = new MetadataFloat(RiderMaxRotation);
+			metadata[(int) MetadataFlags.SeatRotationOffset] = new MetadataFloat(RiderMinRotation);
+			metadata[(int) MetadataFlags.NametagAlwaysShow] = new MetadataByte(IsAlwaysShowName);
 			return metadata;
 		}
 
@@ -332,65 +433,127 @@ namespace MiNET.Entities
 
 		public enum DataFlags
 		{
+			Unknown = -1,
 			OnFire = 0,
-			Sneaking,
-			Riding,
-			Sprinting,
-			UsingItem,
-			Invisible,
-			Tempted,
-			InLove,
-
-			Saddled,
-			Powered,
-			Ignited,
-			Baby,
-			Converting,
-			Critcal,
-			ShowName,
-			AlwaysShowName,
-
-			NoAi,
-			Silent,
-			WallClimbing,
-
-			CanClimb,
-			CanSwim,
-			CanFly,
-			Walker,
-
-			Resting,
-			Sitting,
-			Angry,
-			Interested,
-			Charged,
-
-			Tamed,
-			Orphaned,
-			Leashed,
-			Sheared,
-			FlagAllFlying,
-			Elder,
-			Moving,
-			Breathing,
-			Chested,
-
-			Stackable,
-			Showbase,
-			Rearing,
-			Vibrating,
-			Idling,
-			EvokerSpell,
-			ChargeAttack,
-			WasdControlled,
-			CanPowerJump,
-			CanDash,
-			Linger,
-			HasCollision,
-			AffectedByGravity,
-			FireImmune,
-			Dancing,
-			Enchanted
+			Sneaking = 1,
+			Riding = 2,
+			Sprinting = 3,
+			UsingItem = 4,
+			Invisible = 5,
+			Tempted = 6,
+			InLove = 7,
+			Saddled = 8,
+			Powered = 9,
+			Ignited = 10,
+			Baby = 11,
+			Converting = 12,
+			Critical = 13,
+			CanShowName = 14,
+			AlwaysShowName = 15,
+			NoAi = 16,
+			Silent = 17,
+			WallClimbing = 18,
+			CanClimb = 19,
+			CanSwim = 20,
+			CanFly = 21,
+			CanWalk = 22,
+			Resting = 23,
+			Sitting = 24,
+			Angry = 25,
+			Interested = 26,
+			Charged = 27,
+			Tamed = 28,
+			Orphaned = 29,
+			Leashed = 30,
+			Sheared = 31,
+			Gliding = 32,
+			Elder = 33,
+			Moving = 34,
+			Breathing = 35,
+			Chested = 36,
+			Stackable = 37,
+			ShowBottom = 38,
+			Rearing = 39,
+			Vibrating = 40,
+			Idling = 41,
+			Casting = 42,
+			Charging = 43,
+			WasdControlled = 44,
+			CanPowerJump = 45,
+			CanDash = 46,
+			Lingering = 47,
+			HasCollision = 48,
+			HasGravity = 49,
+			FireImmune = 50,
+			Dancing = 51,
+			Enchanted = 52,
+			ReturnTrident = 53,
+			ContainerIsPrivate = 54,
+			IsTransforming = 55,
+			DamageNearbyMobs = 56,
+			Swimming = 57,
+			Bribed = 58,
+			IsPregnant = 59,
+			LayingEgg = 60,
+			PassengerCanPick = 61,
+			TransitionSitting = 62,
+			Eating = 63,
+			LayingDown = 64,
+			Sneezing = 65,
+			Trusting = 66,
+			Rolling = 67,
+			Scared = 68,
+			InScaffolding = 69,
+			OverScaffolding = 70,
+			DescendThroughBlock = 71,
+			Blocking = 72,
+			TransitionBlocking = 73,
+			BlockedUsingShield = 74,
+			BlockedUsingDamagedShield = 75,
+			Sleeping = 76,
+			WantsToWake = 77,
+			TradeInterest = 78,
+			DoorBreaker = 79,
+			BreakingObstruction = 80,
+			DoorOpener = 81,
+			IsIllagerCaptain = 82,
+			Stunned = 83,
+			Roaring = 84,
+			DelayedAttack = 85,
+			IsAvoidingMobs = 86,
+			IsAvoidingBlock = 87,
+			FacingTargetToRangeAttack = 88,
+			HiddenWhenInvisible = 89,
+			IsInUi = 90,
+			Stalking = 91,
+			Emoting = 92,
+			Celebrating = 93,
+			Admiring = 94,
+			CelebratingSpecial = 95,
+			OutOfControl = 96,
+			RamAttack = 97,
+			PlayingDead = 98,
+			InAscendableBlock = 99,
+			OverDescendableBlock = 100,
+			Croaking = 101,
+			EatMob = 102,
+			JumpGoalJump = 103,
+			Emerging = 104,
+			Sniffing = 105,
+			Digging = 106,
+			SonicBoom = 107,
+			HasDashCooldown = 108,
+			PushTowardsClosestSpace = 109,
+			Deprecated1 = 110,
+			Deprecated2 = 111,
+			Deprecated3 = 112,
+			Searching = 113,
+			Crawling = 114,
+			TimerFlag1 = 115,
+			TimerFlag2 = 116,
+			TimerFlag3 = 117,
+			BodyRotationBlocked = 118,
+			Count = 119
 		}
 
 		protected virtual BitArray GetFlags()
@@ -409,14 +572,14 @@ namespace MiNET.Entities
 			bits[(int) DataFlags.Ignited] = IsIgnited;
 			bits[(int) DataFlags.Baby] = IsBaby;
 			bits[(int) DataFlags.Converting] = IsConverting;
-			bits[(int) DataFlags.Critcal] = IsCritical;
-			bits[(int) DataFlags.ShowName] = IsShowName;
+			bits[(int) DataFlags.Critical] = IsCritical;
+			bits[(int) DataFlags.CanShowName] = IsShowName;
 			bits[(int) DataFlags.AlwaysShowName] = IsAlwaysShowName;
 			bits[(int) DataFlags.NoAi] = IsNoAi;
 			bits[(int) DataFlags.Silent] = IsSilent;
 			bits[(int) DataFlags.WallClimbing] = IsWallClimbing;
 			bits[(int) DataFlags.CanClimb] = CanClimb;
-			bits[(int) DataFlags.Walker] = IsWalker;
+			bits[(int) DataFlags.CanWalk] = IsWalker;
 			bits[(int) DataFlags.Resting] = IsResting;
 			bits[(int) DataFlags.Sitting] = IsSitting;
 			bits[(int) DataFlags.Angry] = IsAngry;
@@ -425,7 +588,7 @@ namespace MiNET.Entities
 			bits[(int) DataFlags.Tamed] = IsTamed;
 			bits[(int) DataFlags.Leashed] = IsLeashed;
 			bits[(int) DataFlags.Sheared] = IsSheared;
-			bits[(int) DataFlags.FlagAllFlying] = IsGliding;
+			bits[(int) DataFlags.Gliding] = IsGliding;
 			bits[(int) DataFlags.Elder] = IsElder;
 			bits[(int) DataFlags.Moving] = IsMoving;
 			bits[(int) DataFlags.Breathing] = IsBreathing;
@@ -436,7 +599,7 @@ namespace MiNET.Entities
 			bits[(int) DataFlags.Vibrating] = IsVibrating;
 
 			bits[(int) DataFlags.HasCollision] = HasCollision;
-			bits[(int) DataFlags.AffectedByGravity] = IsAffectedByGravity;
+			bits[(int) DataFlags.HasGravity] = IsAffectedByGravity;
 
 			bits[(int) DataFlags.WasdControlled] = IsWasdControlled;
 			bits[(int) DataFlags.CanPowerJump] = CanPowerJump;

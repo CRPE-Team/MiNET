@@ -102,14 +102,14 @@ namespace MiNET.Inventory
 					case ShulkerBoxBlockEntity _:
 						inventory = new ContainerInventory(GetInventoryId(), blockEntity, 27, (NbtList) comp["Items"])
 						{
-							Type = 0,
+							Type = WindowType.Container,
 							WindowsId = 10,
 						};
 						break;
 					case EnchantingTableBlockEntity _:
 						inventory = new ContainerInventory(GetInventoryId(), blockEntity, 2, (NbtList) comp["Items"])
 						{
-							Type = 3,
+							Type = WindowType.Enchantment,
 							WindowsId = 12,
 						};
 						break;
@@ -117,7 +117,7 @@ namespace MiNET.Inventory
 						{
 							inventory = new ContainerInventory(GetInventoryId(), furnaceBlockEntity, 3, (NbtList) comp["Items"])
 							{
-								Type = 2,
+								Type = WindowType.Furnace,
 								WindowsId = 11,
 							};
 
@@ -128,7 +128,7 @@ namespace MiNET.Inventory
 						{
 							inventory = new ContainerInventory(GetInventoryId(), furnaceBlockEntity, 3, (NbtList) comp["Items"])
 							{
-								Type = 27,
+								Type = WindowType.BlastFurnace,
 								WindowsId = 13,
 							};
 

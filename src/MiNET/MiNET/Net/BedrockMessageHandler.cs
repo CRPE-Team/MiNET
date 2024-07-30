@@ -153,9 +153,6 @@ namespace MiNET.Net
 				case McpeMobArmorEquipment msg:
 					handler.HandleMcpeMobArmorEquipment(msg);
 					break;
-				case McpeCraftingEvent msg:
-					handler.HandleMcpeCraftingEvent(msg);
-					break;
 				case McpeInventoryTransaction msg:
 					handler.HandleMcpeInventoryTransaction(msg);
 					break;
@@ -176,9 +173,6 @@ namespace MiNET.Net
 					break;
 				case McpeMapInfoRequest msg:
 					handler.HandleMcpeMapInfoRequest(msg);
-					break;
-				case McpeItemFrameDropItem msg:
-					handler.HandleMcpeItemFrameDropItem(msg);
 					break;
 				case McpeItemStackRequest nms:
 					handler.HandleMcpeItemStackRequest(nms);
@@ -216,9 +210,6 @@ namespace MiNET.Net
 				case McpeSetEntityData msg:
 					handler.HandleMcpeSetEntityData(msg);
 					break;
-				case McpeTickSync msg:
-					handler.HandleMcpeTickSync(msg);
-					break;
 				case McpeNpcRequest msg:
 					handler.HandleMcpeNpcRequest(msg);
 					break;
@@ -231,11 +222,14 @@ namespace MiNET.Net
 				case McpePlayerSkin msg:
 					handler.HandleMcpePlayerSkin(msg);
 					break;
-				case McpeFilterTextPacket msg:
-					handler.HandleMcpeFilterTextPacket(msg);
-					break;
 				case McpeRequestAbility msg:
 					handler.HandleMcpeRequestAbility(msg);
+					break;
+				case McpeSetPlayerInventoryOptions msg:
+					handler.HandleMcpeSetPlayerInventoryOptions(msg);
+					break;
+				case McpeBossEvent msg:
+					handler.HandleMcpeBossEvent(msg);
 					break;
 
 				default:

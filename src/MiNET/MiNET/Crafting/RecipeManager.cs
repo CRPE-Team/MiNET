@@ -268,7 +268,7 @@ namespace MiNET.Crafting
 
 		private static void LoadShapedChemistryRecipes()
 		{
-			LoadShapedRecipesBase("shaped_chemistry.json", recipe =>
+			LoadShapedRecipesBase("shaped_chemistry_asymmetric.json", recipe =>
 			new ShapedChemistryRecipe(recipe.Width, recipe.Height, recipe.Output, recipe.Input, recipe.Block) 
 			{ 
 				Priority = recipe.Priority, 

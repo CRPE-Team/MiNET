@@ -24,11 +24,11 @@
 #endregion
 
 using System.Numerics;
-using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
+using static MiNET.Entities.Entity;
 
 namespace MiNET.Blocks
 {
@@ -44,7 +44,8 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			Direction = player.GetDirection();
+			var direction = (player.GetDirection() + 2) % 4;
+			CardinalDirection = ((Direction) direction).ToString().ToLower();
 
 			return false;
 		}
@@ -54,7 +55,7 @@ namespace MiNET.Blocks
 			player.UsingAnvil = true;
 			var containerOpen = McpeContainerOpen.CreateObject();
 			containerOpen.windowId = 14;
-			containerOpen.type = 5;
+			containerOpen.type = (sbyte) WindowType.Anvil;
 			containerOpen.coordinates = blockCoordinates;
 			containerOpen.runtimeEntityId = EntityManager.EntityIdSelf;
 			player.SendPacket(containerOpen);

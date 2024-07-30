@@ -34,11 +34,11 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class Grass : Block
+	public partial class GrassBlock : Block
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(Grass));
+		private static readonly ILog Log = LogManager.GetLogger(typeof(GrassBlock));
 
-		public Grass() : base()
+		public GrassBlock() : base()
 		{
 			BlastResistance = 3;
 			Hardness = 0.6f;
@@ -69,7 +69,7 @@ namespace MiNET.Blocks
 							var nextUp = level.GetBlock(coordinates.BlockUp());
 							if (nextUp.IsTransparent)
 							{
-								level.SetBlock(new Grass { Coordinates = coordinates });
+								level.SetBlock(new GrassBlock { Coordinates = coordinates });
 							}
 						}
 					}
@@ -115,26 +115,33 @@ namespace MiNET.Blocks
 					}
 					if (shouldContinue) continue;
 
-					if (!(level.GetBlock(coord) is Grass)) continue;
+					if (!(level.GetBlock(coord) is GrassBlock)) continue;
 					coord += BlockCoordinates.Up;
 					Block growthBlock = level.GetBlock(coord);
 
-					if (growthBlock is Tallgrass tallGrass)
+					if (growthBlock is ShortGrass)
 					{
 						if (grassPlanted >= 24) continue;
 
-						if (tallGrass.TallGrassType == "default" || tallGrass.TallGrassType == "tall")
+						if (rnd.Next(10) == 0)
 						{
-							if (rnd.Next(10) == 0)
-							{
-								var block = new DoublePlant();
-								block.DoublePlantType = "grass";
-								block.Coordinates = coord;
-								level.SetBlock(block);
-								grassPlanted++;
-							}
+							level.SetBlock(new TallGrass() { Coordinates = coord });
+							level.SetBlock(new TallGrass() { Coordinates = coord + BlockCoordinates.Up, UpperBlockBit = true });
+							grassPlanted++;
 						}
-					} else if (growthBlock is Air)
+					}
+					if (growthBlock is Fern)
+					{
+						if (grassPlanted >= 24) continue;
+
+						if (rnd.Next(10) == 0)
+						{
+							level.SetBlock(new LargeFern() { Coordinates = coord });
+							level.SetBlock(new LargeFern() { Coordinates = coord + BlockCoordinates.Up, UpperBlockBit = true });
+							grassPlanted++;
+						}
+					}
+					else if (growthBlock is Air)
 					{
 						if (rnd.Next(8) == 0)
 						{
@@ -160,9 +167,7 @@ namespace MiNET.Blocks
 								{
 									if (rnd.Next(2) == 0)
 									{
-										var flower = new RedFlower();
-										flower.FlowerType = "poppy";
-										block = flower;
+										block = new Poppy();
 									}
 									else
 									{
@@ -186,10 +191,11 @@ namespace MiNET.Blocks
 						{
 							if(grassPlanted >= 24) continue;
 
-							var block = new Tallgrass();
-							block.TallGrassType = rnd.Next(10) != 0 ? "tall" : "fern";
+							Block block = rnd.Next(10) != 0 ? new ShortGrass() : new Fern();
+
 							block.Coordinates = coord;
 							level.SetBlock(block);
+
 							grassPlanted++;
 						}
 					}

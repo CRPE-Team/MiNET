@@ -266,6 +266,7 @@ namespace MiNET.Worlds.Anvil
 					{
 						X = coordinates.X,
 						Z = coordinates.Z,
+						Dimension = Dimension,
 						IsAllAir = true,
 						IsDirty = false,
 						NeedSave = false
@@ -1067,6 +1068,7 @@ namespace MiNET.Worlds.Anvil
 								{
 									X = startX,
 									Z = startZ,
+									Dimension = Dimension,
 									IsAllAir = true
 								};
 

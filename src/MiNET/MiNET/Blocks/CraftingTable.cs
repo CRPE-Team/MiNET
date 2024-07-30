@@ -24,7 +24,6 @@
 #endregion
 
 using System.Numerics;
-using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
@@ -46,7 +45,7 @@ namespace MiNET.Blocks
 		{
 			var containerOpen = McpeContainerOpen.CreateObject();
 			containerOpen.windowId = 13;
-			containerOpen.type = 1;
+			containerOpen.type = (sbyte) WindowType.Workbench;
 			containerOpen.coordinates = Coordinates;
 			containerOpen.runtimeEntityId = EntityManager.EntityIdSelf;
 			player.SendPacket(containerOpen);

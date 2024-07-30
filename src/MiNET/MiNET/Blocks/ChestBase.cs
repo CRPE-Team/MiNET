@@ -26,10 +26,9 @@
 using System.Numerics;
 using log4net;
 using MiNET.BlockEntities;
-using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
+using static MiNET.Entities.Entity;
 
 namespace MiNET.Blocks
 {
@@ -37,7 +36,7 @@ namespace MiNET.Blocks
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ChestBase));
 
-		[StateRange(0, 5)] public virtual int FacingDirection { get; set; }
+		public virtual string CardinalDirection { get; set; }
 
 		public ChestBase() : base()
 		{
@@ -50,7 +49,8 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			FacingDirection = ItemBlock.GetFacingDirectionFromEntity(player);
+			CardinalDirection = ((Direction) player.GetOppositeDirection()).ToString().ToLower();
+			
 
 			var chestBlockEntity = CreateBlockEntity();
 			chestBlockEntity.Coordinates = Coordinates;

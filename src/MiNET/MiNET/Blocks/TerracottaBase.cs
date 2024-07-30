@@ -25,9 +25,9 @@
 
 namespace MiNET.Blocks
 {
-	public partial class StainedHardenedClay : Block
+	public abstract class TerracottaBase : Block
 	{
-		public StainedHardenedClay() : base()
+		public TerracottaBase() : base()
 		{
 			BlastResistance = 30;
 			Hardness = 1.25f;

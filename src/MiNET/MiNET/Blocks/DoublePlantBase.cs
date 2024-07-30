@@ -24,15 +24,16 @@
 #endregion
 
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class DoublePlant : Block
+	public abstract class DoublePlantBase : Block
 	{
-		public DoublePlant() : base()
+		public virtual bool UpperBlockBit { get; set; }
+
+		public DoublePlantBase() : base()
 		{
 			BlastResistance = 3;
 			Hardness = 0.6f;
@@ -47,7 +48,7 @@ namespace MiNET.Blocks
 			if (base.CanPlace(world, player, blockCoordinates, targetCoordinates, face))
 			{
 				Block under = world.GetBlock(Coordinates.BlockDown());
-				return under is Grass || under is Dirt;
+				return under is GrassBlock || under is Dirt;
 			}
 
 			return false;

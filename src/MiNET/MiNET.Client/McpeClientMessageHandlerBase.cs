@@ -238,10 +238,6 @@ namespace MiNET.Client
 		{
 		}
 
-		public virtual void HandleMcpeTickSync(McpeTickSync message)
-		{
-		}
-
 		public virtual void HandleMcpeLevelSoundEventOld(McpeLevelSoundEventOld message)
 		{
 		}
@@ -347,10 +343,6 @@ namespace MiNET.Client
 		{
 		}
 
-		public virtual void HandleMcpeCraftingEvent(McpeCraftingEvent message)
-		{
-		}
-
 		public virtual void HandleMcpeGuiDataPickItem(McpeGuiDataPickItem message)
 		{
 		}
@@ -419,10 +411,6 @@ namespace MiNET.Client
 		}
 
 		public virtual void HandleMcpeChunkRadiusUpdate(McpeChunkRadiusUpdate message)
-		{
-		}
-
-		public virtual void HandleMcpeItemFrameDropItem(McpeItemFrameDropItem message)
 		{
 		}
 
@@ -695,12 +683,6 @@ namespace MiNET.Client
 		}
 
 		/// <inheritdoc />
-		public virtual void HandleMcpeFilterTextPacket(McpeFilterTextPacket message)
-		{
-			
-		}
-
-		/// <inheritdoc />
 		public void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message)
 		{
 			
@@ -746,6 +728,32 @@ namespace MiNET.Client
 		public void HandleMcpeOpenSign(McpeOpenSign message)
 		{
 			
+		}
+
+		public void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message)
+		{
+		}
+
+		public void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message)
+		{
+		}
+
+		public void HandleMcpeServerPlayerPostMovePosition(McpeServerPlayerPostMovePosition message)
+		{
+		}
+
+		public void HandleMcpeSetHud(McpeSetHud message)
+		{
+		}
+
+		public void HandleMcpeAwardAchievement(McpeAwardAchievement message)
+		{
+
+		}
+
+		public void HandleMcpeCloseForm(McpeCloseForm message)
+		{
+
 		}
 	}
 

@@ -60,6 +60,8 @@ namespace MiNET.Utils
 		public bool IsTeacher { get; set; } = false;
 
 		public bool IsHost { get; set; } = false;
+
+		public bool IsSubClient { get; set; } = false;
 	}
 
 	public abstract class PlayerRecords : List<PlayerRecord>, IPacketDataObject
@@ -132,7 +134,8 @@ namespace MiNET.Utils
 					DeviceOS = player.PlayerInfo.DeviceOS,
 					Skin = player.Skin,
 					IsTeacher = false,
-					IsHost = false
+					IsHost = false,
+					IsSubClient = false
 				});
 			}
 		}
@@ -150,6 +153,7 @@ namespace MiNET.Utils
 				packet.Write(record.Skin);
 				packet.Write(record.IsTeacher);
 				packet.Write(record.IsHost);
+				packet.Write(record.IsSubClient);
 			}
 
 			foreach (var record in this)
@@ -188,7 +192,8 @@ namespace MiNET.Utils
 				DeviceOS = packet.ReadInt(),
 				Skin = packet.ReadSkin(),
 				IsTeacher = packet.ReadBool(),
-				IsHost = packet.ReadBool()
+				IsHost = packet.ReadBool(),
+				IsSubClient = packet.ReadBool()
 			};
 		}
 	}

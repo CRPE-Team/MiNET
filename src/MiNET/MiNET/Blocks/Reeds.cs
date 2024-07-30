@@ -54,7 +54,7 @@ namespace MiNET.Blocks
 				&& targetBlock is not Dirt
 				&& targetBlock is not DirtWithRoots
 				&& targetBlock is not Mycelium
-				&& targetBlock is not Grass
+				&& targetBlock is not GrassBlock
 				&& targetBlock is not Podzol)
 			{
 				return false;

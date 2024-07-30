@@ -134,7 +134,7 @@ namespace TestPlugin.Code4Fun
 							frames = frames.Where(f => f != null).ToList();
 
 							var bc = new BlockCoordinates(center.X - x, center.Y + height - y - 1, center.Z + 2);
-							var wood = new Planks {Coordinates = bc};
+							var wood = new OakPlanks { Coordinates = bc };
 							level.SetBlock(wood);
 
 							var frambc = new BlockCoordinates(center.X - x, center.Y + height - y - 1, center.Z + 1);

@@ -54,12 +54,12 @@ namespace MiNET.Test
 				}
 			}
 
-			Item item = ItemFactory.GetItem("minecraft:sapling");
-			Assert.AreEqual("minecraft:sapling", item.Id);
+			Item item = ItemFactory.GetItem("minecraft:oak_sapling");
+			Assert.AreEqual("minecraft:oak_sapling", item.Id);
 			Assert.IsInstanceOfType(item, typeof(ItemBlock));
 
 			var itemBlock = item as ItemBlock;
-			Assert.IsInstanceOfType(itemBlock.Block, typeof(Sapling));
+			Assert.IsInstanceOfType(itemBlock.Block, typeof(OakSapling));
 		}
 
 		[TestMethod]
@@ -72,7 +72,7 @@ namespace MiNET.Test
 			writer.Indent += 2;
 			writer.WriteLine();
 
-			var itemStates = ItemFactory.Itemstates;
+			var itemStates = ItemFactory.ItemStates;
 			foreach (var state in itemStates)
 			{
 				Item item = ItemFactory.GetItem(state.Value.RuntimeId);
@@ -95,7 +95,7 @@ namespace MiNET.Test
 			using FileStream file = File.OpenWrite(fileName);
 			var writer = new IndentedTextWriter(new StreamWriter(file));
 
-			var itemStates = ItemFactory.Itemstates;
+			var itemStates = ItemFactory.ItemStates;
 			var newItems = new Dictionary<string, ItemState>();
 			foreach (var state in itemStates)
 			{
@@ -235,7 +235,7 @@ namespace MiNET.Test
 					var existingType = assembly.GetType($"MiNET.Blocks.{className}");
 					var baseType = assembly.GetType($"MiNET.Blocks.{baseName}");
 					if (existingType == null
-						|| existingType.BaseType == baseType
+						|| existingType.BaseType.IsAssignableFrom(baseType)
 						|| existingType.BaseType == typeof(object)
 						|| existingType.BaseType == typeof(Block))
 					{
@@ -441,6 +441,14 @@ namespace MiNET.Test
 					{
 						case "logs":
 							return nameof(LogBase);
+						case "wooden_slabs":
+							return nameof(WoodenSlabBase);
+						case "double_wooden_slabs":
+							return nameof(DoubleWoodenSlabBase);
+						case "double_plants":
+							return nameof(DoublePlantBase);
+						case "flowers":
+							return nameof(FlowerBase);
 					}
 				}
 			}
@@ -465,6 +473,42 @@ namespace MiNET.Test
 			if (id.StartsWith("minecraft:element_"))
 			{
 				return nameof(ElementBase);
+			}
+			if (id.EndsWith("_concrete"))
+			{
+				return nameof(ConcreteBase);
+			}
+			if (id.EndsWith("_concrete_powder"))
+			{
+				return nameof(ConcretePowderBase);
+			}
+			if (id.EndsWith("_stained_glass"))
+			{
+				return nameof(StainedGlassBase);
+			}
+			if (id.EndsWith("_stained_glass_pane"))
+			{
+				return nameof(StainedGlassPaneBase);
+			}
+			if (id.EndsWith("_glazed_terracotta"))
+			{
+				return nameof(GlazedTerracottaBase);
+			}
+			if (id.EndsWith("_terracotta"))
+			{
+				return nameof(TerracottaBase);
+			}
+			if (id.EndsWith("_planks"))
+			{
+				return nameof(PlanksBase);
+			}
+			if (id.EndsWith("_leaves"))
+			{
+				return nameof(LeavesBase);
+			}
+			if (id.EndsWith("_sapling"))
+			{
+				return nameof(SaplingBase);
 			}
 			if (name.EndsWith("standing_sign"))
 			{

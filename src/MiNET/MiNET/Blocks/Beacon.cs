@@ -73,7 +73,7 @@ namespace MiNET.Blocks
 		{
 			var containerOpen = McpeContainerOpen.CreateObject();
 			containerOpen.windowId = 5 + 9;
-			containerOpen.type = 13;
+			containerOpen.type = (sbyte) WindowType.Beacon;
 			containerOpen.coordinates = blockCoordinates;
 			containerOpen.runtimeEntityId = -1;
 			player.SendPacket(containerOpen);

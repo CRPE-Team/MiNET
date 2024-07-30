@@ -183,13 +183,18 @@ namespace MiNET.Net.Crafting
 	public abstract class ShapelessRecipeBase : Recipe
 	{
 		public int UniqueId { get; set; }
+
 		public List<RecipeIngredient> Input { get; private set; }
+
 		public List<Item> Output { get; private set; }
+
+		public RecipeUnlockingRequirement UnlockingRequirement { get; set; }
 
 		public ShapelessRecipeBase()
 		{
 			Input = new List<RecipeIngredient>();
 			Output = new List<Item>();
+			UnlockingRequirement = new RecipeUnlockingRequirement();
 		}
 
 		public ShapelessRecipeBase(List<Item> output, List<RecipeIngredient> input, string block = null) : this()
@@ -225,6 +230,12 @@ namespace MiNET.Net.Crafting
 			packet.Write(Id);
 			packet.Write(Block);
 			packet.WriteSignedVarInt(Priority);
+
+			if (Type == RecipeType.Shapeless)
+			{
+				packet.Write(UnlockingRequirement);
+			}
+
 			packet.WriteVarInt(UniqueId);
 		}
 
@@ -247,6 +258,12 @@ namespace MiNET.Net.Crafting
 			recipe.Id = packet.ReadUUID();
 			recipe.Block = packet.ReadString();
 			recipe.Priority = packet.ReadSignedVarInt();
+
+			if (recipe.Type == RecipeType.Shapeless)
+			{
+				recipe.UnlockingRequirement = RecipeUnlockingRequirement.Read(packet);
+			}
+
 			recipe.UniqueId = packet.ReadVarInt();
 
 			return recipe;
@@ -308,10 +325,18 @@ namespace MiNET.Net.Crafting
 	public abstract class ShapedRecipeBase : Recipe
 	{
 		public int UniqueId { get; set; }
+
 		public int Width { get; set; }
+
 		public int Height { get; set; }
+
 		public RecipeIngredient[] Input { get; set; }
+
 		public List<Item> Output { get; set; }
+
+		public bool IsSymmetric { get; set; }
+
+		public RecipeUnlockingRequirement UnlockingRequirement { get; set; }
 
 		public ShapedRecipeBase(int width, int height)
 		{
@@ -319,6 +344,7 @@ namespace MiNET.Net.Crafting
 			Height = height;
 			Input = new RecipeIngredient[Width * height];
 			Output = new List<Item>();
+			UnlockingRequirement = new RecipeUnlockingRequirement();
 		}
 
 		public ShapedRecipeBase(int width, int height, Item output, RecipeIngredient[] input, string block = null) : this(width, height)
@@ -358,6 +384,13 @@ namespace MiNET.Net.Crafting
 			packet.Write(Id);
 			packet.Write(Block);
 			packet.WriteSignedVarInt(Priority);
+			packet.Write(IsSymmetric);
+
+			if (Type == RecipeType.Shaped)
+			{
+				packet.Write(UnlockingRequirement);
+			}
+
 			packet.WriteVarInt(UniqueId);
 		}
 
@@ -380,6 +413,13 @@ namespace MiNET.Net.Crafting
 			recipe.Id = packet.ReadUUID();
 			recipe.Block = packet.ReadString();
 			recipe.Priority = packet.ReadSignedVarInt();
+			recipe.IsSymmetric = packet.ReadBool();
+
+			if (recipe.Type == RecipeType.Shaped)
+			{
+				recipe.UnlockingRequirement = RecipeUnlockingRequirement.Read(packet);
+			}
+
 			recipe.UniqueId = packet.ReadVarInt();
 
 			return recipe;

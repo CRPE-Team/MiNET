@@ -21,7 +21,7 @@ namespace MiNET.Test
 		{
 			var assembly = typeof(Item).Assembly;
 
-			var itemStates = ItemFactory.Itemstates;
+			var itemStates = ItemFactory.ItemStates;
 
 			var idToTag = ItemFactory.ItemTags
 				.SelectMany(tag => tag.Value.Select(itemId => (itemId, tag: tag.Key)))

@@ -47,8 +47,6 @@ using MiNET.Utils.Skins;
 using MiNET.Items;
 using MiNET.Crafting;
 using MiNET.Net.RakNet;
-using little = MiNET.Utils.Int24; // friendly name
-using LongString = System.String;
 using MiNET.Utils.Metadata;
 using MiNET.Utils.Vectors;
 using MiNET.Utils.Nbt;
@@ -125,7 +123,7 @@ foreach (XmlNode pdu in doc.SelectNodes("//pdu[not(@namespace='raknet') and @ser
 	{
 		public static ICustomPacketFactory CustomPacketFactory { get; set; } = null;
 
-		public static Packet Create(short messageId, ReadOnlyMemory<byte> buffer, string ns)
+		public static Packet Create(int messageId, ReadOnlyMemory<byte> buffer, string ns)
 		{
 			Packet packet = CustomPacketFactory?.Create(messageId, buffer, ns);
 			if (packet != null) return packet;
@@ -276,7 +274,7 @@ foreach (XmlNode pdu in doc.SelectNodes("//pdu"))
 	foreach (XmlNode field in pdu.SelectNodes("field"))
 	{
 		if(field.NodeType != XmlNodeType.Element) continue;
-
+		
 		if(field.Attributes["type"].Value == "VarInt")
 		{
 			WriteLine(string.Format("\t\t\tWriteVarInt({0});", CodeName(field.Attributes["name"].Value), field.Attributes["type"].Value));
@@ -351,6 +349,10 @@ foreach (XmlNode pdu in doc.SelectNodes("//pdu"))
 			string value = constantsLoopup[field.Attributes["type"].Value].Item2;
 			WriteLine(string.Format("\t\t\tRead{1}({0}.Length);", CodeFieldName(field.Attributes["name"].Value), CodeTypeName(type)));
 		} 
+		else if(field.Attributes["type"].Value == "sbyte")
+		{
+			WriteLine(string.Format("\t\t\t{0} = Read{1}({2});", CodeFieldName(field.Attributes["name"].Value), "SByte", SafeToString(field.Attributes["size"])));
+		}
 		else if(field.Attributes["type"].Value == "VarInt")
 		{
 			WriteLine(string.Format("\t\t\t{0} = Read{1}({2});", CodeFieldName(field.Attributes["name"].Value), "VarInt", SafeToString(field.Attributes["size"])));

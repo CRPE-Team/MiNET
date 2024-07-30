@@ -101,14 +101,14 @@ namespace MiNET.Items
 		{
 			var soundType = (ItemMaterial, ItemType) switch
 			{
-				(ItemMaterial.Leather, _) => LevelSoundEventType.ArmorEquipLeather,
-				(ItemMaterial.Chain, _) => LevelSoundEventType.ArmorEquipChain,
-				(ItemMaterial.Gold, _) => LevelSoundEventType.ArmorEquipGold,
-				(ItemMaterial.Iron, _) => LevelSoundEventType.ArmorEquipIron,
-				(ItemMaterial.Diamond, _) => LevelSoundEventType.ArmorEquipDiamond,
-				(ItemMaterial.Netherite, _) => LevelSoundEventType.ArmorEquipNetherite,
-				(_, ItemType.Elytra) => LevelSoundEventType.ArmorEquipElytra,
-				_ => LevelSoundEventType.ArmorEquipGeneric
+				(ItemMaterial.Leather, _) => LevelSoundEventType.EquipLeather,
+				(ItemMaterial.Chain, _) => LevelSoundEventType.EquipChain,
+				(ItemMaterial.Gold, _) => LevelSoundEventType.EquipGold,
+				(ItemMaterial.Iron, _) => LevelSoundEventType.EquipIron,
+				(ItemMaterial.Diamond, _) => LevelSoundEventType.EquipDiamond,
+				(ItemMaterial.Netherite, _) => LevelSoundEventType.EquipNetherite,
+				(_, ItemType.Elytra) => LevelSoundEventType.EquipElytra,
+				_ => LevelSoundEventType.EquipGeneric
 			};
 
 			player.Level.BroadcastSound(player.GetEyesPosition(), soundType);

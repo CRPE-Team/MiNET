@@ -35,7 +35,7 @@ namespace MiNET.Net
 		{
 		}
 
-		public UnknownPacket(byte id, ReadOnlyMemory<byte> message)
+		public UnknownPacket(int id, ReadOnlyMemory<byte> message)
 		{
 			Message = message;
 			Id = id;

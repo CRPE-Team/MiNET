@@ -256,6 +256,54 @@ namespace MiNET.Utils
 		}
 	}
 
+	public class CdnUrls : List<CdnUrl>, IPacketDataObject
+	{
+		public void Write(Packet packet)
+		{
+			packet.WriteLength(Count);
+
+			foreach (var cdnUrl in this)
+			{
+				packet.Write(cdnUrl);
+			}
+		}
+
+		public static CdnUrls Read(Packet packet)
+		{
+			var cdnUrls = new CdnUrls();
+
+			var count = packet.ReadLength();
+			for (int i = 0; i < count; i++)
+			{
+				cdnUrls.Add(CdnUrl.Read(packet));
+			}
+
+			return cdnUrls;
+		}
+	}
+
+	public class CdnUrl : IPacketDataObject
+	{
+		public string PackId { get; set; }
+
+		public string Url { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.Write(PackId);
+			packet.Write(Url);
+		}
+
+		public static CdnUrl Read(Packet packet)
+		{
+			return new CdnUrl()
+			{
+				PackId = packet.ReadString(),
+				Url = packet.ReadString()
+			};
+		}
+	}
+
 	public enum ResourcePackType : byte
 	{
 		Addon = 1,

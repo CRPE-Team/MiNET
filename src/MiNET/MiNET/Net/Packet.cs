@@ -1122,7 +1122,12 @@ namespace MiNET.Net
 		{
 			return TexturePackInfos.Read(this);
 		}
-		
+
+		public CdnUrls ReadCdnUrls()
+		{
+			return CdnUrls.Read(this);
+		}
+
 		public void Write(ResourcePackInfos packInfos)
 		{
 			if (packInfos == null || packInfos.Count == 0)

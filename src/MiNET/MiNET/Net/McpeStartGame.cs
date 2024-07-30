@@ -35,12 +35,13 @@ namespace MiNET.Net
 
 		public int generator; // = null;
 		public int gamemode; // = null;
+		public bool hardcore; // = null;
 		public int difficulty; // = null;
 		public int x; // = null;
 		public int y; // = null;
 		public int z; // = null;
 		public bool hasAchievementsDisabled; // = null;
-		public bool editorWorld;
+		public int editorWorldType;
 		public bool createdInEditorMode; // = null;
 		public bool exportedFromEditorMode; // = null;
 		public int time; // = null;
@@ -76,10 +77,13 @@ namespace MiNET.Net
 		public int limitedWorldWidth; // = null;
 		public int limitedWorldLength; // = null;
 		public bool isNewNether; // = null;
-		public EducationUriResource eduSharedUriResource = null;
+		public EducationUriResource eduSharedUriResource; // = null;
 		public bool experimentalGameplayOverride; // = null;
 		public byte chatRestrictionLevel; // = null;
 		public bool isDisablePlayerInteractions; // = null;
+		public string serverIdentifier; // = null;
+		public string worldIdentifier; // = null;
+		public string scenarioIdentifier; // = null;
 
 
 		public void Write(Packet packet)
@@ -91,6 +95,7 @@ namespace MiNET.Net
 
 			packet.WriteSignedVarInt(generator);
 			packet.WriteSignedVarInt(gamemode);
+			packet.Write(hardcore);
 			packet.WriteSignedVarInt(difficulty);
 
 			packet.WriteSignedVarInt(x);
@@ -98,7 +103,7 @@ namespace MiNET.Net
 			packet.WriteSignedVarInt(z);
 
 			packet.Write(hasAchievementsDisabled);
-			packet.Write(editorWorld);
+			packet.WriteVarInt(editorWorldType);
 			packet.Write(createdInEditorMode);
 			packet.Write(exportedFromEditorMode);
 			packet.WriteSignedVarInt(time);
@@ -139,6 +144,9 @@ namespace MiNET.Net
 			packet.Write(false);
 			packet.Write(chatRestrictionLevel);
 			packet.Write(isDisablePlayerInteractions);
+			packet.Write(serverIdentifier);
+			packet.Write(worldIdentifier);
+			packet.Write(scenarioIdentifier);
 		}
 
 		public void Read(Packet packet)
@@ -150,6 +158,7 @@ namespace MiNET.Net
 
 			generator = packet.ReadSignedVarInt();
 			gamemode = packet.ReadSignedVarInt();
+			hardcore = packet.ReadBool();
 			difficulty = packet.ReadSignedVarInt();
 
 			x = packet.ReadSignedVarInt();
@@ -157,7 +166,7 @@ namespace MiNET.Net
 			z = packet.ReadSignedVarInt();
 
 			hasAchievementsDisabled = packet.ReadBool();
-			editorWorld = packet.ReadBool();
+			editorWorldType = packet.ReadVarInt();
 			createdInEditorMode = packet.ReadBool();
 			exportedFromEditorMode= packet.ReadBool();
 			time = packet.ReadSignedVarInt();
@@ -207,6 +216,9 @@ namespace MiNET.Net
 			}
 			chatRestrictionLevel = packet.ReadByte();
 			isDisablePlayerInteractions = packet.ReadBool();
+			serverIdentifier = packet.ReadString();
+			worldIdentifier = packet.ReadString();
+			scenarioIdentifier = packet.ReadString();
 		}
 	}
 

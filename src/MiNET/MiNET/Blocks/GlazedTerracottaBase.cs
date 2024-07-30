@@ -23,26 +23,26 @@
 
 #endregion
 
+using System.Numerics;
+using MiNET.Items;
+using MiNET.Utils.Vectors;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
-	public partial class StoneBlockSlab
+	public abstract class GlazedTerracottaBase : Block
 	{
-		public StoneBlockSlab() : base()
+		[StateRange(0, 5)] public virtual int FacingDirection { get; set; } = 0;
+
+		public GlazedTerracottaBase() : base()
 		{
-			BlastResistance = 30;
-			Hardness = 2;
-			IsTransparent = true; // Partial - blocks light.
-			IsBlockingSkylight = false; // Partial - blocks light.
 		}
 
-		protected override bool AreSameType(Block obj)
+		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (obj.GetType() != this.GetType()) return false;
-			var slab = obj as StoneBlockSlab;
-			if (slab == null) return false;
+			FacingDirection = ItemBlock.GetFacingDirectionFromEntity(player);
 
-			return true;
+			return false;
 		}
 	}
 }

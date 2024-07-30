@@ -192,7 +192,7 @@ namespace MiNET.Entities
 						var spawnBlock = Level.GetBlock(x, y - 1, z);
 						//FIXME: The following is wrong. It shouldn't be the same for all mobs and need to be moved into some sort of
 						// entity-based "CanSpawn()" method. But performance need to be handled too, and this is way faster right now.
-						if (spawnBlock is Grass || spawnBlock is Sand || spawnBlock is Gravel || (doSpawnHostile && spawnBlock.IsSolid && !spawnBlock.IsTransparent))
+						if (spawnBlock is GrassBlock || spawnBlock is Sand || spawnBlock is Gravel || (doSpawnHostile && spawnBlock.IsSolid && !spawnBlock.IsTransparent))
 						{
 							if (entityType == EntityType.None)
 							{
@@ -214,7 +214,7 @@ namespace MiNET.Entities
 													&& Level.GetSubtractedLight(firstBlock.Coordinates, 0) >= 9)
 								{
 									var secondBlock = Level.GetBlock(x, y + 1, z);
-									if ((spawnBlock is Grass || (entityType == EntityType.Rabbit && spawnBlock is Sand)) && !secondBlock.IsSolid)
+									if ((spawnBlock is GrassBlock || (entityType == EntityType.Rabbit && spawnBlock is Sand)) && !secondBlock.IsSolid)
 									{
 										var yaw = random.Next(360);
 

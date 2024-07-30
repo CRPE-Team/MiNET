@@ -50,7 +50,7 @@ namespace MiNET.Plotter
 			RoadPattern = new Pattern();
 			var gravel = new Gravel();
 			var stone = new Stone();
-			var andesite = new Stone() {StoneType = "andesite"};
+			var andesite = new Andesite();
 			var dirt = new Dirt();
 			var grass = new Grass();
 

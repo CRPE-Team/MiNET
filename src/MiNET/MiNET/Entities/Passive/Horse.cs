@@ -24,6 +24,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Numerics;
 using fNbt;
 using log4net;
@@ -78,20 +79,27 @@ namespace MiNET.Entities.Passive
 
 		public override MetadataDictionary GetMetadata()
 		{
-			EatingHaystack = IsEating ? 32 : 0;
 			Scale = IsBaby ? 0.5582917f : 1.0;
 			var metadata = base.GetMetadata();
 			metadata[(int) MetadataFlags.Variant] = new MetadataInt(Variant);
-			metadata[(int) MetadataFlags.Markings] = new MetadataInt(Markings);
-			metadata[(int) MetadataFlags.EatingHaystack] = new MetadataInt(EatingHaystack);
+			metadata[(int) MetadataFlags.MarkVariant] = new MetadataInt(Markings);
 			if (IsTamed)
 			{
-				metadata[45] = new MetadataByte(12);
-				metadata[46] = new MetadataInt(2);
+				metadata[(int) MetadataFlags.ContainerSize] = new MetadataByte(12);
+				metadata[(int) MetadataFlags.ContainerStrengthModifier] = new MetadataInt(2);
 			}
 
 			Log.Debug($"Horse: {metadata}");
 			return metadata;
+		}
+
+		protected override BitArray GetFlags()
+		{
+			var bitArray = base.GetFlags();
+
+			bitArray[(int) DataFlags.Eating] = IsEating;
+
+			return bitArray;
 		}
 
 		public override EntityAttributes GetEntityAttributes()
