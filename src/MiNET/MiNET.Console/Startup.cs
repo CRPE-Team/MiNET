@@ -23,12 +23,12 @@
 
 #endregion
 
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using log4net;
 using log4net.Config;
@@ -61,12 +61,15 @@ namespace MiNET.Console
 			Log.Info(MiNetServer.MiNET);
 			System.Console.WriteLine(MiNetServer.MiNET);
 
-			var currentProcess = Process.GetCurrentProcess();
-
-			var processorAffinity = Config.GetProperty("ProcessorAffinity", -1);
-			if (processorAffinity != -1)
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 			{
-				currentProcess.ProcessorAffinity = processorAffinity;
+				var currentProcess = Process.GetCurrentProcess();
+
+				var processorAffinity = Config.GetProperty("ProcessorAffinity", -1);
+				if (processorAffinity != -1)
+				{
+					currentProcess.ProcessorAffinity = processorAffinity;
+				}
 			}
 
 			var service = new MiNetServer();

@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using log4net;
@@ -203,16 +204,16 @@ namespace MiNET.Net.RakNet
 		private static UdpClient CreateListener(IPEndPoint endpoint)
 		{
 			var listener = new UdpClient();
-
-			if (Environment.OSVersion.Platform != PlatformID.MacOSX)
+			
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 			{
-				//_listener.Client.ReceiveBufferSize = 1600*40000;
 				listener.Client.ReceiveBufferSize = int.MaxValue;
-				//_listener.Client.SendBufferSize = 1600*40000;
 				listener.Client.SendBufferSize = int.MaxValue;
+				
+				listener.DontFragment = false;
 			}
-
-			listener.DontFragment = false;
+			
+			//listener.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 500);
 			listener.EnableBroadcast = true;
 
 			if (Environment.OSVersion.Platform != PlatformID.Unix && Environment.OSVersion.Platform != PlatformID.MacOSX)
