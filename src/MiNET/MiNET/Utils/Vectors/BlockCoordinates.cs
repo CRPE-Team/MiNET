@@ -316,6 +316,19 @@ namespace MiNET.Utils.Vectors
 			return this + South + West;
 		}
 
+		public BlockCoordinates GetNext(BlockFace face)
+		{
+			return face switch
+			{
+				BlockFace.Down => BlockDown(),
+				BlockFace.Up => BlockUp(),
+				BlockFace.North => BlockNorth(),
+				BlockFace.South => BlockSouth(),
+				BlockFace.West => BlockWest(),
+				BlockFace.East => BlockEast(),
+			};
+		}
+
 		public bool Equals(BlockCoordinates other)
 		{
 			return X == other.X && Y == other.Y && Z == other.Z;

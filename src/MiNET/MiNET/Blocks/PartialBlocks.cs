@@ -200,16 +200,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:acacia_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -473,7 +473,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:acacia_standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -555,7 +555,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:acacia_wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1169,16 +1169,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1480,7 +1480,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1562,7 +1562,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2162,16 +2162,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:birch_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2435,7 +2435,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:birch_standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2517,7 +2517,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:birch_wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4396,16 +4396,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cherry_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4669,7 +4669,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cherry_standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4751,7 +4751,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cherry_wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6058,16 +6058,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:crimson_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6267,7 +6267,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:crimson_standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6382,7 +6382,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:crimson_wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6834,16 +6834,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dark_oak_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7230,7 +7230,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:darkoak_standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7263,7 +7263,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:darkoak_wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11235,16 +11235,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:jungle_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11508,7 +11508,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:jungle_standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11590,7 +11590,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:jungle_wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13016,16 +13016,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mangrove_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13302,7 +13302,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mangrove_standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13384,7 +13384,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mangrove_wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14131,16 +14131,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:oak_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -18872,16 +18872,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:spruce_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19145,7 +19145,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:spruce_standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19227,7 +19227,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:spruce_wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19326,7 +19326,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -21889,7 +21889,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -22115,16 +22115,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:warped_hanging_sign";
 
 		[StateBit]
-		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		[StateBit]
-		public bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -22324,7 +22324,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:warped_standing_sign";
 
 		[StateRange(0, 15)]
-		public int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -22439,7 +22439,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:warped_wall_sign";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{

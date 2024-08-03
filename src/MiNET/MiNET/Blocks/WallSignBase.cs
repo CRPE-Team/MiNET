@@ -23,10 +23,8 @@
 
 #endregion
 
-using System.Linq;
 using System.Numerics;
 using MiNET.BlockEntities;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -34,6 +32,8 @@ namespace MiNET.Blocks
 {
 	public abstract class WallSignBase : SignBase
 	{
+		public virtual int FacingDirection { get; set; }
+
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
 			return world.GetBlock(blockCoordinates).IsReplaceable;
@@ -41,13 +41,12 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			var direction = (BlockStateInt) States.First(s => s.Name == "facing_direction");
-			direction.Value = (int) face;
-			SetStates(this);
-			var signBlockEntity = new SignBlockEntity {Coordinates = Coordinates};
-			world.SetBlockEntity(signBlockEntity);
+			FacingDirection = (int) face;
 
-			return false;
+			var blockEntity = new SignBlockEntity { Coordinates = Coordinates };
+			world.SetBlockEntity(blockEntity);
+
+			return base.PlaceBlock(world, player, targetCoordinates, face, faceCoords);
 		}
 
 		public override bool Interact(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoord)

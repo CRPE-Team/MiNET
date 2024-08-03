@@ -41,25 +41,26 @@ namespace MiNET.Items
 		{
 			if (face == BlockFace.Down) return false;
 
+			SetupSignBlock(face);
+
+			return base.PlaceBlock(world, player, blockCoordinates, face, faceCoords);
+		}
+
+		protected virtual void SetupSignBlock(BlockFace face)
+		{
 			var id = Id;
 
-			if (!id.Contains("hanging")) id = id.Replace("dark_oak", "darkoak");
+			id = id.Replace("dark_oak", "darkoak");
 			if (this is ItemOakSign) id = id.Replace("oak_", "");
 
 			if (face == BlockFace.Up)
 			{
-				if (!id.Contains("hanging")) id = id.Replace("sign", "standing_sign");
-
-				Block = BlockFactory.GetBlockById(id);
+				Block = BlockFactory.GetBlockById(id.Replace("sign", "standing_sign"));
 			}
 			else
 			{
-				if (!id.Contains("hanging")) id = id.Replace("sign", "wall_sign");
-
-				Block = BlockFactory.GetBlockById(id);
+				Block = BlockFactory.GetBlockById(id.Replace("sign", "wall_sign"));
 			}
-
-			return base.PlaceBlock(world, player, blockCoordinates, face, faceCoords);
 		}
 	}
 }

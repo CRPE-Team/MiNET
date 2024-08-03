@@ -24,11 +24,8 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Numerics;
 using MiNET.BlockEntities;
-using MiNET.Net;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -36,6 +33,8 @@ namespace MiNET.Blocks
 {
 	public abstract class StandingSignBase : SignBase
 	{
+		public virtual int GroundSignDirection { get; set; }
+
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
 			return world.GetBlock(blockCoordinates).IsReplaceable;
@@ -43,20 +42,12 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			var direction = (BlockStateInt) States.First(s => s.Name == "ground_sign_direction");
-			direction.Value = (byte) ((int) (Math.Floor((player.KnownPosition.Yaw + 180) * 16 / 360) + 0.5) & 0x0f);
-			SetStates(this);
+			GroundSignDirection = (int) Math.Floor((player.KnownPosition.HeadYaw + 180) * 16 / 360 + 0.5) & 0x0f;
 
-			var signBlockEntity = new SignBlockEntity {Coordinates = Coordinates};
-			world.SetBlockEntity(signBlockEntity);
-			if (player != null)
-			{
-				McpeOpenSign openSign = McpeOpenSign.CreateObject();
-				openSign.coordinates = Coordinates;
-				openSign.front = true;
-				player.SendPacket(openSign);
-			}
-			return false;
+			var blockEntity = new SignBlockEntity { Coordinates = Coordinates };
+			world.SetBlockEntity(blockEntity);
+
+			return base.PlaceBlock(world, player, targetCoordinates, face, faceCoords);
 		}
 
 

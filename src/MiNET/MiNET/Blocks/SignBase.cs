@@ -1,5 +1,8 @@
 ﻿using System.Linq;
+using System.Numerics;
 using MiNET.Items;
+using MiNET.Net;
+using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.Blocks
@@ -23,13 +26,35 @@ namespace MiNET.Blocks
 				case StandingSign:
 				case WallSign:
 					return new ItemOakSign();
+				case DarkoakStandingSign:
+				case DarkoakWallSign:
+					return new ItemDarkOakSign();
 			}
 
 			var idSplit = Id.Split('_');
 			var itemId = $"{string.Join('_', idSplit.Take(idSplit.Length - 2))}_{idSplit.Last()}";
-			itemId = itemId.Replace("darkoak", "dark_oak");
 
 			return ItemFactory.GetItem(itemId);
+		}
+
+		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
+		{
+			// TODO: check a clicked sign side for changing a specific side text
+			if (player != null)
+			{
+				OpenSign(player);
+			}
+
+			return base.PlaceBlock(world, player, targetCoordinates, face, faceCoords);
+		}
+
+		public void OpenSign(Player player, bool front = true)
+		{
+			var packet = McpeOpenSign.CreateObject();
+			packet.coordinates = Coordinates;
+			packet.front = front;
+
+			player.SendPacket(packet);
 		}
 	}
 }

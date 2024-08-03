@@ -149,10 +149,6 @@ namespace MiNET.Test
 			{
 				return new GenerationItemInfo(typeof(ItemHangingSignBase).Name);
 			}
-			if (id.EndsWith("standing_sign"))
-			{
-				return new GenerationItemInfo(typeof(ItemSignBase).Name);
-			}
 
 			var genInfo = new GenerationItemInfo(associatedBlockId == null ? "Item" : "ItemBlock");
 
