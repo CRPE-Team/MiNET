@@ -145,9 +145,13 @@ namespace MiNET.Test
 			{
 				return new GenerationItemInfo(typeof(ItemCarpetBase).Name);
 			}
-			if (id.EndsWith("_hanging_sign"))
+			if (id.EndsWith("hanging_sign"))
 			{
 				return new GenerationItemInfo(typeof(ItemHangingSignBase).Name);
+			}
+			if (id.EndsWith("standing_sign"))
+			{
+				return new GenerationItemInfo(typeof(ItemSignBase).Name);
 			}
 
 			var genInfo = new GenerationItemInfo(associatedBlockId == null ? "Item" : "ItemBlock");
