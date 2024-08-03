@@ -80,9 +80,9 @@ namespace MiNET.Test
 						baseName += $"<{blockClassName}>";
 					}
 
-					if (existingType == null 
+					if (existingType == null
 						|| existingType.BaseType == baseType
-						|| (baseType?.IsAssignableTo(existingType.BaseType) ?? false)
+						|| existingType.BaseType.IsAssignableFrom(baseType)
 						|| existingType.BaseType == typeof(object)
 						|| existingType.BaseType == typeof(Item)
 						|| (existingType.BaseType == typeof(ItemBlock) && (baseType?.IsAssignableTo(typeof(ItemBlock)) ?? false))

@@ -18,11 +18,11 @@ namespace MiNET.Blocks
 
 		public override Item GetItem(Level world, bool blockItem = false)
 		{
-			switch (Id)
+			switch (this)
 			{
-				case "minecraft:standing_sign":
-				case "minecraft:wall_sign":
-					return ItemFactory.GetItem("minecraft:oak_sign");
+				case StandingSign:
+				case WallSign:
+					return new ItemOakSign();
 			}
 
 			var idSplit = Id.Split('_');

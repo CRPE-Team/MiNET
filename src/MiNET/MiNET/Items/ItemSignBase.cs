@@ -44,7 +44,7 @@ namespace MiNET.Items
 			var id = Id;
 
 			if (!id.Contains("hanging")) id = id.Replace("dark_oak", "darkoak");
-			if (id == "minecraft:oak_sign") id = id.Replace("oak_", "");
+			if (this is ItemOakSign) id = id.Replace("oak_", "");
 
 			if (face == BlockFace.Up)
 			{
