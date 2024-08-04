@@ -9,9 +9,10 @@ namespace MiNET.Items
 			Block = BlockFactory.GetBlockById(Id);
 		}
 
-		protected override void SetupSignBlock(BlockFace face)
+		protected override bool SetupSignBlock(BlockFace face)
 		{
 			// do nothing
+			return true;
 		}
 	}
 }

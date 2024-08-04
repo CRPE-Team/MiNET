@@ -48,6 +48,18 @@ namespace MiNET.Blocks
 			return base.PlaceBlock(world, player, targetCoordinates, face, faceCoords);
 		}
 
+		public override bool Interact(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoord)
+		{
+			if (player.Inventory.GetItemInHand() is ItemSignBase)
+			{
+				return false;
+			}
+
+			OpenSign(player);
+
+			return true;
+		}
+
 		public void OpenSign(Player player, bool front = true)
 		{
 			var packet = McpeOpenSign.CreateObject();

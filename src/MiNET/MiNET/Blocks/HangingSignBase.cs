@@ -19,10 +19,36 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			
+			var groundSignDirection = (int) Math.Floor((player.KnownPosition.HeadYaw + 180) * 16 / 360 + 0.5) & 0x0f;
+
 			if (face == BlockFace.Down)
 			{
-				
+				var targetBlock = world.GetBlock(targetCoordinates);
+
+				if (targetBlock.IsSolid && !targetBlock.IsTransparent
+					|| targetBlock is SlabBase slab && slab.VerticalHalf == "bottom"
+					|| targetBlock is BlockStairs stairs && !stairs.UpsideDownBit)
+				{
+					if (player.IsSneaking)
+					{
+						AttachedBit = true;
+					}
+				}
+				else if (targetBlock is EndRod endRod && (endRod.FacingDirection == 0 || endRod.FacingDirection == 1)
+					|| targetBlock is Chain chain && chain.PillarAxis == "y"
+					|| targetBlock is HangingSignBase)
+				{
+					if (targetBlock is not HangingSignBase || player.IsSneaking || groundSignDirection % 4 != 0)
+					{
+						AttachedBit = true;
+					}
+				}
+				else
+				{
+					return true;
+				}
+
+				Hanging = true;
 			}
 			else if (face == BlockFace.Up)
 			{
@@ -43,7 +69,22 @@ namespace MiNET.Blocks
 			else
 			{
 				if (!PlaceNotHanging(world, targetCoordinates, player, face)) return true;
+			}
 
+			if (AttachedBit)
+			{
+				GroundSignDirection = groundSignDirection;
+			}
+			else if (Hanging)
+			{
+				FacingDirection = player.GetDirection() switch
+				{
+					0 => 4,
+					1 => 2,
+					2 => 5,
+					3 => 3,
+					_ => 0
+				};
 			}
 
 			var blockEntity = new HangingSignBlockEntity() { Coordinates = Coordinates };

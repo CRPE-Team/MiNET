@@ -39,15 +39,15 @@ namespace MiNET.Items
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			if (face == BlockFace.Down) return false;
-
-			SetupSignBlock(face);
+			if (!SetupSignBlock(face)) return true;
 
 			return base.PlaceBlock(world, player, blockCoordinates, face, faceCoords);
 		}
 
-		protected virtual void SetupSignBlock(BlockFace face)
+		protected virtual bool SetupSignBlock(BlockFace face)
 		{
+			if (face == BlockFace.Down) return false;
+
 			var id = Id;
 
 			id = id.Replace("dark_oak", "darkoak");
@@ -61,6 +61,8 @@ namespace MiNET.Items
 			{
 				Block = BlockFactory.GetBlockById(id.Replace("sign", "wall_sign"));
 			}
+
+			return true;
 		}
 	}
 }
