@@ -1237,7 +1237,8 @@ namespace MiNET.Worlds.Anvil
 						"sandstone" => "default",
 						"chiseled_sandstone" => "heiroglyphs",
 						"cut_sandstone" => "cut",
-						"smooth_sandstone" => "smooth"
+						"smooth_sandstone" => "smooth",
+						_ => "default"
 					};
 
 					context.Properties.Add(new NbtString("sand_stone_type", sandStoneType));
