@@ -29,10 +29,10 @@ namespace MiNET
 	{
 		Down = 0,
 		Up = 1,
-		North = 2, // -> North
-		South = 3, // -> South
-		West = 4, // ->  West
-		East = 5, // -> East
+		North = 2, 
+		South = 3,
+		West = 4,
+		East = 5,
 		None = 255
 	}
 
