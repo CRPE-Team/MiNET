@@ -1159,14 +1159,14 @@ namespace MiNET.Worlds.Anvil
 
 			#region Bookshelfs
 
-			var chiseledBookshelfMap = new BlockStateMapper(
+			_mapper.Add(new BlockStateMapper("minecraft:chiseled_bookshelf",
 				context =>
 				{
 					var booksStored = 0;
 
 					for (var i = 0; i < 6; i++)
 					{
-						booksStored |= context.Properties[$"slot_{i}_occupied"].StringValue == "true" ? 1 << 0 : 0;
+						booksStored |= context.Properties[$"slot_{i}_occupied"].StringValue == "true" ? 1 << i : 0;
 					}
 
 					context.Properties.Clear();
@@ -1174,9 +1174,7 @@ namespace MiNET.Worlds.Anvil
 
 					return context.AnvilName;
 				},
-				directionMap);
-
-			_mapper.Add("minecraft:chiseled_bookshelf", chiseledBookshelfMap);
+				directionMap));
 
 			#endregion
 
