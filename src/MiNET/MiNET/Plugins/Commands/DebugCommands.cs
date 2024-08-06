@@ -30,27 +30,27 @@ namespace MiNET.Plugins.Commands
 				}
 			}
 
-			var requieredBlockName = blockType.Value;
-			if (!requieredBlockName.Contains("minecraft:"))
+			var requiredBlockName = blockType.Value;
+			if (!requiredBlockName.Contains("minecraft:"))
 			{
-				requieredBlockName = $"minecraft:{requieredBlockName}";
+				requiredBlockName = $"minecraft:{requiredBlockName}";
 			}
 
-			var existingBlock = BlockFactory.GetBlockById(requieredBlockName);
+			var existingBlock = BlockFactory.GetBlockById(requiredBlockName);
 			if (existingBlock == null)
 			{
-				player.SendMessage($"Unknown block with id [{requieredBlockName}]");
+				player.SendMessage($"Unknown block with id [{requiredBlockName}]");
 				return;
 			}
 
-			if (!_blocksLocationMap.TryGetValue(requieredBlockName, out var existingBlockLocation))
+			if (!_blocksLocationMap.TryGetValue(requiredBlockName, out var existingBlockLocation))
 			{
-				player.SendMessage($"Can't find the block with id [{requieredBlockName}]");
+				player.SendMessage($"Can't find the block with id [{requiredBlockName}]");
 				return;
 			}
 
 			player.Teleport(existingBlockLocation + new PlayerLocation(0.5f, 1, 0.5f));
-			player.SendMessage($"Found block [{requieredBlockName}] at [{existingBlockLocation}]");
+			player.SendMessage($"Found block [{requiredBlockName}] at [{existingBlockLocation}]");
 		}
 	}
 }

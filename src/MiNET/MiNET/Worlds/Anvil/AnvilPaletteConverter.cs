@@ -335,7 +335,7 @@ namespace MiNET.Worlds.Anvil
 
 			_mapper.Add("minecraft:mangrove_propagule", new BlockStateMapper(
 				new PropertyStateMapper("hanging"),
-				new SkipPropertyStateMapper("age"),
+				new PropertyStateMapper("age", "propagule_stage"),
 				new SkipPropertyStateMapper("stage")));
 
 			#region Facing
@@ -373,7 +373,6 @@ namespace MiNET.Worlds.Anvil
 			var furnaceMap = litMap.Clone();
 			furnaceMap.PropertiesMap.Add(facingDirectionMap.AnvilName, cardinalDirectionMap);
 			_mapper.Add("minecraft:furnace", furnaceMap);
-			_mapper.Add("minecraft:lit_furnace", furnaceMap);
 
 			_mapper.Add("minecraft:fire", faceDirectionSkipMap);
 			_mapper.Add("minecraft:iron_bars", faceDirectionSkipMap);
@@ -531,19 +530,11 @@ namespace MiNET.Worlds.Anvil
 
 			var signMap = new BlockStateMapper(context =>
 				{
-					var blockEntityTemplate = new SignBlockEntity();
-
 					var name = context.AnvilName.Replace("minecraft:", "");
 					if (name.Contains("_hanging") && !name.Contains("_wall"))
 					{
 						context.Properties.Add(new NbtString("hanging", "true"));
-						context.Properties.Add(new NbtString("attached_bit", context.Properties["attached"].StringValue == "true" ? "true" : "false"));
-						context.Properties.Remove("attached");
-
-						blockEntityTemplate = new HangingSignBlockEntity();
 					}
-
-					context.BlockEntityTemplate = blockEntityTemplate;
 
 					if (name.Replace("_sign", "").Split('_').Length == 1)
 					{
@@ -554,10 +545,11 @@ namespace MiNET.Worlds.Anvil
 					{
 						name = name.Replace("oak_", "");
 					}
-					
+
 					return $"minecraft:{name.Replace("_wall_hanging", "_hanging")}";
 				},
 				facingDirectionMap,
+				new BitPropertyStateMapper("attached"),
 				new PropertyStateMapper("rotation", "ground_sign_direction"));
 
 			foreach (var wood in _woodList)
