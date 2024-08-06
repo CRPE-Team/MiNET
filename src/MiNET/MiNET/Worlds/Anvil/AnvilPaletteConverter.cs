@@ -34,28 +34,6 @@ namespace MiNET.Worlds.Anvil
 			"minecraft:kelp"
 		};
 
-		private static readonly string[] _leavesBlocks =
-		[
-			"minecraft:oak_leaves",
-			"minecraft:spruce_leaves",
-			"minecraft:birch_leaves",
-			"minecraft:jungle_leaves",
-			"minecraft:acacia_leaves",
-			"minecraft:dark_oak_leaves",
-			"minecraft:mangrove_leaves",
-			"minecraft:cherry_leaves",
-			"minecraft:azalea_leaves"
-		];
-
-		// TODO: remove after 1.21.20
-		private static readonly string[] _sandStoneBlocks =
-		[
-			"minecraft:sandstone",
-			"minecraft:cut_sandstone",
-			"minecraft:chiseled_sandstone",
-			"minecraft:smooth_sandstone"
-		];
-
 		private static readonly string[] _woodList =
 		[
 			"oak",
@@ -68,7 +46,8 @@ namespace MiNET.Worlds.Anvil
 			"cherry",
 			"bamboo",
 			"crimson",
-			"warped"
+			"warped",
+			"azalea"
 		];
 
 		private static readonly string[] _colorsList =
@@ -203,17 +182,6 @@ namespace MiNET.Worlds.Anvil
 			"warped_roots",
 			"mangrove_propagule"
 		};
-
-		private static readonly string[] _saplingBlocks =
-		[
-			"minecraft:oak_sapling",
-			"minecraft:spruce_sapling",
-			"minecraft:birch_sapling",
-			"minecraft:jungle_sapling",
-			"minecraft:acacia_sapling",
-			"minecraft:dark_oak_sapling",
-			"minecraft:cherry_sapling"
-		];
 
 		static AnvilPaletteConverter()
 		{
@@ -358,30 +326,16 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add(new BlockStateMapper("minecraft:red_sand", "minecraft:sand",
 				new AdditionalPropertyStateMapper("sand_type", "red")));
 
-			var spongeMap = new BlockStateMapper(
-				context =>
-				{
-					var spongeType = context.AnvilName.Replace("minecraft:", "") switch
-					{
-						"sponge" => "dry",
-						"wet_sponge" => "wet"
-					};
+			_mapper.Add(new BlockStateMapper("minecraft:sponge", new AdditionalPropertyStateMapper("sponge_type", "dry")));
+			_mapper.Add(new BlockStateMapper("minecraft:wet_sponge", "minecraft:sponge", new AdditionalPropertyStateMapper("sponge_type", "wet")));
 
-					context.Properties.Add(new NbtString("sponge_type", spongeType));
-
-					return "minecraft:sponge";
-				});
-
-			_mapper.Add("minecraft:sponge", spongeMap);
-			_mapper.Add("minecraft:wet_sponge", spongeMap);
-
-			_mapper.Add("minecraft:dispenser", new BlockStateMapper(
+			_mapper.Add(new BlockStateMapper("minecraft:dispenser",
 				facingDirectionMap,
-				new PropertyStateMapper("triggered", "triggered_bit")));
+				new BitPropertyStateMapper("triggered")));
 
 			_mapper.Add("minecraft:mangrove_propagule", new BlockStateMapper(
+				new PropertyStateMapper("hanging"),
 				new SkipPropertyStateMapper("age"),
-				new SkipPropertyStateMapper("hanging"),
 				new SkipPropertyStateMapper("stage")));
 
 			#region Facing
@@ -548,13 +502,13 @@ namespace MiNET.Worlds.Anvil
 			#region Leaves and Saplings
 
 			var leavesMap = new BlockStateMapper(
-				new PropertyStateMapper("persistent", "persistent_bit"),
+				new BitPropertyStateMapper("persistent"),
 				new AdditionalPropertyStateMapper("update_bit", (_, nbt) => nbt["persistent_bit"].StringValue == "true" ? "false" : "true"),
 				new SkipPropertyStateMapper("distance"));
 
-			foreach (var leavesBlock in _leavesBlocks)
+			foreach (var wood in _woodList)
 			{
-				_mapper.Add(leavesBlock, leavesMap);
+				_mapper.Add($"minecraft:{wood}_leaves", leavesMap);
 			}
 
 			var floweredAzaleaLeavesMap = leavesMap.Clone();
@@ -566,9 +520,9 @@ namespace MiNET.Worlds.Anvil
 					new PropertyValueStateMapper("0", "false"),
 					new PropertyValueStateMapper("1", "true")));
 
-			foreach (var saplingBlock in _saplingBlocks)
+			foreach (var wood in _woodList)
 			{
-				_mapper.Add(saplingBlock, saplingsMap);
+				_mapper.Add($"minecraft:{wood}_sapling", saplingsMap);
 			}
 
 			#endregion
@@ -1246,7 +1200,16 @@ namespace MiNET.Worlds.Anvil
 					return "minecraft:sandstone";
 				});
 
-			foreach (var sandStoneBlock in _sandStoneBlocks)
+			// TODO: remove after 1.21.20
+			var sandStoneBlocks = new List<string>()
+			{
+				"minecraft:sandstone",
+				"minecraft:cut_sandstone",
+				"minecraft:chiseled_sandstone",
+				"minecraft:smooth_sandstone"
+			};
+
+			foreach (var sandStoneBlock in sandStoneBlocks)
 			{
 				_mapper.Add(sandStoneBlock, sandStoneMap);
 			}
