@@ -231,6 +231,8 @@ namespace MiNET.Worlds.Anvil
 					faceDirection |= context.Properties["north"].StringValue == "true" ? 1 << 4 : 0;
 					faceDirection |= context.Properties["east"].StringValue == "true" ? 1 << 5 : 0;
 
+					if (faceDirection == 0) faceDirection = 0x3F;
+
 					context.Properties.Clear();
 					context.Properties.Add(new NbtString("multi_face_direction_bits", faceDirection.ToString()));
 				});
@@ -406,6 +408,8 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add($"minecraft:oak_fence_gate", oakFenceGateMap);
 			foreach (var wood in _woodList)
 				_mapper.TryAdd($"minecraft:{wood}_fence_gate", fenceGateMap);
+
+			_mapper.Add(new BlockStateMapper("minecraft:cocoa", directionMap));
 
 			#endregion
 
@@ -991,15 +995,23 @@ namespace MiNET.Worlds.Anvil
 				return new NbtString("fill_level", level.ToString());
 			});
 
-			_mapper.Add(new BlockStateMapper("minecraft:lava_cauldron",
-				cauldronLevelMap,
-				new AdditionalPropertyStateMapper("cauldron_liquid", "lava")));
+			Func<BlockStateMapperContext, string> cauldronMapFunc = context =>
+			{
+				context.BlockEntityTemplate = new CauldronBlockEntity();
 
-			_mapper.Add(new BlockStateMapper("minecraft:powder_snow_cauldron", "minecraft:cauldron",
+				return "minecraft:cauldron";
+			};
+ 
+			_mapper.Add(new BlockStateMapper("minecraft:lava_cauldron", null, cauldronMapFunc,
+				new AdditionalPropertyStateMapper("fill_level", "6"),
+				new AdditionalPropertyStateMapper("cauldron_liquid", "lava"),
+				new SkipPropertyStateMapper("level")));
+
+			_mapper.Add(new BlockStateMapper("minecraft:powder_snow_cauldron", null, cauldronMapFunc,
 				cauldronLevelMap,
 				new AdditionalPropertyStateMapper("cauldron_liquid", "powder_snow")));
 
-			_mapper.Add(new BlockStateMapper("minecraft:water_cauldron", "minecraft:cauldron",
+			_mapper.Add(new BlockStateMapper("minecraft:water_cauldron", null, cauldronMapFunc,
 				cauldronLevelMap,
 				new AdditionalPropertyStateMapper("cauldron_liquid", "water")));
 
@@ -1158,10 +1170,11 @@ namespace MiNET.Worlds.Anvil
 
 					for (var i = 0; i < 6; i++)
 					{
-						booksStored |= context.Properties[$"slot_{i}_occupied"].StringValue == "true" ? 1 << i : 0;
+						var name = $"slot_{i}_occupied";
+						booksStored |= context.Properties[name].StringValue == "true" ? 1 << i : 0;
+						context.Properties.Remove(name);
 					}
 
-					context.Properties.Clear();
 					context.Properties.Add(new NbtString("books_stored", booksStored.ToString()));
 
 					return context.AnvilName;
@@ -1231,7 +1244,7 @@ namespace MiNET.Worlds.Anvil
 
 
 			// minecraft:vine
-			_mapper.Add(new BlockStateMapper("minecraft:vine",
+			_mapper.Add(new BlockStateMapper("minecraft:vine", null,
 				context =>
 				{
 					var faceDirection = 0;
@@ -1240,8 +1253,20 @@ namespace MiNET.Worlds.Anvil
 					faceDirection |= context.Properties["west"].StringValue == "true" ? 1 << 1 : 0;
 					faceDirection |= context.Properties["north"].StringValue == "true" ? 1 << 2 : 0;
 					faceDirection |= context.Properties["east"].StringValue == "true" ? 1 << 3 : 0;
+					var up = context.Properties["up"].StringValue == "true";
 
 					context.Properties.Clear();
+
+					if (faceDirection == 0)
+					{
+						if (up)
+						{
+							return "minecraft:air";
+						}
+
+						faceDirection = 0xF;
+					}
+
 					context.Properties.Add(new NbtString("vine_direction_bits", faceDirection.ToString()));
 
 					return context.AnvilName;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using MiNET.Blocks;
@@ -9,11 +10,11 @@ namespace MiNET.Plugins.Commands
 {
 	public class DebugCommands
 	{
-		private readonly Dictionary<string, BlockCoordinates> _blocksLocationMap = new Dictionary<string, BlockCoordinates>();
+		private readonly Dictionary<string, List<BlockCoordinates>> _blocksLocationMap = new Dictionary<string, List<BlockCoordinates>>();
 		private readonly List<Player> _blockStatesTracerSubscribers = new List<Player>();
 
 		[Command(Name = "toblock")]
-		public void TpAnvilDebugWorldBlock(Player player, BlockTypeEnum blockType)
+		public void TpAnvilDebugWorldBlock(Player player, BlockTypeEnum blockType, int stateIndex = 0)
 		{
 			if (!_blocksLocationMap.Any())
 			{
@@ -25,9 +26,12 @@ namespace MiNET.Plugins.Commands
 					{
 						var block = player.Level.GetBlock(x, y, z);
 
-						if (_blocksLocationMap.ContainsKey(block.Id)) continue;
+						if (!_blocksLocationMap.TryGetValue(block.Id, out var coords))
+						{
+							_blocksLocationMap.Add(block.Id, coords = new List<BlockCoordinates>());
+						}
 
-						_blocksLocationMap.Add(block.Id, block.Coordinates);
+						coords.Add(block.Coordinates);
 					}
 				}
 			}
@@ -45,14 +49,16 @@ namespace MiNET.Plugins.Commands
 				return;
 			}
 
-			if (!_blocksLocationMap.TryGetValue(requiredBlockName, out var existingBlockLocation))
+			if (!_blocksLocationMap.TryGetValue(requiredBlockName, out var existingBlockLocations))
 			{
 				player.SendMessage($"Can't find the block with id [{requiredBlockName}]");
 				return;
 			}
 
-			player.Teleport(existingBlockLocation + new PlayerLocation(0.5f, 1, 0.5f));
-			player.SendMessage($"Found block [{requiredBlockName}] at [{existingBlockLocation}]");
+			stateIndex = Math.Min(stateIndex, existingBlockLocations.Count - 1);
+
+			player.Teleport(existingBlockLocations[stateIndex] + new PlayerLocation(0.5f, 1, 0.5f));
+			player.SendMessage($"Found block [{requiredBlockName}] at [{existingBlockLocations[stateIndex]}]");
 		}
 
 		[Command(Name = "statestracer")]
@@ -102,7 +108,12 @@ namespace MiNET.Plugins.Commands
 					if (!ds.HasValue || ds <= 0)
 						return false;
 
-					args.Player.SendMessage($"Id: {block.Id}\n{string.Join("\n", block.States.Select(s => $"{s.Name}: {s.GetValue()}"))}", MessageType.Tip);
+					var chunk = args.Level.GetChunk(coords);
+					chunk.BlockEntities.TryGetValue(coords, out var k);
+
+					args.Player.SendMessage($"Id: {block.Id}:{chunk.GetBlockRuntimeId(coords.X & 0x0f, coords.Y, coords.Z & 0x0f)}\n" +
+						$"{string.Join("\n", block.States.Select(s => $"{s.Name}: {s.GetValue()}"))}\n" +
+						$"{k}", MessageType.Tip);
 
 					return true;
 				}
