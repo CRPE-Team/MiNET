@@ -167,6 +167,7 @@ namespace MiNET.Worlds.Anvil
 			"birch_sapling",
 			"jungle_sapling",
 			"acacia_sapling",
+			"cherry_sapling",
 			"dark_oak_sapling",
 			"red_mushroom",
 			"brown_mushroom",
@@ -180,7 +181,8 @@ namespace MiNET.Worlds.Anvil
 			"warped_fungus",
 			"crimson_roots",
 			"warped_roots",
-			"mangrove_propagule"
+			"mangrove_propagule",
+			"torchflower"
 		};
 
 		static AnvilPaletteConverter()
@@ -277,7 +279,8 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add(new BlockStateMapper("minecraft:red_nether_bricks", "minecraft:red_nether_brick"));
 			_mapper.Add(new BlockStateMapper("minecraft:slime_block", "minecraft:slime"));
 			_mapper.Add(new BlockStateMapper("minecraft:melon", "minecraft:melon_block"));
-
+			_mapper.Add(new BlockStateMapper("minecraft:nether_quartz_ore", "minecraft:quartz_ore"));
+			_mapper.Add(new BlockStateMapper("minecraft:end_stone_bricks", "minecraft:end_bricks"));
 
 			_mapper.Add(new BlockStateMapper("minecraft:note_block", "minecraft:noteblock",
 				new SkipPropertyStateMapper("instrument"),
@@ -381,8 +384,9 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add("minecraft:glass_pane", faceDirectionSkipMap);
 			_mapper.Add("minecraft:nether_brick_fence", faceDirectionSkipMap);
 			foreach (var wood in _woodList)
+			{
 				_mapper.Add($"minecraft:{wood}_fence", faceDirectionSkipMap);
-
+			}
 
 			_mapper.Add("minecraft:deepslate_redstone_ore", litMap);
 			_mapper.Add("minecraft:redstone_ore", litMap);
@@ -406,52 +410,63 @@ namespace MiNET.Worlds.Anvil
 			var oakFenceGateMap = fenceGateMap.Clone();
 			oakFenceGateMap.BedrockName = "minecraft:fence_gate";
 			_mapper.Add($"minecraft:oak_fence_gate", oakFenceGateMap);
+
 			foreach (var wood in _woodList)
+			{
 				_mapper.TryAdd($"minecraft:{wood}_fence_gate", fenceGateMap);
+			}
 
 			_mapper.Add(new BlockStateMapper("minecraft:cocoa", directionMap));
+
+			_mapper.Add("minecraft:brewing_stand", new BlockStateMapper(
+				new PropertyStateMapper("has_bottle_0", "brewing_stand_slot_a_bit"),
+				new PropertyStateMapper("has_bottle_1", "brewing_stand_slot_b_bit"),
+				new PropertyStateMapper("has_bottle_2", "brewing_stand_slot_c_bit")));
+
+			_mapper.Add("minecraft:end_portal_frame", new BlockStateMapper(
+				new PropertyStateMapper("eye", "end_portal_eye_bit"),
+				cardinalDirectionMap));
+
+			var commandBlockMap = new BlockStateMapper(
+				new BitPropertyStateMapper("conditional"),
+				facingDirectionMap);
+			_mapper.Add("minecraft:command_block", commandBlockMap);
+			_mapper.Add("minecraft:chain_command_block", commandBlockMap);
+			_mapper.Add("minecraft:repeating_command_block", commandBlockMap);
+
+			var daylightDetectorMap = new BlockStateMapper(context =>
+				{
+					var invertedPropertyName = "inverted";
+					var invertedPart = context.Properties[invertedPropertyName].StringValue == "true" ? "_inverted" : "";
+
+					context.Properties.Remove(invertedPart);
+					return $"minecraft:daylight_detector{invertedPart}";
+				},
+				new PropertyStateMapper("power", "redstone_signal"));
+			_mapper.Add("minecraft:daylight_detector", daylightDetectorMap);
+
+			// TODO: rework after 1.21.20
+			_mapper.Add(new BlockStateMapper("minecraft:light", "minecraft:light_block",
+				new PropertyStateMapper("level", "block_light_level")));
+
+			_mapper.Add("sniffer_egg", new BlockStateMapper(
+				new PropertyStateMapper("hatch", "cracked_state",
+					new PropertyValueStateMapper("0", "no_cracks"),
+					new PropertyValueStateMapper("1", "cracked"),
+					new PropertyValueStateMapper("2", "max_cracked"))));
 
 			#endregion
 
 			#region Colored
 
-			foreach (var color in _colorsList)
-				_mapper.Add(new BlockStateMapper($"minecraft:{color}_terracotta", "minecraft:stained_hardened_clay",
-					context =>
-					{
-						context.Properties.Clear();
-						context.Properties.Add(new NbtString("color", color.Replace("light_gray", "silver")));
-					}));
-
 			_mapper.Add(new BlockStateMapper($"minecraft:light_gray_glazed_terracotta", "minecraft:silver_glazed_terracotta", facingDirectionMap));
 			foreach (var color in _colorsList)
+			{
 				_mapper.TryAdd(new BlockStateMapper($"minecraft:{color}_glazed_terracotta", facingDirectionMap));
-
-			foreach (var color in _colorsList)
-				_mapper.Add(new BlockStateMapper($"minecraft:{color}_stained_glass_pane", "minecraft:stained_glass_pane",
-					context =>
-					{
-						context.Properties.Clear();
-						context.Properties.Add(new NbtString("color", color.Replace("light_gray", "silver")));
-					}));
-
-			foreach (var color in _colorsList)
-				_mapper.Add(new BlockStateMapper($"minecraft:{color}_stained_glass", "minecraft:stained_glass",
-					context =>
-					{
-						context.Properties.Clear();
-						context.Properties.Add(new NbtString("color", color.Replace("light_gray", "silver")));
-					}));
+			}
 
 			_mapper.Add(new BlockStateMapper($"minecraft:shulker_box", "minecraft:undyed_shulker_box",
 					context => context.Properties.Clear()));
-			foreach (var color in _colorsList)
-				_mapper.Add(new BlockStateMapper($"minecraft:{color}_shulker_box", "minecraft:shulker_box",
-					context =>
-					{
-						context.Properties.Clear();
-						context.Properties.Add(new NbtString("color", color.Replace("light_gray", "silver")));
-					}));
 
 			for (var i = 0; i < _colorsList.Length; i++)
 			{
@@ -547,7 +562,12 @@ namespace MiNET.Worlds.Anvil
 
 					if (!name.Contains("_hanging"))
 					{
-						name = name.Replace("oak_", "");
+						if (!name.Contains("dark_oak"))
+						{
+							name = name.Replace("oak_", "");
+						}
+
+						name = name.Replace("dark_oak", "darkoak");
 					}
 
 					return $"minecraft:{name.Replace("_wall_hanging", "_hanging")}";
@@ -733,6 +753,11 @@ namespace MiNET.Worlds.Anvil
 				context =>
 				{
 					var plantType = context.AnvilName.Replace("potted_", "");
+
+					// TODO: Remove after 1.21.20
+					plantType = plantType.Replace("dandelion", "yellow_flower");
+					// TODO: Remove after 1.21.20
+
 					var block = BlockFactory.GetBlockById(plantType);
 					if (block?.IsValidStates ?? false)
 					{
@@ -1458,7 +1483,7 @@ namespace MiNET.Worlds.Anvil
 					new PropertyValueStateMapper("compare", "false"),
 					new PropertyValueStateMapper("subtract", "true")),
 				new PropertyStateMapper("powered", "output_lit_bit"),
-				directionMap2,
+				cardinalDirectionMap,
 				new SkipPropertyStateMapper("locked")));
 
 			//minecraft:tripwire_hook
