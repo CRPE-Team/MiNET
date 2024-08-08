@@ -384,13 +384,7 @@ namespace MiNET.Worlds.Anvil
 					new PropertyValueStateMapper("0", "false"),
 					new PropertyValueStateMapper("1", "true"))));
 
-			_mapper.Add("chorus_plant", new BlockStateMapper(
-				new SkipPropertyStateMapper("down"),
-				new SkipPropertyStateMapper("east"),
-				new SkipPropertyStateMapper("north"),
-				new SkipPropertyStateMapper("south"),
-				new SkipPropertyStateMapper("up"),
-				new SkipPropertyStateMapper("west")));
+			_mapper.Add("chorus_plant", faceDirectionSkipMap);
 
 			_mapper.Add("pitcher_plant", new BlockStateMapper(upperBlockBitMap));
 
@@ -497,22 +491,7 @@ namespace MiNET.Worlds.Anvil
 				facingDirectionMap);
 			_mapper.Add("minecraft:command_block", commandBlockMap);
 			_mapper.Add("minecraft:chain_command_block", commandBlockMap);
-			_mapper.Add("minecraft:repeating_command_block", commandBlockMap);
-
-			var daylightDetectorMap = new BlockStateMapper(context =>
-				{
-					var invertedPropertyName = "inverted";
-					var invertedPart = context.Properties[invertedPropertyName].StringValue == "true" ? "_inverted" : "";
-
-					context.Properties.Remove(invertedPart);
-					return $"minecraft:daylight_detector{invertedPart}";
-				},
-				new PropertyStateMapper("power", "redstone_signal"));
-			_mapper.Add("minecraft:daylight_detector", daylightDetectorMap);
-
-			// TODO: rework after 1.21.20
-			_mapper.Add(new BlockStateMapper("minecraft:light", "minecraft:light_block",
-				new PropertyStateMapper("level", "block_light_level")));		
+			_mapper.Add("minecraft:repeating_command_block", commandBlockMap);	
 
 			#endregion
 
