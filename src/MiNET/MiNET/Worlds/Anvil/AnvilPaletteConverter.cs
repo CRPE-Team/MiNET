@@ -204,6 +204,8 @@ namespace MiNET.Worlds.Anvil
 		{
 			var poweredSkipMap = 
 				new SkipPropertyStateMapper("powered");
+			var powerSkipMap =
+				new SkipPropertyStateMapper("power");
 			var faceDirectionSkipMap = new BlockStateMapper(
 				new SkipPropertyStateMapper("down"),
 				new SkipPropertyStateMapper("up"),
@@ -401,6 +403,9 @@ namespace MiNET.Worlds.Anvil
 					new PropertyValueStateMapper("1", "true"))));
 
 			_mapper.Add("minecraft:chorus_plant", faceDirectionSkipMap);
+
+			_mapper.Add(new BlockStateMapper("minecraft:decorated_pot",
+				new SkipPropertyStateMapper("cracked")));
 
 			// TODO: rework after 1.21.20
 			_mapper.Add(new BlockStateMapper("minecraft:light", "minecraft:light_block",
@@ -1441,13 +1446,21 @@ namespace MiNET.Worlds.Anvil
 				new PropertyStateMapper("powered", "toggle_bit")));
 
 
+			var sculkSensorPhaseMap = new PropertyStateMapper("sculk_sensor_phase",
+					new PropertyValueStateMapper("inactive", "0"),
+					new PropertyValueStateMapper("active", "1"),
+					new PropertyValueStateMapper("cooldown", "2"));
+
 			// minecraft:sculk_sensor
 			_mapper.Add(new BlockStateMapper("minecraft:sculk_sensor",
-				new PropertyStateMapper("sculk_sensor_phase", "powered_bit",
-					new PropertyValueStateMapper("inactive", "0"),
-					new PropertyValueStateMapper("cooldown", "0"),
-					new PropertyValueStateMapper("active", "1")),
-				new SkipPropertyStateMapper("power")));
+				sculkSensorPhaseMap,
+				powerSkipMap));
+
+			// minecraft:calibrated_sculk_sensor
+			_mapper.Add(new BlockStateMapper("minecraft:calibrated_sculk_sensor",
+				sculkSensorPhaseMap,
+				cardinalDirectionMap,
+				powerSkipMap));
 
 
 			// minecraft:infested_*
