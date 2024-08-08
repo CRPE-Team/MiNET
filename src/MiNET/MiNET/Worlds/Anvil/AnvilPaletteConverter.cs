@@ -125,7 +125,7 @@ namespace MiNET.Worlds.Anvil
 			"smooth_quartz",
 			"purpur",
 			"prismarine",
-			"prismarine_bricks",
+			"prismarine_brick",
 			"dark_prismarine",
 			"blackstone",
 			"polished_blackstone",
@@ -235,6 +235,10 @@ namespace MiNET.Worlds.Anvil
 					new PropertyValueStateMapper("south", "2"),
 					new PropertyValueStateMapper("west", "3"));
 			var cardinalDirectionMap = new PropertyStateMapper("facing", "minecraft:cardinal_direction");
+			var hatchMap = new PropertyStateMapper("hatch", "cracked_state",
+					new PropertyValueStateMapper("0", "no_cracks"),
+					new PropertyValueStateMapper("1", "cracked"),
+					new PropertyValueStateMapper("2", "max_cracked"));
 
 			var multiFaceDirectonMap = new BlockStateMapper(
 				context =>
@@ -274,7 +278,6 @@ namespace MiNET.Worlds.Anvil
 				new SkipPropertyStateMapper("waterlogged"),
 				new SkipPropertyStateMapper("snowy"),
 				poweredSkipMap));
-
 
 			_mapper.Add(new BlockStateMapper("minecraft:magma_block", "minecraft:magma"));
 			_mapper.Add(new BlockStateMapper("minecraft:cobweb", "minecraft:web"));
@@ -372,6 +375,32 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add(new BlockStateMapper("minecraft:pitcher_crop",
 				pitcherHalfMap,
 				new PropertyStateMapper("age", "growth")));
+
+			_mapper.Add(new BlockStateMapper("minecraft:torchflower_crop",
+                new SkipPropertyStateMapper("age")));
+
+			_mapper.Add(new BlockStateMapper("minecraft:sniffer_egg", hatchMap));
+			_mapper.Add(new BlockStateMapper("minecraft:turtle_egg",
+                new PropertyStateMapper("eggs", "turtle_egg_count",
+					new PropertyValueStateMapper("1", "one_egg"),
+					new PropertyValueStateMapper("2", "two_egg"),
+					new PropertyValueStateMapper("3", "three_egg"),
+					new PropertyValueStateMapper("4", "four_egg")),
+				hatchMap));
+
+			_mapper.Add(new BlockStateMapper("minecraft:bamboo",
+                new PropertyStateMapper("age", "bamboo_stalk_thickness",
+					new PropertyValueStateMapper("0", "thin"),
+					new PropertyValueStateMapper("1", "thick")),
+				new PropertyStateMapper("leaves", "bamboo_leaf_size",
+					new PropertyValueStateMapper("none", "no_leaves"),
+					new PropertyValueStateMapper("small", "small_leaves"),
+					new PropertyValueStateMapper("large", "large_leaves")),
+				new PropertyStateMapper("stage", "age_bit",
+					new PropertyValueStateMapper("0", "false"),
+					new PropertyValueStateMapper("1", "true"))));
+
+			_mapper.Add("minecraft:chorus_plant", faceDirectionSkipMap);
 
 			// TODO: rework after 1.21.20
 			_mapper.Add(new BlockStateMapper("minecraft:light", "minecraft:light_block",
@@ -476,7 +505,7 @@ namespace MiNET.Worlds.Anvil
 				facingDirectionMap);
 			_mapper.Add("minecraft:command_block", commandBlockMap);
 			_mapper.Add("minecraft:chain_command_block", commandBlockMap);
-			_mapper.Add("minecraft:repeating_command_block", commandBlockMap);
+			_mapper.Add("minecraft:repeating_command_block", commandBlockMap);	
 
 			#endregion
 
@@ -824,13 +853,21 @@ namespace MiNET.Worlds.Anvil
 				new PropertyStateMapper("age", "growth"));
 
 			_mapper.Add("minecraft:wheat", growthMap);
-			_mapper.Add("minecraft:beetroot", growthMap);
 			_mapper.Add("minecraft:carrots", growthMap);
 			_mapper.Add("minecraft:potatoes", growthMap);
 			_mapper.Add("minecraft:melon_stem", growthMap);
 			_mapper.Add("minecraft:attached_melon_stem", growthMap);
 			_mapper.Add("minecraft:pumpkin_stem", growthMap);
 			_mapper.Add("minecraft:attached_pumpkin_stem", growthMap);
+
+			var growthMap2 = new BlockStateMapper(
+				new PropertyStateMapper("age", "growth",
+					new PropertyValueStateMapper("0", $"{1 << 0}"),
+					new PropertyValueStateMapper("1", $"{1 << 1}"),
+					new PropertyValueStateMapper("2", $"{1 << 2}"),
+					new PropertyValueStateMapper("3", $"{1 << 3}")));
+
+			_mapper.Add("minecraft:beetroots", growthMap2);
 
 			#endregion
 
@@ -1427,9 +1464,17 @@ namespace MiNET.Worlds.Anvil
 			{
 				var bedrockName = material;
 				if (material == "stone")
+				{
 					bedrockName = "normal_stone";
+				}
 				else if (material == "cobblestone")
+				{
 					bedrockName = "stone";
+				}
+				else if (material == "prismarine_brick")
+				{
+					bedrockName = "prismarine_bricks";
+				}
 
 				_mapper.Add(new BlockStateMapper($"minecraft:{material}_stairs", $"minecraft:{bedrockName}_stairs",
 					upsideDownBitMap,
