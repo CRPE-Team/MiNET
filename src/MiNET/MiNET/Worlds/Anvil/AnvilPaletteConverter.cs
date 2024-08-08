@@ -357,6 +357,22 @@ namespace MiNET.Worlds.Anvil
 				new PropertyStateMapper("age", "propagule_stage"),
 				new SkipPropertyStateMapper("stage")));
 
+			_mapper.Add(new BlockStateMapper("minecraft:pointed_dripstone",
+				new PropertyStateMapper("thickness", "dripstone_thickness",
+					new PropertyValueStateMapper("tip_merge", "merge")),
+				new PropertyStateMapper("vertical_direction", "hanging",
+					new PropertyValueStateMapper("up", "false"),
+					new PropertyValueStateMapper("down", "true"))));
+
+			var pitcherHalfMap = new PropertyStateMapper("half", "upper_block_bit",
+					new PropertyValueStateMapper("lower", "false"),
+					new PropertyValueStateMapper("upper", "true"));
+
+			_mapper.Add(new BlockStateMapper("minecraft:pitcher_plant", pitcherHalfMap));
+			_mapper.Add(new BlockStateMapper("minecraft:pitcher_crop",
+				pitcherHalfMap,
+				new PropertyStateMapper("age", "growth")));
+
 			// TODO: rework after 1.21.20
 			_mapper.Add(new BlockStateMapper("minecraft:light", "minecraft:light_block",
 				new PropertyStateMapper("level", "block_light_level")));
