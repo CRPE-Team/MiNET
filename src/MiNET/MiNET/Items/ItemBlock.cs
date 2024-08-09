@@ -124,10 +124,12 @@ namespace MiNET.Items
 			}
 
 			// TODO - invert logic
-			if (!newBlock.PlaceBlock(world, player, targetCoordinates, face, faceCoords))
+			if (newBlock.PlaceBlock(world, player, targetCoordinates, face, faceCoords))
 			{
-				world.SetBlock(newBlock);
+				return false;
 			}
+
+			world.SetBlock(newBlock);
 
 			if (player.GameMode == GameMode.Survival && newBlock is not Air)
 			{

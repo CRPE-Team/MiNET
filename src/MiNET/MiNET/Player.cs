@@ -1180,7 +1180,7 @@ namespace MiNET
 
 				CleanCache();
 
-				ForcedSendChunk(SpawnPosition);
+				ForcedSendChunk(SpawnPosition, false);
 
 				// send teleport to spawn
 				SetPosition(SpawnPosition);
@@ -1267,7 +1267,7 @@ namespace MiNET
 						HeadYaw = 91,
 					});
 
-					ForcedSendChunk(newPosition);
+					ForcedSendChunk(newPosition, false);
 					_currentChunkPosition = new ChunkCoordinates(int.MaxValue);
 				}
 
@@ -2800,13 +2800,15 @@ namespace MiNET
 
 		public virtual void HandleMcpeBlockPickRequest(McpeBlockPickRequest message)
 		{
-			Block block = Level.GetBlock(message.x, message.y, message.z);
+			var block = Level.GetBlock(message.x, message.y, message.z);
 			Log.Debug($"Picked block {block.Id} from blockstate {block.RuntimeId}. Expected block to be in slot {message.selectedSlot}");
-			Item item = block.GetItem(Level);
+
+			var item = block.GetItem(Level);
 			if (item is ItemBlock blockItem)
 			{
-				Log.Debug($"Have BlockItem with block state {blockItem.Block.RuntimeId}");
+				Log.Debug($"Have BlockItem with block state {blockItem.Block?.RuntimeId}");
 			}
+
 			if (item == null) return;
 
 			for (var i = 0; i < PlayerInventory.HotbarSize; i++)
@@ -2963,14 +2965,14 @@ namespace MiNET
 
 		private object _sendChunkSync = new object();
 
-		private void ForcedSendChunk(PlayerLocation position)
+		private void ForcedSendChunk(PlayerLocation position, bool cache = true)
 		{
 			lock (_sendChunkSync)
 			{
 				var chunkPosition = new ChunkCoordinates(position);
 
 				McpeWrapper chunk = Level.GetChunk(chunkPosition)?.GetBatch();
-				if (!_chunksUsed.ContainsKey(chunkPosition))
+				if (cache && !_chunksUsed.ContainsKey(chunkPosition))
 				{
 					_chunksUsed.Add(chunkPosition, chunk);
 				}
