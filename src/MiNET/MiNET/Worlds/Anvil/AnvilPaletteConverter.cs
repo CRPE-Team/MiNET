@@ -114,6 +114,7 @@ namespace MiNET.Worlds.Anvil
 			"mossy_stone_brick",
 			"brick",
 			"end_brick",
+			"end_stone_brick",
 			"nether_brick",
 			"red_nether_brick",
 			"sandstone",
@@ -142,7 +143,10 @@ namespace MiNET.Worlds.Anvil
 			"polished_deepslate",
 			"deepslate_brick",
 			"deepslate_tile",
-			"mud_brick"
+			"mud_brick",
+			"tuff",
+			"polished_tuff",
+			"tuff_brick"
 		}
 			.Concat(_woodList)
 			.ToArray();
@@ -609,9 +613,15 @@ namespace MiNET.Worlds.Anvil
 			var signMap = new BlockStateMapper(context =>
 				{
 					var name = context.AnvilName.Replace("minecraft:", "");
-					if (name.Contains("_hanging") && !name.Contains("_wall"))
+					var isHanging = name.Contains("_hanging");
+					if (isHanging && !name.Contains("_wall"))
 					{
 						context.Properties.Add(new NbtString("hanging", "true"));
+					}
+
+					if (!isHanging)
+					{
+						name = name.Replace("dark_oak", "darkoak");
 					}
 
 					if (name.Replace("_sign", "").Split('_').Length == 1)
@@ -619,14 +629,12 @@ namespace MiNET.Worlds.Anvil
 						name = name.Replace("_sign", "_standing_sign");
 					}
 
-					if (!name.Contains("_hanging"))
+					if (!isHanging)
 					{
-						if (!name.Contains("dark_oak"))
+						if (!name.Contains("darkoak"))
 						{
 							name = name.Replace("oak_", "");
 						}
-
-						name = name.Replace("dark_oak", "darkoak");
 					}
 
 					return $"minecraft:{name.Replace("_wall_hanging", "_hanging")}";
@@ -890,6 +898,7 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add(new BlockStateMapper("minecraft:rail", railDirection));
 			_mapper.Add(new BlockStateMapper("minecraft:activator_rail", railDirection, railDataBit));
 			_mapper.Add(new BlockStateMapper("minecraft:detector_rail", railDirection, railDataBit));
+			_mapper.Add(new BlockStateMapper("minecraft:powered_rail", "minecraft:golden_rail", railDirection, railDataBit));
 
 			#endregion
 
@@ -1492,24 +1501,41 @@ namespace MiNET.Worlds.Anvil
 
 			foreach (var material in _slabMaterialsList)
 			{
-				var bedrockName = material switch
+				var addWallBlockType = material switch
 				{
-					"blackstone" => "blackstone",
-					"polished_blackstone" => "polished_blackstone",
-					"polished_blackstone_brick" => "polished_blackstone_brick",
-					"cobbled_deepslate" => "cobbled_deepslate",
-					"polished_deepslate" => "polished_deepslate",
-					"deepslate_brick" => "deepslate_brick",
-					"deepslate_tile" => "deepslate_tile",
-					"mud_brick" => "mud_brick",
-					_ => "cobblestone"
+					"cobblestone"
+					or "mossy_cobblestone"
+					or "granite"
+					or "diorite" 
+					or "andesite"
+					or "sandstone"
+					or "brick"
+					or "stone_brick"
+					or "mossy_stone_brick"
+					or "nether_brick"
+					or "end_stone_brick"
+					or "prismarine"
+					or "red_sandstone"
+					or "red_nether_brick" => true,
+					_ => false
 				};
 
-				_mapper.Add(new BlockStateMapper($"minecraft:{material}_wall", $"minecraft:{bedrockName}_wall",
+				var materialOverride = material switch
+				{
+					"end_stone_brick" => "end_brick",
+					_ => material
+				};
+
+				_mapper.Add($"minecraft:{material}_wall", new BlockStateMapper(
 					context =>
 					{
-						if (material != bedrockName)
-							context.Properties.Add(new NbtString("wall_block_type", material));
+						if (addWallBlockType)
+						{
+							context.Properties.Add(new NbtString("wall_block_type", materialOverride));
+							return "minecraft:cobblestone_wall";
+						}
+
+						return context.AnvilName;
 					},
 					new PropertyStateMapper("up", "wall_post_bit"),
 					new PropertyStateMapper("east", "wall_connection_type_east", wallConnectionMap),
@@ -1618,6 +1644,66 @@ namespace MiNET.Worlds.Anvil
 					return $"minecraft:daylight_detector{invertedPart}";
 				},
 				new PropertyStateMapper("power", "redstone_signal")));
+
+			//TODO: remove after 1.21.20
+			var coralDirection = new PropertyStateMapper("facing", "coral_direction",
+					new PropertyValueStateMapper("west", "0"),
+					new PropertyValueStateMapper("east", "1"),
+					new PropertyValueStateMapper("north", "2"),
+					new PropertyValueStateMapper("south", "3"));
+			var coralFanMap = new BlockStateMapper(context =>
+			{
+				if (!context.AnvilName.Contains("_wall_"))
+				{
+					return context.AnvilName;
+				}
+
+				var name = context.AnvilName.Replace("minecraft:", "");
+				var isDead = name.StartsWith("dead_") ? "true" : "false";
+				name = name.Replace("dead_", "");
+				var (hangType, coralHangTypeBit) = name.Split('_').First() switch
+				{
+					"tube" => ("hang", "false"),
+					"brain" => ("hang", "true"),
+					"bubble" => ("hang2", "false"),
+					"fire" => ("hang2", "true"),
+					"horn" => ("hang3", "false"),
+				};
+
+				context.Properties.Add(new NbtString("coral_hang_type_bit", coralHangTypeBit));
+				context.Properties.Add(new NbtString("dead_bit", isDead));
+
+				return $"minecraft:coral_fan_{hangType}";
+			},
+			coralDirection);
+
+			var coralFans = new[]
+			{
+				"minecraft:tube_coral_fan",
+				"minecraft:brain_coral_fan",
+				"minecraft:bubble_coral_fan",
+				"minecraft:fire_coral_fan",
+				"minecraft:horn_coral_fan",
+				"minecraft:tube_coral_wall_fan",
+				"minecraft:brain_coral_wall_fan",
+				"minecraft:bubble_coral_wall_fan",
+				"minecraft:fire_coral_wall_fan",
+				"minecraft:horn_coral_wall_fan",
+				"minecraft:dead_tube_coral_fan",
+				"minecraft:dead_brain_coral_fan",
+				"minecraft:dead_bubble_coral_fan",
+				"minecraft:dead_fire_coral_fan",
+				"minecraft:dead_horn_coral_fan",
+				"minecraft:dead_tube_coral_wall_fan",
+				"minecraft:dead_brain_coral_wall_fan",
+				"minecraft:dead_bubble_coral_wall_fan",
+				"minecraft:dead_fire_coral_wall_fan",
+				"minecraft:dead_horn_coral_wall_fan"
+			};
+			foreach (var coralFan in coralFans)
+			{
+				_mapper.Add(coralFan, coralFanMap);
+			}
 		}
 
 		public static int GetRuntimeIdByPalette(NbtCompound palette, out BlockEntity blockEntity)
