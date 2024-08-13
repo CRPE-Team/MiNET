@@ -231,6 +231,13 @@ namespace MiNET.Worlds.Anvil
 					new PropertyValueStateMapper("up", "1"),
 					new PropertyValueStateMapper("north", "2"),
 					new PropertyValueStateMapper("south", "3"),
+					new PropertyValueStateMapper("west", "5"),
+					new PropertyValueStateMapper("east", "4"));
+			var oldFacingDirectionMap2 = new PropertyStateMapper("facing", "facing_direction",
+					new PropertyValueStateMapper("down", "0"),
+					new PropertyValueStateMapper("up", "1"),
+					new PropertyValueStateMapper("north", "3"),
+					new PropertyValueStateMapper("south", "2"),
 					new PropertyValueStateMapper("west", "4"),
 					new PropertyValueStateMapper("east", "5"));
 			var directionMap = new PropertyStateMapper("facing", "direction",
@@ -473,8 +480,8 @@ namespace MiNET.Worlds.Anvil
 
 			#region Facing
 
-			_mapper.Add(new BlockStateMapper("minecraft:beehive", directionMap2));
-			_mapper.Add(new BlockStateMapper("minecraft:bee_nest", directionMap2));
+			_mapper.Add(new BlockStateMapper("minecraft:beehive", directionMap));
+			_mapper.Add(new BlockStateMapper("minecraft:bee_nest", directionMap));
 			_mapper.Add(new BlockStateMapper("minecraft:loom", directionMap));
 			_mapper.Add(new BlockStateMapper("minecraft:decorated_pot",
 				directionMap2,
@@ -492,7 +499,7 @@ namespace MiNET.Worlds.Anvil
 
 			_mapper.Add(new BlockStateMapper("minecraft:grindstone", 
 				faceAttachmentMap, 
-				directionMap2));
+				directionMap));
 
 			_mapper.Add(new BlockStateMapper("minecraft:small_amethyst_bud", blockFaceMap));
 			_mapper.Add(new BlockStateMapper("minecraft:medium_amethyst_bud", blockFaceMap));
