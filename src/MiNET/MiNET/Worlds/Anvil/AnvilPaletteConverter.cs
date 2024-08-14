@@ -98,6 +98,18 @@ namespace MiNET.Worlds.Anvil
 			"piglin_wall_head"
 		];
 
+		private static readonly string[] _copperList =
+		[
+			"copper",
+			"exposed_copper",
+			"weathered_copper",
+			"oxidized_copper",
+			"waxed_copper",
+			"waxed_exposed_copper",
+			"waxed_weathered_copper",
+			"waxed_oxidized_copper"
+		];
+
 		private static readonly string[] _slabMaterialsList = new[]
 		{
 			"bamboo_mosaic",
@@ -156,16 +168,9 @@ namespace MiNET.Worlds.Anvil
 
 		private static readonly string[] _doorMaterialsList = new[]
 		{
-			"iron",
-			"copper",
-			"exposed_copper",
-			"weathered_copper",
-			"oxidized_copper",
-			"waxed_copper",
-			"waxed_exposed_copper",
-			"waxed_weathered_copper",
-			"waxed_oxidized_copper"
+			"iron"
 		}
+			.Concat(_copperList)
 			.Concat(_woodList)
 			.ToArray();
 
@@ -368,6 +373,11 @@ namespace MiNET.Worlds.Anvil
 				new PropertyStateMapper("age", "weeping_vines_age")));
 
 			_mapper.Add(new BlockStateMapper("minecraft:crafter",
+				new PropertyStateMapper("orientation",
+					new PropertyValueStateMapper("up_north", "up_south"),
+					new PropertyValueStateMapper("up_south", "up_north"),
+					new PropertyValueStateMapper("up_east", "up_west"),
+					new PropertyValueStateMapper("up_west", "up_east")),
 				new BitPropertyStateMapper("triggered")));
 
 			_mapper.Add(new BlockStateMapper("minecraft:coarse_dirt", "minecraft:dirt",
@@ -507,7 +517,6 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add(new BlockStateMapper("minecraft:amethyst_cluster", blockFaceMap));
 
 			_mapper.Add(new BlockStateMapper("minecraft:ladder", oldFacingDirectionMap));
-			_mapper.Add(new BlockStateMapper("minecraft:end_rod", oldFacingDirectionMap));
 			_mapper.Add(new BlockStateMapper("minecraft:lightning_rod", oldFacingDirectionMap));
 			_mapper.Add(new BlockStateMapper("minecraft:dropper",
 				oldFacingDirectionMap, 
@@ -543,6 +552,11 @@ namespace MiNET.Worlds.Anvil
 				_mapper.Add($"minecraft:{wood}_fence", faceDirectionSkipMap);
 			}
 
+			foreach (var copper in _copperList)
+			{
+				_mapper.Add(new BlockStateMapper($"minecraft:{copper}_bulb", 
+					new BitPropertyStateMapper("powered")));
+			}
 
 			var bigDripleafMap = new BlockStateMapper("minecraft:big_dripleaf",
 				new AdditionalPropertyStateMapper("big_dripleaf_head", (name, _) => name == "minecraft:big_dripleaf" ? "true" : "false"),
@@ -580,6 +594,15 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add("minecraft:command_block", commandBlockMap);
 			_mapper.Add("minecraft:chain_command_block", commandBlockMap);
 			_mapper.Add("minecraft:repeating_command_block", commandBlockMap);
+
+			_mapper.Add(new BlockStateMapper("minecraft:end_rod",
+				new PropertyStateMapper("facing", "facing_direction",
+					new PropertyValueStateMapper("down", "0"),
+					new PropertyValueStateMapper("up", "1"),
+					new PropertyValueStateMapper("north", "3"),
+					new PropertyValueStateMapper("south", "2"),
+					new PropertyValueStateMapper("west", "5"),
+					new PropertyValueStateMapper("east", "4"))));
 
 			#endregion
 
@@ -952,8 +975,8 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add("minecraft:attached_melon_stem", attachedGrowthMap);
 			_mapper.Add("minecraft:pumpkin_stem", growthMap);
 			_mapper.Add("minecraft:attached_pumpkin_stem", attachedGrowthMap);
+			_mapper.Add("minecraft:sweet_berry_bush", growthMap);
 
-			_mapper.Add(new BlockStateMapper("minecraft:sweet_berry_bush", ageGrowthMap));
 			_mapper.Add(new BlockStateMapper("minecraft:beetroots", "minecraft:beetroot", ageGrowthMap));
 
 			#endregion
@@ -1005,15 +1028,15 @@ namespace MiNET.Worlds.Anvil
 
 						_ when nameOnly.Contains("mushroom_block") => (down, up, south, west, north, east) switch
 						{
-							(0, 1, 0, 1, 1, 0) => 1,
-							(0, 1, 0, 0, 1, 0) => 2,
-							(0, 1, 0, 0, 1, 1) => 3,
-							(0, 1, 0, 1, 0, 0) => 4,
+							(0, _, 0, 1, 1, 0) => 1,
+							(0, _, 0, 0, 1, 0) => 2,
+							(0, _, 0, 0, 1, 1) => 3,
+							(0, _, 0, 1, 0, 0) => 4,
 							(0, 1, 0, 0, 0, 0) => 5,
-							(0, 1, 0, 0, 0, 1) => 6,
-							(0, 1, 1, 1, 0, 0) => 7,
-							(0, 1, 1, 0, 0, 0) => 8,
-							(0, 1, 1, 0, 0, 1) => 9,
+							(0, _, 0, 0, 0, 1) => 6,
+							(0, _, 1, 1, 0, 0) => 7,
+							(0, _, 1, 0, 0, 0) => 8,
+							(0, _, 1, 0, 0, 1) => 9,
 							(1, 1, 1, 1, 1, 1) => 14,
 							_ => 0
 						},
@@ -1410,27 +1433,19 @@ namespace MiNET.Worlds.Anvil
 			#endregion
 
 			// minecraft:cave_vines
-			var caveVinesMap = new BlockStateMapper("minecraft:cave_vines",
-				context =>
-				{
-					var barries = context.Properties["barries"]?.StringValue;
-
-					if (barries != null)
-					{
-						context.Properties.Remove("barries");
-
-						return barries == "true"
-						? context.AnvilName == "minecraft:cave_vines" ? "minecraft:cave_vines_head_with_berries" : "minecraft:cave_vines_body_with_berries"
-						: context.AnvilName;
-					}
-
-					return context.AnvilName;
-				},
+			_mapper.Add("minecraft:cave_vines", new BlockStateMapper(
+				context => context.Properties["berries"]?.StringValue == "true"
+					? "minecraft:cave_vines_head_with_berries"
+					: context.AnvilName,
 				new PropertyStateMapper("age", "growing_plant_age"),
-				new SkipPropertyStateMapper("berries"));
+				new SkipPropertyStateMapper("berries")));
 
-			_mapper.Add("minecraft:cave_vines", caveVinesMap);
-			_mapper.Add("minecraft:cave_vines_plant", caveVinesMap);
+			_mapper.Add("minecraft:cave_vines_plant", new BlockStateMapper(
+				context => context.Properties["berries"]?.StringValue == "true"
+					? "minecraft:cave_vines_body_with_berries"
+					: "minecraft:cave_vines",
+				new AdditionalPropertyStateMapper("growing_plant_age", "25"),
+				new SkipPropertyStateMapper("berries")));
 
 
 			// minecraft:vine
