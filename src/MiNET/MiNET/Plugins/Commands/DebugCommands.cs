@@ -69,14 +69,21 @@ namespace MiNET.Plugins.Commands
 				if (enable && !_blockStatesTracerSubscribers.Contains(player))
 				{
 					player.Ticking += TraceBlock;
+					player.PlayerLeave += RemoveTraceSubscriptionCache;
 					_blockStatesTracerSubscribers.Add(player);
 				}
 				else
 				{
 					player.Ticking -= TraceBlock;
+					player.PlayerLeave -= RemoveTraceSubscriptionCache;
 					_blockStatesTracerSubscribers.Remove(player);
 				}
 			}
+		}
+
+		private void RemoveTraceSubscriptionCache(object soruce, PlayerEventArgs args)
+		{
+			_blockStatesTracerSubscribers.Remove(args.Player);
 		}
 
 		private void TraceBlock(object soruce, PlayerEventArgs args)
