@@ -236,13 +236,27 @@ namespace MiNET.Worlds.Anvil
 					new PropertyValueStateMapper("up", "1"),
 					new PropertyValueStateMapper("north", "2"),
 					new PropertyValueStateMapper("south", "3"),
-					new PropertyValueStateMapper("west", "5"),
-					new PropertyValueStateMapper("east", "4"));
+					new PropertyValueStateMapper("east", "4"),
+					new PropertyValueStateMapper("west", "5"));
 			var oldFacingDirectionMap2 = new PropertyStateMapper("facing", "facing_direction",
 					new PropertyValueStateMapper("down", "0"),
 					new PropertyValueStateMapper("up", "1"),
-					new PropertyValueStateMapper("north", "3"),
 					new PropertyValueStateMapper("south", "2"),
+					new PropertyValueStateMapper("north", "3"),
+					new PropertyValueStateMapper("west", "4"),
+					new PropertyValueStateMapper("east", "5"));
+			var oldFacingDirectionMap3 = new PropertyStateMapper("facing", "facing_direction",
+					new PropertyValueStateMapper("down", "0"),
+					new PropertyValueStateMapper("up", "1"),
+					new PropertyValueStateMapper("south", "2"),
+					new PropertyValueStateMapper("north", "3"),
+					new PropertyValueStateMapper("east", "4"),
+					new PropertyValueStateMapper("west", "5"));
+			var oldFacingDirectionMap4 = new PropertyStateMapper("facing", "facing_direction",
+					new PropertyValueStateMapper("down", "0"),
+					new PropertyValueStateMapper("up", "1"),
+					new PropertyValueStateMapper("north", "2"),
+					new PropertyValueStateMapper("south", "3"),
 					new PropertyValueStateMapper("west", "4"),
 					new PropertyValueStateMapper("east", "5"));
 			var directionMap = new PropertyStateMapper("facing", "direction",
@@ -595,14 +609,7 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add("minecraft:chain_command_block", commandBlockMap);
 			_mapper.Add("minecraft:repeating_command_block", commandBlockMap);
 
-			_mapper.Add(new BlockStateMapper("minecraft:end_rod",
-				new PropertyStateMapper("facing", "facing_direction",
-					new PropertyValueStateMapper("down", "0"),
-					new PropertyValueStateMapper("up", "1"),
-					new PropertyValueStateMapper("north", "3"),
-					new PropertyValueStateMapper("south", "2"),
-					new PropertyValueStateMapper("west", "5"),
-					new PropertyValueStateMapper("east", "4"))));
+			_mapper.Add(new BlockStateMapper("minecraft:end_rod", oldFacingDirectionMap3));
 
 			#endregion
 
@@ -716,36 +723,62 @@ namespace MiNET.Worlds.Anvil
 
 			#region Signs
 
-			var signMap = new BlockStateMapper(context =>
+			var signMap = new BlockStateMapper(
+				context =>
 				{
 					var name = context.AnvilName.Replace("minecraft:", "");
-					var isHanging = name.Contains("_hanging");
-					if (isHanging && !name.Contains("_wall"))
-					{
-						context.Properties.Add(new NbtString("hanging", "true"));
-					}
 
-					if (!isHanging)
-					{
-						name = name.Replace("dark_oak", "darkoak");
-					}
+					name = name.Replace("dark_oak", "darkoak");
 
 					if (name.Replace("_sign", "").Split('_').Length == 1)
 					{
 						name = name.Replace("_sign", "_standing_sign");
 					}
 
-					if (!isHanging)
+					if (!name.Contains("darkoak"))
 					{
-						if (!name.Contains("darkoak"))
+						name = name.Replace("oak_", "");
+					}
+
+					return $"minecraft:{name}";
+				},
+				oldFacingDirectionMap4,
+				new PropertyStateMapper("rotation", "ground_sign_direction"));
+
+
+			var hangingSignMap = new BlockStateMapper(
+				context =>
+				{
+					var name = context.AnvilName.Replace("minecraft:", "");
+					context.Properties.Add(new NbtString("hanging", "true"));
+
+					if (context.Properties["attached"].StringValue != "true")
+					{
+						var rotation = int.Parse(context.Properties["rotation"].StringValue);
+
+						if (rotation % 4 == 0)
 						{
-							name = name.Replace("oak_", "");
+							context.Properties.Remove("rotation");
+
+							var direction = rotation switch
+							{
+								12 => "east",
+								8 => "north",
+								4 => "west",
+								_ => "south"
+							};
+
+							context.Properties.Add(new NbtString("facing", direction));
+						}
+						else
+						{
+							context.Properties["attached"] = new NbtString("attached", "true");
 						}
 					}
 
-					return $"minecraft:{name.Replace("_wall_hanging", "_hanging")}";
+					return context.AnvilName;
 				},
-				oldFacingDirectionMap,
+				oldFacingDirectionMap4,
 				new BitPropertyStateMapper("attached"),
 				new PropertyStateMapper("rotation", "ground_sign_direction"));
 
@@ -753,8 +786,8 @@ namespace MiNET.Worlds.Anvil
 			{
 				_mapper.Add($"minecraft:{wood}_sign", signMap);
 				_mapper.Add($"minecraft:{wood}_wall_sign", signMap);
-				_mapper.Add($"minecraft:{wood}_hanging_sign", signMap);
-				_mapper.Add($"minecraft:{wood}_wall_hanging_sign", signMap);
+				_mapper.Add($"minecraft:{wood}_hanging_sign", hangingSignMap);
+				_mapper.Add(new BlockStateMapper($"minecraft:{wood}_wall_hanging_sign", $"minecraft:{wood}_hanging_sign", oldFacingDirectionMap4));
 			}
 
 			#endregion
@@ -1339,16 +1372,8 @@ namespace MiNET.Worlds.Anvil
 
 			#region Pistons
 
-			var pistonFacingDirectionMap = new PropertyStateMapper("facing", "facing_direction",
-					new PropertyValueStateMapper("down", "0"),
-					new PropertyValueStateMapper("up", "1"),
-					new PropertyValueStateMapper("south", "2"),
-					new PropertyValueStateMapper("north", "3"),
-					new PropertyValueStateMapper("east", "4"),
-					new PropertyValueStateMapper("west", "5"));
-
 			var pistonMap = new BlockStateMapper(
-				pistonFacingDirectionMap,
+				oldFacingDirectionMap3,
 				new SkipPropertyStateMapper("extended"));
 
 			_mapper.Add("minecraft:piston", pistonMap);
@@ -1359,7 +1384,7 @@ namespace MiNET.Worlds.Anvil
 				{
 					return context.Properties["type"].StringValue == "sticky" ? "minecraft:sticky_piston_arm_collision" : "minecraft:piston_arm_collision";
 				},
-				pistonFacingDirectionMap,
+				oldFacingDirectionMap3,
 				new SkipPropertyStateMapper("short"),
 				new SkipPropertyStateMapper("type")));
 
