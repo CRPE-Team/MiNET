@@ -321,6 +321,8 @@ namespace MiNET
 		{
 			if (CurrentForm != null) SendForm(CurrentForm);
 
+			MiNetServer.FastThreadPool.QueueUserWorkItem(SendChunksForKnownPosition);
+
 			OnLocalPlayerIsInitialized(new PlayerEventArgs(this));
 		}
 
@@ -1751,7 +1753,7 @@ namespace MiNET
 
 				CleanCache();
 
-				ForcedSendChunk(SpawnPosition);
+				ForcedSendChunk(SpawnPosition, false);
 				_currentChunkPosition = new ChunkCoordinates(int.MaxValue);
 
 				// send teleport to spawn
@@ -3260,11 +3262,6 @@ namespace MiNET
 			{
 				if (PortalDetected != 0) Log.Debug($"Reset portal detected");
 				if (IsSpawned) PortalDetected = 0;
-			}
-
-			if (_currentChunkPosition != new ChunkCoordinates(KnownPosition))
-			{
-				MiNetServer.FastThreadPool.QueueUserWorkItem(SendChunksForKnownPosition);
 			}
 
 			HungerManager.OnTick();
