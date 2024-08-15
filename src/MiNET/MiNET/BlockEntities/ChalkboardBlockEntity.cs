@@ -24,7 +24,6 @@
 #endregion
 
 using fNbt;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 
 namespace MiNET.BlockEntities
@@ -38,7 +37,7 @@ namespace MiNET.BlockEntities
 		public int Size { get; set; }
 		public BlockCoordinates BaseCoordinates { get; set; }
 
-		public ChalkboardBlockEntity() : base("ChalkboardBlock")
+		public ChalkboardBlockEntity() : base(BlockEntityIds.ChalkboardBlock)
 		{
 			Text = string.Empty;
 		}

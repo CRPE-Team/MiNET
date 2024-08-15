@@ -37,7 +37,7 @@ namespace MiNET.BlockEntities
 
 		public Block PlantBlock { get; set; }
 
-		public FlowerPotBlockEntity() : base("FlowerPot")
+		public FlowerPotBlockEntity() : base(BlockEntityIds.FlowerPot)
 		{
 		}
 

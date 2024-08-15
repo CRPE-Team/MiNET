@@ -33,7 +33,7 @@ namespace MiNET.BlockEntities
 	{
 		private NbtCompound Compound { get; set; }
 
-		public ChestBlockEntity() : this("Chest")
+		public ChestBlockEntity() : this(BlockEntityIds.Chest)
 		{
 
 		}

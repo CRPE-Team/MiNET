@@ -34,7 +34,7 @@ namespace MiNET.BlockEntities
 		public byte Rotation { get; set; }
 		public byte SkullType { get; set; }
 
-		public SkullBlockEntity() : base("Skull")
+		public SkullBlockEntity() : base(BlockEntityIds.Skull)
 		{
 		}
 
