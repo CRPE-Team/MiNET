@@ -41,7 +41,7 @@ namespace MiNET.BlockEntities
 		public short SpawnCount { get; set; } = 4;
 		public short SpawnRange { get; set; } = 4;
 
-		public MobSpawnerBlockEntity() : base("MobSpawner")
+		public MobSpawnerBlockEntity() : base(BlockEntityIds.MobSpawner)
 		{
 		}
 

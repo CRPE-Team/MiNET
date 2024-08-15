@@ -23,25 +23,40 @@
 
 #endregion
 
+using System;
+using System.Drawing;
 using fNbt;
 
 namespace MiNET.BlockEntities
 {
 	public class SignBlockEntity : BlockEntity
 	{
-		public string Text { get; set; }
-		public string Text1 { get; set; }
-		public string Text2 { get; set; }
-		public string Text3 { get; set; }
-		public string Text4 { get; set; }
+		/// <summary>
+		/// A compound which discribes back text. 
+		/// </summary>
+		public SignText BackText { get; set; } = new();
 
-		public SignBlockEntity() : base("Sign")
+		/// <summary>
+		/// A compound which discribes front text.
+		/// </summary>
+		public SignText FrontText { get; set; } = new();
+
+		/// <summary>
+		///  true if the text is locked with honeycomb.
+		/// </summary>
+		public bool IsWaxed { get; set; }
+
+		public long LockedForEditingBy { get; set; }
+
+
+		public SignBlockEntity() : base(BlockEntityIds.Sign)
 		{
-			Text = string.Empty;
-			Text1 = string.Empty;
-			Text2 = string.Empty;
-			Text3 = string.Empty;
-			Text4 = string.Empty;
+			
+		}
+
+		protected SignBlockEntity(string name) : base(name)
+		{
+
 		}
 
 		public override NbtCompound GetCompound()
@@ -49,14 +64,13 @@ namespace MiNET.BlockEntities
 			var compound = new NbtCompound(string.Empty)
 			{
 				new NbtString("id", Id),
-				new NbtString("Text", Text ?? string.Empty),
-				new NbtString("Text1", Text1 ?? string.Empty),
-				new NbtString("Text2", Text2 ?? string.Empty),
-				new NbtString("Text3", Text3 ?? string.Empty),
-				new NbtString("Text4", Text4 ?? string.Empty),
 				new NbtInt("x", Coordinates.X),
 				new NbtInt("y", Coordinates.Y),
-				new NbtInt("z", Coordinates.Z)
+				new NbtInt("z", Coordinates.Z),
+				BackText.ToNbt(nameof(BackText)),
+				FrontText.ToNbt(nameof(FrontText)),
+				new NbtByte(nameof(IsWaxed), Convert.ToByte(IsWaxed)),
+				new NbtLong(nameof(LockedForEditingBy), LockedForEditingBy)
 			};
 
 			return compound;
@@ -64,17 +78,105 @@ namespace MiNET.BlockEntities
 
 		public override void SetCompound(NbtCompound compound)
 		{
-			Text = GetTextValue(compound, "Text");
-			Text1 = GetTextValue(compound, "Text1");
-			Text2 = GetTextValue(compound, "Text2");
-			Text3 = GetTextValue(compound, "Text3");
-			Text4 = GetTextValue(compound, "Text4");
+			BackText = SignText.FromNbt(compound[nameof(BackText)] as NbtCompound);
+			FrontText = SignText.FromNbt(compound[nameof(FrontText)] as NbtCompound);
+			IsWaxed = Convert.ToBoolean(compound[nameof(IsWaxed)].ByteValue);
+			LockedForEditingBy = compound[nameof(LockedForEditingBy)].LongValue;
+		}
+	}
+
+	public class SignText
+	{
+		/// <summary>
+		/// true if the outer glow of a sign with glowing text does not show.
+		/// </summary>
+		public bool HideGlowOutline { get; set; }
+
+		/// <summary>
+		/// true if the sign has been dyed with a glow ink sac.
+		/// </summary>
+		public bool IgnoreLighting { get; set; }
+
+		/// <summary>
+		/// Unknown. Defaults to true.
+		/// </summary>
+		public bool PersistFormatting { get; set; } = true;
+
+		/// <summary>
+		/// The color that has been used to dye the sign. Default is Black.
+		/// </summary>
+		public Color SignTextColor { get; set; } = SignColor.Black;
+
+		/// <summary>
+		/// The text on it.
+		/// </summary>
+		public string Text { get; set; } = string.Empty;
+
+		/// <summary>
+		/// Unknown.
+		/// </summary>
+		public string TextOwner { get; set; } = string.Empty;
+
+		public NbtCompound ToNbt(string name = null)
+		{
+			return new NbtCompound(name)
+			{
+				new NbtByte(nameof(HideGlowOutline), Convert.ToByte(HideGlowOutline)),
+				new NbtByte(nameof(IgnoreLighting), Convert.ToByte(IgnoreLighting)),
+				new NbtByte(nameof(PersistFormatting), Convert.ToByte(PersistFormatting)),
+				new NbtInt(nameof(SignTextColor), SignTextColor.ToArgb()),
+				new NbtString(nameof(Text), Text),
+				new NbtString(nameof(TextOwner), TextOwner)
+			};
 		}
 
-		private string GetTextValue(NbtCompound compound, string key)
+		public static SignText FromNbt(NbtCompound nbt)
 		{
-			compound.TryGet(key, out NbtString text);
-			return text != null ? (text.StringValue ?? string.Empty) : string.Empty;
+			var result = new SignText();
+
+			result.HideGlowOutline = Convert.ToBoolean(nbt[nameof(HideGlowOutline)].ByteValue);
+			result.IgnoreLighting = Convert.ToBoolean(nbt[nameof(IgnoreLighting)].ByteValue);
+			result.PersistFormatting = Convert.ToBoolean(nbt[nameof(PersistFormatting)].ByteValue);
+			result.SignTextColor = Color.FromArgb(nbt[nameof(SignTextColor)].IntValue);
+			result.Text = nbt[nameof(Text)].StringValue;
+			result.TextOwner = nbt[nameof(TextOwner)].StringValue;
+
+			return result;
 		}
+	}
+
+	public static class SignColor
+	{
+		public static Color Black { get; } = Color.FromArgb(0, 0, 0);
+
+		public static Color White { get; } = Color.FromArgb(240, 240, 240);
+
+		public static Color Orange { get; } = Color.FromArgb(249, 128, 29);
+
+		public static Color Magenta { get; } = Color.FromArgb(199, 78, 189);
+
+		public static Color LightBlue  { get; } = Color.FromArgb(58, 179, 218);
+
+		public static Color Yellow { get; } = Color.FromArgb(254, 216, 61);
+
+		public static Color Lime { get; } = Color.FromArgb(128, 199, 31);
+
+		public static Color Pink { get; } = Color.FromArgb(243, 139, 170);
+
+		public static Color Gray { get; } = Color.FromArgb(71, 79, 82);
+
+		public static Color LightGray { get; } = Color.FromArgb(157, 157, 151);
+
+		public static Color Cyan { get; } = Color.FromArgb(22, 156, 156);
+
+		public static Color Purple { get; } = Color.FromArgb(137, 50, 184);
+
+		public static Color Blue { get; } = Color.FromArgb(60, 68, 170);
+
+		public static Color Brown { get; } = Color.FromArgb(131, 84, 50);
+
+		public static Color Green { get; } = Color.FromArgb(94, 124, 22);
+
+		public static Color Red { get; } = Color.FromArgb(176, 46, 38);
 	}
 }

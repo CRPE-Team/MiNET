@@ -510,6 +510,18 @@ namespace MiNET.Test
 			{
 				return nameof(SaplingBase);
 			}
+			if (name.EndsWith("standing_sign"))
+			{
+				return nameof(StandingSignBase);
+			}
+			if (name.EndsWith("_hanging_sign"))
+			{
+				return nameof(HangingSignBase);
+			}
+			if (name.EndsWith("wall_sign"))
+			{
+				return nameof(WallSignBase);
+			}
 
 			return nameof(Block);
 		}

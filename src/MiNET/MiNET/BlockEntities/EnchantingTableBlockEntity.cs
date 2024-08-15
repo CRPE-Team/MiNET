@@ -32,7 +32,7 @@ namespace MiNET.BlockEntities
 	{
 		private NbtCompound Compound { get; set; }
 
-		public EnchantingTableBlockEntity() : base("EnchantTable")
+		public EnchantingTableBlockEntity() : base(BlockEntityIds.EnchantTable)
 		{
 			Compound = new NbtCompound(string.Empty)
 			{

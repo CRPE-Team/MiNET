@@ -67,7 +67,10 @@ namespace MiNET.Plugins
 
 		public PluginManager()
 		{
-
+			if (Config.GetProperty("DebugMode", false))
+			{
+				LoadPlugin(new DebugCommands());
+			}
 		}
 
 		internal void LoadPlugins()

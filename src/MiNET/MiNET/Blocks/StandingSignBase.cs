@@ -24,28 +24,16 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Numerics;
 using MiNET.BlockEntities;
-using MiNET.Items;
-using MiNET.Net;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public abstract partial class StandingSignBase : Block
+	public abstract class StandingSignBase : SignBase
 	{
-		public StandingSignBase() : base()
-		{
-			IsTransparent = true;
-			IsSolid = false;
-			BlastResistance = 5;
-			Hardness = 1;
-
-			IsFlammable = true; // Only in PE!!
-		}
+		public virtual int GroundSignDirection { get; set; }
 
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
@@ -54,20 +42,12 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			var direction = (BlockStateInt) States.First(s => s.Name == "ground_sign_direction");
-			direction.Value = (byte) ((int) (Math.Floor((player.KnownPosition.Yaw + 180) * 16 / 360) + 0.5) & 0x0f);
-			SetStates(this);
+			GroundSignDirection = (int) Math.Floor((player.KnownPosition.HeadYaw + 180) * 16 / 360 + 0.5) & 0x0f;
 
-			var signBlockEntity = new SignBlockEntity {Coordinates = Coordinates};
-			world.SetBlockEntity(signBlockEntity);
-			if (player != null)
-			{
-				McpeOpenSign openSign = McpeOpenSign.CreateObject();
-				openSign.coordinates = Coordinates;
-				openSign.front = true;
-				player.SendPacket(openSign);
-			}
-			return false;
+			var blockEntity = new SignBlockEntity { Coordinates = Coordinates };
+			world.SetBlockEntity(blockEntity);
+
+			return base.PlaceBlock(world, player, targetCoordinates, face, faceCoords);
 		}
 
 
@@ -75,46 +55,5 @@ namespace MiNET.Blocks
 		{
 			return true;
 		}
-	}
-
-	public partial class StandingSign : StandingSignBase
-	{
-		public StandingSign() : base() { }
-	}
-
-
-	public partial class SpruceStandingSign : StandingSignBase
-	{
-		public SpruceStandingSign() : base() { }
-	}
-
-	public partial class BirchStandingSign : StandingSignBase
-	{
-		public BirchStandingSign() : base() { }
-	}
-
-	public partial class JungleStandingSign : StandingSignBase
-	{
-		public JungleStandingSign() : base() { }
-	}
-
-	public partial class AcaciaStandingSign : StandingSignBase
-	{
-		public AcaciaStandingSign() : base() { }
-	}
-
-	public partial class DarkoakStandingSign : StandingSignBase
-	{
-		public DarkoakStandingSign() : base() { }
-	}
-
-	public partial class CrimsonStandingSign : StandingSignBase
-	{
-		public CrimsonStandingSign() : base() { }
-	}
-
-	public partial class WarpedStandingSign : StandingSignBase
-	{
-		public WarpedStandingSign() : base() { }
 	}
 }

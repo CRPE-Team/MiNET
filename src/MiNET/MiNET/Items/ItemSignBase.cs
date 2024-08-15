@@ -32,30 +32,37 @@ namespace MiNET.Items
 {
 	public abstract class ItemSignBase : ItemBlock
 	{
-
-		public ItemSignBase() : base()
+		protected ItemSignBase() : base()
 		{
 			MaxStackSize = 16;
 		}
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			if (face == BlockFace.Down)
+			if (!SetupSignBlock(face)) return true;
+
+			return base.PlaceBlock(world, player, blockCoordinates, face, faceCoords);
+		}
+
+		protected virtual bool SetupSignBlock(BlockFace face)
+		{
+			if (face == BlockFace.Down) return false;
+
+			var id = Id;
+
+			id = id.Replace("dark_oak", "darkoak");
+			if (this is ItemOakSign) id = id.Replace("oak_", "");
+
+			if (face == BlockFace.Up)
 			{
-				Block = BlockFactory.GetBlockById(Id.Replace("sign", "hanging_sign"));
-				var dynamicBlock = Block as dynamic;
-				dynamicBlock.Hanging = true;
-			}
-			else if (face == BlockFace.Up)
-			{
-				Block = BlockFactory.GetBlockById(Id.Replace("oak_", "").Replace("sign", "standing_sign"));
+				Block = BlockFactory.GetBlockById(id.Replace("sign", "standing_sign"));
 			}
 			else
 			{
-				Block = BlockFactory.GetBlockById(Id.Replace("oak_", "").Replace("sign", "wall_sign"));
+				Block = BlockFactory.GetBlockById(id.Replace("sign", "wall_sign"));
 			}
 
-			return base.PlaceBlock(world, player, blockCoordinates, face, faceCoords);
+			return true;
 		}
 	}
 }

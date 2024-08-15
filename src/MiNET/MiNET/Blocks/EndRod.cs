@@ -30,6 +30,7 @@ namespace MiNET.Blocks
 		public EndRod() : base()
 		{
 			LightLevel = 14;
+			IsTransparent = true;
 		}
 	}
 }

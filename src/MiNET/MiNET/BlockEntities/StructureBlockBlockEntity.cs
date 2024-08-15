@@ -24,7 +24,6 @@
 #endregion
 
 using fNbt;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 
 namespace MiNET.BlockEntities
@@ -37,7 +36,7 @@ namespace MiNET.BlockEntities
 		public BlockCoordinates Size { get; set; } = new BlockCoordinates(5, 5, 5);
 		public bool ShowBoundingBox { get; set; } = true;
 
-		public StructureBlockBlockEntity() : base("StructureBlock")
+		public StructureBlockBlockEntity() : base(BlockEntityIds.StructureBlock)
 		{
 			Compound = new NbtCompound(string.Empty)
 			{

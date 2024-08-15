@@ -43,24 +43,28 @@ namespace MiNET.BlockEntities
 				return blockEntity;
 			}
 
-			if (blockEntityId == "Sign") blockEntity = new SignBlockEntity();
-			else if (blockEntityId == "Chest") blockEntity = new ChestBlockEntity();
-			else if (blockEntityId == "EnderChest") blockEntity = new ChestBlockEntity();
-			else if (blockEntityId == "EnchantTable") blockEntity = new EnchantingTableBlockEntity();
-			else if (blockEntityId == "Furnace") blockEntity = new FurnaceBlockEntity();
-			else if (blockEntityId == "BlastFurnace") blockEntity = new BlastFurnaceBlockEntity();
-			else if (blockEntityId == "Skull") blockEntity = new SkullBlockEntity();
-			else if (blockEntityId == "ItemFrame") blockEntity = new ItemFrameBlockEntity();
-			else if (blockEntityId == "Bed") blockEntity = new BedBlockEntity();
-			else if (blockEntityId == "Banner") blockEntity = new BannerBlockEntity();
-			else if (blockEntityId == "FlowerPot") blockEntity = new FlowerPotBlockEntity();
-			else if (blockEntityId == "Beacon") blockEntity = new BeaconBlockEntity();
-			else if (blockEntityId == "MobSpawner") blockEntity = new MobSpawnerBlockEntity();
-			else if (blockEntityId == "ChalkboardBlock") blockEntity = new ChalkboardBlockEntity();
-			else if (blockEntityId == "ShulkerBox") blockEntity = new ShulkerBoxBlockEntity();
-			else if (blockEntityId == "StructureBlock") blockEntity = new StructureBlockBlockEntity();
-
-			return blockEntity;
+			return blockEntityId switch
+			{
+				BlockEntityIds.Sign => new SignBlockEntity(),
+				BlockEntityIds.HangingSign => new HangingSignBlockEntity(),
+				BlockEntityIds.Chest => new ChestBlockEntity(),
+				BlockEntityIds.EnderChest => new ChestBlockEntity(),
+				BlockEntityIds.EnchantTable => new EnchantingTableBlockEntity(),
+				BlockEntityIds.Furnace => new FurnaceBlockEntity(),
+				BlockEntityIds.BlastFurnace => new BlastFurnaceBlockEntity(),
+				BlockEntityIds.Skull => new SkullBlockEntity(),
+				BlockEntityIds.ItemFrame => new ItemFrameBlockEntity(),
+				BlockEntityIds.Bed => new BedBlockEntity(),
+				BlockEntityIds.Banner => new BannerBlockEntity(),
+				BlockEntityIds.FlowerPot => new FlowerPotBlockEntity(),
+				BlockEntityIds.Beacon => new BeaconBlockEntity(),
+				BlockEntityIds.MobSpawner => new MobSpawnerBlockEntity(),
+				BlockEntityIds.ChalkboardBlock => new ChalkboardBlockEntity(),
+				BlockEntityIds.ShulkerBox => new ShulkerBoxBlockEntity(),
+				BlockEntityIds.StructureBlock => new StructureBlockBlockEntity(),
+				BlockEntityIds.Cauldron => new CauldronBlockEntity(),
+				_ => blockEntity
+			};
 		}
 	}
 }

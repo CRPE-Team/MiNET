@@ -2,7 +2,7 @@
 {
 	public class EnderChestBlockEntity : ChestBlockEntity
 	{
-		public EnderChestBlockEntity() : base("EnderChest")
+		public EnderChestBlockEntity() : base(BlockEntityIds.EnderChest)
 		{
 
 		}
