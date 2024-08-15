@@ -13,6 +13,9 @@ namespace MiNET.Plugins.Commands
 		private readonly Dictionary<string, List<BlockCoordinates>> _blocksLocationMap = new Dictionary<string, List<BlockCoordinates>>();
 		private readonly List<Player> _blockStatesTracerSubscribers = new List<Player>();
 
+		/// <summary>
+		/// Debug command to teleport to block from Anvil 'DebugWorld'
+		/// </summary>
 		[Command(Name = "toblock")]
 		public void TpAnvilDebugWorldBlock(Player player, BlockTypeEnum blockType, int stateIndex = 0)
 		{
