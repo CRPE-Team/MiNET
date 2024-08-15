@@ -34,7 +34,7 @@ namespace MiNET.BlockEntities
 		private NbtCompound Compound { get; set; }
 		public byte Facing { get; set; }
 
-		public ShulkerBoxBlockEntity() : base("ShulkerBox")
+		public ShulkerBoxBlockEntity() : base(BlockEntityIds.ShulkerBox)
 		{
 			Compound = new NbtCompound(string.Empty)
 			{

@@ -42,7 +42,7 @@ namespace MiNET.BlockEntities
 		public int Primary { get; set; } = 1;
 		public int Secondary { get; set; } = 10;
 
-		public BeaconBlockEntity() : base("Beacon")
+		public BeaconBlockEntity() : base(BlockEntityIds.Beacon)
 		{
 			UpdatesOnTick = true;
 

@@ -36,7 +36,7 @@ namespace MiNET.BlockEntities
 		public int Rotation { get; private set; }
 		public float DropChance { get; private set; }
 
-		public ItemFrameBlockEntity() : base("ItemFrame")
+		public ItemFrameBlockEntity() : base(BlockEntityIds.ItemFrame)
 		{
 			Compound = new NbtCompound(string.Empty)
 			{

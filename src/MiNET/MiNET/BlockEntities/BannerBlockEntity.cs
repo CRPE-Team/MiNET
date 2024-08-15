@@ -33,7 +33,7 @@ namespace MiNET.BlockEntities
 		public int Base { get; set; }
 		public List<BannerPattern> Patterns { get; set; } = new List<BannerPattern>();
 
-		public BannerBlockEntity() : base("Banner")
+		public BannerBlockEntity() : base(BlockEntityIds.Banner)
 		{
 		}
 

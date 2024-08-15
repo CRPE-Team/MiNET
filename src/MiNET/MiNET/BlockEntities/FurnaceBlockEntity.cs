@@ -46,7 +46,7 @@ namespace MiNET.BlockEntities
 		public string Block { get; } = BlockFactory.GetIdByType<Furnace>(false);
 
 
-		public FurnaceBlockEntity() : base("Furnace")
+		public FurnaceBlockEntity() : base(BlockEntityIds.Furnace)
 		{
 			UpdatesOnTick = true;
 

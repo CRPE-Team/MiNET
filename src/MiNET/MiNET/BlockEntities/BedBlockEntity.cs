@@ -31,7 +31,7 @@ namespace MiNET.BlockEntities
 	{
 		public byte Color { get; set; }
 
-		public BedBlockEntity() : base("Bed")
+		public BedBlockEntity() : base(BlockEntityIds.Bed)
 		{
 			Color = 0;
 		}
