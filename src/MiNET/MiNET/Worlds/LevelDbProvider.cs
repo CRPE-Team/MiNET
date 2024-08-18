@@ -274,8 +274,8 @@ namespace MiNET.Worlds
 
 				int paletteSize = reader.ReadInt32();
 
-				var container = section.Layers[storage] = new IO.PalettedContainer(paletteSize, SubChunk.Size);
 
+				List<int> blockIds = new List<int>();
 				for (int j = 0; j < paletteSize; j++)
 				{
 					var file = new NbtFile
@@ -297,8 +297,12 @@ namespace MiNET.Worlds
 						block = new Air();
 					}
 
-					container.AppedPalette(block.RuntimeId);
+					blockIds.Add(block.RuntimeId);
 				}
+
+				var container = section.Layers[storage];
+				container.Clear();
+				container.AppendPaletteRange(blockIds);
 
 				long nextStore = reader.Position;
 				reader.Position = blockIndex;

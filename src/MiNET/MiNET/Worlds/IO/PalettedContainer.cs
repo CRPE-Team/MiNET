@@ -9,11 +9,12 @@ namespace MiNET.Worlds.IO
 {
 	public class PalettedContainer : IDisposable, ICloneable
 	{
-
 		private static readonly ILog Log = LogManager.GetLogger(typeof(PalettedContainer));
 
-		private Dictionary<int, ushort> _runtimeIdToPaletted;
-		private List<int> _palette;
+		private static readonly Dictionary<ushort, PalettedContainerData> _sharedEmptyDatas = new Dictionary<ushort, PalettedContainerData>();
+
+		private readonly Dictionary<int, ushort> _runtimeIdToPaletted;
+		private readonly List<int> _palette;
 		private PalettedContainerData _data;
 
 		public int this[int index]
@@ -34,7 +35,9 @@ namespace MiNET.Worlds.IO
 			_palette = palette;
 			_data = data;
 
-			UpdatePaletteMap();
+			_runtimeIdToPaletted = _palette
+				.Zip(Enumerable.Range(0, _palette.Count - 1))
+				.ToDictionary(block => block.First, block => (ushort) block.Second);
 		}
 
 		public IReadOnlyList<int> Palette => _palette.AsReadOnly();
@@ -43,10 +46,15 @@ namespace MiNET.Worlds.IO
 
 		public static PalettedContainer CreateFilledWith(int runtimeId, ushort blocksCount)
 		{
-			var container = new PalettedContainer(1, blocksCount);
-			container.AppendToPalette(runtimeId);
+			return new PalettedContainer(new List<int> { runtimeId }, GetEmptyData(blocksCount));
+		}
 
-			return container;
+		public void Clear()
+		{
+			_palette.Clear();
+			_runtimeIdToPaletted.Clear();
+
+			_data = GetEmptyData(_data.BlocksCount);
 		}
 
 		public int GetBlockRuntimeId(int index)
@@ -86,18 +94,41 @@ namespace MiNET.Worlds.IO
 			}
 		}
 
-		[Obsolete("Unwanted to use because of the possible significant load on the CPU")]
-		internal void AppedPalette(int runtimeId)
+		internal void AppendPaletteRange(IEnumerable<int> runtimeIds)
 		{
-			AppendToPalette(runtimeId);
-			_data.TryResize(_palette.Count);
+			bool wasEmpty = _palette.Count <= 1;
+
+			foreach (var runtimeId in runtimeIds)
+			{
+				AppendToPalette(runtimeId);
+			}
+
+			if (wasEmpty)
+			{
+				_data = new PalettedContainerData(_palette.Count, _data.BlocksCount);
+			}
+			else
+			{
+				_data.TryResize(_palette.Count);
+			}
 		}
 
-		[Obsolete]
-		internal void ClearPalette(int runtimeId)
+		internal ushort AppedPalette(int runtimeId)
 		{
-			_palette.Clear();
-			_runtimeIdToPaletted.Clear();
+			bool wasEmpty = _palette.Count <= 1;
+
+			var palettedId = AppendToPalette(runtimeId);
+
+			if (wasEmpty && _palette.Count > 1)
+			{
+				_data = new PalettedContainerData(_palette.Count, _data.BlocksCount);
+			}
+			else
+			{
+				_data.TryResize(_palette.Count);
+			}
+
+			return palettedId;
 		}
 
 		public object Clone()
@@ -114,12 +145,20 @@ namespace MiNET.Worlds.IO
 		{
 			if (!_runtimeIdToPaletted.TryGetValue(runtimeId, out var palettedId))
 			{
-				palettedId = AppendToPalette(runtimeId);
-
-				_data.TryResize(_palette.Count);
+				palettedId = AppedPalette(runtimeId);
 			}
 
 			return palettedId;
+		}
+
+		private static PalettedContainerData GetEmptyData(ushort blocksCount)
+		{
+			if (!_sharedEmptyDatas.TryGetValue(blocksCount, out var data))
+			{
+				_sharedEmptyDatas.Add(blocksCount, data = new PalettedContainerData(1, blocksCount));
+			}
+
+			return data;
 		}
 
 		private ushort AppendToPalette(int runtimeId)
@@ -127,16 +166,9 @@ namespace MiNET.Worlds.IO
 			var palettedId = (ushort) _palette.Count;
 
 			_palette.Add(runtimeId);
-			_runtimeIdToPaletted.Add(runtimeId, palettedId);
+			_runtimeIdToPaletted.TryAdd(runtimeId, palettedId);
 
 			return palettedId;
-		}
-
-		private void UpdatePaletteMap()
-		{
-			_runtimeIdToPaletted = _palette
-				.Zip(Enumerable.Range(0, _palette.Count - 1))
-				.ToDictionary(block => block.First, block => (ushort) block.Second);
 		}
 	}
 }

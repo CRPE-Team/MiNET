@@ -47,15 +47,6 @@ namespace MiNET.Worlds
 		private List<PalettedContainer> _layers;
 		private PalettedContainer _biomes;
 
-
-
-		private List<int> _runtimeIds; // Add air, always as first (performance)
-		private List<int> _loggedRuntimeIds;
-		private List<int> _biomeIds;
-
-		private short[] _blocks;
-		private byte[] _loggedBlocks; // We use only byte size on this palette index table, because can basically only be water and snow-levels
-
 		// Consider disabling these if we don't calculate lights
 		private NibbleArray _blockLight;
 		private NibbleArray _skyLight;
@@ -71,17 +62,6 @@ namespace MiNET.Worlds
 
 		public NibbleArray BlockLight => _blockLight;
 		public NibbleArray SkyLight => _skyLight;
-
-
-
-
-		internal List<int> RuntimeIds => _runtimeIds;
-		internal List<int> LoggedRuntimeIds => _loggedRuntimeIds;
-		internal List<int> BiomeIds => _biomeIds;
-
-		internal short[] Blocks => _blocks;
-		internal byte[] LoggedBlocks => _loggedBlocks;
-
 
 		public bool IsDirty { get; private set; }
 
