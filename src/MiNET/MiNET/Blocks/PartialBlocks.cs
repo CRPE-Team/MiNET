@@ -718,6 +718,72 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:andesite";
 	} // class
 
+	public partial class AndesiteDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:andesite_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class AndesiteSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:andesite_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class AndesiteStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -761,13 +827,9 @@ namespace MiNET.Blocks
 
 	public partial class Anvil : Block
 	{
-		private readonly BlockStateString _damage = new BlockStateString() { Name = "damage", Value = "undamaged" };
 		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:anvil";
-
-		[StateEnum("broken", "slightly_damaged", "undamaged", "very_damaged")]
-		public string Damage { get => _damage.Value; set => NotifyStateUpdate(_damage, value); }
 
 		[StateEnum("east", "north", "south", "west")]
 		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
@@ -778,9 +840,6 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateString s when s.Name == "damage":
-						NotifyStateUpdate(_damage, s.Value);
-						break;
 					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
 						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
@@ -790,13 +849,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _damage;
 			yield return _cardinalDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _damage, _cardinalDirection);
+			return HashCode.Combine(Id, _cardinalDirection);
 		} // method
 	} // class
 
@@ -3211,14 +3269,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:brain_coral_block";
 	} // class
 
-	public partial class BrainCoralFan : Block
+	public partial class BrainCoralFan : CoralFanBase
 	{
 		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
 
 		public override string Id => "minecraft:brain_coral_fan";
 
 		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3241,6 +3299,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
+	public partial class BrainCoralWallFan : CoralWallFanBase
+	{
+		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 1 };
+
+		public override string Id => "minecraft:brain_coral_wall_fan";
+
+		[StateRange(0, 3)]
+		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_direction":
+						NotifyStateUpdate(_coralDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralDirection);
 		} // method
 	} // class
 
@@ -3296,6 +3387,39 @@ namespace MiNET.Blocks
 	public partial class BrickBlock : Block
 	{
 		public override string Id => "minecraft:brick_block";
+	} // class
+
+	public partial class BrickDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:brick_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
 	} // class
 
 	public partial class BrickSlab : SlabBase
@@ -3600,14 +3724,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bubble_coral_block";
 	} // class
 
-	public partial class BubbleCoralFan : Block
+	public partial class BubbleCoralFan : CoralFanBase
 	{
 		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
 
 		public override string Id => "minecraft:bubble_coral_fan";
 
 		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3630,6 +3754,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
+	public partial class BubbleCoralWallFan : CoralWallFanBase
+	{
+		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 0 };
+
+		public override string Id => "minecraft:bubble_coral_wall_fan";
+
+		[StateRange(0, 3)]
+		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_direction":
+						NotifyStateUpdate(_coralDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralDirection);
 		} // method
 	} // class
 
@@ -4851,6 +5008,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class ChippedAnvil : Block
+	{
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
+
+		public override string Id => "minecraft:chipped_anvil";
+
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _cardinalDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _cardinalDirection);
+		} // method
+	} // class
+
 	public partial class ChiseledBookshelf : Block
 	{
 		private readonly BlockStateInt _booksStored = new BlockStateInt() { Name = "books_stored", Value = 0 };
@@ -4910,6 +5100,54 @@ namespace MiNET.Blocks
 	public partial class ChiseledPolishedBlackstone : Block
 	{
 		public override string Id => "minecraft:chiseled_polished_blackstone";
+	} // class
+
+	public partial class ChiseledQuartzBlock : Block
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
+
+		public override string Id => "minecraft:chiseled_quartz_block";
+
+		[StateEnum("x", "y", "z")]
+		public string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
+	public partial class ChiseledRedSandstone : Block
+	{
+		public override string Id => "minecraft:chiseled_red_sandstone";
+	} // class
+
+	public partial class ChiseledSandstone : Block
+	{
+		public override string Id => "minecraft:chiseled_sandstone";
+	} // class
+
+	public partial class ChiseledStoneBricks : Block
+	{
+		public override string Id => "minecraft:chiseled_stone_bricks";
 	} // class
 
 	public partial class ChiseledTuff : Block
@@ -4978,6 +5216,11 @@ namespace MiNET.Blocks
 	public partial class CoalOre : Block
 	{
 		public override string Id => "minecraft:coal_ore";
+	} // class
+
+	public partial class CoarseDirt : Block
+	{
+		public override string Id => "minecraft:coarse_dirt";
 	} // class
 
 	public partial class CobbledDeepslate : Block
@@ -5160,6 +5403,39 @@ namespace MiNET.Blocks
 	public partial class Cobblestone : Block
 	{
 		public override string Id => "minecraft:cobblestone";
+	} // class
+
+	public partial class CobblestoneDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:cobblestone_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
 	} // class
 
 	public partial class CobblestoneSlab : SlabBase
@@ -5632,153 +5908,6 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CoralFanHang : Block
-	{
-		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 0 };
-		private readonly BlockStateByte _coralHangTypeBit = new BlockStateByte() { Name = "coral_hang_type_bit", Value = 0 };
-		private readonly BlockStateByte _deadBit = new BlockStateByte() { Name = "dead_bit", Value = 0 };
-
-		public override string Id => "minecraft:coral_fan_hang";
-
-		[StateRange(0, 3)]
-		public int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
-
-		[StateBit]
-		public bool CoralHangTypeBit { get => Convert.ToBoolean(_coralHangTypeBit.Value); set => NotifyStateUpdate(_coralHangTypeBit, value); }
-
-		[StateBit]
-		public bool DeadBit { get => Convert.ToBoolean(_deadBit.Value); set => NotifyStateUpdate(_deadBit, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateInt s when s.Name == "coral_direction":
-						NotifyStateUpdate(_coralDirection, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "coral_hang_type_bit":
-						NotifyStateUpdate(_coralHangTypeBit, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "dead_bit":
-						NotifyStateUpdate(_deadBit, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _coralDirection;
-			yield return _coralHangTypeBit;
-			yield return _deadBit;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _coralDirection, _coralHangTypeBit, _deadBit);
-		} // method
-	} // class
-
-	public partial class CoralFanHang2 : Block
-	{
-		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 0 };
-		private readonly BlockStateByte _coralHangTypeBit = new BlockStateByte() { Name = "coral_hang_type_bit", Value = 0 };
-		private readonly BlockStateByte _deadBit = new BlockStateByte() { Name = "dead_bit", Value = 0 };
-
-		public override string Id => "minecraft:coral_fan_hang2";
-
-		[StateRange(0, 3)]
-		public int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
-
-		[StateBit]
-		public bool CoralHangTypeBit { get => Convert.ToBoolean(_coralHangTypeBit.Value); set => NotifyStateUpdate(_coralHangTypeBit, value); }
-
-		[StateBit]
-		public bool DeadBit { get => Convert.ToBoolean(_deadBit.Value); set => NotifyStateUpdate(_deadBit, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateInt s when s.Name == "coral_direction":
-						NotifyStateUpdate(_coralDirection, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "coral_hang_type_bit":
-						NotifyStateUpdate(_coralHangTypeBit, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "dead_bit":
-						NotifyStateUpdate(_deadBit, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _coralDirection;
-			yield return _coralHangTypeBit;
-			yield return _deadBit;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _coralDirection, _coralHangTypeBit, _deadBit);
-		} // method
-	} // class
-
-	public partial class CoralFanHang3 : Block
-	{
-		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 0 };
-		private readonly BlockStateByte _coralHangTypeBit = new BlockStateByte() { Name = "coral_hang_type_bit", Value = 0 };
-		private readonly BlockStateByte _deadBit = new BlockStateByte() { Name = "dead_bit", Value = 0 };
-
-		public override string Id => "minecraft:coral_fan_hang3";
-
-		[StateRange(0, 3)]
-		public int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
-
-		[StateBit]
-		public bool CoralHangTypeBit { get => Convert.ToBoolean(_coralHangTypeBit.Value); set => NotifyStateUpdate(_coralHangTypeBit, value); }
-
-		[StateBit]
-		public bool DeadBit { get => Convert.ToBoolean(_deadBit.Value); set => NotifyStateUpdate(_deadBit, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateInt s when s.Name == "coral_direction":
-						NotifyStateUpdate(_coralDirection, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "coral_hang_type_bit":
-						NotifyStateUpdate(_coralHangTypeBit, s.Value);
-						break;
-					case BlockStateByte s when s.Name == "dead_bit":
-						NotifyStateUpdate(_deadBit, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _coralDirection;
-			yield return _coralHangTypeBit;
-			yield return _deadBit;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _coralDirection, _coralHangTypeBit, _deadBit);
-		} // method
-	} // class
-
 	public partial class Cornflower : FlowerBase
 	{
 		public override string Id => "minecraft:cornflower";
@@ -5802,6 +5931,11 @@ namespace MiNET.Blocks
 	public partial class CrackedPolishedBlackstoneBricks : Block
 	{
 		public override string Id => "minecraft:cracked_polished_blackstone_bricks";
+	} // class
+
+	public partial class CrackedStoneBricks : Block
+	{
+		public override string Id => "minecraft:cracked_stone_bricks";
 	} // class
 
 	public partial class Crafter : Block
@@ -6492,6 +6626,148 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class CutRedSandstone : Block
+	{
+		public override string Id => "minecraft:cut_red_sandstone";
+	} // class
+
+	public partial class CutRedSandstoneDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:cut_red_sandstone_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class CutRedSandstoneSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:cut_red_sandstone_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class CutSandstone : Block
+	{
+		public override string Id => "minecraft:cut_sandstone";
+	} // class
+
+	public partial class CutSandstoneDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:cut_sandstone_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class CutSandstoneSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:cut_sandstone_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class CyanCandle : Block
 	{
 		private readonly BlockStateInt _candles = new BlockStateInt() { Name = "candles", Value = 0 };
@@ -6637,6 +6913,44 @@ namespace MiNET.Blocks
 	public partial class CyanWool : WoolBase
 	{
 		public override string Id => "minecraft:cyan_wool";
+	} // class
+
+	public partial class DamagedAnvil : Block
+	{
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
+
+		public override string Id => "minecraft:damaged_anvil";
+
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _cardinalDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _cardinalDirection);
+		} // method
+	} // class
+
+	public partial class Dandelion : Block
+	{
+		public override string Id => "minecraft:dandelion";
 	} // class
 
 	public partial class DarkOakButton
@@ -7182,6 +7496,77 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class DarkPrismarine : Block
+	{
+		public override string Id => "minecraft:dark_prismarine";
+	} // class
+
+	public partial class DarkPrismarineDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:dark_prismarine_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class DarkPrismarineSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:dark_prismarine_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class DarkPrismarineStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -7365,14 +7750,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_brain_coral_block";
 	} // class
 
-	public partial class DeadBrainCoralFan : Block
+	public partial class DeadBrainCoralFan : CoralFanBase
 	{
 		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
 
 		public override string Id => "minecraft:dead_brain_coral_fan";
 
 		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7395,6 +7780,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
+	public partial class DeadBrainCoralWallFan : CoralWallFanBase
+	{
+		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_brain_coral_wall_fan";
+
+		[StateRange(0, 3)]
+		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_direction":
+						NotifyStateUpdate(_coralDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralDirection);
 		} // method
 	} // class
 
@@ -7408,14 +7826,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_bubble_coral_block";
 	} // class
 
-	public partial class DeadBubbleCoralFan : Block
+	public partial class DeadBubbleCoralFan : CoralFanBase
 	{
 		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
 
 		public override string Id => "minecraft:dead_bubble_coral_fan";
 
 		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7438,6 +7856,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
+	public partial class DeadBubbleCoralWallFan : CoralWallFanBase
+	{
+		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_bubble_coral_wall_fan";
+
+		[StateRange(0, 3)]
+		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_direction":
+						NotifyStateUpdate(_coralDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralDirection);
 		} // method
 	} // class
 
@@ -7451,14 +7902,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_fire_coral_block";
 	} // class
 
-	public partial class DeadFireCoralFan : Block
+	public partial class DeadFireCoralFan : CoralFanBase
 	{
 		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
 
 		public override string Id => "minecraft:dead_fire_coral_fan";
 
 		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7481,6 +7932,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
+	public partial class DeadFireCoralWallFan : CoralWallFanBase
+	{
+		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_fire_coral_wall_fan";
+
+		[StateRange(0, 3)]
+		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_direction":
+						NotifyStateUpdate(_coralDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralDirection);
 		} // method
 	} // class
 
@@ -7494,14 +7978,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_horn_coral_block";
 	} // class
 
-	public partial class DeadHornCoralFan : Block
+	public partial class DeadHornCoralFan : CoralFanBase
 	{
 		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
 
 		public override string Id => "minecraft:dead_horn_coral_fan";
 
 		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7524,6 +8008,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
+	public partial class DeadHornCoralWallFan : CoralWallFanBase
+	{
+		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_horn_coral_wall_fan";
+
+		[StateRange(0, 3)]
+		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_direction":
+						NotifyStateUpdate(_coralDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralDirection);
 		} // method
 	} // class
 
@@ -7537,14 +8054,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_tube_coral_block";
 	} // class
 
-	public partial class DeadTubeCoralFan : Block
+	public partial class DeadTubeCoralFan : CoralFanBase
 	{
 		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 0 };
 
 		public override string Id => "minecraft:dead_tube_coral_fan";
 
 		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7567,6 +8084,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
+	public partial class DeadTubeCoralWallFan : CoralWallFanBase
+	{
+		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 1 };
+
+		public override string Id => "minecraft:dead_tube_coral_wall_fan";
+
+		[StateRange(0, 3)]
+		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_direction":
+						NotifyStateUpdate(_coralDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralDirection);
 		} // method
 	} // class
 
@@ -8040,6 +8590,39 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:deny";
 	} // class
 
+	public partial class DeprecatedAnvil : Block
+	{
+		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
+
+		public override string Id => "minecraft:deprecated_anvil";
+
+		[StateEnum("east", "north", "south", "west")]
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:cardinal_direction":
+						NotifyStateUpdate(_cardinalDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _cardinalDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _cardinalDirection);
+		} // method
+	} // class
+
 	public partial class DetectorRail : Block
 	{
 		private readonly BlockStateByte _railDataBit = new BlockStateByte() { Name = "rail_data_bit", Value = 0 };
@@ -8096,6 +8679,72 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:diorite";
 	} // class
 
+	public partial class DioriteDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:diorite_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class DioriteSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:diorite_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class DioriteStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -8139,35 +8788,7 @@ namespace MiNET.Blocks
 
 	public partial class Dirt : Block
 	{
-		private readonly BlockStateString _dirtType = new BlockStateString() { Name = "dirt_type", Value = "normal" };
-
 		public override string Id => "minecraft:dirt";
-
-		[StateEnum("coarse", "normal")]
-		public string DirtType { get => _dirtType.Value; set => NotifyStateUpdate(_dirtType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "dirt_type":
-						NotifyStateUpdate(_dirtType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _dirtType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _dirtType);
-		} // method
 	} // class
 
 	public partial class DirtWithRoots : Block
@@ -8246,170 +8867,6 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _verticalHalf);
-		} // method
-	} // class
-
-	public partial class DoubleStoneBlockSlab : DoubleSlabBase
-	{
-		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
-		private readonly BlockStateString _stoneSlabType = new BlockStateString() { Name = "stone_slab_type", Value = "smooth_stone" };
-
-		public override string Id => "minecraft:double_stone_block_slab";
-
-		[StateEnum("bottom", "top")]
-		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
-
-		[StateEnum("brick", "cobblestone", "nether_brick", "quartz", "sandstone", "smooth_stone", "stone_brick", "wood")]
-		public string StoneSlabType { get => _stoneSlabType.Value; set => NotifyStateUpdate(_stoneSlabType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "minecraft:vertical_half":
-						NotifyStateUpdate(_verticalHalf, s.Value);
-						break;
-					case BlockStateString s when s.Name == "stone_slab_type":
-						NotifyStateUpdate(_stoneSlabType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _verticalHalf;
-			yield return _stoneSlabType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType);
-		} // method
-	} // class
-
-	public partial class DoubleStoneBlockSlab2 : DoubleSlabBase
-	{
-		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
-		private readonly BlockStateString _stoneSlabType2 = new BlockStateString() { Name = "stone_slab_type_2", Value = "red_sandstone" };
-
-		public override string Id => "minecraft:double_stone_block_slab2";
-
-		[StateEnum("bottom", "top")]
-		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
-
-		[StateEnum("mossy_cobblestone", "prismarine_brick", "prismarine_dark", "prismarine_rough", "purpur", "red_nether_brick", "red_sandstone", "smooth_sandstone")]
-		public string StoneSlabType2 { get => _stoneSlabType2.Value; set => NotifyStateUpdate(_stoneSlabType2, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "minecraft:vertical_half":
-						NotifyStateUpdate(_verticalHalf, s.Value);
-						break;
-					case BlockStateString s when s.Name == "stone_slab_type_2":
-						NotifyStateUpdate(_stoneSlabType2, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _verticalHalf;
-			yield return _stoneSlabType2;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType2);
-		} // method
-	} // class
-
-	public partial class DoubleStoneBlockSlab3 : DoubleSlabBase
-	{
-		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
-		private readonly BlockStateString _stoneSlabType3 = new BlockStateString() { Name = "stone_slab_type_3", Value = "end_stone_brick" };
-
-		public override string Id => "minecraft:double_stone_block_slab3";
-
-		[StateEnum("bottom", "top")]
-		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
-
-		[StateEnum("andesite", "diorite", "end_stone_brick", "granite", "polished_andesite", "polished_diorite", "polished_granite", "smooth_red_sandstone")]
-		public string StoneSlabType3 { get => _stoneSlabType3.Value; set => NotifyStateUpdate(_stoneSlabType3, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "minecraft:vertical_half":
-						NotifyStateUpdate(_verticalHalf, s.Value);
-						break;
-					case BlockStateString s when s.Name == "stone_slab_type_3":
-						NotifyStateUpdate(_stoneSlabType3, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _verticalHalf;
-			yield return _stoneSlabType3;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType3);
-		} // method
-	} // class
-
-	public partial class DoubleStoneBlockSlab4 : DoubleSlabBase
-	{
-		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
-		private readonly BlockStateString _stoneSlabType4 = new BlockStateString() { Name = "stone_slab_type_4", Value = "mossy_stone_brick" };
-
-		public override string Id => "minecraft:double_stone_block_slab4";
-
-		[StateEnum("bottom", "top")]
-		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
-
-		[StateEnum("cut_red_sandstone", "cut_sandstone", "mossy_stone_brick", "smooth_quartz", "stone")]
-		public string StoneSlabType4 { get => _stoneSlabType4.Value; set => NotifyStateUpdate(_stoneSlabType4, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "minecraft:vertical_half":
-						NotifyStateUpdate(_verticalHalf, s.Value);
-						break;
-					case BlockStateString s when s.Name == "stone_slab_type_4":
-						NotifyStateUpdate(_stoneSlabType4, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _verticalHalf;
-			yield return _stoneSlabType4;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType4);
 		} // method
 	} // class
 
@@ -9214,6 +9671,72 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:end_stone";
 	} // class
 
+	public partial class EndStoneBrickDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:end_stone_brick_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class EndStoneBrickSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:end_stone_brick_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class EnderChest
 	{
 		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "north" };
@@ -9651,14 +10174,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:fire_coral_block";
 	} // class
 
-	public partial class FireCoralFan : Block
+	public partial class FireCoralFan : CoralFanBase
 	{
 		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
 
 		public override string Id => "minecraft:fire_coral_fan";
 
 		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -9681,6 +10204,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
+	public partial class FireCoralWallFan : CoralWallFanBase
+	{
+		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 1 };
+
+		public override string Id => "minecraft:fire_coral_wall_fan";
+
+		[StateRange(0, 3)]
+		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_direction":
+						NotifyStateUpdate(_coralDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralDirection);
 		} // method
 	} // class
 
@@ -10074,6 +10630,72 @@ namespace MiNET.Blocks
 	public partial class Granite : Block
 	{
 		public override string Id => "minecraft:granite";
+	} // class
+
+	public partial class GraniteDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:granite_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class GraniteSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:granite_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
 	} // class
 
 	public partial class GraniteStairs
@@ -10787,14 +11409,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:horn_coral_block";
 	} // class
 
-	public partial class HornCoralFan : Block
+	public partial class HornCoralFan : CoralFanBase
 	{
 		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 1 };
 
 		public override string Id => "minecraft:horn_coral_fan";
 
 		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10820,12 +11442,60 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class HornCoralWallFan : CoralWallFanBase
+	{
+		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 0 };
+
+		public override string Id => "minecraft:horn_coral_wall_fan";
+
+		[StateRange(0, 3)]
+		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_direction":
+						NotifyStateUpdate(_coralDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralDirection);
+		} // method
+	} // class
+
 	public partial class Ice : Block
 	{
 		public override string Id => "minecraft:ice";
 	} // class
 
-	public partial class InfestedDeepslate : Block
+	public partial class InfestedChiseledStoneBricks : InfestedBlockBase
+	{
+		public override string Id => "minecraft:infested_chiseled_stone_bricks";
+	} // class
+
+	public partial class InfestedCobblestone : InfestedBlockBase
+	{
+		public override string Id => "minecraft:infested_cobblestone";
+	} // class
+
+	public partial class InfestedCrackedStoneBricks : InfestedBlockBase
+	{
+		public override string Id => "minecraft:infested_cracked_stone_bricks";
+	} // class
+
+	public partial class InfestedDeepslate : InfestedBlockBase
 	{
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
 
@@ -10856,6 +11526,21 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _pillarAxis);
 		} // method
+	} // class
+
+	public partial class InfestedMossyStoneBricks : InfestedBlockBase
+	{
+		public override string Id => "minecraft:infested_mossy_stone_bricks";
+	} // class
+
+	public partial class InfestedStone : InfestedBlockBase
+	{
+		public override string Id => "minecraft:infested_stone";
+	} // class
+
+	public partial class InfestedStoneBricks : InfestedBlockBase
+	{
+		public override string Id => "minecraft:infested_stone_bricks";
 	} // class
 
 	public partial class InfoUpdate : Block
@@ -11939,37 +12624,84 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class LightBlock : Block
+	public partial class LightBlock0 : Block
 	{
-		private readonly BlockStateInt _blockLightLevel = new BlockStateInt() { Name = "block_light_level", Value = 0 };
+		public override string Id => "minecraft:light_block_0";
+	} // class
 
-		public override string Id => "minecraft:light_block";
+	public partial class LightBlock1 : Block
+	{
+		public override string Id => "minecraft:light_block_1";
+	} // class
 
-		[StateRange(0, 15)]
-		public int BlockLightLevel { get => _blockLightLevel.Value; set => NotifyStateUpdate(_blockLightLevel, value); }
+	public partial class LightBlock10 : Block
+	{
+		public override string Id => "minecraft:light_block_10";
+	} // class
 
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateInt s when s.Name == "block_light_level":
-						NotifyStateUpdate(_blockLightLevel, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
+	public partial class LightBlock11 : Block
+	{
+		public override string Id => "minecraft:light_block_11";
+	} // class
 
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _blockLightLevel;
-		} // method
+	public partial class LightBlock12 : Block
+	{
+		public override string Id => "minecraft:light_block_12";
+	} // class
 
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _blockLightLevel);
-		} // method
+	public partial class LightBlock13 : Block
+	{
+		public override string Id => "minecraft:light_block_13";
+	} // class
+
+	public partial class LightBlock14 : Block
+	{
+		public override string Id => "minecraft:light_block_14";
+	} // class
+
+	public partial class LightBlock15 : Block
+	{
+		public override string Id => "minecraft:light_block_15";
+	} // class
+
+	public partial class LightBlock2 : Block
+	{
+		public override string Id => "minecraft:light_block_2";
+	} // class
+
+	public partial class LightBlock3 : Block
+	{
+		public override string Id => "minecraft:light_block_3";
+	} // class
+
+	public partial class LightBlock4 : Block
+	{
+		public override string Id => "minecraft:light_block_4";
+	} // class
+
+	public partial class LightBlock5 : Block
+	{
+		public override string Id => "minecraft:light_block_5";
+	} // class
+
+	public partial class LightBlock6 : Block
+	{
+		public override string Id => "minecraft:light_block_6";
+	} // class
+
+	public partial class LightBlock7 : Block
+	{
+		public override string Id => "minecraft:light_block_7";
+	} // class
+
+	public partial class LightBlock8 : Block
+	{
+		public override string Id => "minecraft:light_block_8";
+	} // class
+
+	public partial class LightBlock9 : Block
+	{
+		public override string Id => "minecraft:light_block_9";
 	} // class
 
 	public partial class LightBlueCandle : Block
@@ -13535,39 +14267,6 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mob_spawner";
 	} // class
 
-	public partial class MonsterEgg : Block
-	{
-		private readonly BlockStateString _monsterEggStoneType = new BlockStateString() { Name = "monster_egg_stone_type", Value = "stone" };
-
-		public override string Id => "minecraft:monster_egg";
-
-		[StateEnum("chiseled_stone_brick", "cobblestone", "cracked_stone_brick", "mossy_stone_brick", "stone", "stone_brick")]
-		public string MonsterEggStoneType { get => _monsterEggStoneType.Value; set => NotifyStateUpdate(_monsterEggStoneType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "monster_egg_stone_type":
-						NotifyStateUpdate(_monsterEggStoneType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _monsterEggStoneType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _monsterEggStoneType);
-		} // method
-	} // class
-
 	public partial class MossBlock : Block
 	{
 		public override string Id => "minecraft:moss_block";
@@ -13581,6 +14280,72 @@ namespace MiNET.Blocks
 	public partial class MossyCobblestone : Block
 	{
 		public override string Id => "minecraft:mossy_cobblestone";
+	} // class
+
+	public partial class MossyCobblestoneDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:mossy_cobblestone_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class MossyCobblestoneSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:mossy_cobblestone_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
 	} // class
 
 	public partial class MossyCobblestoneStairs
@@ -13624,6 +14389,72 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class MossyStoneBrickDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:mossy_stone_brick_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class MossyStoneBrickSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:mossy_stone_brick_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class MossyStoneBrickStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -13663,6 +14494,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
 		} // method
+	} // class
+
+	public partial class MossyStoneBricks : Block
+	{
+		public override string Id => "minecraft:mossy_stone_bricks";
 	} // class
 
 	public partial class MovingBlock : Block
@@ -13895,6 +14731,39 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:nether_brick";
 	} // class
 
+	public partial class NetherBrickDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:nether_brick_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class NetherBrickFence
 	{
 		public override string Id => "minecraft:nether_brick_fence";
@@ -14035,6 +14904,72 @@ namespace MiNET.Blocks
 	public partial class Netherreactor : Block
 	{
 		public override string Id => "minecraft:netherreactor";
+	} // class
+
+	public partial class NormalStoneDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:normal_stone_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class NormalStoneSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:normal_stone_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
 	} // class
 
 	public partial class NormalStoneStairs
@@ -14983,6 +15918,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class PetrifiedOakDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:petrified_oak_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class PetrifiedOakSlab : SlabBase
 	{
 		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
@@ -15398,6 +16366,72 @@ namespace MiNET.Blocks
 	public partial class PolishedAndesite : Block
 	{
 		public override string Id => "minecraft:polished_andesite";
+	} // class
+
+	public partial class PolishedAndesiteDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:polished_andesite_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class PolishedAndesiteSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:polished_andesite_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
 	} // class
 
 	public partial class PolishedAndesiteStairs
@@ -16084,6 +17118,72 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:polished_diorite";
 	} // class
 
+	public partial class PolishedDioriteDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:polished_diorite_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class PolishedDioriteSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:polished_diorite_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class PolishedDioriteStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -16128,6 +17228,72 @@ namespace MiNET.Blocks
 	public partial class PolishedGranite : Block
 	{
 		public override string Id => "minecraft:polished_granite";
+	} // class
+
+	public partial class PolishedGraniteDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:polished_granite_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class PolishedGraniteSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:polished_granite_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
 	} // class
 
 	public partial class PolishedGraniteStairs
@@ -16516,12 +17682,17 @@ namespace MiNET.Blocks
 
 	public partial class Prismarine : Block
 	{
-		private readonly BlockStateString _prismarineBlockType = new BlockStateString() { Name = "prismarine_block_type", Value = "default" };
-
 		public override string Id => "minecraft:prismarine";
+	} // class
 
-		[StateEnum("bricks", "dark", "default")]
-		public string PrismarineBlockType { get => _prismarineBlockType.Value; set => NotifyStateUpdate(_prismarineBlockType, value); }
+	public partial class PrismarineBrickDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:prismarine_brick_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -16529,8 +17700,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateString s when s.Name == "prismarine_block_type":
-						NotifyStateUpdate(_prismarineBlockType, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -16538,13 +17709,51 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _prismarineBlockType;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _prismarineBlockType);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
+	} // class
+
+	public partial class PrismarineBrickSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:prismarine_brick_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class PrismarineBricks : Block
+	{
+		public override string Id => "minecraft:prismarine_bricks";
 	} // class
 
 	public partial class PrismarineBricksStairs
@@ -16585,6 +17794,72 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class PrismarineDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:prismarine_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class PrismarineSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:prismarine_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -16891,6 +18166,72 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class PurpurDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:purpur_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class PurpurSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:purpur_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class PurpurStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -16934,13 +18275,9 @@ namespace MiNET.Blocks
 
 	public partial class QuartzBlock : Block
 	{
-		private readonly BlockStateString _chiselType = new BlockStateString() { Name = "chisel_type", Value = "default" };
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
 
 		public override string Id => "minecraft:quartz_block";
-
-		[StateEnum("chiseled", "default", "lines", "smooth")]
-		public string ChiselType { get => _chiselType.Value; set => NotifyStateUpdate(_chiselType, value); }
 
 		[StateEnum("x", "y", "z")]
 		public string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
@@ -16951,9 +18288,6 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateString s when s.Name == "chisel_type":
-						NotifyStateUpdate(_chiselType, s.Value);
-						break;
 					case BlockStateString s when s.Name == "pillar_axis":
 						NotifyStateUpdate(_pillarAxis, s.Value);
 						break;
@@ -16963,13 +18297,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _chiselType;
 			yield return _pillarAxis;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _chiselType, _pillarAxis);
+			return HashCode.Combine(Id, _pillarAxis);
 		} // method
 	} // class
 
@@ -16978,9 +18311,75 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:quartz_bricks";
 	} // class
 
+	public partial class QuartzDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:quartz_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class QuartzOre : Block
 	{
 		public override string Id => "minecraft:quartz_ore";
+	} // class
+
+	public partial class QuartzPillar : Block
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
+
+		public override string Id => "minecraft:quartz_pillar";
+
+		[StateEnum("x", "y", "z")]
+		public string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
 	} // class
 
 	public partial class QuartzSlab : SlabBase
@@ -17270,6 +18669,72 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:red_nether_brick";
 	} // class
 
+	public partial class RedNetherBrickDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:red_nether_brick_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class RedNetherBrickSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:red_nether_brick_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class RedNetherBrickStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -17311,14 +18776,24 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class RedSand : Block
+	{
+		public override string Id => "minecraft:red_sand";
+	} // class
+
 	public partial class RedSandstone : Block
 	{
-		private readonly BlockStateString _sandStoneType = new BlockStateString() { Name = "sand_stone_type", Value = "default" };
-
 		public override string Id => "minecraft:red_sandstone";
+	} // class
 
-		[StateEnum("cut", "default", "heiroglyphs", "smooth")]
-		public string SandStoneType { get => _sandStoneType.Value; set => NotifyStateUpdate(_sandStoneType, value); }
+	public partial class RedSandstoneDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:red_sandstone_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17326,8 +18801,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateString s when s.Name == "sand_stone_type":
-						NotifyStateUpdate(_sandStoneType, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -17335,12 +18810,45 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _sandStoneType;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _sandStoneType);
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class RedSandstoneSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:red_sandstone_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -17648,45 +19156,22 @@ namespace MiNET.Blocks
 
 	public partial class Sand : Block
 	{
-		private readonly BlockStateString _sandType = new BlockStateString() { Name = "sand_type", Value = "normal" };
-
 		public override string Id => "minecraft:sand";
-
-		[StateEnum("normal", "red")]
-		public string SandType { get => _sandType.Value; set => NotifyStateUpdate(_sandType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "sand_type":
-						NotifyStateUpdate(_sandType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _sandType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _sandType);
-		} // method
 	} // class
 
 	public partial class Sandstone : Block
 	{
-		private readonly BlockStateString _sandStoneType = new BlockStateString() { Name = "sand_stone_type", Value = "default" };
-
 		public override string Id => "minecraft:sandstone";
+	} // class
 
-		[StateEnum("cut", "default", "heiroglyphs", "smooth")]
-		public string SandStoneType { get => _sandStoneType.Value; set => NotifyStateUpdate(_sandStoneType, value); }
+	public partial class SandstoneDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:sandstone_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17694,8 +19179,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateString s when s.Name == "sand_stone_type":
-						NotifyStateUpdate(_sandStoneType, s.Value);
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
 				} // switch
 			} // foreach
@@ -17703,12 +19188,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _sandStoneType;
+			yield return _verticalHalf;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _sandStoneType);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -18249,6 +19734,105 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:smooth_basalt";
 	} // class
 
+	public partial class SmoothQuartz : Block
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
+
+		public override string Id => "minecraft:smooth_quartz";
+
+		[StateEnum("x", "y", "z")]
+		public string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
+	public partial class SmoothQuartzDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:smooth_quartz_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class SmoothQuartzSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:smooth_quartz_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class SmoothQuartzStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -18290,6 +19874,77 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class SmoothRedSandstone : Block
+	{
+		public override string Id => "minecraft:smooth_red_sandstone";
+	} // class
+
+	public partial class SmoothRedSandstoneDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:smooth_red_sandstone_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class SmoothRedSandstoneSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:smooth_red_sandstone_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
 	public partial class SmoothRedSandstoneStairs
 	{
 		private readonly BlockStateByte _upsideDownBit = new BlockStateByte() { Name = "upside_down_bit", Value = 0 };
@@ -18328,6 +19983,77 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class SmoothSandstone : Block
+	{
+		public override string Id => "minecraft:smooth_sandstone";
+	} // class
+
+	public partial class SmoothSandstoneDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:smooth_sandstone_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class SmoothSandstoneSlab : SlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:smooth_sandstone_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -18375,6 +20101,39 @@ namespace MiNET.Blocks
 	public partial class SmoothStone : Block
 	{
 		public override string Id => "minecraft:smooth_stone";
+	} // class
+
+	public partial class SmoothStoneDoubleSlab : DoubleSlabBase
+	{
+		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
+
+		public override string Id => "minecraft:smooth_stone_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "minecraft:vertical_half":
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
 	} // class
 
 	public partial class SmoothStoneSlab : SlabBase
@@ -19423,18 +21182,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:stone";
 	} // class
 
-	public partial class StoneBlockSlab2 : SlabBase
+	public partial class StoneBrickDoubleSlab : DoubleSlabBase
 	{
 		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
-		private readonly BlockStateString _stoneSlabType2 = new BlockStateString() { Name = "stone_slab_type_2", Value = "red_sandstone" };
 
-		public override string Id => "minecraft:stone_block_slab2";
+		public override string Id => "minecraft:stone_brick_double_slab";
 
 		[StateEnum("bottom", "top")]
 		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
-
-		[StateEnum("mossy_cobblestone", "prismarine_brick", "prismarine_dark", "prismarine_rough", "purpur", "red_nether_brick", "red_sandstone", "smooth_sandstone")]
-		public string StoneSlabType2 { get => _stoneSlabType2.Value; set => NotifyStateUpdate(_stoneSlabType2, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19445,9 +21200,6 @@ namespace MiNET.Blocks
 					case BlockStateString s when s.Name == "minecraft:vertical_half":
 						NotifyStateUpdate(_verticalHalf, s.Value);
 						break;
-					case BlockStateString s when s.Name == "stone_slab_type_2":
-						NotifyStateUpdate(_stoneSlabType2, s.Value);
-						break;
 				} // switch
 			} // foreach
 		} // method
@@ -19455,94 +21207,11 @@ namespace MiNET.Blocks
 		protected override IEnumerable<IBlockState> GetStates()
 		{
 			yield return _verticalHalf;
-			yield return _stoneSlabType2;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType2);
-		} // method
-	} // class
-
-	public partial class StoneBlockSlab3 : SlabBase
-	{
-		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
-		private readonly BlockStateString _stoneSlabType3 = new BlockStateString() { Name = "stone_slab_type_3", Value = "end_stone_brick" };
-
-		public override string Id => "minecraft:stone_block_slab3";
-
-		[StateEnum("bottom", "top")]
-		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
-
-		[StateEnum("andesite", "diorite", "end_stone_brick", "granite", "polished_andesite", "polished_diorite", "polished_granite", "smooth_red_sandstone")]
-		public string StoneSlabType3 { get => _stoneSlabType3.Value; set => NotifyStateUpdate(_stoneSlabType3, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "minecraft:vertical_half":
-						NotifyStateUpdate(_verticalHalf, s.Value);
-						break;
-					case BlockStateString s when s.Name == "stone_slab_type_3":
-						NotifyStateUpdate(_stoneSlabType3, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _verticalHalf;
-			yield return _stoneSlabType3;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType3);
-		} // method
-	} // class
-
-	public partial class StoneBlockSlab4 : SlabBase
-	{
-		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
-		private readonly BlockStateString _stoneSlabType4 = new BlockStateString() { Name = "stone_slab_type_4", Value = "mossy_stone_brick" };
-
-		public override string Id => "minecraft:stone_block_slab4";
-
-		[StateEnum("bottom", "top")]
-		public override string VerticalHalf { get => _verticalHalf.Value; set => NotifyStateUpdate(_verticalHalf, value); }
-
-		[StateEnum("cut_red_sandstone", "cut_sandstone", "mossy_stone_brick", "smooth_quartz", "stone")]
-		public string StoneSlabType4 { get => _stoneSlabType4.Value; set => NotifyStateUpdate(_stoneSlabType4, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "minecraft:vertical_half":
-						NotifyStateUpdate(_verticalHalf, s.Value);
-						break;
-					case BlockStateString s when s.Name == "stone_slab_type_4":
-						NotifyStateUpdate(_stoneSlabType4, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _verticalHalf;
-			yield return _stoneSlabType4;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _verticalHalf, _stoneSlabType4);
+			return HashCode.Combine(Id, _verticalHalf);
 		} // method
 	} // class
 
@@ -19618,6 +21287,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
 		} // method
+	} // class
+
+	public partial class StoneBricks : Block
+	{
+		public override string Id => "minecraft:stone_bricks";
 	} // class
 
 	public partial class StoneButton
@@ -19732,39 +21406,6 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
-		} // method
-	} // class
-
-	public partial class Stonebrick : Block
-	{
-		private readonly BlockStateString _stoneBrickType = new BlockStateString() { Name = "stone_brick_type", Value = "default" };
-
-		public override string Id => "minecraft:stonebrick";
-
-		[StateEnum("chiseled", "cracked", "default", "mossy", "smooth")]
-		public string StoneBrickType { get => _stoneBrickType.Value; set => NotifyStateUpdate(_stoneBrickType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "stone_brick_type":
-						NotifyStateUpdate(_stoneBrickType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _stoneBrickType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _stoneBrickType);
 		} // method
 	} // class
 
@@ -21107,14 +22748,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:tube_coral_block";
 	} // class
 
-	public partial class TubeCoralFan : Block
+	public partial class TubeCoralFan : CoralFanBase
 	{
 		private readonly BlockStateInt _coralFanDirection = new BlockStateInt() { Name = "coral_fan_direction", Value = 0 };
 
 		public override string Id => "minecraft:tube_coral_fan";
 
 		[StateRange(0, 1)]
-		public int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -21137,6 +22778,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _coralFanDirection);
+		} // method
+	} // class
+
+	public partial class TubeCoralWallFan : CoralWallFanBase
+	{
+		private readonly BlockStateInt _coralDirection = new BlockStateInt() { Name = "coral_direction", Value = 0 };
+
+		public override string Id => "minecraft:tube_coral_wall_fan";
+
+		[StateRange(0, 3)]
+		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "coral_direction":
+						NotifyStateUpdate(_coralDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _coralDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _coralDirection);
 		} // method
 	} // class
 
@@ -24324,11 +25998,6 @@ namespace MiNET.Blocks
 	public partial class YellowConcretePowder : ConcretePowderBase
 	{
 		public override string Id => "minecraft:yellow_concrete_powder";
-	} // class
-
-	public partial class YellowFlower : Block
-	{
-		public override string Id => "minecraft:yellow_flower";
 	} // class
 
 	public partial class YellowGlazedTerracotta : GlazedTerracottaBase

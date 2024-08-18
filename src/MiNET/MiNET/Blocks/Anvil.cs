@@ -39,7 +39,6 @@ namespace MiNET.Blocks
 			IsTransparent = true;
 			BlastResistance = 6000;
 			Hardness = 5;
-			Damage = "undamaged";
 		}
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)

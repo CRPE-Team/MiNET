@@ -47,7 +47,7 @@ namespace MiNET.Items
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
 			Block block = world.GetBlock(blockCoordinates);
-			if (block is GrassBlock || (block is Dirt normalDirt && normalDirt.DirtType == "normal") || block is GrassPath)
+			if (block is GrassBlock || block is Dirt normalDirt || block is GrassPath)
 			{
 				var farmland = new Farmland
 				{
@@ -65,9 +65,9 @@ namespace MiNET.Items
 
 				return true;
 			}
-			else if (block is Dirt coarseDirt && coarseDirt.DirtType == "coarse")
+			else if (block is CoarseDirt coarseDirt)
 			{
-				Dirt dirt = new Dirt {Coordinates = blockCoordinates};
+				var dirt = new CoarseDirt { Coordinates = blockCoordinates };
 
 				world.SetBlock(dirt);
 				player.Inventory.DamageItemInHand(ItemDamageReason.BlockInteract, null, block);

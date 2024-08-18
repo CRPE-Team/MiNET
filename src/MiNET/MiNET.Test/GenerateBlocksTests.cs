@@ -474,6 +474,10 @@ namespace MiNET.Test
 			{
 				return nameof(ElementBase);
 			}
+			if (id.StartsWith("minecraft:infested"))
+			{
+				return nameof(InfestedBlockBase);
+			}
 			if (id.EndsWith("_concrete"))
 			{
 				return nameof(ConcreteBase);
@@ -521,6 +525,14 @@ namespace MiNET.Test
 			if (name.EndsWith("wall_sign"))
 			{
 				return nameof(WallSignBase);
+			}
+			if (name.EndsWith("coral_wall_fan"))
+			{
+				return nameof(CoralWallFanBase);
+			}
+			if (name.EndsWith("coral_fan"))
+			{
+				return nameof(CoralFanBase);
 			}
 
 			return nameof(Block);

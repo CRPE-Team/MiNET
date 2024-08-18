@@ -23,16 +23,37 @@
 
 #endregion
 
+using MiNET.Utils.Vectors;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
-	public partial class MonsterEgg : Block
+	public partial class Dandelion : Block
 	{
-		public MonsterEgg() : base()
+		public Dandelion() : base()
 		{
-			BlastResistance = 3.75f;
-			Hardness = 0.75f;
+			IsSolid = false;
+			IsTransparent = true;
+		}
 
-			// Spawns silverfish on break.	
+		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
+		{
+			if (base.CanPlace(world, player, blockCoordinates, targetCoordinates, face))
+			{
+				Block under = world.GetBlock(Coordinates.BlockDown());
+				return under is GrassBlock || under is Dirt;
+			}
+
+			return false;
+		}
+
+		public override void BlockUpdate(Level level, BlockCoordinates blockCoordinates)
+		{
+			if (Coordinates.BlockDown() == blockCoordinates)
+			{
+				level.SetAir(Coordinates);
+				UpdateBlocks(level);
+			}
 		}
 	}
 }

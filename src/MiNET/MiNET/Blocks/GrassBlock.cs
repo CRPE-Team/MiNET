@@ -64,7 +64,7 @@ namespace MiNET.Blocks
 					for (int i = 0; i < 4; i++)
 					{
 						var coordinates = Coordinates + new BlockCoordinates(random.Next(3) - 1, random.Next(5) - 3, random.Next(3) - 1);
-						if (level.GetBlock(coordinates) is Dirt next && next.DirtType == "normal")
+						if (level.GetBlock(coordinates) is Dirt next)
 						{
 							var nextUp = level.GetBlock(coordinates.BlockUp());
 							if (nextUp.IsTransparent)
@@ -171,7 +171,7 @@ namespace MiNET.Blocks
 									}
 									else
 									{
-										var flower = new YellowFlower();
+										var flower = new Dandelion();
 										block = flower;
 									}
 									break;
