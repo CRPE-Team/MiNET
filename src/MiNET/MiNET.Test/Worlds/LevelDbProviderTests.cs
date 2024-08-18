@@ -24,22 +24,22 @@
 #endregion
 
 using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 
 namespace MiNET.Worlds.Tests
 {
-	[TestClass()]
+	[TestClass]
 	public class LevelDbProviderTests
 	{
-		[TestMethod()]
+		[TestMethod]
 		public void RoundtripTest()
 		{
 			var provider = new LevelDbProvider();
 			var flatGenerator = new SuperflatGenerator(Dimension.Overworld);
 			flatGenerator.Initialize(null);
-			SubChunk chunk = flatGenerator.GenerateChunkColumn(new ChunkCoordinates())[0];
+			SubChunk chunk = flatGenerator.GenerateChunkColumn(new ChunkCoordinates()).GetSubChunk(0);
 
 			using var stream = new MemoryStream();
 			provider.Write(chunk, stream);
@@ -49,9 +49,11 @@ namespace MiNET.Worlds.Tests
 			provider.ParseSection(parsedChunk, output);
 
 			// Assert
-			CollectionAssert.AreEqual(chunk.Blocks, parsedChunk.Blocks);
-			CollectionAssert.AreEqual(chunk.LoggedBlocks, parsedChunk.LoggedBlocks);
-			CollectionAssert.AreEqual(chunk.RuntimeIds, parsedChunk.RuntimeIds);
+			for (var i = 0; i < chunk.Layers.Count; i++)
+			{
+				CollectionAssert.AreEqual(chunk.Layers[i].Palette.ToArray(), parsedChunk.Layers[i].Palette.ToArray());
+				CollectionAssert.AreEqual(chunk.Layers[i].Data.Data, parsedChunk.Layers[i].Data.Data);
+			}
 		}
 	}
 }

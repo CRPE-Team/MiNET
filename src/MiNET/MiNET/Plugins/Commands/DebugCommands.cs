@@ -5,6 +5,7 @@ using System.Numerics;
 using MiNET.Blocks;
 using MiNET.Plugins.Attributes;
 using MiNET.Utils.Vectors;
+using MiNET.Worlds;
 
 namespace MiNET.Plugins.Commands
 {
@@ -12,6 +13,7 @@ namespace MiNET.Plugins.Commands
 	{
 		private readonly Dictionary<string, List<BlockCoordinates>> _blocksLocationMap = new Dictionary<string, List<BlockCoordinates>>();
 		private readonly List<Player> _blockStatesTracerSubscribers = new List<Player>();
+		private readonly List<Player> _biomeStatesTracerSubscribers = new List<Player>();
 
 		/// <summary>
 		/// Debug command to teleport to block from Anvil 'DebugWorld'
@@ -84,9 +86,36 @@ namespace MiNET.Plugins.Commands
 			}
 		}
 
+		[Command(Name = "biomestracer")]
+		public void BiomesStatesTracer(Player player, bool enable)
+		{
+			lock (_biomeStatesTracerSubscribers)
+			{
+				if (enable && !_biomeStatesTracerSubscribers.Contains(player))
+				{
+					player.Ticking += TraceBiome;
+					player.PlayerLeave += RemoveTraceSubscriptionCache;
+					_biomeStatesTracerSubscribers.Add(player);
+				}
+				else
+				{
+					player.Ticking -= TraceBiome;
+					player.PlayerLeave -= RemoveTraceSubscriptionCache;
+					_biomeStatesTracerSubscribers.Remove(player);
+				}
+			}
+		}
+
 		private void RemoveTraceSubscriptionCache(object soruce, PlayerEventArgs args)
 		{
 			_blockStatesTracerSubscribers.Remove(args.Player);
+			_biomeStatesTracerSubscribers.Remove(args.Player);
+		}
+
+		private void TraceBiome(object soruce, PlayerEventArgs args)
+		{
+			var biome = args.Level.GetBiomeId((BlockCoordinates) args.Player.KnownPosition);
+			args.Player.SendMessage($"Biome: {BiomeUtils.GetBiome(biome).Name}", MessageType.Tip);
 		}
 
 		private void TraceBlock(object soruce, PlayerEventArgs args)

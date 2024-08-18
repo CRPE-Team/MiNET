@@ -329,7 +329,7 @@ namespace MiNET.Utils
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Type, Name, Value);
+			return Value;
 		}
 
 		public override string ToString()
@@ -364,7 +364,7 @@ namespace MiNET.Utils
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Type, Name, Value);
+			return Value;
 		}
 
 		public override string ToString()
@@ -399,7 +399,7 @@ namespace MiNET.Utils
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Type, Name, Value.ToLowerInvariant());
+			return Value.GetHashCode();
 		}
 
 		public override string ToString()

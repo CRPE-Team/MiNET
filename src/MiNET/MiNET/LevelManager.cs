@@ -153,11 +153,11 @@ namespace MiNET
 			return level;
 		}
 
-		public static void RecalculateBlockLight(Level level, AnvilWorldProvider wp)
-		{
-			var sources = wp.LightSources.ToArray();
-			Parallel.ForEach(sources, block => { BlockLightCalculations.Calculate(level, block.Coordinates); });
-		}
+		//public static void RecalculateBlockLight(Level level, AnvilWorldProvider wp)
+		//{
+		//	var sources = wp.LightSources.ToArray();
+		//	Parallel.ForEach(sources, block => { BlockLightCalculations.Calculate(level, block.Coordinates); });
+		//}
 
 		public void RemoveLevel(Level level)
 		{
