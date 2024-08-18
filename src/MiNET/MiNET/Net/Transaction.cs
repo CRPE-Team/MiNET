@@ -888,13 +888,15 @@ namespace MiNET.Net
 			return new ItemUseTransaction()
 			{
 				ActionType = (McpeInventoryTransaction.ItemUseAction) packet.ReadUnsignedVarInt(),
+				TriggerType = (TriggerType) packet.ReadUnsignedVarInt(),
 				Position = packet.ReadBlockCoordinates(),
 				Face = packet.ReadSignedVarInt(),
 				Slot = packet.ReadSignedVarInt(),
 				Item = packet.ReadItem(),
 				FromPosition = packet.ReadVector3(),
 				ClickPosition = packet.ReadVector3(),
-				BlockRuntimeId = packet.ReadUnsignedVarInt()
+				BlockRuntimeId = packet.ReadUnsignedVarInt(),
+				ClientInteractPrediction = (PredictedResult) packet.ReadUnsignedVarInt()
 			};
 		}
 	}

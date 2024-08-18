@@ -112,6 +112,7 @@ namespace MiNET.Net
 		void HandleMcpeRequestNetworkSettings(McpeRequestNetworkSettings message);
 		void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message);
 		void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message);
+		void HandleMcpeServerboundLoadingScreen(McpeServerboundLoadingScreen message);
 	}
 
 	public interface IMcpeClientMessageHandler
@@ -248,7 +249,6 @@ namespace MiNET.Net
 		void HandleMcpeSetHud(McpeSetHud message);
 		void HandleMcpeAwardAchievement(McpeAwardAchievement message);
 		void HandleMcpeCloseForm(McpeCloseForm message);
-		void HandleMcpeServerboundLoadingScreen(McpeServerboundLoadingScreen message);
 		void HandleMcpeJigsawStructureData(McpeJigsawStructureData message);
 		void HandleMcpeCurrentStructureFeature(McpeCurrentStructureFeature message);
 		void HandleMcpeServerboundDiagnostics(McpeServerboundDiagnostics message);
@@ -664,9 +664,6 @@ namespace MiNET.Net
 					break;
 				case McpeCloseForm msg:
 					_messageHandler.HandleMcpeCloseForm(msg);
-					break;
-				case McpeServerboundLoadingScreen msg:
-					_messageHandler.HandleMcpeServerboundLoadingScreen(msg);
 					break;
 				case McpeJigsawStructureData msg:
 					_messageHandler.HandleMcpeJigsawStructureData(msg);

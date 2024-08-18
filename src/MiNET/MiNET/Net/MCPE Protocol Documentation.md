@@ -3139,8 +3139,8 @@ Wiki: [Close Form](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-CloseF
 ### Serverbound Loading Screen (0x138)
 Wiki: [Serverbound Loading Screen](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ServerboundLoadingScreen)
 
-**Sent from server:** true  
-**Sent from client:** false
+**Sent from server:** false  
+**Sent from client:** true
 
 
 

@@ -4284,22 +4284,22 @@
         "meta": 42,
         "name": "minecraft:lingering_potion"
     },
-    {
-        "meta": 43,
-        "name": "minecraft:lingering_potion"
-    },
-    {
-        "meta": 44,
-        "name": "minecraft:lingering_potion"
-    },
-    {
-        "meta": 45,
-        "name": "minecraft:lingering_potion"
-    },
-    {
-        "meta": 46,
-        "name": "minecraft:lingering_potion"
-    },
+    //{
+    //    "meta": 43,
+    //    "name": "minecraft:lingering_potion"
+    //},
+    //{
+    //    "meta": 44,
+    //    "name": "minecraft:lingering_potion"
+    //},
+    //{
+    //    "meta": 45,
+    //    "name": "minecraft:lingering_potion"
+    //},
+    //{
+    //    "meta": 46,
+    //    "name": "minecraft:lingering_potion"
+    //},
     {
         "name": "minecraft:spyglass"
     },
@@ -5222,108 +5222,108 @@
         "meta": 3,
         "name": "minecraft:medicine"
     },
-    {
-        "name": "minecraft:hard_glass"
-    },
-    {
-        "name": "minecraft:hard_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_white_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_orange_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_magenta_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_light_blue_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_yellow_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_lime_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_pink_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_gray_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_light_gray_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_cyan_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_purple_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_blue_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_brown_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_green_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_red_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_black_stained_glass"
-    },
-    {
-        "name": "minecraft:hard_white_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_orange_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_magenta_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_light_blue_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_yellow_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_lime_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_pink_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_gray_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_light_gray_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_cyan_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_purple_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_blue_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_brown_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_green_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_red_stained_glass_pane"
-    },
-    {
-        "name": "minecraft:hard_black_stained_glass_pane"
-    },
+    //{
+    //    "name": "minecraft:hard_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_white_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_orange_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_magenta_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_light_blue_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_yellow_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_lime_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_pink_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_gray_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_light_gray_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_cyan_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_purple_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_blue_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_brown_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_green_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_red_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_black_stained_glass"
+    //},
+    //{
+    //    "name": "minecraft:hard_white_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_orange_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_magenta_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_light_blue_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_yellow_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_lime_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_pink_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_gray_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_light_gray_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_cyan_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_purple_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_blue_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_brown_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_green_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_red_stained_glass_pane"
+    //},
+    //{
+    //    "name": "minecraft:hard_black_stained_glass_pane"
+    //},
     {
         "name": "minecraft:balloon"
     },

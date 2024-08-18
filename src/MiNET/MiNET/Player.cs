@@ -3824,6 +3824,11 @@ namespace MiNET
 				$"unknown6={message.unknown6}, healthPercent={message.healthPercent}, " +
 				$"overlay={message.overlay}, color={message.color}");
 		}
+
+		public void HandleMcpeServerboundLoadingScreen(McpeServerboundLoadingScreen message)
+		{
+			
+		}
 	}
 
 	public class PlayerEventArgs : EventArgs
