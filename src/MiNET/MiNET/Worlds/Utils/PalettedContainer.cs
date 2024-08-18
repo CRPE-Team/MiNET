@@ -5,7 +5,7 @@ using System.Linq;
 using log4net;
 using MiNET.Utils;
 
-namespace MiNET.Worlds.IO
+namespace MiNET.Worlds.Utils
 {
 	public class PalettedContainer : IDisposable, ICloneable
 	{

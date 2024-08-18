@@ -1,5 +1,5 @@
 ﻿using log4net;
-using MiNET.Worlds.IO;
+using MiNET.Worlds.Utils;
 
 namespace MiNET.Worlds.Anvil
 {
@@ -21,7 +21,7 @@ namespace MiNET.Worlds.Anvil
 		}
 
 		public AnvilSubChunk(AnvilBiomeManager biomeManager, int x, int z, int index, bool clearBuffers = true)
-			: base(x, z, index, false)
+			: base(x, z, index, clearBuffers)
 		{
 			_biomeManager = biomeManager;
 

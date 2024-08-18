@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace MiNET.Worlds.IO
+namespace MiNET.Worlds.Utils
 {
 	public class PalettedContainerData : IDisposable, ICloneable
 	{

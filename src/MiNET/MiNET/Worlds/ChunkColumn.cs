@@ -339,6 +339,8 @@ namespace MiNET.Worlds
 
 		public void RecalcHeight(int x, int z, int startY = WorldMaxY)
 		{
+			//TODO - rework
+
 			bool isInLight = true;
 			bool isInAir = true;
 
@@ -386,7 +388,6 @@ namespace MiNET.Worlds
 					SubChunk chunk = GetSubChunk(y);
 					if (isInAir && chunk.IsAllAir())
 					{
-						//if (chunk.IsDirty) Array.Fill<byte>(chunk.SkyLight.Data, 0xff);
 						y -= 15;
 						continue;
 					}

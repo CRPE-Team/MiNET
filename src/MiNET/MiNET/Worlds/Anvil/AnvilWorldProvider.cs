@@ -16,7 +16,7 @@ using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
-using MiNET.Worlds.IO;
+using MiNET.Worlds.Utils;
 
 namespace MiNET.Worlds.Anvil
 {
@@ -309,11 +309,11 @@ namespace MiNET.Worlds.Anvil
 			var chunkColumn = generator?.GenerateChunkColumn(coordinates);
 			if (chunkColumn != null)
 			{
-				if (Dimension == Dimension.Overworld && Config.GetProperty("CalculateLights", false))
-				{
-					var blockAccess = new SkyLightBlockAccess(this, chunkColumn);
-					new SkyLightCalculations().RecalcSkyLight(chunkColumn, blockAccess);
-				}
+				//if (Dimension == Dimension.Overworld && Config.GetProperty("CalculateLights", false))
+				//{
+				//	var blockAccess = new SkyLightBlockAccess(this, chunkColumn);
+				//	new SkyLightCalculations().RecalcSkyLight(chunkColumn, blockAccess);
+				//}
 
 				chunkColumn.IsDirty = false;
 				chunkColumn.NeedSave = false;

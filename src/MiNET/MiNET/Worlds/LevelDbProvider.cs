@@ -44,7 +44,7 @@ using MiNET.LevelDB;
 using MiNET.Utils;
 using MiNET.Utils.IO;
 using MiNET.Utils.Vectors;
-using MiNET.Worlds.IO;
+using MiNET.Worlds.Utils;
 
 namespace MiNET.Worlds
 {
@@ -236,12 +236,12 @@ namespace MiNET.Worlds
 
 			if (chunkColumn != null)
 			{
-				if (Dimension == Dimension.Overworld && Config.GetProperty("CalculateLights", false))
-				{
-					var blockAccess = new SkyLightBlockAccess(this, chunkColumn);
-					new SkyLightCalculations().RecalcSkyLight(chunkColumn, blockAccess);
-					//TODO: Block lights.
-				}
+				//if (Dimension == Dimension.Overworld && Config.GetProperty("CalculateLights", false))
+				//{
+				//	var blockAccess = new SkyLightBlockAccess(this, chunkColumn);
+				//	new SkyLightCalculations().RecalcSkyLight(chunkColumn, blockAccess);
+				//	//TODO: Block lights.
+				//}
 
 				chunkColumn.IsDirty = false;
 				//chunkColumn.NeedSave = isGenerated;

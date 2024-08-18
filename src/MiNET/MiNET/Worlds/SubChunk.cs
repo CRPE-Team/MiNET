@@ -30,7 +30,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using log4net;
 using MiNET.Blocks;
-using MiNET.Worlds.IO;
+using MiNET.Worlds.Utils;
 
 namespace MiNET.Worlds
 {
@@ -156,37 +156,25 @@ namespace MiNET.Worlds
 			_biomes[GetIndex(bx, by, bz)] = biome;
 		}
 
-		[Obsolete("Use SetBlock with layer 1")]
-		public void SetLoggedBlock(int bx, int by, int bz, Block block)
-		{
-			SetBlock(bx, by, bz, block, 1);
-		}
-
-		[Obsolete("Use SetBlockByRuntimeId with layer 1")]
-		public void SetLoggedBlockByRuntimeId(int bx, int by, int bz, int runtimeId)
-		{
-			SetBlockByRuntimeId(bx, by, bz, runtimeId, 1);
-		}
-
-		[Obsolete]
+		[Obsolete("now disabled")]
 		public byte GetBlocklight(int bx, int by, int bz)
 		{
 			return 0;//_blockLight[GetIndex(bx, by, bz)];
 		}
 
-		[Obsolete]
+		[Obsolete("now disabled")]
 		public void SetBlocklight(int bx, int by, int bz, byte data)
 		{
 			//_blockLight[GetIndex(bx, by, bz)] = data;
 		}
 
-		[Obsolete]
+		[Obsolete("now disabled")]
 		public byte GetSkylight(int bx, int by, int bz)
 		{
 			return 0xff;//_skyLight[GetIndex(bx, by, bz)];
 		}
 
-		[Obsolete]
+		[Obsolete("now disabled")]
 		public void SetSkylight(int bx, int by, int bz, byte data)
 		{
 			//_skyLight[GetIndex(bx, by, bz)] = data;
@@ -260,8 +248,6 @@ namespace MiNET.Worlds
 		{
 			_layers.ForEach(layer => layer.Dispose());
 			_biomes.Dispose();
-			//if (_blockLight != null) ArrayPool<byte>.Shared.Return(_blockLight.Data);
-			//if (_skyLight != null) ArrayPool<byte>.Shared.Return(_skyLight.Data);
 
 			GC.SuppressFinalize(this);
 		}

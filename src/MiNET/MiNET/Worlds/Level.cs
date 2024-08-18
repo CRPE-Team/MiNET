@@ -1187,15 +1187,16 @@ namespace MiNET.Worlds
 
 			if (applyPhysics) ApplyPhysics(block.Coordinates.X, block.Coordinates.Y, block.Coordinates.Z);
 
-			// We should not ignore creative. Need to investigate.
-			if (GameMode != GameMode.Creative && calculateLight /* && block.LightLevel > 0*/)
-			{
-				if (Dimension == Dimension.Overworld) new SkyLightCalculations().Calculate(this, block.Coordinates);
+			// !!!now the client is calculating the light!!!
+			//// We should not ignore creative. Need to investigate.
+			//if (GameMode != GameMode.Creative && calculateLight /* && block.LightLevel > 0*/)
+			//{
+			//	if (Dimension == Dimension.Overworld) new SkyLightCalculations().Calculate(this, block.Coordinates);
 
-				block.BlockLight = (byte) block.LightLevel;
-				chunk.SetBlocklight(block.Coordinates.X & 0x0f, block.Coordinates.Y, block.Coordinates.Z & 0x0f, (byte) block.LightLevel);
-				BlockLightCalculations.Calculate(this, block.Coordinates);
-			}
+			//	block.BlockLight = (byte) block.LightLevel;
+			//	chunk.SetBlocklight(block.Coordinates.X & 0x0f, block.Coordinates.Y, block.Coordinates.Z & 0x0f, (byte) block.LightLevel);
+			//	BlockLightCalculations.Calculate(this, block.Coordinates);
+			//}
 
 			if (broadcast)
 			{
