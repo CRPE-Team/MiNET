@@ -1,36 +1,51 @@
 ﻿using System;
-using System.Buffers;
+using System.IO;
 
 namespace MiNET.Worlds.IO
 {
-	public class PalettedContainerData : IDisposable
+	public class PalettedContainerData : IDisposable, ICloneable
 	{
-		private const ushort BlocksCount = 16 * 16 * 16; // chunk section size
-
 		private Profile _profile;
 
+		private ushort _blocksCount;
 		private int[] _data;
 
-		public ushort this[ushort index]
+		public ushort this[int index]
 		{
 			get => Get(index);
 			set => Set(index, value);
 		}
 
-		public PalettedContainerData(uint initPaletteSize)
+		public PalettedContainerData(int[] data, int paletteSize, ushort blocksCount)
+			: this(data, Profile.ByPaletteSize(paletteSize), blocksCount)
+		{
+
+		}
+
+		public PalettedContainerData(int initPaletteSize, ushort blocksCount)
 		{
 			_profile = Profile.ByPaletteSize(initPaletteSize);
+			_blocksCount = blocksCount;
 			_data = InitData(GetDataSize(_profile));
+		}
+
+		internal PalettedContainerData(int[] data, Profile profile, ushort blocksCount)
+		{
+			_profile = profile;
+			_data = data;
+			_blocksCount = blocksCount;
 		}
 
 		public byte BlocksPerWord => _profile.BlocksPerWord;
 		public byte BlockSize => _profile.BlockSize;
+		public ushort BlocksCount => _blocksCount;
 
 		public int[] Data => _data;
 
-		public void TryResize(uint paletteSize)
+		public void TryResize(int paletteSize)
 		{
-			if (paletteSize <= _profile.MaxPaletteSize) return;
+			if (paletteSize <= _profile.MaxPaletteSize)
+				return;
 
 			var nextProfile = Profile.ByPaletteSize(paletteSize);
 			var newData = InitData(GetDataSize(nextProfile));
@@ -41,6 +56,24 @@ namespace MiNET.Worlds.IO
 			_data = newData;
 
 			//ArrayPool<int>.Shared.Return(oldData);
+		}
+
+		public unsafe void WriteToStream(MemoryStream stream)
+		{
+			fixed (int* buffer = _data)
+			{
+				stream.Write(new ReadOnlySpan<byte>(buffer, _data.Length * sizeof(int)));
+			}
+		}
+
+		public object Clone()
+		{
+			var length = _data.Length;
+
+			var data = new int[length];
+			Array.Copy(_data, data, length);
+
+			return new PalettedContainerData(data, _profile, _blocksCount);
 		}
 
 		public void Dispose()
@@ -55,7 +88,7 @@ namespace MiNET.Worlds.IO
 			var blocksPerWord = _profile.BlocksPerWord;
 			var wordBlocksSize = blocksPerWord * blockSize;
 			var wordBlockMask = _profile.WordBlockMask;
-			var blocksCount = BlocksCount;
+			var blocksCount = _blocksCount;
 
 			var hasSubWord = blockSize == 3 || blockSize == 5 || blockSize == 6;
 			if (hasSubWord)
@@ -68,11 +101,11 @@ namespace MiNET.Worlds.IO
 			var newDataIndex = 0;
 			var newWordShift = 0;
 			ref var newWord = ref data[newDataIndex++];
-			for (var i = 0; i < lenght; i++)
+			for (var i = 0; i != lenght; i++)
 			{
 				var word = _data[i];
 
-				for (var wordShift = 0; wordShift < wordBlocksSize; wordShift += blockSize)
+				for (var wordShift = 0; wordShift != wordBlocksSize; wordShift += blockSize)
 				{
 					if (newWordShift == newWordBlocksSize)
 					{
@@ -91,7 +124,7 @@ namespace MiNET.Worlds.IO
 				var subWordBlocksSize = (blocksCount - blocksPerWord * lenght) * blockSize;
 				var word = _data[lenght];
 
-				for (var wordShift = 0; wordShift < subWordBlocksSize; wordShift += blockSize)
+				for (var wordShift = 0; wordShift != subWordBlocksSize; wordShift += blockSize)
 				{
 					newWord |= (word >> wordShift & wordBlockMask) << newWordShift;
 
@@ -100,20 +133,20 @@ namespace MiNET.Worlds.IO
 			}
 		}
 
-		private ushort Get(ushort index)
+		private ushort Get(int index)
 		{
 			var blocksPerWord = _profile.BlocksPerWord;
 			var shift = _profile.BlockSize * (index % blocksPerWord);
 			return (ushort) (_data[index / blocksPerWord] >> shift & _profile.WordBlockMask);
 		}
 
-		private void Set(ushort index, ushort value)
+		private void Set(int index, ushort value)
 		{
 			var blocksPerWord = _profile.BlocksPerWord;
 
 			ref var word = ref _data[index / blocksPerWord];
 
-			var shift = (index % blocksPerWord) * _profile.BlockSize;
+			var shift = index % blocksPerWord * _profile.BlockSize;
 			var mask = _profile.WordBlockMask << shift;
 			word &= mask ^ -1;
 			word |= (value << shift) & mask;
@@ -159,13 +192,16 @@ namespace MiNET.Worlds.IO
 				WordBlockMask = MaxPaletteSize - 1;
 			}
 
-			public static Profile ByPaletteSize(uint paletteSize)
+			public static Profile ByPaletteSize(int paletteSize)
 			{
-				var profileId = (byte) Math.Ceiling(Math.Log(paletteSize, 2));
+				return ByBlockSize((byte) Math.Ceiling(Math.Log(paletteSize, 2)));
+			}
 
-				return profileId switch
+			public static Profile ByBlockSize(byte blockSize)
+			{
+				return blockSize switch
 				{
-					1 => P1,
+					0 or 1 => P1,
 					2 => P2,
 					3 => P3,
 					4 => P4,
