@@ -24,14 +24,12 @@
 #endregion
 
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using log4net;
 using MiNET.Blocks;
-using MiNET.Utils;
 using MiNET.Worlds.IO;
 
 namespace MiNET.Worlds
@@ -48,8 +46,8 @@ namespace MiNET.Worlds
 		private PalettedContainer _biomes;
 
 		// Consider disabling these if we don't calculate lights
-		private NibbleArray _blockLight;
-		private NibbleArray _skyLight;
+		//private NibbleArray _blockLight;
+		//private NibbleArray _skyLight;
 
 		private byte[] _cache;
 
@@ -60,8 +58,8 @@ namespace MiNET.Worlds
 		internal List<PalettedContainer> Layers => _layers;
 		internal virtual PalettedContainer Biomes => _biomes;
 
-		public NibbleArray BlockLight => _blockLight;
-		public NibbleArray SkyLight => _skyLight;
+		//public NibbleArray BlockLight => _blockLight;
+		//public NibbleArray SkyLight => _skyLight;
 
 		public bool IsDirty { get; private set; }
 
@@ -158,33 +156,37 @@ namespace MiNET.Worlds
 			_biomes[GetIndex(bx, by, bz)] = biome;
 		}
 
-		[Obsolete]
+		[Obsolete("Use SetBlock with layer 1")]
 		public void SetLoggedBlock(int bx, int by, int bz, Block block)
 		{
 			SetBlock(bx, by, bz, block, 1);
 		}
 
-		[Obsolete]
+		[Obsolete("Use SetBlockByRuntimeId with layer 1")]
 		public void SetLoggedBlockByRuntimeId(int bx, int by, int bz, int runtimeId)
 		{
 			SetBlockByRuntimeId(bx, by, bz, runtimeId, 1);
 		}
 
+		[Obsolete]
 		public byte GetBlocklight(int bx, int by, int bz)
 		{
 			return 0;//_blockLight[GetIndex(bx, by, bz)];
 		}
 
+		[Obsolete]
 		public void SetBlocklight(int bx, int by, int bz, byte data)
 		{
 			//_blockLight[GetIndex(bx, by, bz)] = data;
 		}
 
+		[Obsolete]
 		public byte GetSkylight(int bx, int by, int bz)
 		{
 			return 0xff;//_skyLight[GetIndex(bx, by, bz)];
 		}
 
+		[Obsolete]
 		public void SetSkylight(int bx, int by, int bz, byte data)
 		{
 			//_skyLight[GetIndex(bx, by, bz)] = data;
