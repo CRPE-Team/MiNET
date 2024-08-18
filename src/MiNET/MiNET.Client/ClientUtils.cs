@@ -170,14 +170,7 @@ namespace MiNET.Client
 
 									int runtimeId = palette[state];
 
-									if (storageIndex == 0)
-									{
-										subChunk.SetBlockByRuntimeId(x, y, z, (int) runtimeId);
-									}
-									else
-									{
-										subChunk.SetLoggedBlockByRuntimeId(x, y, z, (int) runtimeId);
-									}
+									subChunk.SetBlockByRuntimeId(x, y, z, (int) runtimeId, storageIndex);
 
 									position++;
 								}

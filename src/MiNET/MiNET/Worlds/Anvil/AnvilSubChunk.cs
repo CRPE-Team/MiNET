@@ -1,6 +1,5 @@
-﻿using System;
-using System.Buffers;
-using log4net;
+﻿using log4net;
+using MiNET.Worlds.Utils;
 
 namespace MiNET.Worlds.Anvil
 {
@@ -8,8 +7,10 @@ namespace MiNET.Worlds.Anvil
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(AnvilSubChunk));
 
-		private byte[] _biomesNoise = new byte[1];
+		private byte[] _biomesNoise = null;
 		private bool _biomesResolved = true;
+
+		private readonly object _sync = new object();
 
 		private AnvilBiomeManager _biomeManager;
 
@@ -20,7 +21,7 @@ namespace MiNET.Worlds.Anvil
 		}
 
 		public AnvilSubChunk(AnvilBiomeManager biomeManager, int x, int z, int index, bool clearBuffers = true)
-			: base(x, z, index, false)
+			: base(x, z, index, clearBuffers)
 		{
 			_biomeManager = biomeManager;
 
@@ -30,11 +31,11 @@ namespace MiNET.Worlds.Anvil
 			}
 		}
 
-		internal override byte[] Biomes 
+		internal override PalettedContainer Biomes 
 		{
 			get
 			{
-				lock (_biomesNoise)
+				lock (_sync)
 				{
 					if (!_biomesResolved)
 					{
@@ -46,24 +47,17 @@ namespace MiNET.Worlds.Anvil
 			}
 		}
 
-		public override void ClearBuffers()
-		{
-			base.ClearBuffers();
-
-			Array.Clear(_biomesNoise, 0, _biomesNoise.Length);
-		}
-
 		public override object Clone()
 		{
 			var cc = base.Clone() as AnvilSubChunk;
 
 			cc._biomeManager = _biomeManager;
 
-			if (_biomesNoise.Length > 1)
+			if (_biomesNoise != null)
 			{
-				cc._biomesNoise = ArrayPool<byte>.Shared.Rent(_biomesNoise.Length);
+				cc._biomesNoise = new byte[_biomesNoise.Length];
+				_biomesNoise.CopyTo(cc._biomesNoise, 0);
 			}
-			_biomesNoise.CopyTo(cc._biomesNoise, 0);
 			cc._biomesResolved = _biomesResolved;
 
 			return cc;
@@ -71,51 +65,42 @@ namespace MiNET.Worlds.Anvil
 
 		public override void Dispose()
 		{
-			if (_biomesNoise != null && _biomesNoise.Length > 1) ArrayPool<byte>.Shared.Return(_biomesNoise);
+			//_biomesNoise = null;
 			base.Dispose();
 		}
 
 		internal void SetBiomesNoise(byte[] biomesNoise)
 		{
-			if (_biomesNoise.Length != biomesNoise.Length)
-			{
-				if (_biomesNoise.Length > 1)
-				{
-					ArrayPool<byte>.Shared.Return(_biomesNoise);
-				}
-				_biomesNoise = ArrayPool<byte>.Shared.Rent(biomesNoise.Length);
-			}
-
-			biomesNoise.CopyTo(_biomesNoise, 0);
+			_biomesNoise = biomesNoise;
 			_biomesResolved = false;
 		}
 
 		internal byte GetNoiseBiome(int x, int y, int z)
 		{
-			if (BiomeIds.Count == 0) return 0;
+			var palette = base.Biomes.Palette;
+			if (palette.Count == 0) return 0;
 
-			int paletteIndex = GetNoiseBiomeIndex(x, y, z);
-			if (paletteIndex >= BiomeIds.Count || paletteIndex < 0)
+			var paletteIndex = GetNoiseBiomeIndex(x, y, z);
+			if (paletteIndex >= palette.Count || paletteIndex < 0)
 			{
 				Log.Error($"Can't read biome index [{paletteIndex}] from [{(X << 4) | x}, {(Index << 4) + ChunkColumn.WorldMinY + y}, {(Z << 4) | z}] " +
-					$"in ids [{string.Join(", ", BiomeIds)}] of chunk [{X}, {Index + (ChunkColumn.WorldMinY >> 4)}, {Z}]");
+					$"in ids [{string.Join(", ", palette)}] of chunk [{X}, {Index + (ChunkColumn.WorldMinY >> 4)}, {Z}]");
 				return 0;
 			}
 
-			return (byte) BiomeIds[paletteIndex];
+			return (byte) palette[paletteIndex];
 		}
 
 		internal byte GetNoiseBiomeIndex(int x, int y, int z)
 		{
-			if (_biomesNoise.Length == 1) return _biomesNoise[0];
-			return _biomesNoise[GetNoiseIndex(x & 3, y & 3, z & 3)];
+			return _biomesNoise?[GetNoiseIndex(x & 3, y & 3, z & 3)] ?? 0;
 		}
 
 		private void ResolveBiomes()
 		{
-			var biomes = base.Biomes;
+			var biomes = base.Biomes.Data;
 
-			if (_biomesNoise.Length == 1)
+			if (_biomesNoise == null)
 			{
 				_biomesResolved = true;
 				return;
@@ -138,7 +123,7 @@ namespace MiNET.Worlds.Anvil
 			_biomesResolved = true;
 		}
 
-		private byte GetBiomeIndexFromeNoisedCoordinates(int x, int y, int z, long seed)
+		private ushort GetBiomeIndexFromeNoisedCoordinates(int x, int y, int z, long seed)
 		{
 			int leftX = x - 2;
 			int leftY = y - 2;
@@ -195,15 +180,8 @@ namespace MiNET.Worlds.Anvil
 			}
 
 			var biome = _biomeManager.GetNoiseBiome(noiseX, noiseY, noiseZ);
-			var palettedIndex = BiomeIds.IndexOf(biome);
 
-			if (palettedIndex == -1)
-			{
-				BiomeIds.Add(biome);
-				palettedIndex = BiomeIds.IndexOf(biome);
-			}
-
-			return (byte) palettedIndex;
+			return base.Biomes.GetPalettedId(biome);
 		}
 
 		private int GetNoiseIndex(int x, int y, int z)

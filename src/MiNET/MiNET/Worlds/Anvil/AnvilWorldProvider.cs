@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,6 +16,7 @@ using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
+using MiNET.Worlds.Utils;
 
 namespace MiNET.Worlds.Anvil
 {
@@ -309,11 +309,11 @@ namespace MiNET.Worlds.Anvil
 			var chunkColumn = generator?.GenerateChunkColumn(coordinates);
 			if (chunkColumn != null)
 			{
-				if (Dimension == Dimension.Overworld && Config.GetProperty("CalculateLights", false))
-				{
-					var blockAccess = new SkyLightBlockAccess(this, chunkColumn);
-					new SkyLightCalculations().RecalcSkyLight(chunkColumn, blockAccess);
-				}
+				//if (Dimension == Dimension.Overworld && Config.GetProperty("CalculateLights", false))
+				//{
+				//	var blockAccess = new SkyLightBlockAccess(this, chunkColumn);
+				//	new SkyLightCalculations().RecalcSkyLight(chunkColumn, blockAccess);
+				//}
 
 				chunkColumn.IsDirty = false;
 				chunkColumn.NeedSave = false;
@@ -373,6 +373,9 @@ namespace MiNET.Worlds.Anvil
 
 		private void ReadBlockStates(NbtTag sectionTag, ChunkColumn chunkColumn, AnvilSubChunk subChunk)
 		{
+			var layer0 = subChunk.Layers[0];
+			var layer1 = subChunk.Layers[1];
+
 			var blockStatesTag = sectionTag["block_states"] as NbtCompound;
 			var palette = blockStatesTag["palette"] as NbtList;
 
@@ -399,25 +402,23 @@ namespace MiNET.Worlds.Anvil
 			}
 
 			var waterRuntimeId = runtimeIds.IndexOf(WaterBlockRuntimeId);
-			var snowRuntimeId = runtimeIds.IndexOf(SnowLayerBlockRuntimeId);
-			byte waterChunkId = 0;
-			byte snowChunkId = 0;
+			//var snowRuntimeId = runtimeIds.IndexOf(SnowLayerBlockRuntimeId);
+			ushort waterChunkId = 0;
+			//ushort snowChunkId = 0;
 
-			subChunk.RuntimeIds.Clear();
-			subChunk.RuntimeIds.AddRange(runtimeIds);
+			layer0.Clear();
+			layer0.AppendPaletteRange(runtimeIds);
 
 			var namedRuntimeIds = runtimeIds.Select(id => BlockFactory.GetIdByRuntimeId((short) id)).ToList();
 
 			if (waterloggedIds.Any(id => id >= 0))
 			{
-				waterChunkId = (byte) subChunk.LoggedRuntimeIds.Count;
-				subChunk.LoggedRuntimeIds.Add(WaterBlockRuntimeId);
+				waterChunkId = layer1.AppedPalette(WaterBlockRuntimeId);
 			}
-			if (snowyIds.Any(id => id >= 0))
-			{
-				snowChunkId = (byte) subChunk.LoggedRuntimeIds.Count;
-				subChunk.LoggedRuntimeIds.Add(SnowLayerBlockRuntimeId);
-			}
+			//if (snowyIds.Any(id => id >= 0))
+			//{
+			//	snowChunkId = layer1.AppedPalette(SnowLayerBlockRuntimeId);
+			//}
 
 			if (runtimeIds.Count == 1)
 			{
@@ -429,52 +430,36 @@ namespace MiNET.Worlds.Anvil
 
 			var data = blockStatesTag["data"].LongArrayValue;
 
-			var bitsPerBlock = (byte) Math.Max(4, Math.Ceiling(Math.Log(runtimeIds.Count, 2)));
+			var blockSize = (byte) Math.Max(4, Math.Ceiling(Math.Log(runtimeIds.Count, 2)));
 
-			var blocks = subChunk.Blocks;
+			var layer0Data = layer0.Data;
+			var layer1Data = layer1.Data;
+			ReadAnvilPalettedContainerData(data, layer0Data, blockSize);
 
-			ReadAnyBitLengthShortFromLongs(data, blocks, bitsPerBlock);
-
-			for (var i = 0; i < blocks.Length; i++)
+			if (blockEntities.Any() || waterloggedIds.Any())
 			{
-				var y = i >> 8;
-				var x = i & 0xf;
-				var z = i >> 4 & 0xf;
-				var j = x << 8 | z << 4 | y;
-
-				if (y <= x)
+				for (var i = 0; i != layer0Data.BlocksCount; i++)
 				{
-					var iBlock = blocks[i];
-					var jBlock = blocks[i] = blocks[j];
-					blocks[j] = iBlock;
-
-					if (waterloggedIds[iBlock] >= 0)
+					var block = layer0Data[i];
+					if (waterloggedIds[block] != -1)
 					{
-						subChunk.LoggedBlocks[j] = waterChunkId;
+						layer1Data[i] = waterChunkId;
 					}
-					if (waterloggedIds[jBlock] >= 0)
+
+					if (blockEntities[block] != null)
 					{
-						subChunk.LoggedBlocks[i] = waterChunkId;
+						var x = i >> 8;
+						var z = i >> 4 & 0xF;
+						var y = i & 0xF;
+
+						var template = blockEntities[block];
+						template.Coordinates = new BlockCoordinates(
+							(subChunk.X << 4) | x,
+							((subChunk.Index << 4) + ChunkColumn.WorldMinY) | y,
+							(subChunk.Z << 4) | z);
+
+						chunkColumn.SetBlockEntity(template.Coordinates, template.GetCompound());
 					}
-					//if (snowyIds[iBlock] >= 0)
-					//{
-					//	subChunk.LoggedBlocks[j] = snowChunkId;
-					//}
-					//if (snowyIds[jBlock] >= 0)
-					//{
-					//	subChunk.LoggedBlocks[i] = snowChunkId;
-					//}
-				}
-
-				if (blockEntities[blocks[j]] != null)
-				{
-					var template = blockEntities[blocks[j]];
-					template.Coordinates = new BlockCoordinates(
-						(subChunk.X << 4) | x,
-						((subChunk.Index << 4) + ChunkColumn.WorldMinY) | y,
-						(subChunk.Z << 4) | z);
-
-					chunkColumn.SetBlockEntity(template.Coordinates, template.GetCompound());
 				}
 			}
 
@@ -489,7 +474,7 @@ namespace MiNET.Worlds.Anvil
 
 			if (blockLight == null) return;
 
-			Array.Copy(blockLight, subChunk.BlockLight.Data, 0);
+			//Array.Copy(blockLight, subChunk.BlockLight.Data, 0);
 		}
 
 		private void ReadSkyLigths(NbtTag sectionTag, AnvilSubChunk subChunk)
@@ -500,7 +485,7 @@ namespace MiNET.Worlds.Anvil
 
 			if (skyLight == null) return;
 
-			Array.Copy(skyLight, subChunk.SkyLight.Data, 0);
+			//Array.Copy(skyLight, subChunk.SkyLight.Data, 0);
 		}
 
 		private void ReadBiomes(NbtTag sectionTag, AnvilSubChunk subChunk)
@@ -510,24 +495,22 @@ namespace MiNET.Worlds.Anvil
 
 			var usingBiomes = palette.Select(p => AnvilPaletteConverter.GetBiomeByName(p.StringValue)).ToArray();
 
-			subChunk.BiomeIds.Clear();
-			subChunk.BiomeIds.AddRange(usingBiomes.Select(biome => biome.Id));
+			subChunk.Biomes.Clear();
+			subChunk.Biomes.AppendPaletteRange(usingBiomes.Select(biome => biome.Id));
 
 			if (usingBiomes.Length == 1)
 			{
 				return;
 			}
 
-			var biomesNoise = new byte[64];
-
 			var data = biomesTag["data"].LongArrayValue;
 
 			var bitsPerBlock = (byte) Math.Ceiling(Math.Log(usingBiomes.Length, 2));
 
-			var sectionBiomesMap = new byte[64];
-			ReadAnyBitLengthShortFromLongs(data, sectionBiomesMap, bitsPerBlock);
+			var biomesNoise = new byte[64];
+			ReadAnyBitLengthShortFromLongs(data, biomesNoise, bitsPerBlock);
 
-			subChunk.SetBiomesNoise(sectionBiomesMap);
+			subChunk.SetBiomesNoise(biomesNoise);
 		}
 
 		private void ReadBlockEntites(NbtCompound dataTag, ChunkColumn chunk)
@@ -1098,6 +1081,28 @@ namespace MiNET.Worlds.Anvil
 				var longsOffset = i / shortsInLongCount;
 
 				shorts[i] = (short) (longs[longsOffset] >> offset & valueBits);
+			}
+		}
+
+		private void ReadAnvilPalettedContainerData(long[] longWords, PalettedContainerData data, byte longBlockSize)
+		{
+			var blockSize = data.DataProfile.BlockSize;
+			var blockMask = (1 << longBlockSize) - 1;
+			var blocksPerWord = data.DataProfile.BlocksPerWord;
+			var blocksCount = data.BlocksCount;
+			var words = data.Data;
+
+			var longWordSize = sizeof(long) * 8;
+			var blocksPerLongWord = longWordSize / longBlockSize;
+
+			for (var i = 0; i != blocksCount; i++)
+			{
+				var index = (i & 0x0F0 | i >> 8 | i << 8) & 0xFFF;
+				ref var word = ref words[index / blocksPerWord];
+
+				var longShift = i % blocksPerLongWord * longBlockSize;
+				var shift = index % blocksPerWord * blockSize;
+				word |= (int) (longWords[i / blocksPerLongWord] >> longShift & blockMask) << shift;
 			}
 		}
 
