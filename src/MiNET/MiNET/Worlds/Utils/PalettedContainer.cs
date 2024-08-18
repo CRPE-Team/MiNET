@@ -116,6 +116,8 @@ namespace MiNET.Worlds.Utils
 
 		internal ushort AppedPalette(int runtimeId)
 		{
+			// TODO - lock while resizing
+
 			bool wasEmpty = _palette.Count <= 1;
 
 			var palettedId = AppendToPalette(runtimeId);

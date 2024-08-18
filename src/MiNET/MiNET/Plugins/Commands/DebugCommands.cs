@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using MiNET.Blocks;
-using MiNET.Entities.Hostile;
 using MiNET.Plugins.Attributes;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;

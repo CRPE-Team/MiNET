@@ -248,6 +248,8 @@ namespace MiNET.Worlds
 		{
 			_layers.ForEach(layer => layer.Dispose());
 			_biomes.Dispose();
+			//if (_blockLight != null) ArrayPool<byte>.Shared.Return(_blockLight.Data);
+			//if (_skyLight != null) ArrayPool<byte>.Shared.Return(_skyLight.Data);
 
 			GC.SuppressFinalize(this);
 		}
