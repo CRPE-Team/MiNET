@@ -76,10 +76,10 @@ namespace MiNET.Worlds
 				PalettedContainer.CreateFilledWith(new Air().RuntimeId, Size) // think it is not required if there is no layer of water or snow in the chunk
 			};
 
-			_biomes = PalettedContainer.CreateFilledWith(0, Size); // or 1 as it was ???
+			_biomes = PalettedContainer.CreateFilledWith(1, Size); // plants biome
 
-			_blockLight = new NibbleArray(ArrayPool<byte>.Shared.Rent(2048));
-			_skyLight = new NibbleArray(ArrayPool<byte>.Shared.Rent(2048));
+			//_blockLight = new NibbleArray(ArrayPool<byte>.Shared.Rent(2048));
+			//_skyLight = new NibbleArray(ArrayPool<byte>.Shared.Rent(2048));
 		}
 
 		public SubChunk(int x, int z, int index, bool clearBuffers = true)
@@ -94,8 +94,8 @@ namespace MiNET.Worlds
 
 		public virtual void ClearBuffers()
 		{
-			Array.Clear(_blockLight.Data, 0, 2048);
-			ChunkColumn.Fill<byte>(_skyLight.Data, 0xff);
+			//Array.Clear(_blockLight.Data, 0, 2048);
+			//ChunkColumn.Fill<byte>(_skyLight.Data, 0xff);
 		}
 
 
@@ -104,7 +104,8 @@ namespace MiNET.Worlds
 		{
 			var airRuntimeId = new Air().RuntimeId;
 
-			return _layers.All(layer => layer.Palette.Count <= 1 && layer.Palette.SingleOrDefault(airRuntimeId) == airRuntimeId);
+			return _layers.All(layer => layer.Palette.Count <= 1 && layer.Palette.SingleOrDefault(airRuntimeId) == airRuntimeId)
+				&& _biomes.Palette.Count <= 1 && _biomes.Palette.SingleOrDefault(airRuntimeId) == 1; // plants biome
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -171,22 +172,22 @@ namespace MiNET.Worlds
 
 		public byte GetBlocklight(int bx, int by, int bz)
 		{
-			return _blockLight[GetIndex(bx, by, bz)];
+			return 0;//_blockLight[GetIndex(bx, by, bz)];
 		}
 
 		public void SetBlocklight(int bx, int by, int bz, byte data)
 		{
-			_blockLight[GetIndex(bx, by, bz)] = data;
+			//_blockLight[GetIndex(bx, by, bz)] = data;
 		}
 
 		public byte GetSkylight(int bx, int by, int bz)
 		{
-			return _skyLight[GetIndex(bx, by, bz)];
+			return 0xff;//_skyLight[GetIndex(bx, by, bz)];
 		}
 
 		public void SetSkylight(int bx, int by, int bz, byte data)
 		{
-			_skyLight[GetIndex(bx, by, bz)] = data;
+			//_skyLight[GetIndex(bx, by, bz)] = data;
 		}
 
 		public void Write(MemoryStream stream)
@@ -242,8 +243,8 @@ namespace MiNET.Worlds
 
 			cc._layers = _layers.Select(layer => layer.Clone()).Cast<PalettedContainer>().ToList();
 			cc._biomes = (PalettedContainer) _biomes.Clone();
-			_blockLight.Data.CopyTo(cc._blockLight.Data, 0);
-			_skyLight.Data.CopyTo(cc._skyLight.Data, 0);
+			//_blockLight.Data.CopyTo(cc._blockLight.Data, 0);
+			//_skyLight.Data.CopyTo(cc._skyLight.Data, 0);
 
 			if (_cache != null)
 			{
@@ -257,8 +258,8 @@ namespace MiNET.Worlds
 		{
 			_layers.ForEach(layer => layer.Dispose());
 			_biomes.Dispose();
-			if (_blockLight != null) ArrayPool<byte>.Shared.Return(_blockLight.Data);
-			if (_skyLight != null) ArrayPool<byte>.Shared.Return(_skyLight.Data);
+			//if (_blockLight != null) ArrayPool<byte>.Shared.Return(_blockLight.Data);
+			//if (_skyLight != null) ArrayPool<byte>.Shared.Return(_skyLight.Data);
 
 			GC.SuppressFinalize(this);
 		}

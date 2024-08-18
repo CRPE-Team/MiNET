@@ -349,7 +349,7 @@ namespace MiNET.Worlds
 					SubChunk chunk = GetSubChunk(y);
 					if (isInAir && chunk.IsAllAir())
 					{
-						if (chunk.IsDirty) Array.Fill<byte>(chunk.SkyLight.Data, 0xff);
+						//if (chunk.IsDirty) Array.Fill<byte>(chunk.SkyLight.Data, 0xff);
 						y -= 15;
 						continue;
 					}
@@ -386,7 +386,7 @@ namespace MiNET.Worlds
 					SubChunk chunk = GetSubChunk(y);
 					if (isInAir && chunk.IsAllAir())
 					{
-						if (chunk.IsDirty) Array.Fill<byte>(chunk.SkyLight.Data, 0xff);
+						//if (chunk.IsDirty) Array.Fill<byte>(chunk.SkyLight.Data, 0xff);
 						y -= 15;
 						continue;
 					}

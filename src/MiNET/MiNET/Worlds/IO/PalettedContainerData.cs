@@ -36,8 +36,7 @@ namespace MiNET.Worlds.IO
 			_blocksCount = blocksCount;
 		}
 
-		public byte BlocksPerWord => _profile.BlocksPerWord;
-		public byte BlockSize => _profile.BlockSize;
+		public Profile DataProfile => _profile;
 		public ushort BlocksCount => _blocksCount;
 
 		public int[] Data => _data;
@@ -78,6 +77,7 @@ namespace MiNET.Worlds.IO
 
 		public void Dispose()
 		{
+			//_data = null;
 			//if (_data != null) ArrayPool<int>.Shared.Return(_data);
 		}
 
@@ -149,7 +149,7 @@ namespace MiNET.Worlds.IO
 
 			var shift = index % blocksPerWord * _profile.BlockSize;
 			var mask = _profile.WordBlockMask << shift;
-			word &= mask ^ -1;
+			word &= ~mask;
 			word |= (value << shift) & mask;
 		}
 

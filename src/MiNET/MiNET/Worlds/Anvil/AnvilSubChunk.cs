@@ -93,17 +93,18 @@ namespace MiNET.Worlds.Anvil
 
 		internal byte GetNoiseBiome(int x, int y, int z)
 		{
-			if (Biomes.Palette.Count == 0) return 0;
+			var palette = base.Biomes.Palette;
+			if (palette.Count == 0) return 0;
 
 			int paletteIndex = GetNoiseBiomeIndex(x, y, z);
-			if (paletteIndex >= Biomes.Palette.Count || paletteIndex < 0)
+			if (paletteIndex >= palette.Count || paletteIndex < 0)
 			{
 				Log.Error($"Can't read biome index [{paletteIndex}] from [{(X << 4) | x}, {(Index << 4) + ChunkColumn.WorldMinY + y}, {(Z << 4) | z}] " +
-					$"in ids [{string.Join(", ", Biomes.Palette)}] of chunk [{X}, {Index + (ChunkColumn.WorldMinY >> 4)}, {Z}]");
+					$"in ids [{string.Join(", ", palette)}] of chunk [{X}, {Index + (ChunkColumn.WorldMinY >> 4)}, {Z}]");
 				return 0;
 			}
 
-			return (byte) Biomes.Palette[paletteIndex];
+			return (byte) palette[paletteIndex];
 		}
 
 		internal byte GetNoiseBiomeIndex(int x, int y, int z)
@@ -197,7 +198,7 @@ namespace MiNET.Worlds.Anvil
 
 			var biome = _biomeManager.GetNoiseBiome(noiseX, noiseY, noiseZ);
 
-			return (byte) Biomes.GetPalettedId(biome);
+			return (byte) base.Biomes.GetPalettedId(biome);
 		}
 
 		private int GetNoiseIndex(int x, int y, int z)

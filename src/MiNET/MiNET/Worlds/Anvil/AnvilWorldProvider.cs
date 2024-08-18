@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,6 +16,7 @@ using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
+using MiNET.Worlds.IO;
 
 namespace MiNET.Worlds.Anvil
 {
@@ -430,55 +430,36 @@ namespace MiNET.Worlds.Anvil
 
 			var data = blockStatesTag["data"].LongArrayValue;
 
-			var bitsPerBlock = (byte) Math.Max(4, Math.Ceiling(Math.Log(runtimeIds.Count, 2)));
-
-			//var blocks = subChunk.Blocks;
-			var blocks = new short[SubChunk.Size];
-
-			ReadAnyBitLengthShortFromLongs(data, blocks, bitsPerBlock);
+			var blockSize = (byte) Math.Max(4, Math.Ceiling(Math.Log(runtimeIds.Count, 2)));
 
 			var layer0Data = layer0.Data;
 			var layer1Data = layer1.Data;
-			for (var i = 0; i < blocks.Length; i++)
+			ReadAnvilPalettedContainerData(data, layer0Data, blockSize);
+
+			if (blockEntities.Any() || waterloggedIds.Any())
 			{
-				var y = i >> 8;
-				var x = i & 0xf;
-				var z = i >> 4 & 0xf;
-				var j = x << 8 | z << 4 | y;
-
-				if (y <= x)
+				for (var i = 0; i != layer0Data.BlocksCount; i++)
 				{
-					var iBlock = (ushort) blocks[i];
-					var jBlock = layer0Data[i] = (ushort) blocks[j];
-					layer0Data[j] = iBlock;
-
-					if (waterloggedIds[iBlock] >= 0)
-					{
-						layer1Data[j] = waterChunkId;
-					}
-					if (waterloggedIds[jBlock] >= 0)
+					var block = layer0Data[i];
+					if (waterloggedIds[block] != -1)
 					{
 						layer1Data[i] = waterChunkId;
 					}
-					//if (snowyIds[iBlock] >= 0)
-					//{
-					//	subChunk.LoggedBlocks[j] = snowChunkId;
-					//}
-					//if (snowyIds[jBlock] >= 0)
-					//{
-					//	subChunk.LoggedBlocks[i] = snowChunkId;
-					//}
-				}
 
-				if (blockEntities[blocks[j]] != null)
-				{
-					var template = blockEntities[blocks[j]];
-					template.Coordinates = new BlockCoordinates(
-						(subChunk.X << 4) | x,
-						((subChunk.Index << 4) + ChunkColumn.WorldMinY) | y,
-						(subChunk.Z << 4) | z);
+					if (blockEntities[block] != null)
+					{
+						var x = i >> 8;
+						var z = i >> 4 & 0xF;
+						var y = i & 0xF;
 
-					chunkColumn.SetBlockEntity(template.Coordinates, template.GetCompound());
+						var template = blockEntities[block];
+						template.Coordinates = new BlockCoordinates(
+							(subChunk.X << 4) | x,
+							((subChunk.Index << 4) + ChunkColumn.WorldMinY) | y,
+							(subChunk.Z << 4) | z);
+
+						chunkColumn.SetBlockEntity(template.Coordinates, template.GetCompound());
+					}
 				}
 			}
 
@@ -493,7 +474,7 @@ namespace MiNET.Worlds.Anvil
 
 			if (blockLight == null) return;
 
-			Array.Copy(blockLight, subChunk.BlockLight.Data, 0);
+			//Array.Copy(blockLight, subChunk.BlockLight.Data, 0);
 		}
 
 		private void ReadSkyLigths(NbtTag sectionTag, AnvilSubChunk subChunk)
@@ -504,7 +485,7 @@ namespace MiNET.Worlds.Anvil
 
 			if (skyLight == null) return;
 
-			Array.Copy(skyLight, subChunk.SkyLight.Data, 0);
+			//Array.Copy(skyLight, subChunk.SkyLight.Data, 0);
 		}
 
 		private void ReadBiomes(NbtTag sectionTag, AnvilSubChunk subChunk)
@@ -522,16 +503,14 @@ namespace MiNET.Worlds.Anvil
 				return;
 			}
 
-			var biomesNoise = new byte[64];
-
 			var data = biomesTag["data"].LongArrayValue;
 
 			var bitsPerBlock = (byte) Math.Ceiling(Math.Log(usingBiomes.Length, 2));
 
-			var sectionBiomesMap = new byte[64];
-			ReadAnyBitLengthShortFromLongs(data, sectionBiomesMap, bitsPerBlock);
+			var biomesNoise = new byte[64];
+			ReadAnyBitLengthShortFromLongs(data, biomesNoise, bitsPerBlock);
 
-			subChunk.SetBiomesNoise(sectionBiomesMap);
+			subChunk.SetBiomesNoise(biomesNoise);
 		}
 
 		private void ReadBlockEntites(NbtCompound dataTag, ChunkColumn chunk)
@@ -1102,6 +1081,28 @@ namespace MiNET.Worlds.Anvil
 				var longsOffset = i / shortsInLongCount;
 
 				shorts[i] = (short) (longs[longsOffset] >> offset & valueBits);
+			}
+		}
+
+		private void ReadAnvilPalettedContainerData(long[] longWords, PalettedContainerData data, byte longBlockSize)
+		{
+			var blockSize = data.DataProfile.BlockSize;
+			var blockMask = (1 << longBlockSize) - 1;
+			var blocksPerWord = data.DataProfile.BlocksPerWord;
+			var blocksCount = data.BlocksCount;
+			var words = data.Data;
+
+			var longWordSize = sizeof(long) * 8;
+			var blocksPerLongWord = longWordSize / longBlockSize;
+
+			for (var i = 0; i != blocksCount; i++)
+			{
+				var index = (i & 0x0F0 | i >> 8 | i << 8) & 0xFFF;
+				ref var word = ref words[index / blocksPerWord];
+
+				var longShift = i % blocksPerLongWord * longBlockSize;
+				var shift = index % blocksPerWord * blockSize;
+				word |= (int) (longWords[i / blocksPerLongWord] >> longShift & blockMask) << shift;
 			}
 		}
 

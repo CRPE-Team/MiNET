@@ -37,6 +37,7 @@ namespace MiNET.Worlds.IO
 
 			_runtimeIdToPaletted = _palette
 				.Zip(Enumerable.Range(0, _palette.Count - 1))
+				.DistinctBy(pair => pair.First)
 				.ToDictionary(block => block.First, block => (ushort) block.Second);
 		}
 
@@ -63,7 +64,7 @@ namespace MiNET.Worlds.IO
 
 			if (palettedId >= Palette.Count)
 			{
-				Log.Error($"Can't read biome index [{palettedId}] in ids [{string.Join(", ", Palette)}]");
+				Log.Error($"Can't read block index [{palettedId}] in ids [{string.Join(", ", Palette)}]");
 				return 0;
 			}
 
@@ -83,7 +84,7 @@ namespace MiNET.Worlds.IO
 				throw new NotImplementedException();
 			}
 
-			stream.WriteByte((byte) ((_data.BlockSize << 1) | Convert.ToByte(network))); // flags
+			stream.WriteByte((byte) ((_data.DataProfile.BlockSize << 1) | Convert.ToByte(network))); // flags
 			_data.WriteToStream(stream);
 
 			VarInt.WriteSInt32(stream, _palette.Count); // count

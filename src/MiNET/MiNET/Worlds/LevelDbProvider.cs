@@ -500,7 +500,7 @@ namespace MiNET.Worlds
 
 		internal bool WriteStore(MemoryStream stream, PalettedContainer container)
 		{
-			stream.WriteByte((byte) ((container.Data.BlockSize << 1) | 0));
+			stream.WriteByte((byte) ((container.Data.DataProfile.BlockSize << 1) | 0));
 			container.Data.WriteToStream(stream);
 
 			var palette = container.Palette;
