@@ -116,13 +116,16 @@ namespace MiNET
 
 		public bool CausedByRider { get; set; }
 
-		public EntityLink(long fromEntityId, long toEntityId, EntityLinkType type, bool immediate, bool causedByRider)
+		public float VehicleAngularVelocity { get; set; }
+
+		public EntityLink(long fromEntityId, long toEntityId, EntityLinkType type, bool immediate, bool causedByRider, float vehicleAngularVelocity)
 		{
 			FromEntityId = fromEntityId;
 			ToEntityId = toEntityId;
 			Type = type;
 			Immediate = immediate;
 			CausedByRider = causedByRider;
+			VehicleAngularVelocity = vehicleAngularVelocity;
 		}
 
 		public enum EntityLinkType : byte
@@ -139,6 +142,7 @@ namespace MiNET
 			packet.Write((byte) Type);
 			packet.Write(Immediate);
 			packet.Write(CausedByRider);
+			packet.Write(VehicleAngularVelocity);
 		}
 
 		public static EntityLink Read(Packet packet)
@@ -148,8 +152,9 @@ namespace MiNET
 			var type = (EntityLinkType) packet.ReadByte();
 			var immediate = packet.ReadBool();
 			var causedByRider = packet.ReadBool();
+			var vehicleAngularVelocity = packet.ReadFloat();
 
-			return new EntityLink(fromEntityId, toEntityId, type, immediate, causedByRider);
+			return new EntityLink(fromEntityId, toEntityId, type, immediate, causedByRider, vehicleAngularVelocity);
 		}
 	}
 

@@ -180,12 +180,29 @@ foreach (XmlNode pdu in doc.SelectNodes("//pdu[not(@namespace='raknet') and not(
 <#
 
 
-Dictionary<string, Tuple<string, string>> constantsLoopup = new Dictionary<string, Tuple<string, string>>();
+var constantsLoopup = new Dictionary<string, Tuple<string, string>>();
 foreach (XmlNode constant in doc.SelectNodes("//constant"))
 {
 	var attributes = constant.Attributes;
 	constantsLoopup.Add(attributes["id"].Value, new Tuple<string, string>(attributes["type"].Value, attributes["value"].Value));
 }
+
+var valueTypes = new List<string>()
+{
+	"bool",
+	"byte",
+	"sbyte",
+	"short",
+	"ushort",
+	"int",
+	"uint",
+	"long",
+	"ulong",
+	"float",
+	"decimal",
+	"double",
+	"char"
+};
 
 PrintConstants(doc.SelectNodes("/protocol/enums"));
 WriteLine("");
@@ -213,46 +230,13 @@ foreach (XmlNode pdu in doc.SelectNodes("//pdu"))
 			string value = constantsLoopup[field.Attributes["type"].Value].Item2;
 			WriteLine(string.Format("\t\tpublic readonly {0} {1} = new {0}{2}; // = {2};", type, CodeName(field.Attributes["name"].Value), value));
 		} 
-		else if(field.Attributes["type"].Value == "VarInt")
+		else
 		{
-			WriteLine(string.Format("\t\tpublic {0} {1}; // = {2};", "int", CodeName(field.Attributes["name"].Value), "null"));
+			var nullablePart = field.Attributes["optional"] != null ? "?" : "";
+			var fieldType = GetFieldType(field.Attributes["type"].Value) + nullablePart;
+
+			WriteLine($"\t\tpublic {fieldType} {CodeName(field.Attributes["name"].Value)};");
 		}
-		else if(field.Attributes["type"].Value == "UnsignedVarInt")
-		{
-			WriteLine(string.Format("\t\tpublic {0} {1}; // = {2};", "uint", CodeName(field.Attributes["name"].Value), "null"));
-		}
-		else if(field.Attributes["type"].Value == "SignedVarInt")
-		{
-			WriteLine(string.Format("\t\tpublic {0} {1}; // = {2};", "int", CodeName(field.Attributes["name"].Value), "null"));
-		}
-		else if(field.Attributes["type"].Value == "VarLong")
-		{
-			WriteLine(string.Format("\t\tpublic {0} {1}; // = {2};", "long", CodeName(field.Attributes["name"].Value), "null"));
-		}
-		else if(field.Attributes["type"].Value == "SignedVarLong")
-		{
-			WriteLine(string.Format("\t\tpublic {0} {1}; // = {2};", "long", CodeName(field.Attributes["name"].Value), "null"));
-		}
-		else if(field.Attributes["type"].Value == "UnsignedVarLong")
-		{
-			WriteLine(string.Format("\t\tpublic {0} {1}; // = {2};", "long", CodeName(field.Attributes["name"].Value), "null"));
-		}
-		else if(field.Attributes["type"].Value == "Length")
-		{
-			WriteLine(string.Format("\t\tpublic {0} {1}; // = {2};", "int", CodeName(field.Attributes["name"].Value), "null"));
-		}
-		else if(field.Attributes["type"].Value == "ByteArray")
-		{
-			WriteLine(string.Format("\t\tpublic {0} {1}; // = {2};", "byte[]", CodeName(field.Attributes["name"].Value), "null"));
-		}
-		else if(field.Attributes["type"].Value == "FixedString")
-		{
-			WriteLine(string.Format("\t\tpublic {0} {1}; // = {2};", "string", CodeName(field.Attributes["name"].Value), "null"));
-		}
-		else 
-		{
-			WriteLine(string.Format("\t\tpublic {0} {1}; // = {2};", field.Attributes["type"].Value, CodeName(field.Attributes["name"].Value), "null"));
-		} 
 
 	} // foreach
 
@@ -275,53 +259,64 @@ foreach (XmlNode pdu in doc.SelectNodes("//pdu"))
 	{
 		if(field.NodeType != XmlNodeType.Element) continue;
 		
-		if(field.Attributes["type"].Value == "VarInt")
+		if (field.Attributes["endianess"] != null && field.Attributes["endianess"].Value == "BE")
 		{
-			WriteLine(string.Format("\t\t\tWriteVarInt({0});", CodeName(field.Attributes["name"].Value), field.Attributes["type"].Value));
-
-		}
-		else if(field.Attributes["type"].Value == "UnsignedVarInt")
-		{
-			WriteLine(string.Format("\t\t\tWriteUnsignedVarInt({0});", CodeName(field.Attributes["name"].Value), field.Attributes["type"].Value));
-		}
-		else if(field.Attributes["type"].Value == "SignedVarInt")
-		{
-			WriteLine(string.Format("\t\t\tWriteSignedVarInt({0});", CodeName(field.Attributes["name"].Value), field.Attributes["type"].Value));
-		}
-		else if(field.Attributes["type"].Value == "VarLong")
-		{
-			WriteLine(string.Format("\t\t\tWriteVarLong({0});", CodeName(field.Attributes["name"].Value), field.Attributes["type"].Value));
-		}
-		else if(field.Attributes["type"].Value == "SignedVarLong")
-		{
-			WriteLine(string.Format("\t\t\tWriteSignedVarLong({0});", CodeName(field.Attributes["name"].Value), field.Attributes["type"].Value));
-		}
-		else if(field.Attributes["type"].Value == "UnsignedVarLong")
-		{
-			WriteLine(string.Format("\t\t\tWriteUnsignedVarLong({0});", CodeName(field.Attributes["name"].Value), field.Attributes["type"].Value));
-		}
-		else if(field.Attributes["type"].Value == "Length")
-		{
-			WriteLine(string.Format("\t\t\tWriteLength({0});", CodeName(field.Attributes["name"].Value), field.Attributes["type"].Value));
-		}
-		else if(field.Attributes["type"].Value == "ByteArray")
-		{
-			WriteLine(string.Format("\t\t\tWriteByteArray({0});", CodeName(field.Attributes["name"].Value), field.Attributes["type"].Value));
-		}
-		else if(field.Attributes["type"].Value == "FixedString")
-		{
-			WriteLine(string.Format("\t\t\tWriteFixedString({0});", CodeName(field.Attributes["name"].Value), field.Attributes["type"].Value));
-		}
-		else if(field.Attributes["endianess"] != null && field.Attributes["endianess"].Value == "BE")
-		{
-			WriteLine(string.Format("\t\t\tWriteBe({0});", CodeName(field.Attributes["name"].Value)));
+			WriteLine($"\t\t\tWriteBe({CodeName(field.Attributes["name"].Value)});");
 		}
 		else
 		{
-			WriteLine(string.Format("\t\t\tWrite({0});", CodeName(field.Attributes["name"].Value)));
-		}
-		
+			var fieldType = field.Attributes["type"].Value;
+			var isOptional = field.Attributes["optional"] != null && field.Attributes["optional"].Value == "true";
+			var codedFieldName = CodeFieldName(field.Attributes["name"].Value);
+			
+			var optionalHasValuePart = "";
+			var optionalValuePart = "";
+			if (isOptional)
+			{
+				if (valueTypes.Contains(GetFieldType(fieldType)))
+				{
+					optionalHasValuePart = ".HasValue";
+					optionalValuePart = ".Value";
+				}
+				else
+				{
+					optionalHasValuePart = " != null";
+					optionalValuePart = "";
+				}
 
+				WriteLine($"\t\t\tWrite({codedFieldName}{optionalHasValuePart}); // is optional");
+				WriteLine($"\t\t\tif ({codedFieldName}{optionalHasValuePart})");
+				WriteLine("\t\t\t{");
+				Write("\t\t\t\t");
+			}
+			else
+			{
+				Write("\t\t\t");
+			}
+
+			switch(fieldType)
+			{
+				case "VarInt":
+				case "SignedVarInt":
+				case "Length":
+				case "UnsignedVarInt":
+				case "VarLong":
+				case "SignedVarLong":
+				case "UnsignedVarLong":
+				case "ByteArray":
+				case "FixedString":
+					WriteLine($"Write{fieldType}({codedFieldName}{optionalValuePart});");
+					break;
+				default:
+					WriteLine($"Write({codedFieldName}{optionalValuePart});");
+					break;
+			}
+
+			if (isOptional)
+			{
+				WriteLine("\t\t\t}");
+			}
+		}
 			
 	} // foreach
 #>
@@ -349,44 +344,50 @@ foreach (XmlNode pdu in doc.SelectNodes("//pdu"))
 			string value = constantsLoopup[field.Attributes["type"].Value].Item2;
 			WriteLine(string.Format("\t\t\tRead{1}({0}.Length);", CodeFieldName(field.Attributes["name"].Value), CodeTypeName(type)));
 		} 
-		else if(field.Attributes["type"].Value == "sbyte")
-		{
-			WriteLine(string.Format("\t\t\t{0} = Read{1}({2});", CodeFieldName(field.Attributes["name"].Value), "SByte", SafeToString(field.Attributes["size"])));
-		}
-		else if(field.Attributes["type"].Value == "VarInt")
-		{
-			WriteLine(string.Format("\t\t\t{0} = Read{1}({2});", CodeFieldName(field.Attributes["name"].Value), "VarInt", SafeToString(field.Attributes["size"])));
-		}
-		else if(field.Attributes["type"].Value == "UnsignedVarInt")
-		{
-			WriteLine(string.Format("\t\t\t{0} = Read{1}({2});", CodeFieldName(field.Attributes["name"].Value), "UnsignedVarInt", SafeToString(field.Attributes["size"])));
-		}
-		else if(field.Attributes["type"].Value == "SignedVarInt")
-		{
-			WriteLine(string.Format("\t\t\t{0} = Read{1}({2});", CodeFieldName(field.Attributes["name"].Value), "SignedVarInt", SafeToString(field.Attributes["size"])));
-		}
-		else if(field.Attributes["type"].Value == "VarLong")
-		{
-			WriteLine(string.Format("\t\t\t{0} = Read{1}({2});", CodeFieldName(field.Attributes["name"].Value), "VarLong", SafeToString(field.Attributes["size"])));
-		}
-		else if(field.Attributes["type"].Value == "ByteArray")
-		{
-			WriteLine(string.Format("\t\t\t{0} = Read{1}({2});", CodeFieldName(field.Attributes["name"].Value), "ByteArray", SafeToString(field.Attributes["size"])));
-		}
-		else if(field.Attributes["type"].Value == "FixedString")
-		{
-			WriteLine(string.Format("\t\t\t{0} = Read{1}({2});", CodeFieldName(field.Attributes["name"].Value), "FixedString", SafeToString(field.Attributes["size"])));
-		}
 		else if(field.Attributes["endianess"] != null && field.Attributes["endianess"].Value == "BE")
 		{
 			WriteLine(string.Format("\t\t\t{0} = Read{1}Be({2});", CodeFieldName(field.Attributes["name"].Value), UpperInitial(field.Attributes["type"].Value), SafeToString(field.Attributes["size"])));
 		}
-		else 
+		else
 		{
-			WriteLine(string.Format("\t\t\t{0} = Read{1}({2});", CodeFieldName(field.Attributes["name"].Value), UpperInitial(field.Attributes["type"].Value), SafeToString(field.Attributes["size"])));
-		} 
+			var isOptional = field.Attributes["optional"] != null && field.Attributes["optional"].Value == "true";
+			var fieldType = field.Attributes["type"].Value;
+			var codedFieldName = CodeFieldName(field.Attributes["name"].Value);
+			var safeToString = SafeToString(field.Attributes["size"]);
+			if (isOptional)
+			{
+				WriteLine($"\t\t\tif (ReadBool())");
+				WriteLine("\t\t\t{");
+				Write("\t\t\t\t");
+			}
+			else
+			{
+				Write("\t\t\t");
+			}
 
+			switch(fieldType)
+			{
+				case "sbyte":
+					WriteLine($"{codedFieldName} = ReadSByte({safeToString});");
+					break;
+				case "VarInt":
+				case "UnsignedVarInt":
+				case "SignedVarInt":
+				case "VarLong":
+				case "ByteArray":
+				case "FixedString":
+					WriteLine($"{codedFieldName} = Read{fieldType}({safeToString});");
+					break;
+				default:
+					WriteLine($"{codedFieldName} = Read{UpperInitial(field.Attributes["type"].Value)}({safeToString});");
+					break;
+			}
 
+			if (isOptional)
+			{
+				WriteLine("\t\t\t}");
+			}
+		}
 	} // foreach
 
 #>
@@ -411,50 +412,7 @@ foreach (XmlNode pdu in doc.SelectNodes("//pdu"))
 			continue;
 		}
 		
-		Write($"\t\t\t{CodeName(field.Attributes["name"].Value)}=default(");
-		 
-		if(field.Attributes["type"].Value == "VarInt")
-		{
-			Write("int");
-		}
-		else if(field.Attributes["type"].Value == "UnsignedVarInt")
-		{
-			Write("uint");
-		}
-		else if(field.Attributes["type"].Value == "SignedVarInt")
-		{
-			Write("int");
-		}
-		else if(field.Attributes["type"].Value == "VarLong")
-		{
-			Write("long");
-		}
-		else if(field.Attributes["type"].Value == "SignedVarLong")
-		{
-			Write("long");
-		}
-		else if(field.Attributes["type"].Value == "UnsignedVarLong")
-		{
-			Write("long");
-		}
-		else if(field.Attributes["type"].Value == "Length")
-		{
-			Write("int");
-		}
-		else if(field.Attributes["type"].Value == "ByteArray")
-		{
-			Write("byte[]");
-		}
-		else if(field.Attributes["type"].Value == "FixedString")
-		{
-			Write("string");
-		}
-		else 
-		{
-			Write($"{field.Attributes["type"].Value}");
-		} 
-
-		WriteLine(");");
+		WriteLine($"\t\t\t{CodeName(field.Attributes["name"].Value)} = default;");
 
 	} // foreach
 
@@ -550,6 +508,29 @@ private void PrintConstants(XmlNodeList nodes)
 
 	PopIndent();
 
+}
+
+private string GetFieldType(string formatFieldType)
+{
+	switch (formatFieldType)
+	{
+		case "VarInt":
+		case "SignedVarInt":
+		case "Length":
+			return "int";
+		case "UnsignedVarInt":
+			return "uint";
+		case "VarLong":
+		case "SignedVarLong":
+		case "UnsignedVarLong":
+			return "long";
+		case "ByteArray":
+				return "byte[]";
+		case "FixedString":
+			return "string";
+		default:
+			return formatFieldType;
+	}
 }
 
 #>

@@ -416,11 +416,11 @@ namespace MiNET.Client
 				writer.Flush();
 			}
 
-			LogGamerules(message.levelSettings.gamerules);
+			LogGamerules(message.levelSettings.GameRules);
 
 			Client.LevelInfo.LevelName = "Default";
 			Client.LevelInfo.Version = 19133;
-			Client.LevelInfo.GameType = message.levelSettings.gamemode;
+			Client.LevelInfo.GameType = message.levelSettings.GameMode;
 
 			//ClientUtils.SaveLevel(_level);
 

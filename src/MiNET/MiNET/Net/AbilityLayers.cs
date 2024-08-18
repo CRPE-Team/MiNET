@@ -123,7 +123,8 @@ namespace MiNET.Net
 		Base = 1,
 		Spectator = 2,
 		Commands = 3,
-		Editor = 4
+		Editor = 4,
+		LoadingScreen = 5
 	}
 
 	[Flags]

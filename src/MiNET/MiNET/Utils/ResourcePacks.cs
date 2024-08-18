@@ -91,6 +91,8 @@ namespace MiNET.Utils
 		/// </summary>
 		public bool HasScripts { get; set; }
 
+		public bool IsAddonPack { get; set; }
+
 		public void Write(Packet packet)
 		{
 			packet.Write(UUID);
@@ -100,6 +102,7 @@ namespace MiNET.Utils
 			packet.Write(SubPackName);
 			packet.Write(ContentIdentity);
 			packet.Write(HasScripts);
+			packet.Write(IsAddonPack);
 
 			WriteData(packet);
 		}
@@ -116,7 +119,8 @@ namespace MiNET.Utils
 				ContentKey = packet.ReadString(),
 				SubPackName = packet.ReadString(),
 				ContentIdentity = packet.ReadString(),
-				HasScripts = packet.ReadBool()
+				HasScripts = packet.ReadBool(),
+				IsAddonPack = packet.ReadBool()
 			};
 		}
 	}
@@ -173,6 +177,7 @@ namespace MiNET.Utils
 				SubPackName = packet.ReadString(),
 				ContentIdentity = packet.ReadString(),
 				HasScripts = packet.ReadBool(),
+				IsAddonPack = packet.ReadBool(),
 				RtxEnabled = packet.ReadBool()
 			};
 		}

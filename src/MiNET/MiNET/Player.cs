@@ -2890,33 +2890,33 @@ namespace MiNET
 		public void SendStartGame()
 		{
 			var levelSettings = new LevelSettings();
-			levelSettings.spawnSettings = new SpawnSettings()
+			levelSettings.SpawnSettings = new SpawnSettings()
 			{
 				Dimension = (int)(Level?.Dimension ?? 0),
 				BiomeName = "",
 				BiomeType = 0
 			};
-			levelSettings.seed = 12345;
-			levelSettings.generator = 1;
-			levelSettings.gamemode = (int) GameMode;
-			levelSettings.x = (int) SpawnPosition.X;
-			levelSettings.y = (int) (SpawnPosition.Y + Height);
-			levelSettings.z = (int) SpawnPosition.Z;
-			levelSettings.hasAchievementsDisabled = true;
-			levelSettings.time = (int) Level.WorldTime;
-			levelSettings.eduOffer = PlayerInfo.Edition == 1 ? 1 : 0;
-			levelSettings.rainLevel = 0;
-			levelSettings.lightningLevel = 0;
-			levelSettings.isMultiplayer = true;
-			levelSettings.broadcastToLan = true;
-			levelSettings.enableCommands = EnableCommands;
-			levelSettings.isTexturepacksRequired = false;
-			levelSettings.gamerules = Level.GetGameRules();
-			levelSettings.bonusChest = false;
-			levelSettings.mapEnabled = false;
-			levelSettings.permissionLevel = (byte) PermissionLevel;
-			levelSettings.gameVersion = "";
-			levelSettings.hasEduFeaturesEnabled = true;
+			levelSettings.Seed = 12345;
+			levelSettings.Generator = 1;
+			levelSettings.GameMode = (int) GameMode;
+			levelSettings.X = (int) SpawnPosition.X;
+			levelSettings.Y = (int) (SpawnPosition.Y + Height);
+			levelSettings.Z = (int) SpawnPosition.Z;
+			levelSettings.HasAchievementsDisabled = true;
+			levelSettings.Time = (int) Level.WorldTime;
+			levelSettings.EduOffer = PlayerInfo.Edition == 1 ? 1 : 0;
+			levelSettings.RainLevel = 0;
+			levelSettings.LightningLevel = 0;
+			levelSettings.IsMultiplayer = true;
+			levelSettings.BroadcastToLan = true;
+			levelSettings.EnableCommands = EnableCommands;
+			levelSettings.IsTexturepacksRequired = false;
+			levelSettings.GameRules = Level.GetGameRules();
+			levelSettings.BonusChest = false;
+			levelSettings.MapEnabled = false;
+			levelSettings.PermissionLevel = (byte) PermissionLevel;
+			levelSettings.GameVersion = "";
+			levelSettings.HasEduFeaturesEnabled = true;
 			
 			var startGame = McpeStartGame.CreateObject();
 			startGame.levelSettings = levelSettings;

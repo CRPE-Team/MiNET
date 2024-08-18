@@ -138,7 +138,7 @@ namespace MiNET.Inventory
 						throw new ArgumentOutOfRangeException(nameof(stackAction));
 				}
 
-			foreach (IGrouping<ContainerId, StackResponseContainerInfo> stackResponseGroup in stackResponses.GroupBy(r => r.ContainerId))
+			foreach (IGrouping<ContainerId, StackResponseContainerInfo> stackResponseGroup in stackResponses.GroupBy(r => r.ContainerName.ContainerId))
 				if (stackResponseGroup.Count() > 1)
 				{
 					var containerId = stackResponseGroup.Key;
@@ -163,17 +163,20 @@ namespace MiNET.Inventory
 			byte count = action.Count;
 			StackRequestSlotInfo source = action.Source;
 
-			Item sourceItem = GetContainerItem(source.ContainerId, source.Slot);
+			Item sourceItem = GetContainerItem(source.ContainerName.ContainerId, source.Slot);
 			sourceItem.Count -= count;
 			if (sourceItem.Count <= 0)
 			{
 				sourceItem = new ItemAir();
-				SetContainerItem(source.ContainerId, source.Slot, sourceItem);
+				SetContainerItem(source.ContainerName.ContainerId, source.Slot, sourceItem);
 			}
 
 			stackResponses.Add(new StackResponseContainerInfo
 			{
-				ContainerId = source.ContainerId,
+				ContainerName = new FullContainerName()
+				{
+					ContainerId = source.ContainerName.ContainerId
+				},
 				Slots = new List<StackResponseSlotInfo>
 				{
 					new StackResponseSlotInfo()
@@ -193,14 +196,14 @@ namespace MiNET.Inventory
 			Item dropItem;
 			StackRequestSlotInfo source = action.Source;
 
-			Item sourceItem = GetContainerItem(source.ContainerId, source.Slot);
+			Item sourceItem = GetContainerItem(source.ContainerName.ContainerId, source.Slot);
 
 			if (sourceItem.Count == count || sourceItem.Count - count <= 0)
 			{
 				dropItem = sourceItem;
 				sourceItem = new ItemAir();
 				sourceItem.UniqueId = 0;
-				SetContainerItem(source.ContainerId, source.Slot, sourceItem);
+				SetContainerItem(source.ContainerName.ContainerId, source.Slot, sourceItem);
 			}
 			else
 			{
@@ -214,7 +217,10 @@ namespace MiNET.Inventory
 
 			stackResponses.Add(new StackResponseContainerInfo
 			{
-				ContainerId = source.ContainerId,
+				ContainerName = new FullContainerName()
+				{
+					ContainerId = source.ContainerName.ContainerId
+				},
 				Slots = new List<StackResponseSlotInfo>
 				{
 					new StackResponseSlotInfo()
@@ -233,17 +239,20 @@ namespace MiNET.Inventory
 			byte count = action.Count;
 			StackRequestSlotInfo source = action.Source;
 
-			Item sourceItem = GetContainerItem(source.ContainerId, source.Slot);
+			Item sourceItem = GetContainerItem(source.ContainerName.ContainerId, source.Slot);
 			sourceItem.Count -= count;
 			if (sourceItem.Count <= 0)
 			{
 				sourceItem = new ItemAir();
-				SetContainerItem(source.ContainerId, source.Slot, sourceItem);
+				SetContainerItem(source.ContainerName.ContainerId, source.Slot, sourceItem);
 			}
 
 			stackResponses.Add(new StackResponseContainerInfo
 			{
-				ContainerId = source.ContainerId,
+				ContainerName = new FullContainerName()
+				{ 
+					ContainerId = source.ContainerName.ContainerId
+				},
 				Slots = new List<StackResponseSlotInfo>
 				{
 					new StackResponseSlotInfo()
@@ -262,16 +271,16 @@ namespace MiNET.Inventory
 			StackRequestSlotInfo source = action.Source;
 			StackRequestSlotInfo destination = action.Destination;
 
-			Item sourceItem = GetContainerItem(source.ContainerId, source.Slot);
-			Item destItem = GetContainerItem(destination.ContainerId, destination.Slot);
+			Item sourceItem = GetContainerItem(source.ContainerName.ContainerId, source.Slot);
+			Item destItem = GetContainerItem(destination.ContainerName.ContainerId, destination.Slot);
 
-			SetContainerItem(source.ContainerId, source.Slot, destItem);
-			SetContainerItem(destination.ContainerId, destination.Slot, sourceItem);
+			SetContainerItem(source.ContainerName.ContainerId, source.Slot, destItem);
+			SetContainerItem(destination.ContainerName.ContainerId, destination.Slot, sourceItem);
 
-			if (source.ContainerId == ContainerId.EnchantingInput
-				|| source.ContainerId == ContainerId.EnchantingMaterial
-				|| destination.ContainerId == ContainerId.EnchantingInput
-				|| destination.ContainerId == ContainerId.EnchantingMaterial)
+			if (source.ContainerName.ContainerId == ContainerId.EnchantingInput
+				|| source.ContainerName.ContainerId == ContainerId.EnchantingMaterial
+				|| destination.ContainerName.ContainerId == ContainerId.EnchantingInput
+				|| destination.ContainerName.ContainerId == ContainerId.EnchantingMaterial)
 			{
 				if (!(GetContainerItem(ContainerId.EnchantingInput, 14) is ItemAir) && !(GetContainerItem(ContainerId.EnchantingMaterial, 15) is ItemAir))
 				{
@@ -285,7 +294,10 @@ namespace MiNET.Inventory
 
 			stackResponses.Add(new StackResponseContainerInfo
 			{
-				ContainerId = source.ContainerId,
+				ContainerName = new FullContainerName()
+				{
+					ContainerId = source.ContainerName.ContainerId
+				},
 				Slots = new List<StackResponseSlotInfo>
 				{
 					new StackResponseSlotInfo()
@@ -299,7 +311,10 @@ namespace MiNET.Inventory
 			});
 			stackResponses.Add(new StackResponseContainerInfo
 			{
-				ContainerId = destination.ContainerId,
+				ContainerName = new FullContainerName()
+				{
+					ContainerId = destination.ContainerName.ContainerId
+				},
 				Slots = new List<StackResponseSlotInfo>
 				{
 					new StackResponseSlotInfo()
@@ -321,14 +336,14 @@ namespace MiNET.Inventory
 			StackRequestSlotInfo source = action.Source;
 			StackRequestSlotInfo destination = action.Destination;
 
-			sourceItem = GetContainerItem(source.ContainerId, source.Slot);
+			sourceItem = GetContainerItem(source.ContainerName.ContainerId, source.Slot);
 
 			if (sourceItem.Count == count || sourceItem.Count - count <= 0)
 			{
 				destItem = sourceItem;
 				sourceItem = new ItemAir();
 				sourceItem.UniqueId = 0;
-				SetContainerItem(source.ContainerId, source.Slot, sourceItem);
+				SetContainerItem(source.ContainerName.ContainerId, source.Slot, sourceItem);
 			}
 			else
 			{
@@ -338,7 +353,7 @@ namespace MiNET.Inventory
 				destItem.UniqueId = Item.GetUniqueId();
 			}
 
-			Item existingItem = GetContainerItem(destination.ContainerId, destination.Slot);
+			Item existingItem = GetContainerItem(destination.ContainerName.ContainerId, destination.Slot);
 			if (existingItem.Equals(destItem))
 			{
 				existingItem.Count += count;
@@ -346,10 +361,10 @@ namespace MiNET.Inventory
 			}
 			else
 			{
-				SetContainerItem(destination.ContainerId, destination.Slot, destItem);
+				SetContainerItem(destination.ContainerName.ContainerId, destination.Slot, destItem);
 			}
 
-			if (destination.ContainerId == ContainerId.EnchantingInput || destination.ContainerId == ContainerId.EnchantingMaterial)
+			if (destination.ContainerName.ContainerId == ContainerId.EnchantingInput || destination.ContainerName.ContainerId == ContainerId.EnchantingMaterial)
 			{
 				if (!(GetContainerItem(ContainerId.EnchantingInput, 14) is ItemAir) && !(GetContainerItem(ContainerId.EnchantingMaterial, 15) is ItemAir))
 				{
@@ -363,7 +378,10 @@ namespace MiNET.Inventory
 
 			stackResponses.Add(new StackResponseContainerInfo
 			{
-				ContainerId = source.ContainerId,
+				ContainerName = new FullContainerName()
+				{
+					ContainerId = source.ContainerName.ContainerId
+				},
 				Slots = new List<StackResponseSlotInfo>
 				{
 					new StackResponseSlotInfo()
@@ -377,7 +395,10 @@ namespace MiNET.Inventory
 			});
 			stackResponses.Add(new StackResponseContainerInfo
 			{
-				ContainerId = destination.ContainerId,
+				ContainerName = new FullContainerName()
+				{ 
+					ContainerId = destination.ContainerName.ContainerId
+				},
 				Slots = new List<StackResponseSlotInfo>
 				{
 					new StackResponseSlotInfo()
@@ -399,7 +420,7 @@ namespace MiNET.Inventory
 			StackRequestSlotInfo source = action.Source;
 			StackRequestSlotInfo destination = action.Destination;
 
-			sourceItem = GetContainerItem(source.ContainerId, source.Slot);
+			sourceItem = GetContainerItem(source.ContainerName.ContainerId, source.Slot);
 			Log.Debug($"Take {sourceItem}");
 
 			if (sourceItem.Count - count <= 0)
@@ -407,7 +428,7 @@ namespace MiNET.Inventory
 				destItem = sourceItem;
 				sourceItem = new ItemAir();
 				sourceItem.UniqueId = 0;
-				SetContainerItem(source.ContainerId, source.Slot, sourceItem);
+				SetContainerItem(source.ContainerName.ContainerId, source.Slot, sourceItem);
 			}
 			else
 			{
@@ -417,7 +438,7 @@ namespace MiNET.Inventory
 				destItem.UniqueId = Item.GetUniqueId();
 			}
 
-			var existingItem = GetContainerItem(destination.ContainerId, destination.Slot);
+			var existingItem = GetContainerItem(destination.ContainerName.ContainerId, destination.Slot);
 			if (existingItem.Equals(destItem))
 			{
 				existingItem.Count += destItem.Count;
@@ -425,10 +446,10 @@ namespace MiNET.Inventory
 			}
 			else
 			{
-				SetContainerItem(destination.ContainerId, destination.Slot, destItem);
+				SetContainerItem(destination.ContainerName.ContainerId, destination.Slot, destItem);
 			}
 
-			if (source.ContainerId == ContainerId.EnchantingInput || source.ContainerId == ContainerId.EnchantingMaterial)
+			if (source.ContainerName.ContainerId == ContainerId.EnchantingInput || source.ContainerName.ContainerId == ContainerId.EnchantingMaterial)
 			{
 				if (!(GetContainerItem(ContainerId.EnchantingInput, 14) is ItemAir) && !(GetContainerItem(ContainerId.EnchantingMaterial, 15) is ItemAir))
 				{
@@ -442,7 +463,10 @@ namespace MiNET.Inventory
 
 			stackResponses.Add(new StackResponseContainerInfo
 			{
-				ContainerId = source.ContainerId,
+				ContainerName = new FullContainerName()
+				{
+					ContainerId = source.ContainerName.ContainerId
+				},
 				Slots = new List<StackResponseSlotInfo>
 				{
 					new StackResponseSlotInfo()
@@ -456,7 +480,10 @@ namespace MiNET.Inventory
 			});
 			stackResponses.Add(new StackResponseContainerInfo
 			{
-				ContainerId = destination.ContainerId,
+				ContainerName = new FullContainerName()
+				{
+					ContainerId = destination.ContainerName.ContainerId
+				},
 				Slots = new List<StackResponseSlotInfo>
 				{
 					new StackResponseSlotInfo()
@@ -514,7 +541,10 @@ namespace MiNET.Inventory
 
 				stackResponses.Add(new StackResponseContainerInfo
 				{
-					ContainerId = ContainerId.CraftingInput,
+					ContainerName = new FullContainerName()
+					{ 
+						ContainerId = ContainerId.CraftingInput
+					},
 					Slots = new List<StackResponseSlotInfo>
 					{
 						new StackResponseSlotInfo()

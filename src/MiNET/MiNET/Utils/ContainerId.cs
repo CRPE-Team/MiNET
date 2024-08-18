@@ -67,5 +67,6 @@
 		CreatedOutput = 60,
 		SmithingTableTemplate = 61,
 		Crafter = 62,
+		Dynamic = 63
 	}
 }
