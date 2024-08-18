@@ -12,8 +12,6 @@ namespace MiNET.Worlds.IO
 
 		private static readonly ILog Log = LogManager.GetLogger(typeof(PalettedContainer));
 
-		private const ushort BlocksCount = 16 * 16 * 16; // chunk section size
-
 		private Dictionary<int, ushort> _runtimeIdToPaletted;
 		private List<int> _palette;
 		private PalettedContainerData _data;
@@ -24,11 +22,11 @@ namespace MiNET.Worlds.IO
 			set => SetBlock(index, value);
 		}
 
-		public PalettedContainer(int paletteSize)
+		public PalettedContainer(int paletteSize, ushort blocksCount)
 		{
 			_runtimeIdToPaletted = new Dictionary<int, ushort>(paletteSize);
 			_palette = new List<int>(paletteSize);
-			_data = new PalettedContainerData(paletteSize, BlocksCount);
+			_data = new PalettedContainerData(paletteSize, blocksCount);
 		}
 
 		internal PalettedContainer(List<int> palette, PalettedContainerData data)
@@ -43,9 +41,9 @@ namespace MiNET.Worlds.IO
 
 		internal PalettedContainerData Data => _data;
 
-		public static PalettedContainer CreateFilledWith(int runtimeId)
+		public static PalettedContainer CreateFilledWith(int runtimeId, ushort blocksCount)
 		{
-			var container = new PalettedContainer(1);
+			var container = new PalettedContainer(1, blocksCount);
 			container.AppendToPalette(runtimeId);
 
 			return container;
@@ -93,6 +91,13 @@ namespace MiNET.Worlds.IO
 		{
 			AppendToPalette(runtimeId);
 			_data.TryResize(_palette.Count);
+		}
+
+		[Obsolete]
+		internal void ClearPalette(int runtimeId)
+		{
+			_palette.Clear();
+			_runtimeIdToPaletted.Clear();
 		}
 
 		public object Clone()

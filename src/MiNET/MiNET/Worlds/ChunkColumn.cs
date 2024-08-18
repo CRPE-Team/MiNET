@@ -490,7 +490,7 @@ namespace MiNET.Worlds
 			{
 				var subChunk = this[i];
 
-				if (subChunk == null || subChunk.BiomeIds.Count == 1 && subChunk.BiomeIds.First() == 0)
+				if (subChunk == null || subChunk.Biomes.Palette.Count == 1 && subChunk.Biomes.Palette.First() == 0)
 				{
 					stream.WriteByte(1);
 					stream.WriteByte(0);
@@ -498,7 +498,7 @@ namespace MiNET.Worlds
 					continue;
 				}
 
-				SubChunk.WriteStore(stream, null, this[i].Biomes, false, subChunk.BiomeIds);
+				subChunk.Biomes.WriteToStream(stream);
 			}
 		}
 

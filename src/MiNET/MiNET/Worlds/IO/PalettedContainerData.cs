@@ -90,16 +90,17 @@ namespace MiNET.Worlds.IO
 			var wordBlockMask = _profile.WordBlockMask;
 			var blocksCount = _blocksCount;
 
+			var newBlockSize = profile.BlockSize;
+			var newWordBlocksSize = profile.BlocksPerWord * profile.BlockSize;
+			var newDataIndex = 0;
+			var newWordShift = 0;
+
 			var hasSubWord = blockSize == 3 || blockSize == 5 || blockSize == 6;
 			if (hasSubWord)
 			{
 				lenght -= 1;
 			}
 
-			var newBlockSize = profile.BlockSize;
-			var newWordBlocksSize = profile.BlocksPerWord * profile.BlockSize;
-			var newDataIndex = 0;
-			var newWordShift = 0;
 			ref var newWord = ref data[newDataIndex++];
 			for (var i = 0; i != lenght; i++)
 			{

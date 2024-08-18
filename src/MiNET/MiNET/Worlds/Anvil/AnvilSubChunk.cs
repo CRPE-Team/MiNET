@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using log4net;
+using MiNET.Worlds.IO;
 
 namespace MiNET.Worlds.Anvil
 {
@@ -30,7 +31,7 @@ namespace MiNET.Worlds.Anvil
 			}
 		}
 
-		internal override byte[] Biomes 
+		internal override PalettedContainer Biomes 
 		{
 			get
 			{
@@ -92,17 +93,17 @@ namespace MiNET.Worlds.Anvil
 
 		internal byte GetNoiseBiome(int x, int y, int z)
 		{
-			if (BiomeIds.Count == 0) return 0;
+			if (Biomes.Palette.Count == 0) return 0;
 
 			int paletteIndex = GetNoiseBiomeIndex(x, y, z);
-			if (paletteIndex >= BiomeIds.Count || paletteIndex < 0)
+			if (paletteIndex >= Biomes.Palette.Count || paletteIndex < 0)
 			{
 				Log.Error($"Can't read biome index [{paletteIndex}] from [{(X << 4) | x}, {(Index << 4) + ChunkColumn.WorldMinY + y}, {(Z << 4) | z}] " +
-					$"in ids [{string.Join(", ", BiomeIds)}] of chunk [{X}, {Index + (ChunkColumn.WorldMinY >> 4)}, {Z}]");
+					$"in ids [{string.Join(", ", Biomes.Palette)}] of chunk [{X}, {Index + (ChunkColumn.WorldMinY >> 4)}, {Z}]");
 				return 0;
 			}
 
-			return (byte) BiomeIds[paletteIndex];
+			return (byte) Biomes.Palette[paletteIndex];
 		}
 
 		internal byte GetNoiseBiomeIndex(int x, int y, int z)
@@ -113,7 +114,7 @@ namespace MiNET.Worlds.Anvil
 
 		private void ResolveBiomes()
 		{
-			var biomes = base.Biomes;
+			var biomes = base.Biomes.Data;
 
 			if (_biomesNoise.Length == 1)
 			{
@@ -195,15 +196,8 @@ namespace MiNET.Worlds.Anvil
 			}
 
 			var biome = _biomeManager.GetNoiseBiome(noiseX, noiseY, noiseZ);
-			var palettedIndex = BiomeIds.IndexOf(biome);
 
-			if (palettedIndex == -1)
-			{
-				BiomeIds.Add(biome);
-				palettedIndex = BiomeIds.IndexOf(biome);
-			}
-
-			return (byte) palettedIndex;
+			return (byte) Biomes.GetPalettedId(biome);
 		}
 
 		private int GetNoiseIndex(int x, int y, int z)
