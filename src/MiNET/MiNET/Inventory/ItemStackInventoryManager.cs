@@ -51,6 +51,7 @@ namespace MiNET.Inventory
 		{
 			stackResponses = new List<StackResponseContainerInfo>();
 			Recipe recipe = null;
+			var craftRepetitions = 0;
 			List<Item> createCache = null;
 
 			foreach (ItemStackAction stackAction in actions)
@@ -58,7 +59,7 @@ namespace MiNET.Inventory
 				{
 					case CraftAction craftAction:
 						{
-							if (!ProcessCraftAction(craftAction, out recipe))
+							if (!ProcessCraftAction(craftAction, out recipe, out craftRepetitions))
 							{
 								return StackResponseStatus.Error;
 							}
@@ -67,7 +68,7 @@ namespace MiNET.Inventory
 						}
 					case CraftCreativeAction craftCreativeAction:
 						{
-							if (!ProcessCraftCreativeAction(craftCreativeAction, out recipe))
+							if (!ProcessCraftCreativeAction(craftCreativeAction, out recipe, out craftRepetitions))
 							{
 								return StackResponseStatus.Error;
 							}
@@ -87,7 +88,7 @@ namespace MiNET.Inventory
 						}
 					case CraftResultDeprecatedAction craftResultDeprecatedAction:
 						{
-							if (!ProcessCraftResultDeprecatedAction(craftResultDeprecatedAction, recipe, stackResponses, out createCache))
+							if (!ProcessCraftResultDeprecatedAction(craftResultDeprecatedAction, recipe, craftRepetitions, stackResponses, out createCache))
 							{
 								return StackResponseStatus.Error;
 							}
@@ -502,7 +503,7 @@ namespace MiNET.Inventory
 			SetContainerItem(ContainerId.CreatedOutput, 50, createCache[action.ResultSlot]);
 		}
 
-		protected virtual bool ProcessCraftResultDeprecatedAction(CraftResultDeprecatedAction action, Recipe recipe, List<StackResponseContainerInfo> stackResponses, out List<Item> createCache)
+		protected virtual bool ProcessCraftResultDeprecatedAction(CraftResultDeprecatedAction action, Recipe recipe, int repetitions, List<StackResponseContainerInfo> stackResponses, out List<Item> createCache)
 		{
 			createCache = null;
 			if (recipe == null) return false;
@@ -517,7 +518,7 @@ namespace MiNET.Inventory
 			if (!RecipeManager.ValidateRecipe(
 				recipe,
 				_player.Inventory.UiInventory.Slots.Skip(28).Take(13).ToList(), 
-				action.TimesCrafted,
+				action.TimesCrafted * repetitions,
 				out var resultItems,
 				out var consumeItems))
 			{
@@ -578,13 +579,22 @@ namespace MiNET.Inventory
 		{
 		}
 
-		protected virtual bool ProcessCraftAction(CraftAction action, out Recipe recipe)
+		protected virtual bool ProcessCraftAction(CraftAction action, out Recipe recipe, out int repetitions)
 		{
-			return RecipeManager.NetworkIdRecipeMap.TryGetValue((int) action.RecipeNetworkId, out recipe);
+			repetitions = 0;
+
+			if (RecipeManager.NetworkIdRecipeMap.TryGetValue((int) action.RecipeNetworkId, out recipe))
+			{
+				repetitions = action.Repetitions;
+				return true;
+			}
+
+			return false;
 		}
 
-		protected virtual bool ProcessCraftCreativeAction(CraftCreativeAction action, out Recipe recipe)
+		protected virtual bool ProcessCraftCreativeAction(CraftCreativeAction action, out Recipe recipe, out int repetitions)
 		{
+			repetitions = 0;
 			recipe = null;
 			if (_player.GameMode != GameMode.Creative) return false;
 
@@ -600,6 +610,7 @@ namespace MiNET.Inventory
 			//_player.Inventory.UiInventory.Slots[50] = creativeItem;
 
 			recipe = new ShapelessRecipe(creativeItem, new());
+			repetitions = action.Repetitions;
 			return true;
 		}
 
