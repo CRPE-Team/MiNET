@@ -5191,22 +5191,22 @@
     {
         "name": "minecraft:chemical_heat"
     },
-    {
-        "block_states": "CgAAAQkAY29sb3JfYml0AAgWAHRvcmNoX2ZhY2luZ19kaXJlY3Rpb24HAHVua25vd24A",
-        "name": "minecraft:colored_torch_rg"
-    },
-    {
-        "block_states": "CgAAAQkAY29sb3JfYml0AQgWAHRvcmNoX2ZhY2luZ19kaXJlY3Rpb24HAHVua25vd24A",
-        "name": "minecraft:colored_torch_rg"
-    },
-    {
-        "block_states": "CgAAAQkAY29sb3JfYml0AAgWAHRvcmNoX2ZhY2luZ19kaXJlY3Rpb24HAHVua25vd24A",
-        "name": "minecraft:colored_torch_bp"
-    },
-    {
-        "block_states": "CgAAAQkAY29sb3JfYml0AQgWAHRvcmNoX2ZhY2luZ19kaXJlY3Rpb24HAHVua25vd24A",
-        "name": "minecraft:colored_torch_bp"
-    },
+    //{
+    //    "block_states": "CgAAAQkAY29sb3JfYml0AAgWAHRvcmNoX2ZhY2luZ19kaXJlY3Rpb24HAHVua25vd24A",
+    //    "name": "minecraft:colored_torch_rg"
+    //},
+    //{
+    //    "block_states": "CgAAAQkAY29sb3JfYml0AQgWAHRvcmNoX2ZhY2luZ19kaXJlY3Rpb24HAHVua25vd24A",
+    //    "name": "minecraft:colored_torch_rg"
+    //},
+    //{
+    //    "block_states": "CgAAAQkAY29sb3JfYml0AAgWAHRvcmNoX2ZhY2luZ19kaXJlY3Rpb24HAHVua25vd24A",
+    //    "name": "minecraft:colored_torch_bp"
+    //},
+    //{
+    //    "block_states": "CgAAAQkAY29sb3JfYml0AQgWAHRvcmNoX2ZhY2luZ19kaXJlY3Rpb24HAHVua25vd24A",
+    //    "name": "minecraft:colored_torch_bp"
+    //},
     {
         "name": "minecraft:medicine"
     },
