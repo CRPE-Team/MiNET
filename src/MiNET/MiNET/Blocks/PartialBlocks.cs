@@ -825,14 +825,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Anvil : Block
+	public partial class Anvil : AnvilBase
 	{
 		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:anvil";
 
 		[StateEnum("east", "north", "south", "west")]
-		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5008,14 +5008,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class ChippedAnvil : Block
+	public partial class ChippedAnvil : AnvilBase
 	{
 		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:chipped_anvil";
 
 		[StateEnum("east", "north", "south", "west")]
-		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6915,14 +6915,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cyan_wool";
 	} // class
 
-	public partial class DamagedAnvil : Block
+	public partial class DamagedAnvil : AnvilBase
 	{
 		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:damaged_anvil";
 
 		[StateEnum("east", "north", "south", "west")]
-		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8590,14 +8590,14 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:deny";
 	} // class
 
-	public partial class DeprecatedAnvil : Block
+	public partial class DeprecatedAnvil : AnvilBase
 	{
 		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
 
 		public override string Id => "minecraft:deprecated_anvil";
 
 		[StateEnum("east", "north", "south", "west")]
-		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{

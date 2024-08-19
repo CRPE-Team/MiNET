@@ -534,6 +534,10 @@ namespace MiNET.Test
 			{
 				return nameof(CoralFanBase);
 			}
+			if (name.EndsWith("anvil"))
+			{
+				return nameof(AnvilBase);
+			}
 
 			return nameof(Block);
 		}

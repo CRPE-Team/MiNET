@@ -32,9 +32,11 @@ using static MiNET.Entities.Entity;
 
 namespace MiNET.Blocks
 {
-	public partial class Anvil : Block
+	public abstract class AnvilBase : Block
 	{
-		public Anvil() : base()
+		public virtual string CardinalDirection { get; set; }
+
+		public AnvilBase() : base()
 		{
 			IsTransparent = true;
 			BlastResistance = 6000;

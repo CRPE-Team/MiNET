@@ -264,10 +264,6 @@ namespace MiNET.Net
 			{
 				settings.ExperimentalGameplayOverride = packet.ReadBool();
 			}
-			else
-			{
-				settings.ExperimentalGameplayOverride = false;
-			}
 
 			settings.ChatRestrictionLevel = packet.ReadByte();
 			settings.IsDisablePlayerInteractions = packet.ReadBool();
