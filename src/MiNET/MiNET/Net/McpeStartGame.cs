@@ -174,7 +174,6 @@ namespace MiNET.Net
 			packet.Write(IsTexturepacksRequired);
 			packet.Write(GameRules);
 			packet.Write(Experiments);
-			packet.Write(false); //ExperimentsPreviouslyToggled
 			packet.Write(BonusChest);
 			packet.Write(MapEnabled);
 			packet.Write(PermissionLevel);
@@ -194,7 +193,7 @@ namespace MiNET.Net
 			packet.Write(LimitedWorldLength);
 			packet.Write(IsNewNether);
 			packet.Write(EduSharedUriResource ?? new EducationUriResource("", ""));
-			packet.Write(false);
+			packet.Write(ExperimentalGameplayOverride);
 			packet.Write(ChatRestrictionLevel);
 			packet.Write(IsDisablePlayerInteractions);
 			packet.Write(ServerIdentifier);
@@ -204,74 +203,62 @@ namespace MiNET.Net
 
 		public static LevelSettings Read(Packet packet)
 		{
-			var settings = new LevelSettings();
-
-			settings.Seed = packet.ReadLong();
-
-			settings.SpawnSettings = SpawnSettings.Read(packet);
-
-			settings.Generator = packet.ReadSignedVarInt();
-			settings.GameMode = packet.ReadSignedVarInt();
-			settings.Hardcore = packet.ReadBool();
-			settings.Difficulty = packet.ReadSignedVarInt();
-
-			settings.X = packet.ReadSignedVarInt();
-			settings.Y = packet.ReadVarInt();
-			settings.Z = packet.ReadSignedVarInt();
-
-			settings.HasAchievementsDisabled = packet.ReadBool();
-			settings.EditorWorldType = packet.ReadVarInt();
-			settings.CreatedInEditorMode = packet.ReadBool();
-			settings.ExportedFromEditorMode= packet.ReadBool();
-			settings.Time = packet.ReadSignedVarInt();
-			settings.EduOffer = packet.ReadSignedVarInt();
-			settings.HasEduFeaturesEnabled = packet.ReadBool();
-			settings.EduProductUuid = packet.ReadString();
-			settings.RainLevel = packet.ReadFloat();
-			settings.LightningLevel = packet.ReadFloat();
-			settings.HasConfirmedPlatformLockedContent = packet.ReadBool();
-			settings.IsMultiplayer = packet.ReadBool();
-			settings.BroadcastToLan = packet.ReadBool();
-			settings.XboxLiveBroadcastMode = packet.ReadVarInt();
-			settings.PlatformBroadcastMode = packet.ReadVarInt();
-			settings.EnableCommands = packet.ReadBool();
-			settings.IsTexturepacksRequired = packet.ReadBool();
-			settings.GameRules = packet.ReadGameRules();
-			settings.Experiments = packet.ReadExperiments();
-			packet.ReadBool();
-			settings.BonusChest = packet.ReadBool();
-			settings.MapEnabled = packet.ReadBool();
-			settings.PermissionLevel = packet.ReadByte();
-			settings.ServerChunkTickRange = packet.ReadInt();
-			settings.HasLockedBehaviorPack = packet.ReadBool();
-			settings.HasLockedResourcePack = packet.ReadBool();
-			settings.IsFromLockedWorldTemplate = packet.ReadBool();
-			settings.UseMsaGamertagsOnly = packet.ReadBool();
-			settings.IsFromWorldTemplate = packet.ReadBool();
-			settings.IsWorldTemplateOptionLocked = packet.ReadBool();
-			settings.OnlySpawnV1Villagers = packet.ReadBool();
-			settings.IsDisablingPersonas = packet.ReadBool();
-			settings.IsDisablingCustomSkins = packet.ReadBool();
-			settings.EmoteChatMuted = packet.ReadBool();
-			settings.GameVersion = packet.ReadString();
-
-			settings.LimitedWorldWidth = packet.ReadInt();
-			settings.LimitedWorldLength = packet.ReadInt();
-			settings.IsNewNether = packet.ReadBool();
-			settings.EduSharedUriResource = packet.ReadEducationUriResource();
-
-			if (packet.ReadBool())
+			return new LevelSettings()
 			{
-				settings.ExperimentalGameplayOverride = packet.ReadBool();
-			}
-
-			settings.ChatRestrictionLevel = packet.ReadByte();
-			settings.IsDisablePlayerInteractions = packet.ReadBool();
-			settings.ServerIdentifier = packet.ReadString();
-			settings.WorldIdentifier = packet.ReadString();
-			settings.ScenarioIdentifier = packet.ReadString();
-
-			return settings;
+				Seed = packet.ReadLong(),
+				SpawnSettings = SpawnSettings.Read(packet),
+				Generator = packet.ReadSignedVarInt(),
+				GameMode = packet.ReadSignedVarInt(),
+				Hardcore = packet.ReadBool(),
+				Difficulty = packet.ReadSignedVarInt(),
+				X = packet.ReadSignedVarInt(),
+				Y = packet.ReadVarInt(),
+				Z = packet.ReadSignedVarInt(),
+				HasAchievementsDisabled = packet.ReadBool(),
+				EditorWorldType = packet.ReadVarInt(),
+				CreatedInEditorMode = packet.ReadBool(),
+				ExportedFromEditorMode = packet.ReadBool(),
+				Time = packet.ReadSignedVarInt(),
+				EduOffer = packet.ReadSignedVarInt(),
+				HasEduFeaturesEnabled = packet.ReadBool(),
+				EduProductUuid = packet.ReadString(),
+				RainLevel = packet.ReadFloat(),
+				LightningLevel = packet.ReadFloat(),
+				HasConfirmedPlatformLockedContent = packet.ReadBool(),
+				IsMultiplayer = packet.ReadBool(),
+				BroadcastToLan = packet.ReadBool(),
+				XboxLiveBroadcastMode = packet.ReadVarInt(),
+				PlatformBroadcastMode = packet.ReadVarInt(),
+				EnableCommands = packet.ReadBool(),
+				IsTexturepacksRequired = packet.ReadBool(),
+				GameRules = packet.ReadGameRules(),
+				Experiments = packet.ReadExperiments(),
+				BonusChest = packet.ReadBool(),
+				MapEnabled = packet.ReadBool(),
+				PermissionLevel = packet.ReadByte(),
+				ServerChunkTickRange = packet.ReadInt(),
+				HasLockedBehaviorPack = packet.ReadBool(),
+				HasLockedResourcePack = packet.ReadBool(),
+				IsFromLockedWorldTemplate = packet.ReadBool(),
+				UseMsaGamertagsOnly = packet.ReadBool(),
+				IsFromWorldTemplate = packet.ReadBool(),
+				IsWorldTemplateOptionLocked = packet.ReadBool(),
+				OnlySpawnV1Villagers = packet.ReadBool(),
+				IsDisablingPersonas = packet.ReadBool(),
+				IsDisablingCustomSkins = packet.ReadBool(),
+				EmoteChatMuted = packet.ReadBool(),
+				GameVersion = packet.ReadString(),
+				LimitedWorldWidth = packet.ReadInt(),
+				LimitedWorldLength = packet.ReadInt(),
+				IsNewNether = packet.ReadBool(),
+				EduSharedUriResource = packet.ReadEducationUriResource(),
+				ExperimentalGameplayOverride = packet.ReadBool() && packet.ReadBool(),
+				ChatRestrictionLevel = packet.ReadByte(),
+				IsDisablePlayerInteractions = packet.ReadBool(),
+				ServerIdentifier = packet.ReadString(),
+				WorldIdentifier = packet.ReadString(),
+				ScenarioIdentifier = packet.ReadString(),
+			};
 		}
 	}
 
@@ -316,8 +303,8 @@ namespace MiNET.Net
 			Write(spawn);
 			Write(rotation);
 			
-			LevelSettings s = levelSettings ?? new LevelSettings();
-			s.Write(this);
+			var settings = levelSettings ?? new LevelSettings();
+			settings.Write(this);
 			
 			Write(levelId);
 			Write(worldName);
