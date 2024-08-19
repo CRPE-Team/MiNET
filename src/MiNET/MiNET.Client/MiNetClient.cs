@@ -324,7 +324,7 @@ namespace MiNET.Client
 		{
 			return recipeIngredient switch
 			{
-				RecipeItemIngredient itemIngredient => ItemFactory.GetItem(itemIngredient.Id, itemIngredient.Metadata, itemIngredient.Count),
+				RecipeItemIngredient itemIngredient => itemIngredient.Item,
 				RecipeAirIngredient => new ItemAir(),
 				RecipeTagIngredient tagIngredient => ItemFactory.GetItem(ItemFactory.ItemTags[tagIngredient.Tag].First(), count: tagIngredient.Count),
 				_ => throw new ArgumentException($"Unexpected recipe type [{recipeIngredient.GetType()}] ingredient: [{recipeIngredient}]")
