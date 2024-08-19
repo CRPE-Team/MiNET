@@ -7,7 +7,7 @@ namespace MiNET.Net.Crafting
 	{
 		public abstract RecipeIngredientType Type { get; }
 
-		public int Count { get; set; }
+		public virtual int Count { get; set; }
 
 		public void Write(Packet packet)
 		{
@@ -58,15 +58,13 @@ namespace MiNET.Net.Crafting
 	{
 		public override RecipeIngredientType Type => RecipeIngredientType.StringIdMeta;
 
-		public string Id { get; set; }
+		public Item Item { get; set; }
 
-		public short Metadata { get; set; }
+		public override int Count { get => Item.Count; set => Item.Count = (byte) value; }
 
-		public RecipeItemIngredient(string id, short metadata, int count = 1)
+		public RecipeItemIngredient(Item item)
 		{
-			Id = id;
-			Metadata = metadata;
-			Count = count;
+			Item = item;
 		}
 
 		protected RecipeItemIngredient()
@@ -76,31 +74,34 @@ namespace MiNET.Net.Crafting
 
 		protected override void WriteData(Packet packet)
 		{
-			packet.Write(Id);
-			packet.Write(Metadata);
+			packet.Write(Item.Id);
+			packet.Write(Item is ItemBlock itemBlock ? itemBlock.Block.Data : Item.Metadata);
 		}
 
 		internal static RecipeIngredient ReadData(Packet packet)
 		{
-			return new RecipeItemIngredient()
-			{
-				Id = packet.ReadString(),
-				Metadata = packet.ReadShort()
-			};
+			return new RecipeItemIngredient(ItemFactory.GetItem(
+				packet.ReadString(), 
+				packet.ReadShort()));
 		}
 
 		public override bool ValidateItem(Item item)
 		{
-			var metadata = item is ItemBlock itemBlock ? itemBlock.Block.Data : item.Metadata;
+			if (item.Id == Item.Id
+				&& (item.Metadata == Item.Metadata || Item.Metadata == short.MaxValue)
+				&& item.Count >= Item.Count)
+			{
+				return true;
+			}
 
-			return item.Id == Id
-				&& (metadata == Metadata || Metadata == short.MaxValue)
-				&& item.Count >= Count;
+			return Item is ItemBlock originItemBlock
+				&& item is ItemBlock itemBlock
+				&& !originItemBlock.Block.Equals(itemBlock.Block);
 		}
 
 		public override string ToString()
 		{
-			return $"Item(id: {Id}, metadata: {Metadata}, count: {Count})";
+			return $"Item(id: {Item.Id}, metadata: {Item.Metadata}, count: {Count})";
 		}
 	}
 

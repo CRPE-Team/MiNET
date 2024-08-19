@@ -329,7 +329,6 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add(new BlockStateMapper("minecraft:spawner", "minecraft:mob_spawner"));
 			_mapper.Add(new BlockStateMapper("minecraft:dirt_path", "minecraft:grass_path"));
 			_mapper.Add(new BlockStateMapper("minecraft:rooted_dirt", "minecraft:dirt_with_roots"));
-			_mapper.Add(new BlockStateMapper("minecraft:dandelion", "minecraft:yellow_flower"));
 			_mapper.Add(new BlockStateMapper("minecraft:snow_block", "minecraft:snow"));
 			_mapper.Add(new BlockStateMapper("minecraft:sugar_cane", "minecraft:reeds"));
 			_mapper.Add(new BlockStateMapper("minecraft:bricks", "minecraft:brick_block"));
@@ -394,9 +393,6 @@ namespace MiNET.Worlds.Anvil
 					new PropertyValueStateMapper("up_west", "up_east")),
 				new BitPropertyStateMapper("triggered")));
 
-			_mapper.Add(new BlockStateMapper("minecraft:coarse_dirt", "minecraft:dirt",
-				context => context.Properties.Add(new NbtString("dirt_type", "coarse"))));
-
 			_mapper.Add(new BlockStateMapper("minecraft:snow", "minecraft:snow_layer",
 				new PropertyStateMapper("layers",
 					(_, _, property) => new NbtString("height", (int.Parse(property.Value) - 1).ToString()))));
@@ -410,9 +406,6 @@ namespace MiNET.Worlds.Anvil
 
 			_mapper.Add(new BlockStateMapper("minecraft:farmland",
 				new PropertyStateMapper("moisture", "moisturized_amount")));
-
-			_mapper.Add(new BlockStateMapper("minecraft:red_sand", "minecraft:sand",
-				new AdditionalPropertyStateMapper("sand_type", "red")));
 
 			_mapper.Add(new BlockStateMapper("minecraft:sponge", new AdditionalPropertyStateMapper("sponge_type", "dry")));
 			_mapper.Add(new BlockStateMapper("minecraft:wet_sponge", "minecraft:sponge", new AdditionalPropertyStateMapper("sponge_type", "wet")));
@@ -493,14 +486,13 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add(new BlockStateMapper("minecraft:respawn_anchor",
 				new PropertyStateMapper("charges", "respawn_anchor_charge")));
 
-			_mapper.Add(new BlockStateMapper("minecraft:prismarine_bricks", "minecraft:prismarine",
-				new AdditionalPropertyStateMapper("prismarine_block_type", "bricks")));
-			_mapper.Add(new BlockStateMapper("minecraft:dark_prismarine", "minecraft:prismarine",
-				new AdditionalPropertyStateMapper("prismarine_block_type", "dark")));
-
-			// TODO: rework after 1.21.20
-			_mapper.Add(new BlockStateMapper("minecraft:light", "minecraft:light_block",
-				new PropertyStateMapper("level", "block_light_level")));
+			var lightBlockMap = new BlockStateMapper(context =>
+			{
+				var lightLevel = context.Properties["level"].StringValue;
+				context.Properties.Clear();
+				return $"minecraft:light_block_{lightLevel}";
+			});
+			_mapper.Add("minecraft:light", lightBlockMap);
 
 			#region Facing
 
@@ -922,25 +914,6 @@ namespace MiNET.Worlds.Anvil
 
 			#endregion
 
-			#region Stone bricks
-
-			var stonebrickMap = new BlockStateMapper("minecraft:stonebrick",
-				context =>
-				{
-					var stonebrickType = context.AnvilName.Replace("minecraft:", "").Replace("_stone_bricks", "");
-					if (stonebrickType == "stone_bricks")
-						stonebrickType = "default";
-
-					context.Properties.Add(new NbtString("stone_brick_type", stonebrickType));
-				});
-
-			_mapper.Add("minecraft:stone_bricks", stonebrickMap);
-			_mapper.Add("minecraft:cracked_stone_bricks", stonebrickMap);
-			_mapper.Add("minecraft:mossy_stone_bricks", stonebrickMap);
-			_mapper.Add("minecraft:chiseled_stone_bricks", stonebrickMap);
-
-			#endregion
-
 			#region Campfire
 
 			var campFireMap = new BlockStateMapper(
@@ -962,10 +935,6 @@ namespace MiNET.Worlds.Anvil
 					var plantType = context.AnvilName.Replace("potted_", "")
 						.Replace("dead_bush", "deadbush")
 						.Replace("azalea_bush", "azalea");
-
-					// TODO: Remove after 1.21.20
-					plantType = plantType.Replace("dandelion", "yellow_flower");
-					// TODO: Remove after 1.21.20
 
 					var block = BlockFactory.GetBlockById(plantType);
 					if (block?.IsValidStates ?? false)
@@ -1125,111 +1094,9 @@ namespace MiNET.Worlds.Anvil
 				}
 			}
 
-			var obsoleteSlabMapFunc = (string slabName, string doubleSlabName, NbtCompound properties) =>
-			{
-				bool doubleSlab = false;
-
-				var type = properties["type"].StringValue;
-				if (type == "double")
-				{
-					doubleSlab = true;
-				}
-				else
-				{
-					properties.Add(new NbtString("minecraft:vertical_half", type));
-				}
-
-				var slabType = slabName.Replace("minecraft:", "").Replace("_slab", "");
-
-				var stoneSlabType = slabType switch
-				{
-					"smooth_stone" => slabType,
-					"sandstone" => slabType,
-					"wood" => slabType,
-					"cobblestone" => slabType,
-					"brick" => slabType,
-					"stone_brick" => slabType,
-					"quartz" => slabType,
-					"nether_brick" => slabType,
-					_ => null
-				};
-
-				if (stoneSlabType != null)
-				{
-					if (doubleSlab)
-					{
-						properties.Add(new NbtString("stone_slab_type", stoneSlabType));
-						return "minecraft:double_stone_block_slab";
-					}
-					
-					return slabName;
-				}
-
-				var stoneSlabType2 = slabType switch
-				{
-					"red_sandstone" => slabType,
-					"purpur" => slabType,
-					"prismarine" => "prismarine_rough",
-					"dark_prismarine" => "prismarine_dark",
-					"prismarine_brick" => slabType,
-					"mossy_cobblestone" => slabType,
-					"smooth_sandstone" => slabType,
-					"red_nether_brick" => slabType,
-					_ => null
-				};
-
-				if (stoneSlabType2 != null)
-				{
-					properties.Add(new NbtString("stone_slab_type_2", stoneSlabType2));
-					return doubleSlab ? "minecraft:double_stone_block_slab2" : "minecraft:stone_block_slab2";
-				}
-
-				var stoneSlabType3 = slabType switch
-				{
-					"end_stone_brick" => slabType,
-					"smooth_red_sandstone" => slabType,
-					"polished_andesite" => slabType,
-					"andesite" => slabType,
-					"diorite" => slabType,
-					"polished_diorite" => slabType,
-					"granite" => slabType,
-					"polished_granite" => slabType,
-					_ => null
-				};
-
-				if (stoneSlabType3 != null)
-				{
-					properties.Add(new NbtString("stone_slab_type_3", stoneSlabType3));
-					return doubleSlab ? "minecraft:double_stone_block_slab3" : "minecraft:stone_block_slab3";
-				}
-
-				var stoneSlabType4 = slabType switch
-				{
-					"mossy_stone_brick" => slabType,
-					"smooth_quartz" => slabType,
-					"stone" => slabType,
-					"cut_sandstone" => slabType,
-					"cut_red_sandstone" => slabType,
-					_ => null
-				};
-
-				if (stoneSlabType4 != null)
-				{
-					properties.Add(new NbtString("stone_slab_type_4", stoneSlabType4));
-					return doubleSlab ? "minecraft:double_stone_block_slab4" : "minecraft:stone_block_slab4";
-				}
-
-				return doubleSlab ? doubleSlabName : slabName;
-			};
-
-			foreach (var material in _slabMaterialsList)
-			{
-				var slabName = $"minecraft:{material}_slab";
-				var doubleSlabName = SlabBase.SlabToDoubleSlabMap.GetValueOrDefault(slabName, slabName);
-				_mapper.TryAdd(slabName, new BlockStateMapper(
-					context => obsoleteSlabMapFunc(slabName, doubleSlabName, context.Properties),
-					new SkipPropertyStateMapper("type")));
-			}
+			_mapper.Add("minecraft:stone_slab", new BlockStateMapper(
+						context => slabMapFunc("minecraft:normal_stone_slab", "minecraft:normal_stone_double_slab", context.Properties),
+						new SkipPropertyStateMapper("type")));
 
 			#endregion
 
@@ -1260,35 +1127,6 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add(new BlockStateMapper("minecraft:water_cauldron", null, cauldronMapFunc,
 				cauldronLevelMap,
 				new AdditionalPropertyStateMapper("cauldron_liquid", "water")));
-
-			#endregion
-
-			#region Quartz block
-
-			var quartzBlockMap = new BlockStateMapper(context =>
-				{
-					var chiselType = context.AnvilName.Replace("minecraft:", "") switch
-					{
-						"chiseled_quartz_block" => "chiseled",
-						"quartz_pillar" => "lines",
-						"smooth_quartz" => "smooth",
-						_ => "default"
-					};
-
-					context.Properties.Add(new NbtString("chisel_type", chiselType));
-
-					if (!context.Properties.Contains("axis"))
-					{
-						context.Properties.Add(new NbtString("axis", "x"));
-					}
-
-					return "minecraft:quartz_block";
-				});
-
-			_mapper.Add("minecraft:quartz_block", quartzBlockMap);
-			_mapper.Add("minecraft:chiseled_quartz_block", quartzBlockMap);
-			_mapper.Add("minecraft:quartz_pillar", quartzBlockMap);
-			_mapper.Add("minecraft:smooth_quartz", quartzBlockMap);
 
 			#endregion
 
@@ -1349,21 +1187,7 @@ namespace MiNET.Worlds.Anvil
 
 			#region Anvil
 
-			var anvilMap = new BlockStateMapper("minecraft:anvil",
-				context =>
-				{
-					var name = context.AnvilName.Replace("minecraft:", "");
-
-					var damage = name switch
-					{
-						"chipped_anvil" => "slightly_damaged",
-						"damaged_anvil" => "very_damaged",
-						_ => "undamaged"
-					};
-
-					context.Properties.Add(new NbtString("damage", damage));
-				});
-
+			var anvilMap = new BlockStateMapper(cardinalDirectionMap);
 			_mapper.Add("minecraft:anvil", anvilMap);
 			_mapper.Add("minecraft:chipped_anvil", anvilMap);
 			_mapper.Add("minecraft:damaged_anvil", anvilMap);
@@ -1413,47 +1237,6 @@ namespace MiNET.Worlds.Anvil
 					return context.AnvilName;
 				},
 				directionMap));
-
-			#endregion
-
-			#region Stones
-
-			// TODO: remove sandStones after 1.21.20
-			var sandStoneMap = new BlockStateMapper(
-				context =>
-				{
-					var isRed = context.AnvilName.Contains("red_");
-					var sandStoneType = context.AnvilName.Replace("minecraft:", "").Replace("red_", "") switch
-					{
-						"sandstone" => "default",
-						"chiseled_sandstone" => "heiroglyphs",
-						"cut_sandstone" => "cut",
-						"smooth_sandstone" => "smooth",
-						_ => "default"
-					};
-
-					context.Properties.Add(new NbtString("sand_stone_type", sandStoneType));
-
-					return isRed ? "minecraft:red_sandstone" : "minecraft:sandstone";
-				});
-
-			// TODO: remove after 1.21.20
-			var sandStoneBlocks = new List<string>()
-			{
-				"minecraft:sandstone",
-				"minecraft:cut_sandstone",
-				"minecraft:chiseled_sandstone",
-				"minecraft:smooth_sandstone",
-				"minecraft:red_sandstone",
-				"minecraft:cut_red_sandstone",
-				"minecraft:chiseled_red_sandstone",
-				"minecraft:smooth_red_sandstone"
-			};
-
-			foreach (var sandStoneBlock in sandStoneBlocks)
-			{
-				_mapper.Add(sandStoneBlock, sandStoneMap);
-			}
 
 			#endregion
 
@@ -1546,16 +1329,6 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add(new BlockStateMapper("minecraft:calibrated_sculk_sensor",
 				sculkSensorPhaseMap,
 				powerSkipMap));
-
-
-			// minecraft:infested_*
-			foreach (var stone in _infestedStoneList)
-				_mapper.Add(new BlockStateMapper($"minecraft:infested_{stone.Replace("brick", "bricks")}", "minecraft:monster_egg",
-					context =>
-					{
-						context.Properties.Clear();
-						context.Properties.Add(new NbtString("monster_egg_stone_type", stone));
-					}));
 
 			// minecraft:*_stairs
 			foreach (var material in _slabMaterialsList)
@@ -1736,36 +1509,12 @@ namespace MiNET.Worlds.Anvil
 				new SkipPropertyStateMapper("inverted")));
 
 			//TODO: remove after 1.21.20
-			var coralDirection = new PropertyStateMapper("facing", "coral_direction",
+			var coralMap = new BlockStateMapper(
+				new PropertyStateMapper("facing", "coral_direction",
 					new PropertyValueStateMapper("west", "0"),
 					new PropertyValueStateMapper("east", "1"),
 					new PropertyValueStateMapper("north", "2"),
-					new PropertyValueStateMapper("south", "3"));
-			var coralFanMap = new BlockStateMapper(context =>
-			{
-				if (!context.AnvilName.Contains("_wall_"))
-				{
-					return context.AnvilName;
-				}
-
-				var name = context.AnvilName.Replace("minecraft:", "");
-				var isDead = name.StartsWith("dead_") ? "true" : "false";
-				name = name.Replace("dead_", "");
-				var (hangType, coralHangTypeBit) = name.Split('_').First() switch
-				{
-					"tube" => ("hang", "false"),
-					"brain" => ("hang", "true"),
-					"bubble" => ("hang2", "false"),
-					"fire" => ("hang2", "true"),
-					"horn" => ("hang3", "false"),
-				};
-
-				context.Properties.Add(new NbtString("coral_hang_type_bit", coralHangTypeBit));
-				context.Properties.Add(new NbtString("dead_bit", isDead));
-
-				return $"minecraft:coral_fan_{hangType}";
-			},
-			coralDirection);
+					new PropertyValueStateMapper("south", "3")));
 
 			var coralFans = new[]
 			{
@@ -1792,7 +1541,7 @@ namespace MiNET.Worlds.Anvil
 			};
 			foreach (var coralFan in coralFans)
 			{
-				_mapper.Add(coralFan, coralFanMap);
+				_mapper.Add(coralFan, coralMap);
 			}
 
 			//minecraft:sea_pickle

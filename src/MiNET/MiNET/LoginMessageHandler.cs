@@ -785,6 +785,10 @@ namespace MiNET
 		public void HandleMcpeBossEvent(McpeBossEvent message)
 		{
 		}
+
+		public void HandleMcpeServerboundLoadingScreen(McpeServerboundLoadingScreen message)
+		{
+		}
 	}
 
 	public interface IServerManager

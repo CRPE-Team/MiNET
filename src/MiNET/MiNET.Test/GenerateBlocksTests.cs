@@ -470,9 +470,13 @@ namespace MiNET.Test
 			{
 				return nameof(CarpetBase);
 			}
-			if (id.StartsWith("minecraft:element_"))
+			if (name.StartsWith("element_"))
 			{
 				return nameof(ElementBase);
+			}
+			if (name.StartsWith("infested"))
+			{
+				return nameof(InfestedBlockBase);
 			}
 			if (id.EndsWith("_concrete"))
 			{
@@ -521,6 +525,18 @@ namespace MiNET.Test
 			if (name.EndsWith("wall_sign"))
 			{
 				return nameof(WallSignBase);
+			}
+			if (name.EndsWith("coral_wall_fan"))
+			{
+				return nameof(CoralWallFanBase);
+			}
+			if (name.EndsWith("coral_fan"))
+			{
+				return nameof(CoralFanBase);
+			}
+			if (name.EndsWith("anvil"))
+			{
+				return nameof(AnvilBase);
 			}
 
 			return nameof(Block);

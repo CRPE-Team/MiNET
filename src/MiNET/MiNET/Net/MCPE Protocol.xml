@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.21.2" protocolVersion="686">
+<protocol gameVersion="1.21.20" protocolVersion="712">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -147,8 +147,6 @@
 
 	<pdu id="0x05" online="false" client="false" server="true" name="MCPE_DISCONNECT">
 		<field name="Reason" type="VarInt" />
-		<field name="Hide disconnect reason" type="bool" />	
-		<field name="Message" type="string" />
 	</pdu>
 
 	<pdu id="0x06" online="false" client="false" server="true" name="MCPE_RESOURCE_PACKS_INFO">
@@ -475,6 +473,7 @@
 		<field name="Chestplate" type="Item" />
 		<field name="Leggings" type="Item" />
 		<field name="Boots" type="Item" />
+		<field name="Body" type="Item" />
 	</pdu>
 
 	<pdu id="0x21" online="false" client="true" server="true" name="MCPE_INTERACT">
@@ -595,11 +594,13 @@
 	<pdu id="0x31" online="false" client="true" server="true" name="MCPE_INVENTORY_CONTENT">
 		<field name="Inventory Id" type="UnsignedVarInt" />
 		<field name="Input" type="ItemStacks" />
+		<field name="Dynamic Container Id" type="UnsignedVarInt" />
 	</pdu>
 
 	<pdu id="0x32" online="false" client="true" server="true" name="MCPE_INVENTORY_SLOT">
 		<field name="Inventory Id" type="UnsignedVarInt" />
 		<field name="Slot" type="UnsignedVarInt" />
+		<field name="Dynamic Container Id" type="UnsignedVarInt" />
 		<field name="Item" type="Item" />
 	</pdu>
 
@@ -701,6 +702,7 @@
 		<field name="Dimension" type="SignedVarInt" />
 		<field name="Position" type="Vector3" />
 		<field name="Respawn" type="bool" />
+		<field name="Loading Screen Id" type="int" optional="true" />
 	</pdu>
 
 	<pdu id="0x3e" online="false" client="true" server="true" name="MCPE_SET_PLAYER_GAME_TYPE">
@@ -855,6 +857,7 @@
 	<pdu id="0x57" online="false" client="false" server="true" name="MCPE_STOP_SOUND">
 		<field name="Name" type="string" />
 		<field name="Stop All" type="bool" />
+		<field name="Stop Legacy Music" type="bool" />
 	</pdu>
 
 	<pdu id="0x58" online="false" client="false" server="true" name="MCPE_SET_TITLE">
@@ -873,6 +876,7 @@
 		<field name="Fade Out Time" type="SignedVarInt" />
 		<field name="Xuid" type="string" />
 		<field name="Platform Online Id" type="string" />
+		<field name="Filtered Title Text" type="string" />
 	</pdu>
 
 	<pdu id="0x59" online="false" client="false" server="true" name="MCPE_ADD_BEHAVIOR_TREE">
@@ -936,6 +940,8 @@
 			<enum id="User Busy" value="1" />
 		</enums>
 		<field name="Form Id" type="UnsignedVarInt" />
+		<field name="Data" type ="string" optional="true" />
+		<field name="Cancel Reason" type ="byte" optional="true" />
 	</pdu>
 
 	<pdu id="0x66" online="false" client="true" server="false" name="MCPE_SERVER_SETTINGS_REQUEST">
@@ -1156,8 +1162,6 @@
 			<enum id="Destroy" value="4" />
 			<enum id="Consume" value="5" />
 			<enum id="Create" value="6" />
-			<enum id="Place into bundle" value="7" />
-			<enum id="Take from bundle" value="8" />
 			<enum id="Lab table combine" value="9" />
 			<enum id="Beacon payment" value="10" />
 			<enum id="Mine Block" value="11"/>
@@ -1239,7 +1243,11 @@
 	<pdu id="0xc1" online="false" client="true" server="false" name="MCPE_REQUEST_NETWORK_SETTINGS">
 		<field name="Protocol Version" type="int" endianess="BE" />
 	</pdu>
-	
+
+	<pdu id="0x12c" online="false" client="false" server="true" name="MCPE_CAMERA_INSTRUCTION">
+		
+	</pdu>
+
 	<pdu id="0x12e" online="false" client="false" server="true" name="MCPE_TRIM_DATA">
 	</pdu>
 
@@ -1316,7 +1324,38 @@
 
 	<pdu id="0x136" online="false" client="false" server="true" name="MCPE_CLOSE_FORM">
 	</pdu>
+
+	<pdu id="0x138" online="false" client="true" server="false" name="MCPE_SERVERBOUND_LOADING_SCREEN">
+		<enums id="Serverbound Loading Screen Packet Type">
+			<enum id="Unknown" value="0" />
+			<enum id="Start Loading Screen" value="1" />
+			<enum id="Stop Loading Screen" value="2" />
+		</enums>
+
+		<field name="Loading Screen Type" type="VarInt" />
+		<field name="Loading Screen Id" type="int" optional="true" />
+	</pdu>
+
+	<pdu id="0x139" online="false" client="false" server="true" name="MCPE_JIGSAW_STRUCTURE_DATA">
+		<field name="Nbt" type="Nbt" />
+	</pdu>
+
+	<pdu id="0x13a" online="false" client="false" server="true" name="MCPE_CURRENT_STRUCTURE_FEATURE">
+		<field name="Current Structure Feature" type="string" />
+	</pdu>
 	
+	<pdu id="0x13b" online="false" client="false" server="true" name="MCPE_SERVERBOUND_DIAGNOSTICS">
+		<field name="Avg Fps" type="float" />
+		<field name="Avg Server Sim Tick Time MS" type="float" />
+		<field name="Avg Client Sim Tick Time MS" type="float" />
+		<field name="Avg Begin Frame Time MS" type="float" />
+		<field name="Avg Input Time MS" type="float" />
+		<field name="Avg Render Time MS" type="float" />
+		<field name="Avg End Frame Time MS" type="float" />
+		<field name="Avg Remainder Time Percent" type="float" />
+		<field name="Avg Unaccounted Time Percent" type="float" />	
+	</pdu>
+
 	<pdu id="0xe0" online="false" client="false" server="true" name="MCPE_ALEX_ENTITY_ANIMATION">
 		<field name="Runtime Entity ID" type="UnsignedVarLong" />
 		<field name="Bone Id" type="string" />

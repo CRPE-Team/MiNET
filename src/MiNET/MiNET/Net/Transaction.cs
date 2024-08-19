@@ -107,8 +107,6 @@ namespace MiNET.Net
 				McpeItemStackRequest.ActionType.Destroy => DestroyAction.ReadData(packet),
 				McpeItemStackRequest.ActionType.Consume => ConsumeAction.ReadData(packet),
 				McpeItemStackRequest.ActionType.Create => CreateAction.ReadData(packet),
-				McpeItemStackRequest.ActionType.PlaceIntoBundle => PlaceIntoBundleAction.ReadData(packet),
-				McpeItemStackRequest.ActionType.TakeFromBundle => TakeFromBundleAction.ReadData(packet),
 				//McpeItemStackRequest.ActionType.LabTableCombine => LabTableCombineAction.ReadData(packet), // nothing
 				McpeItemStackRequest.ActionType.BeaconPayment => BeaconPaymentAction.ReadData(packet),
 				McpeItemStackRequest.ActionType.MineBlock => MineBlockAction.ReadData(packet),
@@ -128,13 +126,15 @@ namespace MiNET.Net
 
 	public class StackRequestSlotInfo : IPacketDataObject
 	{
-		public ContainerId ContainerId { get; set; }
+		public FullContainerName ContainerName { get; set; }
+
 		public byte Slot { get; set; }
+
 		public int StackNetworkId { get; set; }
 
 		public void Write(Packet packet)
 		{
-			packet.Write((byte) ContainerId);
+			packet.Write(ContainerName);
 			packet.Write(Slot);
 			packet.WriteVarInt(StackNetworkId);
 		}
@@ -143,9 +143,31 @@ namespace MiNET.Net
 		{
 			return new StackRequestSlotInfo()
 			{
-				ContainerId = (ContainerId) packet.ReadByte(),
+				ContainerName = FullContainerName.Read(packet),
 				Slot = packet.ReadByte(),
 				StackNetworkId = packet.ReadVarInt()
+			};
+		}
+	}
+
+	public class FullContainerName : IPacketDataObject
+	{
+		public ContainerId ContainerId { get; set; }
+
+		public int DynamicId { get; set; }
+
+		public void Write(Packet packet)
+		{
+			packet.Write((byte) ContainerId);
+			packet.Write(DynamicId);
+		}
+
+		public static FullContainerName Read(Packet packet)
+		{
+			return new FullContainerName()
+			{
+				ContainerId = (ContainerId) packet.ReadByte(),
+				DynamicId = packet.ReadInt()
 			};
 		}
 	}
@@ -337,18 +359,23 @@ namespace MiNET.Net
 	public class CraftAction : ItemStackAction
 	{
 		public override McpeItemStackRequest.ActionType Type => McpeItemStackRequest.ActionType.CraftRecipe;
+
 		public uint RecipeNetworkId { get; set; }
+
+		public byte Repetitions { get; set; }
 
 		protected override void WriteData(Packet packet)
 		{
 			packet.WriteUnsignedVarInt(RecipeNetworkId);
+			packet.Write(Repetitions);
 		}
 
 		internal static ItemStackAction ReadData(Packet packet)
 		{
 			return new CraftAction()
 			{
-				RecipeNetworkId = packet.ReadUnsignedVarInt()
+				RecipeNetworkId = packet.ReadUnsignedVarInt(),
+				Repetitions = packet.ReadByte()
 			};
 		}
 	}
@@ -356,13 +383,19 @@ namespace MiNET.Net
 	public class CraftAutoAction : ItemStackAction
 	{
 		public override McpeItemStackRequest.ActionType Type => McpeItemStackRequest.ActionType.CraftRecipeAuto;
+
 		public uint RecipeNetworkId { get; set; }
+
+		public byte Repetitions2 { get; set; }
+
 		public byte Repetitions { get; set; }
+
 		public List<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
 
 		protected override void WriteData(Packet packet)
 		{
 			packet.Write(RecipeNetworkId);
+			packet.Write(Repetitions2);
 			packet.Write(Repetitions);
 
 			packet.Write((byte) RecipeIngredients.Count);
@@ -377,6 +410,7 @@ namespace MiNET.Net
 			var action = new CraftAutoAction()
 			{
 				RecipeNetworkId = packet.ReadUnsignedVarInt(),
+				Repetitions2 = packet.ReadByte(),
 				Repetitions = packet.ReadByte()
 			};
 
@@ -393,18 +427,23 @@ namespace MiNET.Net
 	public class CraftCreativeAction : ItemStackAction
 	{
 		public override McpeItemStackRequest.ActionType Type => McpeItemStackRequest.ActionType.CraftCreative;
+
 		public uint CreativeItemNetworkId { get; set; }
+
+		public byte Repetitions { get; set; }
 
 		protected override void WriteData(Packet packet)
 		{
 			packet.WriteUnsignedVarInt(CreativeItemNetworkId);
+			packet.Write(Repetitions);
 		}
 
 		internal static ItemStackAction ReadData(Packet packet)
 		{
 			return new CraftCreativeAction()
 			{
-				CreativeItemNetworkId = packet.ReadUnsignedVarInt()
+				CreativeItemNetworkId = packet.ReadUnsignedVarInt(),
+				Repetitions = packet.ReadByte()
 			};
 		}
 	}
@@ -434,13 +473,18 @@ namespace MiNET.Net
 	public class GrindstoneStackRequestAction : ItemStackAction
 	{
 		public override McpeItemStackRequest.ActionType Type => McpeItemStackRequest.ActionType.CraftGrindstone;
+
 		public uint RecipeNetworkId { get; set; }
+
 		public int RepairCost { get; set; }
+
+		public byte Repetitions { get; set; }
 
 		protected override void WriteData(Packet packet)
 		{
 			packet.WriteUnsignedVarInt(RecipeNetworkId);
 			packet.WriteVarInt(RepairCost);
+			packet.Write(Repetitions);
 		}
 
 		internal static ItemStackAction ReadData(Packet packet)
@@ -448,7 +492,8 @@ namespace MiNET.Net
 			return new GrindstoneStackRequestAction()
 			{
 				RecipeNetworkId = packet.ReadUnsignedVarInt(),
-				RepairCost = packet.ReadVarInt()
+				RepairCost = packet.ReadVarInt(),
+				Repetitions = packet.ReadByte()
 			};
 		}
 	}
@@ -470,18 +515,6 @@ namespace MiNET.Net
 				PatternId = packet.ReadString()
 			};
 		}
-	}
-
-	public class PlaceIntoBundleAction : TakeOrPlaceAction
-	{
-		public override McpeItemStackRequest.ActionType Type => McpeItemStackRequest.ActionType.PlaceIntoBundle;
-		internal static ItemStackAction ReadData(Packet packet) => ReadData(packet, new PlaceIntoBundleAction());
-	}
-
-	public class TakeFromBundleAction : TakeOrPlaceAction
-	{
-		public override McpeItemStackRequest.ActionType Type => McpeItemStackRequest.ActionType.TakeFromBundle;
-		internal static ItemStackAction ReadData(Packet packet) => ReadData(packet, new TakeFromBundleAction());
 	}
 
 	public class CraftNotImplementedDeprecatedAction : ItemStackAction
@@ -596,12 +629,13 @@ namespace MiNET.Net
 
 	public class StackResponseContainerInfo : IPacketDataObject
 	{
-		public ContainerId ContainerId { get; set; }
-		public List<StackResponseSlotInfo> Slots { get; set; } = new List<StackResponseSlotInfo>();
+        public FullContainerName ContainerName { get; set; }
+
+        public List<StackResponseSlotInfo> Slots { get; set; } = new List<StackResponseSlotInfo>();
 
 		public void Write(Packet packet)
 		{
-			packet.Write((byte) ContainerId);
+			packet.Write(ContainerName);
 
 			packet.WriteLength(Slots.Count);
 			foreach (var slot in Slots)
@@ -614,8 +648,8 @@ namespace MiNET.Net
 		{
 			var response = new StackResponseContainerInfo()
 			{
-				ContainerId = (ContainerId) packet.ReadByte()
-			};
+                ContainerName = FullContainerName.Read(packet)
+            };
 
 			var count = packet.ReadLength();
 			for (var i = 0; i < count; i++)
@@ -811,13 +845,24 @@ namespace MiNET.Net
 	public class ItemUseTransaction : Transaction
 	{
 		public McpeInventoryTransaction.ItemUseAction ActionType { get; set; }
+
+		public TriggerType TriggerType { get; set; }
+
 		public BlockCoordinates Position { get; set; }
+
 		public int Face { get; set; }
+
 		public int Slot { get; set; }
+
 		public Item Item { get; set; }
+
 		public Vector3 FromPosition { get; set; }
+
 		public Vector3 ClickPosition { get; set; }
+
 		public uint BlockRuntimeId { get; set; }
+
+		public PredictedResult ClientInteractPrediction { get; set; }
 
 		protected override void WriteType(Packet packet)
 		{
@@ -827,6 +872,7 @@ namespace MiNET.Net
 		protected override void WriteData(Packet packet)
 		{
 			packet.WriteUnsignedVarInt((uint) ActionType);
+			packet.WriteUnsignedVarInt((uint) TriggerType);
 			packet.Write(Position);
 			packet.WriteSignedVarInt(Face);
 			packet.WriteSignedVarInt(Slot);
@@ -834,6 +880,7 @@ namespace MiNET.Net
 			packet.Write(FromPosition);
 			packet.Write(ClickPosition);
 			packet.WriteUnsignedVarInt(BlockRuntimeId);
+			packet.WriteUnsignedVarInt((uint) ClientInteractPrediction);
 		}
 
 		internal static ItemUseTransaction ReadData(Packet packet)
@@ -841,13 +888,15 @@ namespace MiNET.Net
 			return new ItemUseTransaction()
 			{
 				ActionType = (McpeInventoryTransaction.ItemUseAction) packet.ReadUnsignedVarInt(),
+				TriggerType = (TriggerType) packet.ReadUnsignedVarInt(),
 				Position = packet.ReadBlockCoordinates(),
 				Face = packet.ReadSignedVarInt(),
 				Slot = packet.ReadSignedVarInt(),
 				Item = packet.ReadItem(),
 				FromPosition = packet.ReadVector3(),
 				ClickPosition = packet.ReadVector3(),
-				BlockRuntimeId = packet.ReadUnsignedVarInt()
+				BlockRuntimeId = packet.ReadUnsignedVarInt(),
+				ClientInteractPrediction = (PredictedResult) packet.ReadUnsignedVarInt()
 			};
 		}
 	}
@@ -1052,5 +1101,18 @@ namespace MiNET.Net
 				Action = (McpeInventoryTransaction.CraftingAction) packet.ReadVarInt() 
 			};
 		}
+	}
+
+	public enum PredictedResult
+	{
+		Failure = 0,
+		Success = 1
+	}
+
+	public enum TriggerType
+	{
+		Unknown = 0,
+		PlayerInput = 1,
+		SimulationTick = 2
 	}
 }

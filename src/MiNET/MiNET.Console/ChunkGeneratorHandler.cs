@@ -78,7 +78,7 @@ namespace MiNET.Console
 
 			Client.LevelInfo.LevelName = message.levelId;
 			Client.LevelInfo.Version = 19133;
-			Client.LevelInfo.GameType = message.levelSettings.gamemode;
+			Client.LevelInfo.GameType = message.levelSettings.GameMode;
 
 			BlockPalette = message.blockPalette;
 

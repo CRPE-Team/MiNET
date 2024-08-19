@@ -25,6 +25,7 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Server Player Post Move Position | 0x10 | 16 |   
 | Take Item Entity | 0x11 | 17 |   
 | Move Entity | 0x12 | 18 |   
+| Camera Instruction | 0x12c | 18 |   
 | Trim Data | 0x12e | 18 |   
 | Open Sign | 0x12f | 18 |   
 | Move Player | 0x13 | 19 |   
@@ -33,6 +34,10 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Set Hud | 0x134 | 19 |   
 | Award Achievement | 0x135 | 19 |   
 | Close Form | 0x136 | 19 |   
+| Serverbound Loading Screen | 0x138 | 19 |   
+| Jigsaw Structure Data | 0x139 | 19 |   
+| Current Structure Feature | 0x13a | 19 |   
+| Serverbound Diagnostics | 0x13b | 19 |   
 | Rider Jump | 0x14 | 20 |   
 | Update Block | 0x15 | 21 |   
 | Add Painting | 0x16 | 22 |   
@@ -323,8 +328,6 @@ Wiki: [Disconnect](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Discon
 | Name | Type | Size |
 |:-----|:-----|:-----|
 |Reason | VarInt |  |
-|Hide disconnect reason | bool |  |
-|Message | string |  |
 -----------------------------------------------------------------------
 ### Resource Packs Info (0x06)
 Wiki: [Resource Packs Info](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ResourcePacksInfo)
@@ -953,6 +956,7 @@ Wiki: [Mob Armor Equipment](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 |Chestplate | Item |  |
 |Leggings | Item |  |
 |Boots | Item |  |
+|Body | Item |  |
 -----------------------------------------------------------------------
 ### Interact (0x21)
 Wiki: [Interact](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Interact)
@@ -1257,6 +1261,7 @@ Wiki: [Inventory Content](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol
 |:-----|:-----|:-----|
 |Inventory Id | UnsignedVarInt |  |
 |Input | ItemStacks |  |
+|Dynamic Container Id | UnsignedVarInt |  |
 -----------------------------------------------------------------------
 ### Inventory Slot (0x32)
 Wiki: [Inventory Slot](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-InventorySlot)
@@ -1273,6 +1278,7 @@ Wiki: [Inventory Slot](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-In
 |:-----|:-----|:-----|
 |Inventory Id | UnsignedVarInt |  |
 |Slot | UnsignedVarInt |  |
+|Dynamic Container Id | UnsignedVarInt |  |
 |Item | Item |  |
 -----------------------------------------------------------------------
 ### Container Set Data (0x33)
@@ -1442,6 +1448,7 @@ Wiki: [Change Dimension](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-
 |Dimension | SignedVarInt |  |
 |Position | Vector3 |  |
 |Respawn | bool |  |
+|Loading Screen Id | int |  |
 -----------------------------------------------------------------------
 ### Set Player Game Type (0x3e)
 Wiki: [Set Player Game Type](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetPlayerGameType)
@@ -1867,6 +1874,7 @@ Wiki: [Stop Sound](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-StopSo
 |:-----|:-----|:-----|
 |Name | string |  |
 |Stop All | bool |  |
+|Stop Legacy Music | bool |  |
 -----------------------------------------------------------------------
 ### Set Title (0x58)
 Wiki: [Set Title](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetTitle)
@@ -1888,6 +1896,7 @@ Wiki: [Set Title](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetTitl
 |Fade Out Time | SignedVarInt |  |
 |Xuid | string |  |
 |Platform Online Id | string |  |
+|Filtered Title Text | string |  |
 -----------------------------------------------------------------------
 ### Add Behavior Tree (0x59)
 Wiki: [Add Behavior Tree](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AddBehaviorTree)
@@ -2097,6 +2106,8 @@ Wiki: [Modal Form Response](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 | Name | Type | Size |
 |:-----|:-----|:-----|
 |Form Id | UnsignedVarInt |  |
+|Data | string |  |
+|Cancel Reason | byte |  |
 -----------------------------------------------------------------------
 ### Server Settings Request (0x66)
 Wiki: [Server Settings Request](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ServerSettingsRequest)
@@ -2728,8 +2739,6 @@ Wiki: [Item Stack Request](https://github.com/NiclasOlofsson/MiNET/wiki//Protoco
 |Destroy | 4 |
 |Consume | 5 |
 |Create | 6 |
-|Place Into Bundle | 7 |
-|Take From Bundle | 8 |
 |Lab Table Combine | 9 |
 |Beacon Payment | 10 |
 |Mine Block | 11 |
@@ -2947,6 +2956,20 @@ Wiki: [Request Network Settings](https://github.com/NiclasOlofsson/MiNET/wiki//P
 |:-----|:-----|:-----|
 |Protocol Version | int |  |
 -----------------------------------------------------------------------
+### Camera Instruction (0x12c)
+Wiki: [Camera Instruction](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-CameraInstruction)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+-----------------------------------------------------------------------
 ### Trim Data (0x12e)
 Wiki: [Trim Data](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-TrimData)
 
@@ -3112,6 +3135,83 @@ Wiki: [Close Form](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-CloseF
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
+-----------------------------------------------------------------------
+### Serverbound Loading Screen (0x138)
+Wiki: [Serverbound Loading Screen](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ServerboundLoadingScreen)
+
+**Sent from server:** false  
+**Sent from client:** true
+
+
+
+#### Serverbound Loading Screen Packet Type constants
+
+| Name | Value |
+|:-----|:-----|
+|Unknown | 0 |
+|Start Loading Screen | 1 |
+|Stop Loading Screen | 2 |
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Loading Screen Type | VarInt |  |
+|Loading Screen Id | int |  |
+-----------------------------------------------------------------------
+### Jigsaw Structure Data (0x139)
+Wiki: [Jigsaw Structure Data](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-JigsawStructureData)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Nbt | Nbt |  |
+-----------------------------------------------------------------------
+### Current Structure Feature (0x13a)
+Wiki: [Current Structure Feature](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-CurrentStructureFeature)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Current Structure Feature | string |  |
+-----------------------------------------------------------------------
+### Serverbound Diagnostics (0x13b)
+Wiki: [Serverbound Diagnostics](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ServerboundDiagnostics)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Avg Fps | float |  |
+|Avg Server Sim Tick Time MS | float |  |
+|Avg Client Sim Tick Time MS | float |  |
+|Avg Begin Frame Time MS | float |  |
+|Avg Input Time MS | float |  |
+|Avg Render Time MS | float |  |
+|Avg End Frame Time MS | float |  |
+|Avg Remainder Time Percent | float |  |
+|Avg Unaccounted Time Percent | float |  |
 -----------------------------------------------------------------------
 ### Alex Entity Animation (0xe0)
 Wiki: [Alex Entity Animation](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AlexEntityAnimation)

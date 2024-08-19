@@ -4,6 +4,8 @@ namespace MiNET.Net
 {
 	public class Experiments : List<Experiment>, IPacketDataObject
 	{
+		public bool WereAnyExperimentsAnyToggled { get; set; }
+
 		public void Write(Packet packet)
 		{
 			packet.Write(Count);
@@ -12,6 +14,8 @@ namespace MiNET.Net
 			{
 				packet.Write(experiment);
 			}
+
+			packet.Write(WereAnyExperimentsAnyToggled);
 		}
 
 		public static Experiments Read(Packet packet)
@@ -23,6 +27,8 @@ namespace MiNET.Net
 			{
 				experiments.Add(Experiment.Read(packet));
 			}
+
+			experiments.WereAnyExperimentsAnyToggled = packet.ReadBool();
 
 			return experiments;
 		}

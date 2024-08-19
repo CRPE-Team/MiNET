@@ -231,6 +231,9 @@ namespace MiNET.Net
 				case McpeBossEvent msg:
 					handler.HandleMcpeBossEvent(msg);
 					break;
+				case McpeServerboundLoadingScreen msg:
+					handler.HandleMcpeServerboundLoadingScreen(msg);
+					break;
 
 				default:
 				{
