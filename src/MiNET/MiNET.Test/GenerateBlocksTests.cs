@@ -470,11 +470,11 @@ namespace MiNET.Test
 			{
 				return nameof(CarpetBase);
 			}
-			if (id.StartsWith("minecraft:element_"))
+			if (name.StartsWith("element_"))
 			{
 				return nameof(ElementBase);
 			}
-			if (id.StartsWith("minecraft:infested"))
+			if (name.StartsWith("infested"))
 			{
 				return nameof(InfestedBlockBase);
 			}
