@@ -403,7 +403,7 @@ namespace MiNET.Worlds
 			string levelFileName = Path.Combine(BasePath, "level.dat");
 			Log.Debug($"Saving level.dat to {levelFileName}");
 
-			NbtTag nbt = levelInfo.Serialize();
+			var nbt = levelInfo.Serialize();
 
 			var file = new NbtFile
 			{
@@ -743,7 +743,7 @@ namespace MiNET.Worlds
 		}
 
 
-		public static NbtTag Serialize<T>(this T obj, NbtTag tag = null) where T : new()
+		public static NbtCompound Serialize<T>(this T obj, NbtCompound tag = null) where T : new()
 		{
 			tag ??= new NbtCompound(string.Empty);
 

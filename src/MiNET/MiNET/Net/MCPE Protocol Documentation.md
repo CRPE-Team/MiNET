@@ -368,7 +368,6 @@ Wiki: [Resource Pack Stack](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 |ResourcePackIdVersions | ResourcePackIdVersions |  |
 |Game Version | string |  |
 |Experiments | Experiments |  |
-|Experiments Previously Toggled | bool |  |
 |Use Vanilla Editor Packs | bool |  |
 -----------------------------------------------------------------------
 ### Resource Pack Client Response (0x08)

@@ -43,8 +43,7 @@ namespace MiNET.Worlds.Utils
 
 		public void TryResize(int paletteSize)
 		{
-			if (paletteSize <= _profile.MaxPaletteSize)
-				return;
+			if (paletteSize <= _profile.MaxPaletteSize) return;
 
 			var nextProfile = Profile.ByPaletteSize(paletteSize);
 			var newData = InitData(GetDataSize(nextProfile));

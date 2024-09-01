@@ -147,7 +147,8 @@ namespace MiNET
 			{
 				var destination = new MemoryStream(buffer);
 				destination.Position = 0;
-				NbtBinaryReader reader = new NbtBinaryReader(destination, false);
+				// TODO - WHY NOT VarInt?!?!?!?! 
+				NbtBinaryReader reader = new NbtBinaryReader(destination, NbtFlavor.BedrockNoVarInt);
 
 				var countCertData = reader.ReadInt32();
 				certificateChain = Encoding.UTF8.GetString(reader.ReadBytes(countCertData));
@@ -168,7 +169,7 @@ namespace MiNET
 				{
 					IDictionary<string, dynamic> headers = JWT.Headers(skinData);
 					dynamic payload = JObject.Parse(JWT.Payload(skinData));
-
+					
 					if (Log.IsDebugEnabled) Log.Debug($"Skin JWT Header: {string.Join(";", headers)}");
 					if (Log.IsDebugEnabled) Log.Debug($"Skin JWT Payload:\n{payload.ToString()}");
 

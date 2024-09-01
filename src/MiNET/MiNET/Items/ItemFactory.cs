@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using fNbt;
+using fNbt.Serialization;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Utils;
@@ -70,37 +71,10 @@ namespace MiNET.Items
 			return RuntimeIdToId.GetValueOrDefault(id);
 		}
 
-		public static Item FromNbt<T>(NbtTag tag) where T : Item
-		{
-			return (T) FromNbt(tag);
-		}
-
+		[Obsolete]
 		public static Item FromNbt(NbtTag tag)
 		{
-			// TODO - rework on serialization
-			var id = tag["Name"].StringValue;
-			var metadata = tag["Damage"].ShortValue;
-			var count = tag["Count"].ByteValue;
-			var extraData = tag["tag"] as NbtCompound;
-
-			var item = GetItem(id, metadata, count);
-
-			if (item == null)
-			{
-				//var blockTag = tag["Block"];
-
-				//if (blockTag != null)
-				//{
-				//	var block = BlockFactory.FromNbt(blockTag);
-				//	item = GetItem(block.Id, metadata, count);
-				//}
-
-				if (item == null) return null;
-			}
-
-			item.ExtraData = extraData;
-
-			return item;
+			return NbtConvert.FromNbt<Item>(tag);
 		}
 
 		public static ItemBlock GetItem(Block block, int count = 1)
@@ -116,6 +90,11 @@ namespace MiNET.Items
 		public static T GetItem<T>(int runtimeId, short metadata = 0, int count = 1) where T : Item
 		{
 			return (T) GetItem(runtimeId, metadata, count);
+		}
+
+		public static Item GetItem(int runtimeId, int blockRuntimeId, short metadata = 0, int count = 1)
+		{
+			return GetItem(GetIdByRuntimeId(runtimeId), metadata, count, BlockFactory.GetBlockByRuntimeId(blockRuntimeId));
 		}
 
 		public static Item GetItem(int runtimeId, short metadata = 0, int count = 1)

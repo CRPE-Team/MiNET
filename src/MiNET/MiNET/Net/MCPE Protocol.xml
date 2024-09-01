@@ -165,7 +165,6 @@
 		<field name="ResourcePackIdVersions" type="ResourcePackIdVersions" />
 		<field name="Game Version" type="string" />
 		<field name="Experiments" type="Experiments" />
-		<field name="Experiments Previously Toggled" type="bool" />
 		<field name="Use Vanilla Editor Packs" type="bool" />
 	</pdu>
 

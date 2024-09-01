@@ -389,6 +389,7 @@ namespace MiNET
 		{
 			McpeResourcePackStack packStack = McpeResourcePackStack.CreateObject();
 			packStack.gameVersion = McpeProtocolInfo.GameVersion;
+			packStack.experiments = new Experiments();
 			
 			if (_serverHaveResources)
 			{
@@ -800,7 +801,7 @@ namespace MiNET
 
 			if (blockEntity == null) return;
 
-			blockEntity.SetCompound((NbtCompound) message.namedtag.NbtFile.RootTag);
+			blockEntity.SetCompound(message.namedtag.NbtFile.RootTag);
 			Level.SetBlockEntity(blockEntity);
 		}
 
@@ -978,6 +979,8 @@ namespace MiNET
 				SendSetTime();
 
 				SendStartGame();
+
+				SetGameMode(GameMode);
 
 				SendAvailableEntityIdentifiers();
 
@@ -2915,7 +2918,7 @@ namespace MiNET
 			levelSettings.BonusChest = false;
 			levelSettings.MapEnabled = false;
 			levelSettings.PermissionLevel = (byte) PermissionLevel;
-			levelSettings.GameVersion = "";
+			levelSettings.GameVersion = "*";
 			levelSettings.HasEduFeaturesEnabled = true;
 			
 			var startGame = McpeStartGame.CreateObject();

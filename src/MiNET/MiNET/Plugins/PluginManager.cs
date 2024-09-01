@@ -33,7 +33,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using JetBrains.Annotations;
 using log4net;
 using MiNET.Net;
 using MiNET.Plugins.Attributes;
@@ -791,7 +790,7 @@ namespace MiNET.Plugins
 			return Attribute.IsDefined(param, typeof(ParamArrayAttribute));
 		}
 
-		internal bool ExecuteCommand([NotNull] MethodInfo method, [NotNull] Player player, [NotNull] string[] args, out object result)
+		internal bool ExecuteCommand(MethodInfo method, Player player, string[] args, out object result)
 		{
 			Log.Info($"Execute command {method}, {string.Join(',', args)}");
 

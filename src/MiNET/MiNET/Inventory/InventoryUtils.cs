@@ -13,7 +13,7 @@ namespace MiNET.Inventory
 	{
 		public static List<Item> CreativeInventoryItems { get; } = new List<Item>();
 
-		private static McpeWrapper _creativeInventoryData;
+		private static McpeCreativeContent _creativeInventoryData;
 		private static readonly bool _isEduEnabled;
 
 		static InventoryUtils()
@@ -22,7 +22,7 @@ namespace MiNET.Inventory
 
 			var creativeItems = ResourceUtil.ReadResource<List<ExternalDataItem>>("creativeitems.json", typeof(InventoryUtils), "Data");
 
-			var uniqueId = 0;
+			var uniqueId = 1;
 			foreach (var itemData in creativeItems)
 			{
 				if (TryGetItemFromExternalData(itemData, out var item))
@@ -33,17 +33,14 @@ namespace MiNET.Inventory
 			}
 		}
 
-		public static McpeWrapper GetCreativeInventoryData()
+		public static McpeCreativeContent GetCreativeInventoryData()
 		{
-			// may crash client
 			if (_creativeInventoryData == null)
 			{
 				var creativeContent = McpeCreativeContent.CreateObject();
 				creativeContent.input = GetCreativeMetadataSlots();
-				var packet = Level.CreateMcpeBatch(creativeContent.Encode());
-				creativeContent.PutPool();
-				packet.MarkPermanent(true);
-				_creativeInventoryData = packet;
+				creativeContent.MarkPermanent(true);
+				_creativeInventoryData = creativeContent;
 			}
 
 			return _creativeInventoryData;

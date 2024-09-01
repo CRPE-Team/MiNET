@@ -27,6 +27,7 @@ using System;
 using System.Linq;
 using System.Numerics;
 using fNbt;
+using fNbt.Serialization;
 using log4net;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
@@ -53,13 +54,13 @@ namespace MiNET.Items
 		[Obsolete]
 		public short LegacyId { get; protected set; }
 
-		public virtual string Id { get; protected set; } = string.Empty;
+		[NbtProperty("Name")] public virtual string Id { get; protected set; } = string.Empty;
 		public virtual int RuntimeId => _runtimeId.Value;
 		public int UniqueId { get; set; } = GetUniqueId();
 		public virtual int BlockRuntimeId { get; protected set; }
-		public short Metadata { get; set; }
-		public byte Count { get; set; } = 1;
-		public virtual NbtCompound ExtraData { get; set; }
+		[NbtProperty("Damage")] public short Metadata { get; set; }
+		[NbtProperty] public byte Count { get; set; } = 1;
+		[NbtProperty("tag")] public virtual NbtCompound ExtraData { get; set; }
 
 		public bool Edu { get; protected set; } = false;
 
@@ -238,25 +239,10 @@ namespace MiNET.Items
 			return nbtCheck;
 		}
 
+		[Obsolete]
 		public virtual NbtCompound ToNbt(string name = null)
 		{
-			// TODO - rework on serialization
-			var tag = new NbtCompound(name)
-			{
-				new NbtString("Name", Id),
-				new NbtShort("Damage", Metadata),
-				new NbtByte("Count", Count)
-			};
-
-			if (ExtraData != null)
-			{
-				var extraData = (NbtTag) ExtraData.Clone();
-				extraData.Name = "tag";
-
-				tag.Add(extraData);
-			}
-
-			return tag;
+			return NbtConvert.ToNbt<NbtCompound>(this, name);
 		}
 
 		public override bool Equals(object obj)

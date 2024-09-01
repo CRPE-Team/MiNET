@@ -23,40 +23,18 @@
 
 #endregion
 
-using fNbt;
+using fNbt.Serialization;
 
 namespace MiNET.BlockEntities
 {
 	public class BedBlockEntity : BlockEntity
 	{
+		[NbtProperty("color")]
 		public byte Color { get; set; }
 
 		public BedBlockEntity() : base(BlockEntityIds.Bed)
 		{
 			Color = 0;
-		}
-
-		public override NbtCompound GetCompound()
-		{
-			var compound = new NbtCompound(string.Empty)
-			{
-				new NbtString("id", Id),
-				new NbtByte("color", Color),
-				new NbtInt("x", Coordinates.X),
-				new NbtInt("y", Coordinates.Y),
-				new NbtInt("z", Coordinates.Z)
-			};
-
-			return compound;
-		}
-
-		public override void SetCompound(NbtCompound compound)
-		{
-			NbtByte color;
-			if (compound.TryGet("color", out color))
-			{
-				Color = color.ByteValue;
-			}
 		}
 	}
 }

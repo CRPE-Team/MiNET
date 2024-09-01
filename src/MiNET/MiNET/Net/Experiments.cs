@@ -8,7 +8,7 @@ namespace MiNET.Net
 
 		public void Write(Packet packet)
 		{
-			packet.Write(Count);
+			packet.Write((uint)Count);
 
 			foreach (var experiment in this)
 			{
@@ -21,7 +21,7 @@ namespace MiNET.Net
 		public static Experiments Read(Packet packet)
 		{
 			var experiments = new Experiments();
-			var count = packet.ReadInt();
+			var count = packet.ReadUint();
 
 			for (var i = 0; i < count; i++)
 			{

@@ -47,6 +47,17 @@ namespace MiNET.Blocks.Tests
 
 			Assert.IsTrue(block.IsValidStates);
 			Assert.AreNotEqual(-1, block.RuntimeId);
+			Assert.AreNotEqual(new Stone().RuntimeId, block.RuntimeId);
+		}
+
+		[TestMethod()]
+		public void GetRuntimeIdTest()
+		{
+			var block = new Air();
+
+			Assert.IsTrue(block.IsValidStates);
+			Assert.AreNotEqual(-1, block.RuntimeId);
+			Assert.AreNotEqual(new Stone().RuntimeId, block.RuntimeId);
 		}
 	}
 }

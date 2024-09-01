@@ -24,7 +24,7 @@
 #endregion
 
 using System.Collections.Generic;
-using fNbt;
+using fNbt.Serialization;
 
 namespace MiNET.BlockEntities
 {
@@ -36,63 +36,9 @@ namespace MiNET.BlockEntities
 		public BannerBlockEntity() : base(BlockEntityIds.Banner)
 		{
 		}
-
-		public override NbtCompound GetCompound()
-		{
-			var compound = new NbtCompound(string.Empty)
-			{
-				new NbtInt("x", Coordinates.X),
-				new NbtInt("y", Coordinates.Y),
-				new NbtInt("z", Coordinates.Z),
-				new NbtString("id", Id),
-			};
-
-			if (Patterns.Count > 0)
-			{
-				NbtList items = new NbtList("Patterns", new NbtCompound());
-				foreach (var pattern in Patterns)
-				{
-					items.Add(new NbtCompound
-					{
-						new NbtString("Pattern", pattern.Pattern),
-						new NbtInt("Color", pattern.Color),
-					});
-				}
-				compound.Add(items);
-			}
-
-			compound.Add(new NbtInt("Base", Base));
-
-			return compound;
-		}
-
-		public override void SetCompound(NbtCompound compound)
-		{
-			if (compound == null) return;
-
-			Patterns.Clear();
-
-			var baseColor = compound["Base"];
-			if (baseColor != null)
-			{
-				Base = baseColor.IntValue;
-			}
-
-			NbtList items = (NbtList) compound["Patterns"];
-			if (items != null)
-			{
-				foreach (var item in items)
-				{
-					Patterns.Add(new BannerPattern()
-					{
-						Pattern = item["Pattern"].StringValue,
-						Color = item["Color"].IntValue
-					});
-				}
-			}
-		}
 	}
 
+	[NbtObject]
 	public class BannerPattern
 	{
 		public string Pattern { get; set; }

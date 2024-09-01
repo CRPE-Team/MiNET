@@ -51,7 +51,7 @@ namespace MiNET.Worlds.Tests
 			levelInfo.Time = 269000;
 			levelInfo.SpawnMobs = 1;
 
-			NbtTag nbt = levelInfo.Serialize();
+			var nbt = levelInfo.Serialize();
 			Console.WriteLine(nbt);
 			Assert.IsNotNull(nbt);
 			Assert.IsInstanceOfType(nbt, typeof(NbtCompound));

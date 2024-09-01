@@ -42,13 +42,14 @@
     <EmbeddedResource Include="Worlds\Data\biome_id_map.json" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CRPE-MiNET.fNbt" Version="1.0.11" />
+    <PackageReference Include="CRPE-MiNET.fNbt.Serialization" Version="1.0.11" />
     <PackageReference Include="jose-jwt" Version="4.1.0" />
     <PackageReference Include="LibNoise.NetStandart" Version="0.2.0" />
     <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.0" />
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.9.0" />
     <PackageReference Include="MiNET.astar" Version="1.0.14" />
-    <PackageReference Include="MiNET.fnbt" Version="1.0.22" />
     <PackageReference Include="MiNET.LevelDB" Version="1.0.36" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />

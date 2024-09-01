@@ -25,8 +25,7 @@
 
 using System;
 using System.Numerics;
-using fNbt;
-using JetBrains.Annotations;
+using fNbt.Serialization;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Entities;
@@ -41,14 +40,15 @@ namespace MiNET.Items
 	/// </summary>
 	public abstract class ItemBlock<TBlock> : ItemBlock where TBlock : Block, new()
 	{
-		[JsonIgnore] public new TBlock Block { get => (TBlock) base.Block; }
+		[JsonIgnore]
+		public new TBlock Block { get => (TBlock) base.Block; }
 
 		public ItemBlock() : this(new TBlock())
 		{
 
 		}
 
-		protected ItemBlock([NotNull] TBlock block) : base(block)
+		protected ItemBlock(TBlock block) : base(block)
 		{
 
 		}
@@ -61,7 +61,9 @@ namespace MiNET.Items
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ItemBlock));
 
-		[JsonIgnore] public virtual Block Block { get; protected set; }
+		[JsonIgnore]
+		[NbtProperty]
+		public virtual Block Block { get; protected set; }
 
 		public override int BlockRuntimeId => Block?.RuntimeId ?? -1;
 
@@ -69,7 +71,7 @@ namespace MiNET.Items
 		{
 		}
 
-		internal ItemBlock([NotNull] Block block)
+		internal ItemBlock(Block block)
 		{
 			Block = block ?? throw new ArgumentNullException(nameof(block));
 
@@ -141,15 +143,6 @@ namespace MiNET.Items
 			world.BroadcastSound(newBlock.Coordinates, LevelSoundEventType.Place, newBlock.RuntimeId);
 
 			return true;
-		}
-
-		public override NbtCompound ToNbt(string name = null)
-		{
-			var tag = base.ToNbt(name);
-
-			tag.Add(Block.ToNbt("Block"));
-
-			return tag;
 		}
 
 		public override object Clone()

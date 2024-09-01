@@ -1157,19 +1157,27 @@ namespace MiNET.Worlds.Anvil
 
 				var skullTypeBit = skullType switch
 				{
-					"skeleton" => 0,
-					"wither_skeleton" => 1,
+					"skeleton_skull" => 0,
+					"wither_skeleton_skull" => 1,
 					"zombie" => 2,
 					"player" => 3,
 					"creeper" => 4,
 					"dragon" => 5,
-					_ => 0
+					"piglin" => 6,
+					_ => -1
 				};
+
+				if (skullTypeBit == -1)
+				{
+					Log.Error($"Unknown skull type [{skullType}]");
+					skullTypeBit = 0;
+				}
 
 				context.BlockEntityTemplate = new SkullBlockEntity()
 				{
 					Rotation = rotation,
-					SkullType = (byte) skullTypeBit
+					SkullType = (byte) skullTypeBit,
+					MouthMoving = context.Properties["powered"]?.StringValue == "true"
 				};
 
 				return "minecraft:skull";

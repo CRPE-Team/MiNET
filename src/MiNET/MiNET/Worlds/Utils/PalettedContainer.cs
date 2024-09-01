@@ -52,91 +52,113 @@ namespace MiNET.Worlds.Utils
 
 		public void Clear()
 		{
-			_palette.Clear();
-			_runtimeIdToPaletted.Clear();
+			lock (_palette)
+			{
+				_palette.Clear();
+				_runtimeIdToPaletted.Clear();
 
-			_data = GetEmptyData(_data.BlocksCount);
+				_data = GetEmptyData(_data.BlocksCount);
+			}
 		}
 
 		public int GetBlockRuntimeId(int index)
 		{
-			var palettedId = _data[index];
-
-			if (palettedId >= Palette.Count)
+			lock (_palette)
 			{
-				Log.Error($"Can't read block index [{palettedId}] in ids [{string.Join(", ", Palette)}]");
-				return 0;
-			}
+				var palettedId = _data[index];
 
-			return _palette[palettedId];
+				if (palettedId >= _palette.Count)
+				{
+					Log.Error($"Can't read block index [{palettedId}] in ids [{string.Join(", ", Palette)}]");
+					return 0;
+				}
+
+				return _palette[palettedId];
+			}
 		}
 
 		public void SetBlock(int index, int runtimeId)
 		{
-			_data[index] = GetPalettedId(runtimeId);
+			lock (_palette)
+			{
+				//due to the fact that the instance of the _data field may change
+				//in the process, we should to perform set index on another line!
+				var palettedId = GetPalettedId(runtimeId);
+				_data[index] = palettedId;
+			}
 		}
 
 		public void WriteToStream(MemoryStream stream, bool network = true)
 		{
-			if (!network)
+			lock (_palette)
 			{
-				// TODO - save palette as nbt data
-				throw new NotImplementedException();
-			}
+				if (!network)
+				{
+					// TODO - save palette as nbt data
+					throw new NotImplementedException();
+				}
 
-			stream.WriteByte((byte) ((_data.DataProfile.BlockSize << 1) | Convert.ToByte(network))); // flags
-			_data.WriteToStream(stream);
+				stream.WriteByte((byte) ((_data.DataProfile.BlockSize << 1) | Convert.ToByte(network))); // flags
+				_data.WriteToStream(stream);
 
-			VarInt.WriteSInt32(stream, _palette.Count); // count
+				VarInt.WriteSInt32(stream, _palette.Count); // count
 
-			foreach (var id in _palette)
-			{
-				VarInt.WriteSInt32(stream, id);
+				foreach (var id in _palette)
+				{
+					VarInt.WriteSInt32(stream, id);
+				}
 			}
 		}
 
 		internal void AppendPaletteRange(IEnumerable<int> runtimeIds)
 		{
-			bool wasEmpty = _palette.Count <= 1;
+			lock (_palette)
+			{
+				bool wasEmpty = _palette.Count <= 1;
 
-			foreach (var runtimeId in runtimeIds)
-			{
-				AppendToPalette(runtimeId);
-			}
+				foreach (var runtimeId in runtimeIds)
+				{
+					AppendToPalette(runtimeId);
+				}
 
-			if (wasEmpty)
-			{
-				_data = new PalettedContainerData(_palette.Count, _data.BlocksCount);
-			}
-			else
-			{
-				_data.TryResize(_palette.Count);
+				if (wasEmpty)
+				{
+					_data = new PalettedContainerData(_palette.Count, _data.BlocksCount);
+				}
+				else
+				{
+					_data.TryResize(_palette.Count);
+				}
 			}
 		}
 
 		internal ushort AppedPalette(int runtimeId)
 		{
-			// TODO - lock while resizing
-
-			bool wasEmpty = _palette.Count <= 1;
-
-			var palettedId = AppendToPalette(runtimeId);
-
-			if (wasEmpty && _palette.Count > 1)
+			lock (_palette)
 			{
-				_data = new PalettedContainerData(_palette.Count, _data.BlocksCount);
-			}
-			else
-			{
-				_data.TryResize(_palette.Count);
-			}
+				bool wasEmpty = _palette.Count <= 1;
 
-			return palettedId;
+				var palettedId = AppendToPalette(runtimeId);
+
+				if (wasEmpty && _palette.Count > 1)
+				{
+					_data = new PalettedContainerData(_palette.Count, _data.BlocksCount);
+				}
+				else
+				{
+					_data.TryResize(_palette.Count);
+				}
+
+				return palettedId;
+			}
 		}
 
 		public object Clone()
 		{
-			return new PalettedContainer(new List<int>(_palette), (PalettedContainerData) _data.Clone());
+			lock (_palette)
+			{
+				return new PalettedContainer(new List<int>(_palette), (PalettedContainerData) _data.Clone());
+			}
 		}
 
 		public void Dispose()
@@ -146,12 +168,15 @@ namespace MiNET.Worlds.Utils
 
 		internal ushort GetPalettedId(int runtimeId)
 		{
-			if (!_runtimeIdToPaletted.TryGetValue(runtimeId, out var palettedId))
+			lock (_palette)
 			{
-				palettedId = AppedPalette(runtimeId);
-			}
+				if (!_runtimeIdToPaletted.TryGetValue(runtimeId, out var palettedId))
+				{
+					palettedId = AppedPalette(runtimeId);
+				}
 
-			return palettedId;
+				return palettedId;
+			}
 		}
 
 		private static PalettedContainerData GetEmptyData(ushort blocksCount)

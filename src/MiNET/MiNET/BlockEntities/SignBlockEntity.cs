@@ -23,9 +23,8 @@
 
 #endregion
 
-using System;
 using System.Drawing;
-using fNbt;
+using fNbt.Serialization;
 
 namespace MiNET.BlockEntities
 {
@@ -58,33 +57,9 @@ namespace MiNET.BlockEntities
 		{
 
 		}
-
-		public override NbtCompound GetCompound()
-		{
-			var compound = new NbtCompound(string.Empty)
-			{
-				new NbtString("id", Id),
-				new NbtInt("x", Coordinates.X),
-				new NbtInt("y", Coordinates.Y),
-				new NbtInt("z", Coordinates.Z),
-				BackText.ToNbt(nameof(BackText)),
-				FrontText.ToNbt(nameof(FrontText)),
-				new NbtByte(nameof(IsWaxed), Convert.ToByte(IsWaxed)),
-				new NbtLong(nameof(LockedForEditingBy), LockedForEditingBy)
-			};
-
-			return compound;
-		}
-
-		public override void SetCompound(NbtCompound compound)
-		{
-			BackText = SignText.FromNbt(compound[nameof(BackText)] as NbtCompound);
-			FrontText = SignText.FromNbt(compound[nameof(FrontText)] as NbtCompound);
-			IsWaxed = Convert.ToBoolean(compound[nameof(IsWaxed)].ByteValue);
-			LockedForEditingBy = compound[nameof(LockedForEditingBy)].LongValue;
-		}
 	}
 
+	[NbtObject]
 	public class SignText
 	{
 		/// <summary>
@@ -116,33 +91,6 @@ namespace MiNET.BlockEntities
 		/// Unknown.
 		/// </summary>
 		public string TextOwner { get; set; } = string.Empty;
-
-		public NbtCompound ToNbt(string name = null)
-		{
-			return new NbtCompound(name)
-			{
-				new NbtByte(nameof(HideGlowOutline), Convert.ToByte(HideGlowOutline)),
-				new NbtByte(nameof(IgnoreLighting), Convert.ToByte(IgnoreLighting)),
-				new NbtByte(nameof(PersistFormatting), Convert.ToByte(PersistFormatting)),
-				new NbtInt(nameof(SignTextColor), SignTextColor.ToArgb()),
-				new NbtString(nameof(Text), Text),
-				new NbtString(nameof(TextOwner), TextOwner)
-			};
-		}
-
-		public static SignText FromNbt(NbtCompound nbt)
-		{
-			var result = new SignText();
-
-			result.HideGlowOutline = Convert.ToBoolean(nbt[nameof(HideGlowOutline)].ByteValue);
-			result.IgnoreLighting = Convert.ToBoolean(nbt[nameof(IgnoreLighting)].ByteValue);
-			result.PersistFormatting = Convert.ToBoolean(nbt[nameof(PersistFormatting)].ByteValue);
-			result.SignTextColor = Color.FromArgb(nbt[nameof(SignTextColor)].IntValue);
-			result.Text = nbt[nameof(Text)].StringValue;
-			result.TextOwner = nbt[nameof(TextOwner)].StringValue;
-
-			return result;
-		}
 	}
 
 	public static class SignColor

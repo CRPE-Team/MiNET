@@ -41,11 +41,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using fNbt;
-using fNbt.Tags;
 using Jose;
 using log4net;
-using MiNET.Blocks;
 using MiNET.Entities;
+using MiNET.Inventory;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.Net.Crafting;
@@ -56,7 +55,7 @@ using MiNET.Utils.IO;
 using MiNET.Utils.Metadata;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
-using Org.BouncyCastle.Crypto;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Agreement;
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Modes;
@@ -550,54 +549,30 @@ namespace MiNET.Client
 		public void WriteInventoryToFile(string fileName, ItemStacks slots)
 		{
 			Log.Warn($"Writing inventory to filename: {fileName}");
-			FileStream file = File.OpenWrite(fileName);
+			var items = new List<ExternalDataItem>();
 
-			IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(file));
-
-			writer.WriteLine("// GENERATED CODE. DON'T EDIT BY HAND");
-			writer.Indent++;
-			writer.Indent++;
-			writer.WriteLine("public static List<Item> CreativeInventoryItems = new List<Item>()");
-			writer.WriteLine("{");
-			writer.Indent++;
-
-			foreach (var entry in slots)
+			foreach (var item in slots)
 			{
-				var slot = entry;
-
-				NbtCompound extraData = slot.ExtraData;
-
-				
-				//var matchingBlock = BlockFactory.BlockPalette[slot.RuntimeId];
-				
-				var serialized = SerializeCompound(extraData);
-				writer.WriteLine($"new Item({slot.Id}, {slot.Metadata}, {slot.Count}){{ RuntimeId={slot.BlockRuntimeId}, NetworkId={slot.RuntimeId}, ExtraData = {serialized} }}, /*{slot.Id}*/");
+				items.Add(ToExternalData(item));
 			}
 
-			// Template
-			new ItemAir
+			File.WriteAllText(fileName, JsonConvert.SerializeObject(items, new JsonSerializerSettings()
 			{
-				ExtraData = new NbtCompound
-				{
-					new NbtList("ench")
-					{
-						new NbtCompound
-						{
-							new NbtShort("id", 0),
-							new NbtShort("lvl", 0)
-						}
-					}
-				}
+				Formatting = Formatting.Indented,
+				DefaultValueHandling = DefaultValueHandling.Ignore
+			}));
+		}
+
+		private ExternalDataItem ToExternalData(Item item)
+		{
+			return new ExternalDataItem()
+			{
+				Id = item.Id,
+				Metadata = item.Metadata,
+				ExtraData = item.ExtraData == null ? null : Convert.ToBase64String(Packet.GetNbtData(item.ExtraData, false)),
+				BlockStates = item is ItemBlock itemBlock && itemBlock.Block.States.Any() ? Convert.ToBase64String(Packet.GetNbtData(itemBlock.Block.StatesNbt, false)) : null,
+				Count = 1
 			};
-			//var compound = new NbtCompound(string.Empty) { new NbtList("ench", new NbtCompound()) {new NbtShort("id", 0),new NbtShort("lvl", 0),}, };
-
-			writer.Indent--;
-			writer.WriteLine("};");
-			writer.Indent--;
-			writer.Indent--;
-
-			writer.Flush();
-			file.Close();
 		}
 
 		public string MetadataToCode(MetadataDictionary metadata)

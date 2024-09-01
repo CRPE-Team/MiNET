@@ -33,7 +33,6 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using JetBrains.Annotations;
 using Jose;
 using log4net;
 using MiNET.Net;
@@ -71,7 +70,7 @@ namespace MiNET.Utils.Cryptography
 			return Convert.ToBase64String(input);
 		}
 
-		public static byte[] ToDerEncoded([NotNull] this ECDiffieHellmanPublicKey key)
+		public static byte[] ToDerEncoded(this ECDiffieHellmanPublicKey key)
 		{
 			byte[] asn = new byte[24] {0x30, 0x76, 0x30, 0x10, 0x6, 0x7, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x2, 0x1, 0x6, 0x5, 0x2b, 0x81, 0x4, 0x0, 0x22, 0x3, 0x62, 0x0, 0x4};
 

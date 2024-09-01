@@ -24,51 +24,24 @@
 #endregion
 
 using System.Collections.Generic;
-using fNbt;
+using fNbt.Serialization;
 using MiNET.Items;
 
 namespace MiNET.BlockEntities
 {
 	public class SkullBlockEntity : BlockEntity
 	{
-		public byte Rotation { get; set; }
 		public byte SkullType { get; set; }
+
+		[NbtProperty("Rot")]
+		public byte Rotation { get; set; }
+
+		public bool MouthMoving { get; set; }
+
+		public int MouthTickCount { get; set; }
 
 		public SkullBlockEntity() : base(BlockEntityIds.Skull)
 		{
-		}
-
-		//TAG_Compound: 9 entries {
-		//	TAG_Byte("MouthMoving"): 0
-		//	TAG_Int("MouthTickCount"): 0
-		//	TAG_Byte("Rot"): 13
-		//	TAG_Byte("SkullType"): 0
-		//	TAG_String("id"): "Skull"
-		//	TAG_Byte("isMovable"): 1
-		//	TAG_Int("x"): -1
-		//	TAG_Int("y"): 4
-		//	TAG_Int("z"): -4
-		//}
-
-		public override NbtCompound GetCompound()
-		{
-			var compound = new NbtCompound(string.Empty)
-			{
-				new NbtString("id", Id),
-				new NbtInt("x", Coordinates.X),
-				new NbtInt("y", Coordinates.Y),
-				new NbtInt("z", Coordinates.Z),
-				new NbtByte("SkullType", SkullType),
-				new NbtByte("Rot", Rotation)
-			};
-
-			return compound;
-		}
-
-		public override void SetCompound(NbtCompound compound)
-		{
-			SkullType = compound["SkullType"].ByteValue;
-			Rotation = compound["Rot"].ByteValue;
 		}
 
 		public override List<Item> GetDrops()

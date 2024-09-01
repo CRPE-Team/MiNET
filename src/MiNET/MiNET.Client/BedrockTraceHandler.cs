@@ -189,7 +189,7 @@ namespace MiNET.Client
 		{
 			var slots = message.input;
 
-			string fileName = Path.GetTempPath() + "Inventory_0x79_" + Guid.NewGuid() + ".txt";
+			string fileName = Path.GetTempPath() + "creativeitems_" + Guid.NewGuid() + ".txt";
 			Client.WriteInventoryToFile(fileName, slots);
 		}
 

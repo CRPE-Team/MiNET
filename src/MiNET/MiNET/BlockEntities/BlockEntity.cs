@@ -25,18 +25,28 @@
 
 using System.Collections.Generic;
 using fNbt;
+using fNbt.Serialization;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.BlockEntities
 {
+	[NbtObject]
 	public class BlockEntity
 	{
+		[NbtProperty("id")]
 		public string Id { get; private set; }
+
+		public string CustomName { get; set; }
+
+		[NbtProperty("isMovable")]
+		public bool IsMovable { get; set; }
+
+		[NbtIgnore]
 		public BlockCoordinates Coordinates { get; set; }
 
+		[NbtIgnore]
 		public bool UpdatesOnTick { get; set; }
 
 		public BlockEntity(string id)
@@ -46,11 +56,12 @@ namespace MiNET.BlockEntities
 
 		public virtual NbtCompound GetCompound()
 		{
-			return new NbtCompound();
+			return NbtConvert.ToNbt<NbtCompound>(this);
 		}
 
 		public virtual void SetCompound(NbtCompound compound)
 		{
+			NbtConvert.FromNbt(this, compound);
 		}
 
 		public virtual void OnTick(Level level)

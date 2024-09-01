@@ -675,13 +675,12 @@ namespace MiNET.Net
 			return ReadNbt(_reader);
 		}
 
-		public static Nbt ReadNbt(Stream stream, bool allowAlternativeRootTag = true, bool useVarInt = true)
+		public static Nbt ReadNbt(Stream stream, bool useVarInt = true)
 		{
 			Nbt nbt = new Nbt();
 			NbtFile nbtFile = new NbtFile();
 			nbtFile.BigEndian = false;
 			nbtFile.UseVarInt = useVarInt;
-			nbtFile.AllowAlternativeRootTag = allowAlternativeRootTag;
 
 			nbt.NbtFile = nbtFile;
 			nbtFile.LoadFromStream(stream, NbtCompression.None);
@@ -694,7 +693,6 @@ namespace MiNET.Net
 			NbtFile file = new NbtFile();
 			file.BigEndian = false;
 			file.UseVarInt = useVarInt;
-			file.AllowAlternativeRootTag = false;
 
 			file.LoadFromStream(stream, NbtCompression.None);
 
@@ -843,7 +841,7 @@ namespace MiNET.Net
 
 		public Item ReadItem(bool readUniqueId = true)
 		{
-			int runtimeId = ReadSignedVarInt();
+			var runtimeId = ReadSignedVarInt();
 			if (runtimeId == 0)
 			{
 				return new ItemAir();
@@ -851,27 +849,29 @@ namespace MiNET.Net
 
 			var count = ReadShort();
 			var metadata = ReadUnsignedVarInt();
-
-			Item stack = ItemFactory.GetItem(runtimeId, (short) metadata, count);
+			var uniqueId = 0;
 
 			if (readUniqueId)
 			{
-				if (ReadBool()) stack.UniqueId = ReadVarInt();
+				if (ReadBool()) uniqueId = ReadVarInt();
 			}
 
 			var blockRuntimeId = ReadSignedVarInt();
 
-			int length = ReadLength();
+			var stack = ItemFactory.GetItem(runtimeId, blockRuntimeId, (short) metadata, count);
+			stack.UniqueId = uniqueId;
+
+			var length = ReadLength();
 			var data = ReadBytes(length);
 
 			using (MemoryStream ms = new MemoryStream(data))
 			{
 				using (BinaryReader binaryReader = new BinaryReader(ms))
 				{
-					ushort nbtLen = binaryReader.ReadUInt16();
+					var nbtLen = binaryReader.ReadUInt16();
 					if (nbtLen == 0xffff)
 					{
-						byte version = binaryReader.ReadByte();
+						var version = binaryReader.ReadByte();
 
 						if (version != 1)
 						{
@@ -888,14 +888,14 @@ namespace MiNET.Net
 						throw new Exception($"Fringe nbt length when reading item extra NBT: {nbtLen}");
 					}
 					
-					int canPlace = binaryReader.ReadInt32();
-					for (int i = 0; i < canPlace; i++)
+					var canPlace = binaryReader.ReadInt32();
+					for (var i = 0; i < canPlace; i++)
 					{
 						var l = binaryReader.ReadInt16();
 						binaryReader.ReadBytes(l);
 					}
-					int canBreak = binaryReader.ReadInt32();
-					for (int i = 0; i < canBreak; i++)
+					var canBreak = binaryReader.ReadInt32();
+					for (var i = 0; i < canBreak; i++)
 					{
 						var l = binaryReader.ReadInt16();
 						binaryReader.ReadBytes(l);

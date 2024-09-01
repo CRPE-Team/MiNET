@@ -65,7 +65,7 @@ namespace MiNET.Blocks
 		public static byte[] LuminousBlocks { get; private set; }
 
 		public static Dictionary<string, IBlockStateContainer> MetaBlockNameToState { get; private set; } = new Dictionary<string, IBlockStateContainer>();
-		public static Dictionary<int, string> RuntimeIdToId { get; private set; }
+		public static List<string> RuntimeIdToId { get; private set; }
 		public static Dictionary<string, Type> IdToType { get; private set; } = new Dictionary<string, Type>();
 		public static Dictionary<Type, string> TypeToId { get; private set; } = new Dictionary<Type, string>();
 		public static Dictionary<string, Func<Block>> IdToFactory { get; private set; } = new Dictionary<string, Func<Block>>();
@@ -227,7 +227,7 @@ namespace MiNET.Blocks
 			}
 		}
 
-		private static PaletteBlockStateContainer GetBlockStateContainer(NbtTag tag)
+		internal static PaletteBlockStateContainer GetBlockStateContainer(NbtTag tag)
 		{
 			string name = tag["name"].StringValue;
 
@@ -273,14 +273,8 @@ namespace MiNET.Blocks
 			return result;
 		}
 
-		public static T FromNbt<T>(NbtTag tag) where T : Block
-		{
-			return (T) FromNbt(tag);
-		}
-
 		public static Block FromNbt(NbtTag compound)
 		{
-			// TODO - rework on serialization
 			var id = compound["name"].StringValue;
 
 			var states = new PaletteBlockStateContainer(id, GetBlockStates(compound));
@@ -312,7 +306,7 @@ namespace MiNET.Blocks
 
 		public static string GetIdByRuntimeId(int id)
 		{
-			return RuntimeIdToId.GetValueOrDefault(id);
+			return id > 0 && id < RuntimeIdToId.Count ? RuntimeIdToId[id] : null;
 		}
 
 		[Obsolete("Use block states")]
@@ -450,13 +444,13 @@ namespace MiNET.Blocks
 			return (transparentBlocks, luminousBlocks);
 		}
 
-		private static Dictionary<int, string> BuildRuntimeIdToId()
+		private static List<string> BuildRuntimeIdToId()
 		{
-			var runtimeIdToId = new Dictionary<int, string>();
+			var runtimeIdToId = new List<string>();
 
 			for (var i = 0; i < BlockPalette.Count; i++)
 			{
-				runtimeIdToId.Add(i, BlockPalette[i].Id);
+				runtimeIdToId.Add(BlockPalette[i].Id);
 			}
 
 			return runtimeIdToId;

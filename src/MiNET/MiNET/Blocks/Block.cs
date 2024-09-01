@@ -24,9 +24,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Numerics;
 using fNbt;
+using fNbt.Serialization;
 using log4net;
 using MiNET.Items;
 using MiNET.Particles;
@@ -202,19 +202,10 @@ namespace MiNET.Blocks
 			return new BoundingBox(Coordinates, Coordinates + 1);
 		}
 
+		[Obsolete]
 		public virtual NbtCompound ToNbt(string name = null)
 		{
-			var tag = new NbtCompound(name)
-			{
-				new NbtString("name", Id)
-			};
-
-			if (IsValidStates)
-			{
-				tag.Add((NbtTag) StatesNbt.Clone());
-			}
-
-			return tag;
+			return NbtConvert.ToNbt<NbtCompound>(this, name);
 		}
 
 		public object Clone()

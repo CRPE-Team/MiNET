@@ -88,7 +88,7 @@ namespace MiNET.Net
 
 		public GameRules GameRules { get; set; }
 
-		public Experiments Experiments { get; set; }
+		public Experiments Experiments { get; set; } = new Experiments();
 
 		public bool BonusChest { get; set; }
 

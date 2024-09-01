@@ -26,10 +26,10 @@
 using System.Linq;
 using System.Numerics;
 using fNbt;
+using fNbt.Serialization;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Effects;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -37,51 +37,19 @@ namespace MiNET.BlockEntities
 {
 	public class BeaconBlockEntity : BlockEntity
 	{
-		private NbtCompound Compound { get; set; }
-
-		public int Primary { get; set; } = 1;
-		public int Secondary { get; set; } = 10;
+		[NbtProperty("primary")]
+		public EffectType Primary { get; set; } = EffectType.Speed;
+		[NbtProperty("secondary")]
+		public EffectType Secondary { get; set; } = EffectType.Regeneration;
 
 		public BeaconBlockEntity() : base(BlockEntityIds.Beacon)
 		{
 			UpdatesOnTick = true;
-
-			Compound = new NbtCompound(string.Empty)
-			{
-				new NbtString("id", Id),
-				new NbtInt("primary", Primary),
-				new NbtInt("secondary", Secondary),
-				new NbtInt("x", Coordinates.X),
-				new NbtInt("y", Coordinates.Y),
-				new NbtInt("z", Coordinates.Z),
-			};
-		}
-
-		public override NbtCompound GetCompound()
-		{
-			Compound["x"] = new NbtInt("x", Coordinates.X);
-			Compound["y"] = new NbtInt("y", Coordinates.Y);
-			Compound["z"] = new NbtInt("z", Coordinates.Z);
-			Compound["primary"] = new NbtInt("primary", Primary);
-			Compound["secondary"] = new NbtInt("secondary", Secondary);
-
-			return Compound;
 		}
 
 		public override void SetCompound(NbtCompound compound)
 		{
-			Compound = compound;
-
-			if (compound.TryGet("primary", out NbtInt primary))
-			{
-				Primary = primary.Value;
-			}
-			
-			if (compound.TryGet("secondary", out NbtInt secondary))
-			{
-				Secondary = secondary.Value;
-			}
-			
+			base.SetCompound(compound);
 			_nextUpdate = 0;
 		}
 
@@ -95,13 +63,13 @@ namespace MiNET.BlockEntities
 
 			if (!HaveSkyLight(level)) return;
 
-			int pyramidLevels = GetPyramidLevels(level);
+			var pyramidLevels = GetPyramidLevels(level);
 
-			int duration = 180 + pyramidLevels * 40;
-			int range = 10 + pyramidLevels * 10;
+			var duration = 180 + pyramidLevels * 40;
+			var range = 10 + pyramidLevels * 10;
 
-			EffectType prim = (EffectType) Primary;
-			EffectType sec = (EffectType) Secondary;
+			var prim = Primary;
+			var sec = Secondary;
 
 			var effectPrim = GetEffect(prim);
 
@@ -118,7 +86,7 @@ namespace MiNET.BlockEntities
 
 					if (pyramidLevels == 4 && prim != sec)
 					{
-						Regeneration regen = new Regeneration
+						var regen = new Regeneration
 						{
 							Level = 0,
 							Duration = duration,
@@ -135,11 +103,11 @@ namespace MiNET.BlockEntities
 
 		private bool HaveSkyLight(Level level)
 		{
-			int height = level.GetHeight(Coordinates);
+			var height = level.GetHeight(Coordinates);
 
 			if (height == Coordinates.Y + 1) return true;
 
-			for (int y = 1; y < height - Coordinates.Y; y++)
+			for (var y = 1; y < height - Coordinates.Y; y++)
 			{
 				if (level.IsTransparent(Coordinates + (BlockCoordinates.Up * y))) continue;
 				if (level.IsBlock<Bedrock>(Coordinates + (BlockCoordinates.Up * y))) continue;
@@ -230,11 +198,11 @@ namespace MiNET.BlockEntities
 
 		private int GetPyramidLevels(Level level)
 		{
-			for (int i = 1; i < 5; i++)
+			for (var i = 1; i < 5; i++)
 			{
-				for (int x = -i; x < i + 1; x++)
+				for (var x = -i; x < i + 1; x++)
 				{
-					for (int z = -i; z < i + 1; z++)
+					for (var z = -i; z < i + 1; z++)
 					{
 						var block = level.GetBlock(Coordinates + new BlockCoordinates(x, -i, z));
 						if (block is GoldBlock || block is IronBlock || block is EmeraldBlock || block is DiamondBlock || block is CopperBlock) continue;

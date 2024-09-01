@@ -23,12 +23,33 @@
 
 #endregion
 
+using System.Runtime.CompilerServices;
 using fNbt;
+using fNbt.Serialization;
+using fNbt.Serialization.Handlings;
+using MiNET.Utils.Nbt.Converter;
 
 namespace MiNET.Utils.Nbt
 {
 	public class Nbt
 	{
+		[ModuleInitializer]
+		public static void InitializeSettings()
+		{
+			NbtSerializerSettings.DefaultSettings.LoopReferenceHandling = LoopReferenceHandling.Serialize;
+			NbtSerializerSettings.DefaultSettings.PropertyGetHandling = PropertyGetHandling.Ignore;
+			NbtSerializerSettings.DefaultSettings.PropertySetHandling = PropertySetHandling.Ignore;
+			NbtSerializerSettings.DefaultSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
+			NbtSerializerSettings.DefaultSettings.NullReferenceHandling = NullReferenceHandling.Ignore;
+			NbtSerializerSettings.DefaultSettings.NbtPropertyHandling = NbtPropertyHandling.MarkedOnly;
+
+			NbtSerializerSettings.DefaultSettings.Converters.Add(new ColorNbtConverter());
+			NbtSerializerSettings.DefaultSettings.Converters.Add(new BlockEntityNbtConverter());
+			NbtSerializerSettings.DefaultSettings.Converters.Add(new BlockNbtConverter());
+			NbtSerializerSettings.DefaultSettings.Converters.Add(new ItemNbtConverter());
+			NbtSerializerSettings.DefaultSettings.Converters.Add(new ItemsNbtConverter());
+		}
+
 		public NbtFile NbtFile { get; set; }
 	}
 }

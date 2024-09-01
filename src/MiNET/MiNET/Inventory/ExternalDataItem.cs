@@ -21,7 +21,7 @@ namespace MiNET.Inventory
 		public string Tag { get; set; }
 
 		[DefaultValue(1)]
-		[JsonProperty("count", DefaultValueHandling = DefaultValueHandling.Populate)]
+		[JsonProperty("count", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 		public int Count { get; set; }
 	}
 }
