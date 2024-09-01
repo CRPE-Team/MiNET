@@ -6,10 +6,10 @@
     <Authors>gurun</Authors>
     <Company>Niclas Olofsson</Company>
     <Description>MiNET - a Minecraft PocketEdition Server</Description>
-    <Copyright>Copyright Niclas Olofsson 2015-2018</Copyright>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/NiclasOlofsson/MiNET/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/NiclasOlofsson/MiNET</PackageProjectUrl>
-    <PackageIconUrl><![CDATA[https://secure.gravatar.com/avatar/2ba5d72bdad85108d14512c4d27ea550?s=128&r=g&d=retro]]></PackageIconUrl>
+    <Copyright>Copyright Niclas Olofsson 2015-2018; CRPE-Team 2024</Copyright>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/CRPE-Team/MiNET/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/CRPE-Team/MiNET</PackageProjectUrl>
+	<PackageIconUrl><![CDATA[https://avatars.githubusercontent.com/u/73496612?s=400&u=4d0f621e755951e9b8236be9f955562b3efbbf5f&v=4]]></PackageIconUrl>
     <PackageTags>MiNET Plugin API MCPE Minecraft PocketEdition bedrock</PackageTags>
     <FileVersion>10.0.0.0</FileVersion>
     <AssemblyVersion>10.0.0.0</AssemblyVersion>
