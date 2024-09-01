@@ -5,7 +5,6 @@ using MiNET.Blocks;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
-using MiNET.Worlds;
 
 namespace MiNET.Inventory
 {
@@ -22,7 +21,7 @@ namespace MiNET.Inventory
 
 			var creativeItems = ResourceUtil.ReadResource<List<ExternalDataItem>>("creativeitems.json", typeof(InventoryUtils), "Data");
 
-			var uniqueId = 1;
+			var uniqueId = 0;
 			foreach (var itemData in creativeItems)
 			{
 				if (TryGetItemFromExternalData(itemData, out var item))

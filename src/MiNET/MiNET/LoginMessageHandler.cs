@@ -169,7 +169,7 @@ namespace MiNET
 				{
 					IDictionary<string, dynamic> headers = JWT.Headers(skinData);
 					dynamic payload = JObject.Parse(JWT.Payload(skinData));
-					
+
 					if (Log.IsDebugEnabled) Log.Debug($"Skin JWT Header: {string.Join(";", headers)}");
 					if (Log.IsDebugEnabled) Log.Debug($"Skin JWT Payload:\n{payload.ToString()}");
 
