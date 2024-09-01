@@ -3,8 +3,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>CRPE-MiNET</PackageId>
     <Version>0.0.0</Version>
-    <Authors>gurun</Authors>
-    <Company>Niclas Olofsson</Company>
+    <Authors>gurun; DarkLexFirst; CRPE-Team</Authors>
+    <Company>CRPE-Team</Company>
     <Description>MiNET - a Minecraft PocketEdition Server</Description>
     <Copyright>Copyright Niclas Olofsson 2015-2018; CRPE-Team 2024</Copyright>
     <PackageLicenseUrl>https://raw.githubusercontent.com/CRPE-Team/MiNET/master/LICENSE</PackageLicenseUrl>
