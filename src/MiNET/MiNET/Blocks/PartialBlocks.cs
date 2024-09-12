@@ -9744,7 +9744,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:ender_chest";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
+		public string CardinalDirection { get => _cardinalDirection.Value; set => NotifyStateUpdate(_cardinalDirection, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{

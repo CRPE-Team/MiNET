@@ -23,27 +23,33 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using fNbt;
 using fNbt.Serialization;
+using log4net;
 using MiNET.Items;
+using MiNET.Net;
+using MiNET.Utils.Nbt;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.BlockEntities
 {
 	[NbtObject]
-	public class BlockEntity
+	public class BlockEntity : ICloneable
 	{
+		private static readonly ILog Log = LogManager.GetLogger(typeof(BlockEntity));
+
 		[NbtProperty("id")]
-		public string Id { get; private set; }
+		public string Id { get; }
 
 		public string CustomName { get; set; }
 
 		[NbtProperty("isMovable")]
 		public bool IsMovable { get; set; }
 
-		[NbtIgnore]
+		[NbtFlatProperty(typeof(NbtLowerCaseNamingStrategy))]
 		public BlockCoordinates Coordinates { get; set; }
 
 		[NbtIgnore]
@@ -68,10 +74,46 @@ namespace MiNET.BlockEntities
 		{
 		}
 
+		public virtual void SendData(Player player)
+		{
+			var tag = GetCompound();
+			var nbt = new Nbt() { NbtFile = new NbtFile(tag) { Flavor = NbtFlavor.Bedrock } };
+
+			if (Log.IsDebugEnabled) Log.Debug($"Nbt: {nbt.NbtFile.RootTag}");
+
+			var entityData = McpeBlockEntityData.CreateObject();
+			entityData.namedtag = nbt;
+			entityData.coordinates = Coordinates;
+			player.SendPacket(entityData);
+		}
+
+		public virtual void SendData(Level level)
+		{
+			var tag = GetCompound();
+			var nbt = new Nbt() { NbtFile = new NbtFile(tag) { Flavor = NbtFlavor.Bedrock } };
+
+			if (Log.IsDebugEnabled) Log.Debug($"Nbt: {nbt.NbtFile.RootTag}");
+
+			var entityData = McpeBlockEntityData.CreateObject();
+			entityData.namedtag = nbt;
+			entityData.coordinates = Coordinates;
+			level.RelayBroadcast(entityData);
+		}
+
+		public virtual void RemoveBlockEntity(Level level)
+		{
+
+		}
 
 		public virtual List<Item> GetDrops()
 		{
 			return new List<Item>();
+		}
+
+		public object Clone()
+		{
+			// slow, but common solution
+			return NbtConvert.FromNbt(GetType(), GetCompound());
 		}
 	}
 }

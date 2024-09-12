@@ -23,7 +23,7 @@
 
 #endregion
 
-using fNbt;
+using fNbt.Serialization;
 
 namespace MiNET.BlockEntities
 {
@@ -33,6 +33,8 @@ namespace MiNET.BlockEntities
 		public float DisplayEntityHeight { get; set; } = 1.8f;
 		public float DisplayEntityScale { get; set; } = 1.0f;
 		public float DisplayEntityWidth { get; set; } = 0.8f;
+
+		[NbtProperty("EntityId")]
 		public int EntityTypeId { get; set; } = 1;
 		public short MaxNearbyEntities { get; set; } = 4;
 		public short MinSpawnDelay { get; set; } = 200;
@@ -43,38 +45,6 @@ namespace MiNET.BlockEntities
 
 		public MobSpawnerBlockEntity() : base(BlockEntityIds.MobSpawner)
 		{
-		}
-
-		public override NbtCompound GetCompound()
-		{
-			var compound = new NbtCompound(string.Empty)
-			{
-				new NbtString("id", Id),
-				new NbtInt("x", Coordinates.X),
-				new NbtInt("y", Coordinates.Y),
-				new NbtInt("z", Coordinates.Z),
-
-				new NbtShort("Delay", Delay),
-				new NbtFloat("DisplayEntityHeight", DisplayEntityHeight),
-				new NbtFloat("DisplayEntityScale", DisplayEntityScale),
-				new NbtFloat("DisplayEntityWidth", DisplayEntityWidth),
-				new NbtInt("EntityId", EntityTypeId),
-				new NbtShort("MaxNearbyEntities", MaxNearbyEntities),
-				new NbtShort("MinSpawnDelay", MinSpawnDelay),
-				new NbtShort("MaxSpawnDelay", MaxSpawnDelay),
-				new NbtShort("RequiredPlayerRange", RequiredPlayerRange),
-				new NbtShort("SpawnCount", SpawnCount),
-				new NbtShort("SpawnRange", SpawnRange),
-			};
-
-			return compound;
-		}
-
-		public override void SetCompound(NbtCompound compound)
-		{
-			//NbtByte color;
-			//compound.TryGet("color", out color);
-			//Color = color.ByteValue;
 		}
 	}
 }

@@ -47,13 +47,7 @@ namespace MiNET.Inventory
 
 		public static CreativeItemStacks GetCreativeMetadataSlots()
 		{
-			var slotData = new CreativeItemStacks();
-			for (int i = 0; i < CreativeInventoryItems.Count; i++)
-			{
-				slotData.Add(CreativeInventoryItems[i]);
-			}
-
-			return slotData;
+			return new CreativeItemStacks(CreativeInventoryItems.ToArray());
 		}
 
 		public static bool TryGetItemFromExternalData(ExternalDataItem itemData, out Item result)

@@ -167,7 +167,7 @@ namespace MiNET.Client
 		{
 			CallPacketHandlers(message);
 
-			Log.Debug($"Set container content on Window ID: 0x{message.inventoryId:x2}, Count: {message.input.Count}");
+			Log.Debug($"Set container content on Window ID: 0x{message.inventoryId:x2}, Count: {message.input.Length}");
 
 			if (Client.IsEmulator) return;
 
@@ -800,9 +800,9 @@ namespace MiNET.Client
 							chunk.Z = coordinates.Z;
 							chunk.RecalcHeight();
 							Log.DebugFormat("Chunk X={0}, Z={1}", chunk.X, chunk.Z);
-							foreach (KeyValuePair<BlockCoordinates, NbtCompound> blockEntity in chunk.BlockEntities)
+							foreach (var blockEntity in chunk.BlockEntities)
 							{
-								Log.Debug($"Blockentity: {blockEntity.Value}");
+								Log.Debug($"Blockentity: {blockEntity.Value.GetCompound()}");
 							}
 						}
 					}

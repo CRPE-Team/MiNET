@@ -106,7 +106,6 @@ namespace MiNET.Worlds
 		public bool AllowBreak { get; set; } = true;
 
 		public EntityManager EntityManager { get; protected set; }
-		public InventoryManager InventoryManager { get; protected set; }
 		public EntitySpawnManager EntitySpawnManager { get; protected set; }
 
 		public int ViewDistance { get; set; }
@@ -122,7 +121,6 @@ namespace MiNET.Worlds
 
 			LevelManager = levelManager;
 			EntityManager = entityManager;
-			InventoryManager = new InventoryManager(this);
 			EntitySpawnManager = new EntitySpawnManager(this);
 			LevelId = levelId;
 			GameMode = gameMode;
@@ -1280,67 +1278,53 @@ namespace MiNET.Worlds
 				return blockEntity;
 			}
 
-			ChunkColumn chunk = GetChunk(new ChunkCoordinates(blockCoordinates.X >> 4, blockCoordinates.Z >> 4));
+			var chunk = GetChunk(new ChunkCoordinates(blockCoordinates.X >> 4, blockCoordinates.Z >> 4));
 
-			NbtCompound nbt = chunk?.GetBlockEntity(blockCoordinates);
-			if (nbt == null) return null;
-
-			if (!nbt.TryGet("id", out NbtString idTag)) return null;
-
-			blockEntity = BlockEntityFactory.GetBlockEntityById(idTag.StringValue);
+			blockEntity = chunk?.GetBlockEntity(blockCoordinates);
 			if (blockEntity == null) return null;
-
-			blockEntity.Coordinates = blockCoordinates;
-			blockEntity.SetCompound(nbt);
 
 			return blockEntity;
 		}
 
 		public void SetBlockEntity(BlockEntity blockEntity, bool broadcast = true)
 		{
-			ChunkColumn chunk = GetChunk(new ChunkCoordinates(blockEntity.Coordinates.X >> 4, blockEntity.Coordinates.Z >> 4));
-			chunk.SetBlockEntity(blockEntity.Coordinates, blockEntity.GetCompound());
+			var chunk = GetChunk(blockEntity.Coordinates);
+			chunk.SetBlockEntity(blockEntity);
 
 			if (blockEntity.UpdatesOnTick)
 			{
-				BlockEntities.RemoveAll(entity => entity.Coordinates == blockEntity.Coordinates);
 				BlockEntities.Add(blockEntity);
 			}
 
 			if (!broadcast) return;
 
-			Nbt nbt = new Nbt
-			{
-				NbtFile = new NbtFile
-				{
-					BigEndian = false,
-					UseVarInt = true,
-					RootTag = blockEntity.GetCompound()
-				}
-			};
+			blockEntity.SendData(this);
+		}
 
-			if (Log.IsDebugEnabled) Log.Debug($"Nbt: {nbt.NbtFile.RootTag}");
+		public void UpdateBlockEntity(BlockCoordinates coordinates, NbtCompound tag, bool broadcast = true)
+		{
+			var chunk = GetChunk(coordinates);
 
-			var entityData = McpeBlockEntityData.CreateObject();
-			entityData.namedtag = nbt;
-			entityData.coordinates = blockEntity.Coordinates;
+			tag.Remove("x");
+			tag.Remove("y");
+			tag.Remove("z");
 
-			RelayBroadcast(entityData);
+			var blockEntity = chunk.UpdateBlockEntity(coordinates, tag);
+			if (blockEntity == null) return;
+			if (!broadcast) return;
+
+			blockEntity.SendData(this);
 		}
 
 		public void RemoveBlockEntity(BlockCoordinates blockCoordinates)
 		{
 			ChunkColumn chunk = GetChunk(new ChunkCoordinates(blockCoordinates.X >> 4, blockCoordinates.Z >> 4));
-			var nbt = chunk.GetBlockEntity(blockCoordinates);
+			var blockEntity = chunk.GetBlockEntity(blockCoordinates);
+			if (blockEntity == null) return;
 
-			if (nbt == null) return;
+			blockEntity.RemoveBlockEntity(this);
 
-			var blockEntity = BlockEntities.FirstOrDefault(entity => entity.Coordinates == blockCoordinates);
-			if (blockEntity != null)
-			{
-				BlockEntities.Remove(blockEntity);
-			}
-
+			BlockEntities.Remove(blockEntity);
 			chunk.RemoveBlockEntity(blockCoordinates);
 		}
 
@@ -1445,20 +1429,7 @@ namespace MiNET.Worlds
 			// Revert block entity if exists
 			if (blockEntity != null)
 			{
-				Nbt nbt = new Nbt
-				{
-					NbtFile = new NbtFile
-					{
-						BigEndian = false,
-						RootTag = blockEntity.GetCompound()
-					}
-				};
-
-				var entityData = McpeBlockEntityData.CreateObject();
-				entityData.namedtag = nbt;
-				entityData.coordinates = blockEntity.Coordinates;
-
-				player.SendPacket(entityData);
+				blockEntity.SendData(player);
 			}
 		}
 

@@ -38,7 +38,9 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using fNbt;
+using fNbt.Serialization;
 using log4net;
+using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.LevelDB;
 using MiNET.Utils;
@@ -189,7 +191,7 @@ namespace MiNET.Worlds
 				sw.Stop();
 				if (flatDataBytes != null)
 				{
-					Buffer.BlockCopy(flatDataBytes.AsSpan().Slice(0, 512).ToArray(), 0, chunkColumn.height, 0, 512);
+					Buffer.BlockCopy(flatDataBytes.AsSpan().Slice(0, 512).ToArray(), 0, chunkColumn._height, 0, 512);
 
 					// TODO - 1.20 - update
 					//chunkColumn.biomeId = flatDataBytes.AsSpan().Slice(512, 256).ToArray();
@@ -208,20 +210,17 @@ namespace MiNET.Worlds
 
 					var file = new NbtFile
 					{
-						BigEndian = false,
-						UseVarInt = false
+						Flavor = NbtFlavor.BedrockNoVarInt
 					};
 					int position = 0;
 					do
 					{
 						position += (int) file.LoadFromStream(new MemoryStreamReader(data.Slice(position)), NbtCompression.None);
 
-						NbtTag blockEntityTag = file.RootTag;
-						int x = blockEntityTag["x"].IntValue;
-						int y = blockEntityTag["y"].IntValue;
-						int z = blockEntityTag["z"].IntValue;
+						// TODO - read directly from stream via NbtSerializer
+						var blockEntity = NbtConvert.FromNbt<BlockEntity>(file.RootTag, new() { Flavor = NbtFlavor.BedrockNoVarInt });
 
-						chunkColumn.SetBlockEntity(new BlockCoordinates(x, y, z), (NbtCompound) blockEntityTag);
+						chunkColumn.BlockEntities[blockEntity.Coordinates] = blockEntity;
 					} while (position < data.Length);
 				}
 			}
@@ -444,7 +443,7 @@ namespace MiNET.Worlds
 
 			// Biomes & heights
 			byte[] heightBytes = new byte[512];
-			Buffer.BlockCopy(chunk.height, 0, heightBytes, 0, 512);
+			Buffer.BlockCopy(chunk._height, 0, heightBytes, 0, 512);
 
 			// TODO - 1.20 - update
 			byte[] data2D = Combine(heightBytes, new byte[256]); //Combine(heightBytes, chunk.biomeId);

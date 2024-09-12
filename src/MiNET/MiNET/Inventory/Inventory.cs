@@ -25,10 +25,10 @@
 
 using System;
 using System.Collections.Concurrent;
-using fNbt;
+using System.Linq;
 using log4net;
-using MiNET.BlockEntities;
 using MiNET.Items;
+using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
 
@@ -42,45 +42,33 @@ namespace MiNET.Inventory
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ContainerInventory));
 
-		public event Action<Player, ContainerInventory, byte, Item> InventoryChange;
+		public event EventHandler<InventoryChangeEventArgs> InventoryChanged;
+		public event EventHandler<InventoryOpenEventArgs> InventoryOpen;
+		public event EventHandler<InventoryOpenedEventArgs> InventoryOpened;
+		public event EventHandler<InventoryClosedEventArgs> InventoryClosed;
 
-		public int Id { get; set; }
 		public WindowType Type { get; set; }
-		public ItemStacks Slots { get; set; }
-		public short Size { get; set; }
+		public virtual ItemStacks Slots { get; set; }
+		public byte WindowsId { get; set; } = GetNewWindowId();
+
+		public long RuntimeEntityId { get; set; } = -1;
 		public BlockCoordinates Coordinates { get; set; }
-		public BlockEntity BlockEntity { get; set; }
-		public byte WindowsId { get; set; }
 
-		public ContainerInventory(int id, BlockEntity blockEntity, short inventorySize, NbtList slots)
+		public ContainerInventory(ItemStacks items, long runtimeEntityId)
 		{
-			Id = id;
-			BlockEntity = blockEntity;
-			Size = inventorySize;
-			Coordinates = BlockEntity.Coordinates;
+			Slots = items;
+			RuntimeEntityId = runtimeEntityId;
+		}
 
-			Slots = new ItemStacks();
-			for (byte i = 0; i < Size; i++)
-				Slots.Add(new ItemAir());
-
-			for (byte i = 0; i < slots.Count; i++)
-			{
-				var nbtItem = (NbtCompound) slots[i];
-
-				var slotIdx = nbtItem["Slot"].ByteValue;
-				var item = ItemFactory.FromNbt(nbtItem);
-
-				Log.Debug($"Chest item {slotIdx}: {item}");
-				Slots[slotIdx] = item;
-			}
+		public ContainerInventory(ItemStacks items, BlockCoordinates coordinates)
+		{
+			Slots = items;
+			Coordinates = coordinates;
 		}
 
 		public void SetSlot(Player player, byte slot, Item itemStack)
 		{
 			Slots[slot] = itemStack;
-
-			NbtCompound compound = BlockEntity.GetCompound();
-			compound["Items"] = GetSlots();
 
 			OnInventoryChange(player, slot, itemStack);
 		}
@@ -90,29 +78,38 @@ namespace MiNET.Inventory
 			return Slots[slot];
 		}
 
-		public void DecreaseSlot(byte slot)
+		public bool DecreaseSlot(byte slot)
 		{
 			var slotData = Slots[slot];
-			if (slotData is ItemAir)
-				return;
+			if (slotData is ItemAir) return false;
+			var count = slotData.Count;
 
 			slotData.Count--;
 
 			if (slotData.Count <= 0)
+			{
 				slotData = new ItemAir();
+			}
 
 			SetSlot(null, slot, slotData);
 
+			if (count <= 0) return false;
+
 			OnInventoryChange(null, slot, slotData);
+			return true;
 		}
 
 		public void IncreaseSlot(byte slot, string id, short metadata)
 		{
 			Item slotData = Slots[slot];
 			if (slotData is ItemAir)
+			{
 				slotData = ItemFactory.GetItem(id, metadata, 1);
+			}
 			else
+			{
 				slotData.Count++;
+			}
 
 			SetSlot(null, slot, slotData);
 
@@ -121,30 +118,105 @@ namespace MiNET.Inventory
 
 		public bool IsOpen()
 		{
-			return InventoryChange != null;
+			return Observers.Any();
 		}
 
-
-		private NbtList GetSlots()
+		public virtual bool Open(Player player)
 		{
-			var slots = new NbtList("Items");
-			for (byte i = 0; i < Size; i++)
-			{
-				var slot = Slots[i];
-				var itemTag = slot.ToNbt();
-				itemTag.Add(new NbtByte("Slot", i));
+			var openedInventory = player.GetOpenInventory();
 
-				slots.Add(itemTag);
+			if (this == openedInventory) return true;
+			if (openedInventory != null)
+			{
+				player.CloseOpenedInventory();
 			}
 
-			return slots;
+			var open = !IsOpen();
+			if (!OnInventoryOpen(player, open)) return false;
+
+			player.SetOpenInventory(this);
+
+			AddObserver(player);
+
+			SendOpen(player);
+			SendContent(player);
+
+			OnInventoryOpened(player, open);
+
+			return true;
+		}
+
+		public virtual void Close()
+		{
+			foreach (var observer in Observers.ToArray())
+			{
+				Close(observer);
+			}
+		}
+
+		public virtual bool Close(Player player, bool closedByPlayer = false)
+		{
+			var openedInventory = player.GetOpenInventory();
+
+			if (openedInventory != this)
+			{
+				return false;
+			}
+
+			player.SetOpenInventory(null);
+			RemoveObserver(player);
+
+			var closePacket = McpeContainerClose.CreateObject();
+			closePacket.windowId = WindowsId;
+			closePacket.windowType = (sbyte) Type;
+			closePacket.server = !closedByPlayer;
+			player.SendPacket(closePacket);
+
+			OnInventoryClosed(player, !IsOpen());
+
+			return true;
+		}
+
+		public void SendContent(Player player)
+		{
+			var containerSetContent = McpeInventoryContent.CreateObject();
+			containerSetContent.inventoryId = WindowsId;
+			containerSetContent.input = Slots;
+			player.SendPacket(containerSetContent);
+		}
+
+		protected void SendOpen(Player player)
+		{
+			var containerOpen = McpeContainerOpen.CreateObject();
+			containerOpen.windowId = WindowsId;
+			containerOpen.type = (sbyte) Type;
+			containerOpen.coordinates = Coordinates;
+			containerOpen.runtimeEntityId = RuntimeEntityId;
+			player.SendPacket(containerOpen);
 		}
 
 		protected virtual void OnInventoryChange(Player player, byte slot, Item itemStack)
 		{
-			InventoryChange?.Invoke(player, this, slot, itemStack);
+			InventoryChanged?.Invoke(this, new InventoryChangeEventArgs(player, this, slot, itemStack));
 		}
 
+		protected virtual bool OnInventoryOpen(Player player, bool open)
+		{
+			var args = new InventoryOpenEventArgs(player, this, open);
+			InventoryOpen?.Invoke(this, args);
+
+			return !args.Cancel;
+		}
+
+		protected virtual void OnInventoryOpened(Player player, bool opened)
+		{
+			InventoryOpened?.Invoke(this, new InventoryOpenedEventArgs(player, this, opened));
+		}
+
+		protected virtual void OnInventoryClosed(Player player, bool closed)
+		{
+			InventoryClosed?.Invoke(this, new InventoryClosedEventArgs(player, this, closed));
+		}
 
 		// Below is a workaround making it possible to send
 		// updates to only peopele that is looking at this inventory.
@@ -162,6 +234,13 @@ namespace MiNET.Inventory
 			// Need to arrange for this to work when players get disconnected
 			// from crash. It will leak players for sure.
 			Observers.TryTake(out player);
+		}
+
+		private static byte _lastWindowId;
+
+		private static byte GetNewWindowId()
+		{
+			return _lastWindowId = (byte) Math.Max((byte) WindowId.First, ++_lastWindowId % (byte) WindowId.Last);
 		}
 	}
 }

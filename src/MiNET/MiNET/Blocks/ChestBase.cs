@@ -50,11 +50,32 @@ namespace MiNET.Blocks
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
 			CardinalDirection = ((Direction) player.GetOppositeDirection()).ToString().ToLower();
-			
 
-			var chestBlockEntity = CreateBlockEntity();
-			chestBlockEntity.Coordinates = Coordinates;
-			world.SetBlockEntity(chestBlockEntity);
+			var blockEntity = new ChestBlockEntity();
+			blockEntity.Coordinates = Coordinates;
+
+			foreach (var coords in Coordinates.Get2dAroundCoordinates())
+			{
+				var pairBlock = world.GetBlock(coords);
+
+				if (pairBlock is ChestBase chest 
+					&& pairBlock.Id == Id
+					&& CardinalDirection == chest.CardinalDirection)
+				{
+					var pairBlockEntity = world.GetBlockEntity(coords);
+
+					if (pairBlockEntity is ChestBlockEntity pairChestBlockEntity 
+						&& pairChestBlockEntity.Pair(world, blockEntity))
+					{
+						world.SetBlockEntity(blockEntity);
+						world.SetBlockEntity(pairChestBlockEntity);
+
+						return false;
+					}
+				}
+			}
+
+			world.SetBlockEntity(blockEntity);
 
 			return false;
 		}
@@ -65,11 +86,6 @@ namespace MiNET.Blocks
 			player.OpenInventory(blockCoordinates);
 
 			return true;
-		}
-
-		protected virtual ChestBlockEntity CreateBlockEntity()
-		{
-			return new ChestBlockEntity();
 		}
 	}
 }

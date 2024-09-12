@@ -292,7 +292,7 @@ namespace MiNET.Blocks
 			return ItemToBlock.GetValueOrDefault(id);
 		}
 
-		public static string GetIdByType<T>(bool withRoot = true)
+		public static string GetIdByType<T>(bool withRoot = true) where T : Block
 		{
 			return GetIdByType(typeof(T), withRoot);
 		}

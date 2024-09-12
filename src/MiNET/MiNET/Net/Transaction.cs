@@ -526,33 +526,22 @@ namespace MiNET.Net
 	public class CraftResultDeprecatedAction : ItemStackAction
 	{
 		public override McpeItemStackRequest.ActionType Type => McpeItemStackRequest.ActionType.CraftResultsDeprecated;
-		public ItemStacks ResultItems { get; set; } = new ItemStacks();
+		public ItemStacks ResultItems { get; set; }
 		public byte TimesCrafted { get; set; }
 
 		protected override void WriteData(Packet packet)
 		{
-			packet.WriteLength(ResultItems.Count);
-			foreach (var item in ResultItems)
-			{
-				packet.Write(item, false);
-			}
-
+			ResultItems.Write(packet, false);
 			packet.Write(TimesCrafted);
 		}
 
 		internal static ItemStackAction ReadData(Packet packet)
 		{
-			var action = new CraftResultDeprecatedAction();
-
-			var count = packet.ReadLength();
-			for (var i = 0; i < count; i++)
+			return new CraftResultDeprecatedAction()
 			{
-				action.ResultItems.Add(packet.ReadItem(false));
-			}
-
-			action.TimesCrafted = packet.ReadByte();
-
-			return action;
+				ResultItems = ItemStacks.Read(packet, false),
+				TimesCrafted = packet.ReadByte()
+			};
 		}
 	}
 

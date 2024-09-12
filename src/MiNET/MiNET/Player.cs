@@ -35,7 +35,7 @@ using System.Numerics;
 using System.Threading;
 using fNbt;
 using log4net;
-using Microsoft.IO;
+using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Crafting;
 using MiNET.Effects;
@@ -797,12 +797,7 @@ namespace MiNET
 				Log.DebugFormat("NBT {0}", message.namedtag.NbtFile);
 			}
 
-			var blockEntity = Level.GetBlockEntity(message.coordinates);
-
-			if (blockEntity == null) return;
-
-			blockEntity.SetCompound(message.namedtag.NbtFile.RootTag);
-			Level.SetBlockEntity(blockEntity);
+			Level.UpdateBlockEntity(message.coordinates, message.namedtag.NbtFile.RootTag);
 		}
 
 
@@ -1930,6 +1925,9 @@ namespace MiNET
 			{
 				lock (_disconnectSync)
 				{
+					// must close due to events subscription
+					(_openInventory as ContainerInventory)?.Close(this);
+
 					if (IsConnected)
 					{
 						if (Level != null) OnPlayerLeave(new PlayerEventArgs(this));
@@ -2295,7 +2293,29 @@ namespace MiNET
 
 		public virtual void SetOpenInventory(IInventory inventory)
 		{
+			if (_openInventory is ContainerInventory inv)
+			{
+				inv.InventoryChanged -= OnInventoryChanged;
+			}
+
+			if (inventory is ContainerInventory newInv)
+			{
+				newInv.InventoryChanged += OnInventoryChanged;
+			}
+
 			_openInventory = inventory;
+		}
+
+		public virtual IInventory GetOpenInventory()
+		{
+			return _openInventory;
+		}
+
+		public virtual void CloseOpenedInventory()
+		{
+			if (_openInventory == null) return;
+
+			HandleMcpeContainerClose(null);
 		}
 
 		public void OpenInventory(BlockCoordinates inventoryCoord)
@@ -2303,61 +2323,20 @@ namespace MiNET
 			// https://github.com/pmmp/PocketMine-MP/blob/stable/src/pocketmine/network/mcpe/protocol/types/WindowTypes.php
 			lock (_inventorySync)
 			{
-				if (_openInventory is ContainerInventory openInventory)
-				{
-					if (openInventory.Coordinates.Equals(inventoryCoord)) return;
-					HandleMcpeContainerClose(null);
-				}
-
-				// get inventory from coordinates
-				// - get blockentity
-				// - get inventory from block entity
-
-				ContainerInventory inventory = Level.InventoryManager.GetInventory(inventoryCoord);
-
-				if (inventory == null)
+				var blockEntity = Level.GetBlockEntity(inventoryCoord) as ContainerBlockEntityBase;
+				if (blockEntity == null)
 				{
 					Log.Warn($"No inventory found at {inventoryCoord}");
 					return;
 				}
 
-				// get inventory # from inventory manager
-				// set inventory as active on player
-
-				_openInventory = inventory;
-
-				if (inventory.Type == WindowType.Container && !inventory.IsOpen()) // Chest open animation
-				{
-					var tileEvent = McpeBlockEvent.CreateObject();
-					tileEvent.coordinates = inventoryCoord;
-					tileEvent.case1 = 1;
-					tileEvent.case2 = 2;
-					Level.RelayBroadcast(tileEvent);
-				}
-
-				// subscribe to inventory changes
-				inventory.InventoryChange += OnInventoryChange;
-				inventory.AddObserver(this);
-
-				// open inventory
-
-				var containerOpen = McpeContainerOpen.CreateObject();
-				containerOpen.windowId = inventory.WindowsId;
-				containerOpen.type = (sbyte) inventory.Type;
-				containerOpen.coordinates = inventoryCoord;
-				containerOpen.runtimeEntityId = -1;
-				SendPacket(containerOpen);
-
-				var containerSetContent = McpeInventoryContent.CreateObject();
-				containerSetContent.inventoryId = inventory.WindowsId;
-				containerSetContent.input = inventory.Slots;
-				SendPacket(containerSetContent);
+				blockEntity.Open(this);
 			}
 		}
 
-		private void OnInventoryChange(Player player, ContainerInventory inventory, byte slot, Item itemStack)
+		private void OnInventoryChanged(object sender, InventoryChangeEventArgs args)
 		{
-			if (player == this)
+			if (args.Player == this)
 			{
 				//TODO: This needs to be synced to work properly under heavy load (SG).
 				//Level.SetBlockEntity(inventory.BlockEntity, false);
@@ -2365,10 +2344,10 @@ namespace MiNET
 			else
 			{
 				var sendSlot = McpeInventorySlot.CreateObject();
-				sendSlot.inventoryId = inventory.WindowsId;
-				sendSlot.slot = slot;
+				sendSlot.inventoryId = args.Inventory.WindowsId;
+				sendSlot.slot = args.Slot;
 				//sendSlot.uniqueid = itemStack.UniqueId;
-				sendSlot.item = itemStack;
+				sendSlot.item = args.Item;
 				SendPacket(sendSlot);
 			}
 
@@ -2680,28 +2659,9 @@ namespace MiNET
 			{
 				if (_openInventory is ContainerInventory inventory)
 				{
-					_openInventory = null;
-
-					// unsubscribe to inventory changes
-					inventory.InventoryChange -= OnInventoryChange;
-					inventory.RemoveObserver(this);
-
 					if (message != null && message.windowId != inventory.WindowsId) return;
 
-					if (inventory.Type == WindowType.Container && !inventory.IsOpen())
-					{
-						var tileEvent = McpeBlockEvent.CreateObject();
-						tileEvent.coordinates = inventory.Coordinates;
-						tileEvent.case1 = 1;
-						tileEvent.case2 = 0;
-						Level.RelayBroadcast(tileEvent);
-					}
-
-					var closePacket = McpeContainerClose.CreateObject();
-					closePacket.windowId = inventory.WindowsId;
-					closePacket.windowType = (sbyte) inventory.Type;
-					closePacket.server = message == null ? true : false;
-					SendPacket(closePacket);
+					inventory.Close(this, message != null);
 				}
 				else if (_openInventory is HorseInventory horseInventory)
 				{

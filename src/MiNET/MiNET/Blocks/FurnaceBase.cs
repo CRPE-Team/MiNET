@@ -26,7 +26,6 @@
 using System.Numerics;
 using MiNET.BlockEntities;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -36,7 +35,7 @@ namespace MiNET.Blocks
 	{
 		[StateRange(0, 5)] public virtual int FacingDirection { get; set; }
 
-		protected FurnaceBase() : base()
+		protected FurnaceBase()
 		{
 			BlastResistance = 17.5f;
 			Hardness = 3.5f;
@@ -46,8 +45,8 @@ namespace MiNET.Blocks
 		{
 			FacingDirection = ItemBlock.GetFacingDirectionFromEntity(player);
 
-			var furnaceBlockEntity = new FurnaceBlockEntity {Coordinates = Coordinates};
-			world.SetBlockEntity(furnaceBlockEntity);
+			var blockEntity = CreateBlockEntity();
+			world.SetBlockEntity(blockEntity);
 
 			return false;
 		}
@@ -57,6 +56,11 @@ namespace MiNET.Blocks
 			player.OpenInventory(blockCoordinates);
 
 			return true;
+		}
+
+		protected virtual BlockEntity CreateBlockEntity()
+		{
+			return new FurnaceBlockEntity { Coordinates = Coordinates };
 		}
 	}
 }

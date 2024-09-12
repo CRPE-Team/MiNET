@@ -508,7 +508,7 @@ namespace MiNET.Inventory
 			createCache = null;
 			if (recipe == null) return false;
 
-			for (var i = 0; i < action.ResultItems.Count; i++)
+			for (var i = 0; i < action.ResultItems.Length; i++)
 			{
 				if (action.ResultItems[i] == null) return false;
 			}

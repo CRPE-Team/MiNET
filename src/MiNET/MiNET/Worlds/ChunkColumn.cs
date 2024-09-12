@@ -33,7 +33,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using fNbt;
+using fNbt.Serialization;
 using log4net;
+using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Net;
 using MiNET.Utils.IO;
@@ -49,6 +51,13 @@ namespace MiNET.Worlds
 		
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ChunkColumn));
 
+		private SubChunkFactory _subChunkFactory;
+		private SubChunk[] _subChunks = new SubChunk[WorldHeight >> 4];
+		internal short[] _height;
+
+		private McpeWrapper _cachedBatch;
+		private object _cacheSync = new object();
+
 		public int X { get; set; }
 		public int Z { get; set; }
 
@@ -56,14 +65,8 @@ namespace MiNET.Worlds
 
 		public bool IsAllAir { get; set; }
 
-		public short[] height;
-
-		//TODO: This dictionary need to be concurrent. Investigate performance before changing.
-		public IDictionary<BlockCoordinates, NbtCompound> BlockEntities { get; private set; } = new Dictionary<BlockCoordinates, NbtCompound>();
-
-		private SubChunk[] _subChunks = new SubChunk[WorldHeight >> 4];
-
-		private SubChunkFactory _subChunkFactory;
+		//TODO: This dictionaries need to be concurrent. Investigate performance before changing.
+		public IDictionary<BlockCoordinates, BlockEntity> BlockEntities { get; private set; } = new Dictionary<BlockCoordinates, BlockEntity>();
 
 		public int Length => _subChunks.Length;
 
@@ -72,8 +75,6 @@ namespace MiNET.Worlds
 		public bool NeedSave { get; set; }
 
 		public bool DisableCache { get; set; }
-		private McpeWrapper _cachedBatch;
-		private object _cacheSync = new object();
 
 		public ChunkColumn() : this((x, z, i) => new SubChunk(x, z, i))
 		{
@@ -84,17 +85,10 @@ namespace MiNET.Worlds
 		{
 			_subChunkFactory = subChunkFactory;
 
-			height = ArrayPool<short>.Shared.Rent(256);
+			_height = ArrayPool<short>.Shared.Rent(256);
 
 			IsDirty = false;
 		}
-
-		private void SetDirty()
-		{
-			IsDirty = true;
-			NeedSave = true;
-		}
-
 
 		public SubChunk this[int chunkIndex, bool generateIfMissing = true]
 		{
@@ -114,6 +108,12 @@ namespace MiNET.Worlds
 		public int Count()
 		{
 			return _subChunks.Count(s => s != null);
+		}
+
+		public void SetDirty()
+		{
+			IsDirty = true;
+			NeedSave = true;
 		}
 
 		public SubChunk GetSubChunk(int by)
@@ -152,13 +152,13 @@ namespace MiNET.Worlds
 
 		public void SetHeight(int bx, int bz, short h)
 		{
-			height[((bz << 4) + (bx))] = (short) (h - WorldMinY);
+			_height[((bz << 4) + (bx))] = (short) (h - WorldMinY);
 			SetDirty();
 		}
 
 		public short GetHeight(int bx, int bz)
 		{
-			return (short) (height[((bz << 4) + (bx))] + WorldMinY);
+			return (short) (_height[((bz << 4) + (bx))] + WorldMinY);
 		}
 
 		public void SetBiome(int bx, int by, int bz, byte biome)
@@ -198,24 +198,36 @@ namespace MiNET.Worlds
 			subChunk.SetSkylight(bx, by & 0xf, bz, data);
 		}
 
-		public NbtCompound GetBlockEntity(BlockCoordinates coordinates)
+		public BlockEntity GetBlockEntity(BlockCoordinates coordinates)
 		{
-			BlockEntities.TryGetValue(coordinates, out NbtCompound nbt);
+			BlockEntities.TryGetValue(coordinates, out var blockEntity);
 
-			// High cost clone. Consider alternative options on this.
-			return (NbtCompound) nbt?.Clone();
+			return blockEntity;
 		}
 
-		public void SetBlockEntity(BlockCoordinates coordinates, NbtCompound nbt)
+		public void SetBlockEntity(BlockEntity blockEntity)
 		{
-			var blockEntity = (NbtCompound) nbt.Clone();
-			BlockEntities[coordinates] = blockEntity;
+			BlockEntities[blockEntity.Coordinates] = blockEntity;
+
 			SetDirty();
+		}
+
+		public BlockEntity UpdateBlockEntity(BlockCoordinates coordinates, NbtCompound tag)
+		{
+			if (BlockEntities.TryGetValue(coordinates, out var blockEntity))
+			{
+				blockEntity.SetCompound(tag);
+
+				SetDirty();
+			}
+
+			return blockEntity;
 		}
 
 		public void RemoveBlockEntity(BlockCoordinates coordinates)
 		{
 			BlockEntities.Remove(coordinates);
+
 			SetDirty();
 		}
 
@@ -469,17 +481,11 @@ namespace MiNET.Worlds
 
 			stream.WriteByte(0); // Border blocks - nope (EDU)
 
-			if (BlockEntities.Count != 0)
+			if (BlockEntities.Any())
 			{
-				foreach (NbtCompound blockEntity in BlockEntities.Values.ToArray())
+				foreach (var blockEntity in BlockEntities.Values.ToArray())
 				{
-					var file = new NbtFile(blockEntity)
-					{
-						BigEndian = false,
-						UseVarInt = true
-					};
-
-					file.SaveToStream(stream, NbtCompression.None);
+					NbtSerializer.Write(blockEntity, stream, new() { Flavor = NbtFlavor.Bedrock });
 				}
 			}
 
@@ -494,6 +500,7 @@ namespace MiNET.Worlds
 
 				if (subChunk == null || subChunk.Biomes.Palette.Count == 1 && subChunk.Biomes.Palette.First() == 0)
 				{
+					// full plants
 					stream.WriteByte(1);
 					stream.WriteByte(0);
 
@@ -536,12 +543,12 @@ namespace MiNET.Worlds
 				cc._subChunks[i] = (SubChunk) _subChunks[i]?.Clone();
 			}
 
-			cc.height = (short[]) height.Clone();
+			cc._height = (short[]) _height.Clone();
 
-			cc.BlockEntities = new Dictionary<BlockCoordinates, NbtCompound>();
-			foreach (KeyValuePair<BlockCoordinates, NbtCompound> blockEntityPair in BlockEntities)
+			cc.BlockEntities = new Dictionary<BlockCoordinates, BlockEntity>();
+			foreach (var blockEntityPair in BlockEntities)
 			{
-				cc.BlockEntities.Add(blockEntityPair.Key, (NbtCompound) blockEntityPair.Value.Clone());
+				cc.BlockEntities.Add(blockEntityPair.Key, (BlockEntity) blockEntityPair.Value.Clone());
 			}
 
 			if (_cachedBatch != null)
@@ -573,7 +580,7 @@ namespace MiNET.Worlds
 		{
 			if (disposing)
 			{
-				if (height != null) ArrayPool<short>.Shared.Return(height);
+				if (_height != null) ArrayPool<short>.Shared.Return(_height);
 			}
 		}
 

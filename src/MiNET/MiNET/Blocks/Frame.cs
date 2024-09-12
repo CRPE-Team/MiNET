@@ -64,13 +64,12 @@ namespace MiNET.Blocks
 
 			if (world.GetBlockEntity(blockCoordinates) is ItemFrameBlockEntity blockEntity)
 			{
-				int rotation = blockEntity.Rotation;
+				var rotation = blockEntity.GetLagacyRotation();
 
-				if (itemInHand.Equals(blockEntity.ItemInFrame) && itemInHand.Equals(new ItemAir())) return true;
+				if (itemInHand.Equals(blockEntity.Item) && itemInHand.Equals(new ItemAir())) return true;
 
-				if (itemInHand.Equals(blockEntity.ItemInFrame) || itemInHand.Equals(new ItemAir()))
+				if (itemInHand.Equals(blockEntity.Item) || itemInHand.Equals(new ItemAir()))
 				{
-					itemInHand = blockEntity.ItemInFrame;
 					rotation++;
 					if (rotation > 7)
 					{
@@ -80,9 +79,11 @@ namespace MiNET.Blocks
 				else
 				{
 					rotation = 0;
+					blockEntity.Item = itemInHand;
 				}
 
-				blockEntity.SetItem(itemInHand, rotation);
+				blockEntity.SetLagacyRotation(rotation);
+
 				world.SetBlockEntity(blockEntity);
 			}
 
@@ -93,8 +94,10 @@ namespace MiNET.Blocks
 		{
 			if (world.GetBlockEntity(Coordinates) is ItemFrameBlockEntity blockEntity)
 			{
-				Item item = blockEntity.ItemInFrame;
-				blockEntity.SetItem(null, 0);
+				Item item = blockEntity.Item;
+				blockEntity.Item = new ItemAir();
+				blockEntity.Rotation = 0;
+
 				world.SetBlockEntity(blockEntity);
 				if (item != null)
 				{
