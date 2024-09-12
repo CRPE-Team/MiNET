@@ -29,7 +29,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using fNbt;
+using fNbt.Serialization;
 using log4net;
+using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Client;
 using MiNET.Net;
@@ -101,7 +103,7 @@ namespace MiNET.Console
 		}
 
 		private ConcurrentDictionary<CachedChunk, object> _futureChunks = new ConcurrentDictionary<CachedChunk, object>();
-		private ConcurrentDictionary<BlockCoordinates, NbtCompound> _futureBlockEntities = new ConcurrentDictionary<BlockCoordinates, NbtCompound>();
+		private ConcurrentDictionary<BlockCoordinates, BlockEntity> _futureBlockEntities = new ConcurrentDictionary<BlockCoordinates, BlockEntity>();
 
 		private class CachedChunk
 		{
@@ -121,17 +123,17 @@ namespace MiNET.Console
 		public override void HandleMcpeBlockEntityData(McpeBlockEntityData message)
 		{
 			BlockCoordinates coordinates = message.coordinates;
-			Nbt nbt = message.namedtag;
+			var blockEntity = NbtConvert.FromNbt<BlockEntity>(message.namedtag.NbtFile.RootTag);
 			ChunkColumn chunk = _worldProvider.GenerateChunkColumn((ChunkCoordinates) coordinates, true);
 			if(chunk == null)
 			{
 				//Log.Warn($"Got block entity for non existing chunk at {coordinates}\n{nbt.NbtFile.RootTag}");
-				_futureBlockEntities.TryAdd(coordinates, (NbtCompound) nbt.NbtFile.RootTag);
+				_futureBlockEntities.TryAdd(coordinates, blockEntity);
 			}
 			else
 			{
 				//Log.Warn($"Got block entity for existing chunk at {coordinates}\n{nbt.NbtFile.RootTag}");
-				chunk.SetBlockEntity(coordinates, (NbtCompound) nbt.NbtFile.RootTag);
+				chunk.BlockEntities[coordinates] = blockEntity;
 			}
 		}
 
@@ -173,7 +175,7 @@ namespace MiNET.Console
 						_futureChunks.TryRemove(chunk, out _);
 
 						var coordinates = new ChunkCoordinates(chunk.Chunk.X, chunk.Chunk.Z);
-						foreach (KeyValuePair<BlockCoordinates, NbtCompound> bePair in _futureBlockEntities.Where(be => (ChunkCoordinates) be.Key == coordinates))
+						foreach (var bePair in _futureBlockEntities.Where(be => (ChunkCoordinates) be.Key == coordinates))
 						{
 							chunk.Chunk.BlockEntities.Add(bePair);
 							_futureBlockEntities.TryRemove(bePair.Key, out _);

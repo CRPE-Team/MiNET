@@ -1,58 +1,230 @@
-﻿#region LICENSE
-
-// The contents of this file are subject to the Common Public Attribution
-// License Version 1.0. (the "License"); you may not use this file except in
-// compliance with the License. You may obtain a copy of the License at
-// https://github.com/NiclasOlofsson/MiNET/blob/master/LICENSE. 
-// The License is based on the Mozilla Public License Version 1.1, but Sections 14 
-// and 15 have been added to cover use of software over a computer network and 
-// provide for limited attribution for the Original Developer. In addition, Exhibit A has 
-// been modified to be consistent with Exhibit B.
-// 
-// Software distributed under the License is distributed on an "AS IS" basis,
-// WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
-// the specific language governing rights and limitations under the License.
-// 
-// The Original Code is MiNET.
-// 
-// The Original Developer is the Initial Developer.  The Initial Developer of
-// the Original Code is Niclas Olofsson.
-// 
-// All portions of the code written by Niclas Olofsson are Copyright (c) 2014-2018 Niclas Olofsson. 
-// All Rights Reserved.
-
-#endregion
-
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using log4net;
 using MiNET.Items;
 using MiNET.Net;
 
 namespace MiNET.Utils
 {
-	public class ItemStacks : List<Item>, IPacketDataObject
+	public class ItemStacks : IEnumerable<Item>, IPacketDataObject
 	{
+		private readonly Item[] _items;
+
+		public virtual int Length => _items.Length;
+
+		public virtual Item this[int index] { get => _items[index]; set => _items[index] = value; }
+
+		protected ItemStacks()
+		{
+
+		}
+
+		public ItemStacks(int length)
+		{
+			_items = new Item[length];
+		}
+
+		public ItemStacks(Item[] collection)
+		{
+			_items = collection;
+		}
+
+		public static ItemStacks CreateAir(int length)
+		{
+			var stacks = new ItemStacks(length);
+			stacks.Reset();
+
+			return stacks;
+		}
+
 		public virtual void Write(Packet packet)
 		{
-			packet.WriteLength(Count);
+			Write(packet, true);
+		}
 
-			for (int i = 0; i < Count; i++)
+		public virtual void Write(Packet packet, bool writeUniqueId)
+		{
+			packet.WriteLength(Length);
+
+			for (int i = 0; i < Length; i++)
 			{
-				packet.Write(this[i]);
+				packet.Write(this[i], writeUniqueId);
 			}
 		}
 
 		public static ItemStacks Read(Packet packet)
 		{
-			var itemStacks = new ItemStacks();
+			return Read(packet, true);
+		}
 
+		public static ItemStacks Read(Packet packet, bool readUniqueId)
+		{
 			var count = packet.ReadLength();
+			var itemStacks = new ItemStacks(count);
+
 			for (int i = 0; i < count; i++)
 			{
-				itemStacks.Add(packet.ReadItem());
+				itemStacks[i] = packet.ReadItem(readUniqueId);
 			}
 
 			return itemStacks;
+		}
+
+		public virtual int IndexOf(Item item)
+		{
+			return Array.IndexOf(_items, item);
+		}
+
+		public virtual bool Contains(Item item)
+		{
+			return _items.Contains(item);
+		}
+
+		public virtual void CopyTo(Item[] array, int arrayIndex)
+		{
+			_items.CopyTo(array, arrayIndex);
+		}
+
+		public virtual Item[] GetSource()
+		{
+			return _items;
+		}
+
+		public virtual void Reset()
+		{
+			for (int i = 0; i < _items.Length; i++)
+			{
+				_items[i] = new ItemAir();
+			}
+		}
+
+		public virtual IEnumerator<Item> GetEnumerator()
+		{
+			return ((ICollection<Item>) _items).GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return _items.GetEnumerator();
+		}
+	}
+
+	public class ContainerItemStacks : ItemStacks
+	{
+		private readonly int _oneContainerSize;
+		private readonly List<Item[]> _containers;
+
+		public override int Length => _containers.Count * _oneContainerSize;
+
+		public override Item this[int index] 
+		{ 
+			get => _containers[index / _oneContainerSize][index % _oneContainerSize]; 
+			set => _containers[index / _oneContainerSize][index % _oneContainerSize] = value; 
+		}
+
+		public ContainerItemStacks(int oneContainerSize)
+		{
+			_oneContainerSize = oneContainerSize;
+			_containers = new List<Item[]>();
+		}
+
+		public ContainerItemStacks(Item[] container)
+		{
+			_oneContainerSize = container.Length;
+			_containers = [container];
+		}
+
+		public override int IndexOf(Item item)
+		{
+			foreach (var container in _containers)
+			{
+				var i = Array.IndexOf(container, item);
+
+				if (i > -1) return i;
+			}
+
+			return -1;
+		}
+
+		public override bool Contains(Item item)
+		{
+			return _containers.Any(c => c.Contains(item));
+		}
+
+		public override void CopyTo(Item[] array, int arrayIndex)
+		{
+			var startIndex = arrayIndex;
+
+			foreach (var container in _containers)
+			{
+				container.CopyTo(array, startIndex);
+				startIndex += _oneContainerSize;
+			}
+		}
+
+		public void AddContainer(Item[] items)
+		{
+			if (items.Length != _oneContainerSize)
+			{
+				throw new ArgumentOutOfRangeException($"items length must equals {_oneContainerSize}");
+			}
+
+			_containers.Add(items);
+		}
+
+		public void SetContainer(Item[] items, int containerIndex)
+		{
+			if (items.Length != _oneContainerSize)
+			{
+				throw new ArgumentOutOfRangeException($"items length must equals {_oneContainerSize}");
+			}
+
+			if (containerIndex == _containers.Count)
+			{
+				_containers.Add(items);
+				return;
+			}
+
+			// cannot set a value for the index outside the size of the containers
+			_containers[containerIndex] = items;
+		}
+
+		public Item[] GetContainer(int containerIndex)
+		{
+			return _containers[containerIndex];
+		}
+
+		public void RemoveContainer(int containerIndex)
+		{
+			_containers.RemoveAt(containerIndex);
+		}
+
+		public int ContainersCount()
+		{
+			return _containers.Count;
+		}
+
+		public override IEnumerator<Item> GetEnumerator()
+		{
+			foreach (var container in _containers)
+			{
+				foreach (var item in container)
+				{
+					yield return item;
+				}
+			}
+		}
+		public override void Reset()
+		{
+			foreach (var container in _containers)
+			{
+				for (int i = 0; i < container.Length; i++)
+				{
+					container[i] = new ItemAir();
+				}
+			}
 		}
 	}
 
@@ -60,9 +232,17 @@ namespace MiNET.Utils
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(CreativeItemStacks));
 
+		public CreativeItemStacks(int length) : base(length)
+		{
+		}
+
+		public CreativeItemStacks(Item[] collection) : base(collection)
+		{
+		}
+
 		public override void Write(Packet packet)
 		{
-			packet.WriteLength(Count);
+			packet.WriteLength(Length);
 
 			foreach (var item in this)
 			{
@@ -73,15 +253,17 @@ namespace MiNET.Utils
 
 		public static new CreativeItemStacks Read(Packet packet)
 		{
-			var metadata = new CreativeItemStacks();
-
 			var count = packet.ReadLength();
+			var metadata = new CreativeItemStacks(count);
+
 			for (int i = 0; i < count; i++)
 			{
 				var networkId = packet.ReadUnsignedVarInt();
 				var item = packet.ReadItem(false);
+
 				item.UniqueId = (int) networkId;
-				metadata.Add(item);
+				metadata[i] = item;
+
 				Log.Debug(item);
 			}
 

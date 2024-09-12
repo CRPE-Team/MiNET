@@ -692,7 +692,7 @@ namespace MiNET.Client
 			{
 				_inventory = message.input;
 
-				if (message.input.Count > 0)
+				if (message.input.Length > 0)
 				{
 					lock (_lastItem)
 					{

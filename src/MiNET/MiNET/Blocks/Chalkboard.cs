@@ -76,6 +76,7 @@ namespace MiNET.Blocks
 					Owner = player.EntityId,
 					Size = Size,
 					OnGround = true,
+					Text = string.Empty
 				};
 
 				world.SetBlockEntity(blockEntity);
@@ -153,7 +154,7 @@ namespace MiNET.Blocks
 				return;
 			}
 
-			int size = baseBlockEntity.Size;
+			int size = baseBlockEntity.Size ?? 0;
 
 			if (size == 0)
 			{

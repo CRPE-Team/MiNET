@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using fNbt;
 using fNbt.Serialization;
 using fNbt.Serialization.Converters;
@@ -6,7 +7,7 @@ using MiNET.Items;
 
 namespace MiNET.Utils.Nbt.Converter
 {
-	public class ItemsNbtConverter : ArrayNbtConverter
+	public class ItemStacksNbtConverter : ListNbtConverter
 	{
 		private const string SlotTagName = "Slot";
 
@@ -14,13 +15,13 @@ namespace MiNET.Utils.Nbt.Converter
 
 		public bool WriteSlots { get; set; } = true;
 
-		public ItemsNbtConverter() : base(typeof(Item))
+		public ItemStacksNbtConverter() : base(typeof(Item))
 		{
 		}
 
 		public override bool CanConvert(Type type)
 		{
-			return type == typeof(Item[]);
+			return type == typeof(IList<Item>);
 		}
 
 		protected override object ReadItem(NbtBinaryReader stream, ref int index, NbtSerializerSettings settings)

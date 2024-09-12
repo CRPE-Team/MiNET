@@ -10,6 +10,9 @@ namespace MiNET.Utils.Nbt.Converter
 	public class BlockEntityNbtConverter : ObjectNbtConverter
 	{
 		private static readonly TagNbtConverter TagNbtConverter = new TagNbtConverter();
+		private static readonly IntNbtConverter IntNbtConverter = new IntNbtConverter();
+
+		public override bool CanWrite => false;
 
 		public override bool CanConvert(Type type)
 		{
@@ -30,14 +33,12 @@ namespace MiNET.Utils.Nbt.Converter
 
 		public override void Write(NbtBinaryWriter stream, object value, string name, NbtSerializerSettings settings)
 		{
-			var tag = ToNbt(value, name, settings);
-			TagNbtConverter.Write(stream, tag, name, settings);
+			throw new NotImplementedException();
 		}
 
 		public override void WriteData(NbtBinaryWriter stream, object value, NbtSerializerSettings settings)
 		{
-			var tag = ToNbt(value, string.Empty, settings);
-			TagNbtConverter.WriteData(stream, tag, settings);
+			throw new NotImplementedException();
 		}
 
 		public override object FromNbt(NbtTag tag, Type type, object value, NbtSerializerSettings settings)
@@ -45,28 +46,23 @@ namespace MiNET.Utils.Nbt.Converter
 			var id = tag["id"]?.StringValue;
 			if (id == null) return null;
 
-			var coordinates = new BlockCoordinates(
-				tag["x"].IntValue,
-				tag["y"].IntValue,
-				tag["z"].IntValue);
-
 			var blockEntity = value as BlockEntity ?? BlockEntityFactory.GetBlockEntityById(id);
-			blockEntity.Coordinates = coordinates;
+
+			var x = tag["x"]?.IntValue;
+			var y = tag["y"]?.IntValue;
+			var z = tag["z"]?.IntValue;
+
+			if (x.HasValue && y.HasValue && z.HasValue)
+			{
+				blockEntity.Coordinates = new BlockCoordinates(x.Value, y.Value, z.Value);
+			}
 
 			return base.FromNbt(tag, type, blockEntity, settings);
 		}
 
 		public override NbtTag ToNbt(object value, string name, NbtSerializerSettings settings)
 		{
-			var blockEntity = (BlockEntity) value;
-			var tag = (NbtCompound) base.ToNbt(value, name, settings);
-
-			tag.Remove(nameof(BlockEntity.Coordinates));
-			tag.Add(new NbtInt("x", blockEntity.Coordinates.X));
-			tag.Add(new NbtInt("y", blockEntity.Coordinates.Y));
-			tag.Add(new NbtInt("z", blockEntity.Coordinates.Z));
-
-			return tag;
+			throw new NotImplementedException();
 		}
 	}
 }

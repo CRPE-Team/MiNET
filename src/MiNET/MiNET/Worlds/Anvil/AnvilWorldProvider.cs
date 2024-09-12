@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using fNbt;
+using fNbt.Serialization;
 using log4net;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
@@ -331,7 +332,7 @@ namespace MiNET.Worlds.Anvil
 				if (worldSurface != null)
 				{
 					var longHeights = worldSurface.LongArrayValue;
-					ReadAnyBitLengthShortFromLongs(longHeights, chunk.height, 9);
+					ReadAnyBitLengthShortFromLongs(longHeights, chunk._height, 9);
 				}
 			}
 		}
@@ -386,6 +387,8 @@ namespace MiNET.Worlds.Anvil
 
 			foreach (NbtCompound p in palette)
 			{
+				//
+
 				var id = AnvilPaletteConverter.GetRuntimeIdByPalette(p, out var blockEntity);
 
 				waterloggedIds.Add(
@@ -458,7 +461,7 @@ namespace MiNET.Worlds.Anvil
 							((subChunk.Index << 4) + ChunkColumn.WorldMinY) | y,
 							(subChunk.Z << 4) | z);
 
-						chunkColumn.SetBlockEntity(template.Coordinates, template.GetCompound());
+						chunkColumn.SetBlockEntity((BlockEntity) template.Clone());
 					}
 				}
 			}
@@ -594,14 +597,16 @@ namespace MiNET.Worlds.Anvil
 
 						var coordinates = new BlockCoordinates(x, y, z);
 						var existingBlockEntity = chunk.GetBlockEntity(coordinates);
-						if (chunk.GetBlockEntity(coordinates) == null)
+						var be = NbtConvert.FromNbt<BlockEntity>(blockEntityTag);
+
+						if (existingBlockEntity == null)
 						{
-							chunk.SetBlockEntity(coordinates, blockEntityTag);
+							chunk.SetBlockEntity(be);
 						}
-						else
-						{
-							existingBlockEntity.AddRange(blockEntityTag.ExceptBy(existingBlockEntity.Select(tag => tag.Name), tag => tag.Name).Select(tag => (NbtTag) tag.Clone()));
-						}
+						//else
+						//{
+						//	existingBlockEntity.AddRange(blockEntityTag.ExceptBy(existingBlockEntity.Select(tag => tag.Name), tag => tag.Name).Select(tag => (NbtTag) tag.Clone()));
+						//}
 					}
 					else
 						if (Log.IsDebugEnabled)
@@ -935,22 +940,23 @@ namespace MiNET.Worlds.Anvil
 
 			var heights = new int[256];
 			for (int h = 0; h < heights.Length; h++)
-				heights[h] = chunk.height[h];
+				heights[h] = chunk._height[h];
 			levelTag.Add(new NbtIntArray("HeightMap", heights));
 
 			// TODO: Save entities
 			var entitiesTag = new NbtList("Entities", NbtTagType.Compound);
 			levelTag.Add(entitiesTag);
 
-			var blockEntitiesTag = new NbtList("TileEntities", NbtTagType.Compound);
-			foreach (NbtCompound blockEntityNbt in chunk.BlockEntities.Values)
-			{
-				var nbtClone = (NbtCompound) blockEntityNbt.Clone();
-				nbtClone.Name = null;
-				blockEntitiesTag.Add(nbtClone);
-			}
+			throw new NotImplementedException("should not store bedrock blockeEntities in anvil format");
+			//var blockEntitiesTag = new NbtList("TileEntities", NbtTagType.Compound);
+			//foreach (NbtCompound blockEntityNbt in chunk.BlockEntitiesCache.Values)
+			//{
+			//	var nbtClone = (NbtCompound) blockEntityNbt.Clone();
+			//	nbtClone.Name = null;
+			//	blockEntitiesTag.Add(nbtClone);
+			//}
 
-			levelTag.Add(blockEntitiesTag);
+			//levelTag.Add(blockEntitiesTag);
 
 			levelTag.Add(new NbtList("TileTicks", NbtTagType.Compound));
 

@@ -23,79 +23,39 @@
 
 #endregion
 
-using System.Collections.Generic;
-using fNbt;
-using MiNET.Items;
+using fNbt.Serialization;
+using MiNET.Inventory;
 
 namespace MiNET.BlockEntities
 {
-	public class ShulkerBoxBlockEntity : BlockEntity
+	public class ShulkerBoxBlockEntity : ContainerBlockEntity
 	{
-		private NbtCompound Compound { get; set; }
+		[NbtProperty("facing")]
 		public byte Facing { get; set; }
 
 		public ShulkerBoxBlockEntity() : base(BlockEntityIds.ShulkerBox)
 		{
-			Compound = new NbtCompound(string.Empty)
-			{
-				new NbtString("id", Id),
-				new NbtList("Items", new NbtCompound()),
-				new NbtInt("x", Coordinates.X),
-				new NbtInt("y", Coordinates.Y),
-				new NbtInt("z", Coordinates.Z)
-			};
+			
+		}
 
-			NbtList items = (NbtList) Compound["Items"];
-			for (byte i = 0; i < 27; i++)
-			{
-				var itemTag = new ItemAir().ToNbt();
-				itemTag.Add(new NbtByte("Slot", i));
+		protected override void OnInventoryOpened(object sender, InventoryOpenedEventArgs args)
+		{
+			base.OnInventoryOpened(sender, args);
 
-				items.Add(itemTag);
+			if (args.Opened)
+			{
+				args.Player.Level.BroadcastSound(Coordinates, LevelSoundEventType.ShulkerBoxOpen);
 			}
 		}
 
-		public override NbtCompound GetCompound()
+		protected override void OnInventoryClosed(object sender, InventoryClosedEventArgs args)
 		{
-			Compound["x"] = new NbtInt("x", Coordinates.X);
-			Compound["y"] = new NbtInt("y", Coordinates.Y);
-			Compound["z"] = new NbtInt("z", Coordinates.Z);
-			Compound["facing"] = new NbtByte("facing", Facing);
+			base.OnInventoryClosed(sender, args);
 
-			return Compound;
-		}
-
-		public override void SetCompound(NbtCompound compound)
-		{
-			Compound = compound;
-
-			if (Compound["Items"] == null)
+			if (args.Closed)
 			{
-				NbtList items = new NbtList("Items");
-				for (byte i = 0; i < 27; i++)
-				{
-					var itemTag = new ItemAir().ToNbt();
-					itemTag.Add(new NbtByte("Slot", i));
-
-					items.Add(itemTag);
-				}
-				Compound["Items"] = items;
+				args.Player.Level.BroadcastSound(Coordinates, LevelSoundEventType.ShulkerBoxClosed);
 			}
-		}
-
-		public override List<Item> GetDrops()
-		{
-			List<Item> slots = new List<Item>();
-
-			var items = Compound["Items"] as NbtList;
-			if (items == null) return slots;
-
-			for (byte i = 0; i < items.Count; i++)
-			{
-				slots.Add(ItemFactory.FromNbt(items[i]));
-			}
-
-			return slots;
 		}
 	}
 }

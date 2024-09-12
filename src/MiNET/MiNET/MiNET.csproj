@@ -42,8 +42,8 @@
     <EmbeddedResource Include="Worlds\Data\biome_id_map.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CRPE-MiNET.fNbt" Version="1.0.11" />
-    <PackageReference Include="CRPE-MiNET.fNbt.Serialization" Version="1.0.11" />
+    <PackageReference Include="CRPE-MiNET.fNbt" Version="1.0.15" />
+    <PackageReference Include="CRPE-MiNET.fNbt.Serialization" Version="1.0.15" />
     <PackageReference Include="jose-jwt" Version="4.1.0" />
     <PackageReference Include="LibNoise.NetStandart" Version="0.2.0" />
     <PackageReference Include="log4net" Version="2.0.15" />

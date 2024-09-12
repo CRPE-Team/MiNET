@@ -243,11 +243,12 @@ namespace MiNET
 
 		public ItemStacks GetSlots()
 		{
-			ItemStacks slotData = new ItemStacks();
+			var slotData = new ItemStacks(Slots.Count);
+
 			for (int i = 0; i < Slots.Count; i++)
 			{
 				if (Slots[i].Count == 0) Slots[i] = new ItemAir();
-				slotData.Add(Slots[i]);
+				slotData[i] = Slots[i];
 			}
 
 			return slotData;
@@ -255,11 +256,13 @@ namespace MiNET
 
 		public ItemStacks GetUiSlots()
 		{
-			ItemStacks slotData = new ItemStacks();
+			var slotData = new ItemStacks(UiInventory.Slots.Count);
+
 			for (int i = 0; i < UiInventory.Slots.Count; i++)
 			{
 				if (UiInventory.Slots[i].Count == 0) UiInventory.Slots[i] = new ItemAir();
-				slotData.Add(UiInventory.Slots[i]);
+
+				slotData[i] = UiInventory.Slots[i];
 			}
 
 			return slotData;
@@ -267,10 +270,7 @@ namespace MiNET
 
 		public ItemStacks GetOffHand()
 		{
-			return new ItemStacks
-			{
-				OffHand ?? new ItemAir(),
-			};
+			return new ItemStacks([OffHand ?? new ItemAir()]);
 		}
 
 		public Item GetArmorSlot(ArmorType type)
@@ -287,13 +287,13 @@ namespace MiNET
 
 		public ItemStacks GetArmor()
 		{
-			return new ItemStacks
-			{
+			return new ItemStacks(
+			[
 				Helmet ?? new ItemAir(),
 				Chest ?? new ItemAir(),
 				Leggings ?? new ItemAir(),
 				Boots ?? new ItemAir(),
-			};
+			]);
 		}
 
 		public virtual bool SetFirstEmptySlot(Item item, bool update)

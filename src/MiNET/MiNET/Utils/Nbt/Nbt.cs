@@ -41,13 +41,14 @@ namespace MiNET.Utils.Nbt
 			NbtSerializerSettings.DefaultSettings.PropertySetHandling = PropertySetHandling.Ignore;
 			NbtSerializerSettings.DefaultSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
 			NbtSerializerSettings.DefaultSettings.NullReferenceHandling = NullReferenceHandling.Ignore;
-			NbtSerializerSettings.DefaultSettings.NbtPropertyHandling = NbtPropertyHandling.MarkedOnly;
+			NbtSerializerSettings.DefaultSettings.NbtMemberHandling = NbtMemberHandling.MarkedOnly;
 
 			NbtSerializerSettings.DefaultSettings.Converters.Add(new ColorNbtConverter());
-			NbtSerializerSettings.DefaultSettings.Converters.Add(new BlockEntityNbtConverter());
 			NbtSerializerSettings.DefaultSettings.Converters.Add(new BlockNbtConverter());
 			NbtSerializerSettings.DefaultSettings.Converters.Add(new ItemNbtConverter());
 			NbtSerializerSettings.DefaultSettings.Converters.Add(new ItemsNbtConverter());
+			NbtSerializerSettings.DefaultSettings.Converters.Add(new ItemStacksNbtConverter());
+			NbtSerializerSettings.DefaultSettings.Converters.Add(new BlockEntityNbtConverter());
 		}
 
 		public NbtFile NbtFile { get; set; }

@@ -1,104 +1,182 @@
-﻿#region LICENSE
-
-// The contents of this file are subject to the Common Public Attribution
-// License Version 1.0. (the "License"); you may not use this file except in
-// compliance with the License. You may obtain a copy of the License at
-// https://github.com/NiclasOlofsson/MiNET/blob/master/LICENSE.
-// The License is based on the Mozilla Public License Version 1.1, but Sections 14
-// and 15 have been added to cover use of software over a computer network and
-// provide for limited attribution for the Original Developer. In addition, Exhibit A has
-// been modified to be consistent with Exhibit B.
-// 
-// Software distributed under the License is distributed on an "AS IS" basis,
-// WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
-// the specific language governing rights and limitations under the License.
-// 
-// The Original Code is MiNET.
-// 
-// The Original Developer is the Initial Developer.  The Initial Developer of
-// the Original Code is Niclas Olofsson.
-// 
-// All portions of the code written by Niclas Olofsson are Copyright (c) 2014-2020 Niclas Olofsson.
-// All Rights Reserved.
-
-#endregion
-
-using System.Collections.Generic;
-using fNbt;
-using MiNET.Items;
+﻿using System;
+using fNbt.Serialization;
+using MiNET.Inventory;
+using MiNET.Utils;
+using MiNET.Utils.Vectors;
+using MiNET.Worlds;
 
 namespace MiNET.BlockEntities
 {
-	public class ChestBlockEntity : BlockEntity
+	public class ChestBlockEntity : ContainerBlockEntity
 	{
-		private NbtCompound Compound { get; set; }
+		[NbtProperty("forceunpair")]
+		public bool? ForceUnpair { get; set; }
 
-		public ChestBlockEntity() : this(BlockEntityIds.Chest)
+		[NbtProperty("pairlead")]
+		public bool? IsPairLead { get; set; }
+
+		[NbtProperty("pairx")]
+		public int? PairX { get; set; }
+
+		[NbtProperty("pairz")]
+		public int? PairZ { get; set; }
+
+		[NbtIgnore]
+		public bool IsPaired => PairX.HasValue && PairZ.HasValue && IsPairLead.HasValue && !(ForceUnpair ?? false);
+
+		[NbtIgnore]
+		public BlockCoordinates PairCoordinates => new BlockCoordinates(PairX ?? 0, Coordinates.Y, PairZ ?? 0);
+
+		public ChestBlockEntity() : base(BlockEntityIds.Chest)
 		{
 
 		}
 
-		protected ChestBlockEntity(string id) : base(id)
+		public override ContainerInventory GetInventory(Level level)
 		{
-			Compound = new NbtCompound(string.Empty)
+			lock (Items)
 			{
-				new NbtString("id", Id),
-				new NbtList("Items", new NbtCompound()),
-				new NbtInt("x", Coordinates.X),
-				new NbtInt("y", Coordinates.Y),
-				new NbtInt("z", Coordinates.Z)
-			};
+				CheckPair(level);
 
-			NbtList items = (NbtList) Compound["Items"];
-			for (byte i = 0; i < 27; i++)
-			{
-				var itemTag = new ItemAir().ToNbt();
-				itemTag.Add(new NbtByte("Slot", i));
-
-				items.Add(itemTag);
+				return base.GetInventory(level);
 			}
 		}
 
-		public override NbtCompound GetCompound()
+		protected override ContainerInventory CreateInventory(Level level)
 		{
-			Compound["x"] = new NbtInt("x", Coordinates.X);
-			Compound["y"] = new NbtInt("y", Coordinates.Y);
-			Compound["z"] = new NbtInt("z", Coordinates.Z);
-
-			return Compound;
-		}
-
-		public override void SetCompound(NbtCompound compound)
-		{
-			Compound = compound;
-
-			if (Compound["Items"] == null)
+			if (IsPaired)
 			{
-				NbtList items = new NbtList("Items");
-				for (byte i = 0; i < 27; i++)
+				var pair = level.GetBlockEntity(PairCoordinates) as ChestBlockEntity;
+
+				if (IsPairLead.Value)
 				{
-					var itemTag = new ItemAir().ToNbt();
-					itemTag.Add(new NbtByte("Slot", i));
+					var inventory = CreateInventoryInternal();
+					pair.UpdatePair(inventory);
 
-					items.Add(itemTag);
+					return inventory;
 				}
-				Compound["Items"] = items;
+				else
+				{
+					var inventory = pair.GetInventory(level);
+					UpdatePair(inventory);
+
+					return inventory;
+				}
+			}
+
+			return CreateInventoryInternal();
+		}
+
+		public override void RemoveBlockEntity(Level level)
+		{
+			base.RemoveBlockEntity(level);
+
+			if (level.GetBlockEntity(PairCoordinates) is ChestBlockEntity pair 
+				&& pair.PairCoordinates == Coordinates)
+			{
+				pair.RemovePair();
 			}
 		}
 
-		public override List<Item> GetDrops()
+		public bool Pair(Level level, ChestBlockEntity pair)
 		{
-			List<Item> slots = new List<Item>();
+			if (!CanPair(level, pair)) return false;
 
-			var items = Compound["Items"] as NbtList;
-			if (items == null) return slots;
+			SetPair(pair.Coordinates, true);
+			pair.SetPair(Coordinates, false);
 
-			for (byte i = 0; i < items.Count; i++)
+			return true;
+		}
+		
+		public void RemovePair()
+		{
+			if (!IsPaired) return;
+
+			if (Inventory != null && Inventory.Slots is ContainerItemStacks stacks)
 			{
-				slots.Add(ItemFactory.FromNbt(items[i]));
+				stacks.RemoveContainer(Convert.ToInt32(IsPairLead.Value));
+				Inventory.Coordinates = Coordinates;
 			}
 
-			return slots;
+			IsPairLead = null;
+			PairX = null;
+			PairZ = null;
+		}
+
+		public bool CanPair(Level level, ChestBlockEntity chest)
+		{
+			CheckPair(level);
+
+			if (IsPaired || chest.IsPaired) return false;
+			if ((ForceUnpair ?? false) || (chest.ForceUnpair ?? false)) return false;
+			if (Coordinates.Y != chest.Coordinates.Y) return false;
+
+			var diff = (Coordinates - chest.Coordinates).Abs();
+
+			return diff.X == 1 && diff.Z == 0
+				|| diff.X == 0 && diff.Z == 1;
+		}
+
+		private void CheckPair(Level level)
+		{
+			if (IsPaired)
+			{
+				var pair = level.GetBlockEntity(PairCoordinates) as ChestBlockEntity;
+
+				if (pair == null || pair.PairCoordinates != Coordinates)
+				{
+					RemovePair();
+					return;
+				}
+
+				if (Inventory != null && IsPairLead.Value)
+				{
+					pair.UpdatePair(Inventory);
+				}
+			}
+		}
+
+		private void UpdatePair(ContainerInventory inventory)
+		{
+			if (inventory?.Slots is ContainerItemStacks itemStacks)
+			{
+				itemStacks.SetContainer(Items, Convert.ToInt32(!(IsPairLead ?? true)));
+			}
+		}
+
+		private void SetPair(BlockCoordinates pairCoordinates, bool isLead)
+		{
+			IsPairLead = isLead;
+			PairX = pairCoordinates.X;
+			PairZ = pairCoordinates.Z;
+		}
+
+		private ContainerInventory CreateInventoryInternal()
+		{
+			return new ContainerInventory(new ContainerItemStacks(Items), Coordinates)
+			{
+				Type = WindowType
+			};
+		}
+
+		protected override void OnInventoryOpened(object sender, InventoryOpenedEventArgs args)
+		{
+			base.OnInventoryOpened(sender, args);
+
+			if (args.Opened && (IsPairLead ?? true))
+			{
+				args.Player.Level.BroadcastSound(Coordinates, LevelSoundEventType.ChestOpen);
+			}
+		}
+
+		protected override void OnInventoryClosed(object sender, InventoryClosedEventArgs args)
+		{
+			base.OnInventoryClosed(sender, args);
+
+			if (args.Closed && (IsPairLead ?? true))
+			{
+				args.Player.Level.BroadcastSound(Coordinates, LevelSoundEventType.ChestClosed);
+			}
 		}
 	}
 }

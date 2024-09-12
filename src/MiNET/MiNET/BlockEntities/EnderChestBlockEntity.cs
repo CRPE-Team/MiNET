@@ -1,6 +1,6 @@
 ﻿namespace MiNET.BlockEntities
 {
-	public class EnderChestBlockEntity : ChestBlockEntity
+	public class EnderChestBlockEntity : ContainerBlockEntity
 	{
 		public EnderChestBlockEntity() : base(BlockEntityIds.EnderChest)
 		{

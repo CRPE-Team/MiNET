@@ -1,7 +1,7 @@
 ﻿namespace MiNET.Utils
 {
 	public enum WindowType : sbyte
-	{ 
+	{
 		None = -9,
 
 		Inventory = -1,
@@ -42,5 +42,5 @@
 		ChestBoat = 34,
 		DecoratedPot = 35,
 		Crafter = 36,
-}
+	}
 }

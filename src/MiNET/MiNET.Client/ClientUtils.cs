@@ -27,11 +27,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using fNbt;
+using fNbt.Serialization;
 using log4net;
+using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Net;
 using MiNET.Utils;
-using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 using MiNET.Worlds.Anvil;
 
@@ -211,22 +212,18 @@ namespace MiNET.Client
 						{
 							NbtFile file = new NbtFile()
 							{
-								BigEndian = false,
-								UseVarInt = true
+								Flavor = NbtFlavor.Bedrock
 							};
 
 							file.LoadFromStream(stream, NbtCompression.None);
 							var blockEntityTag = file.RootTag;
 							if (blockEntityTag.Name != "alex")
 							{
-								int x = blockEntityTag["x"].IntValue;
-								int y = blockEntityTag["y"].IntValue;
-								int z = blockEntityTag["z"].IntValue;
+								// TODO - read directly from stream via NbtSerializer
+								var blockEntity = NbtConvert.FromNbt<BlockEntity>(file.RootTag);
+								chunkColumn.BlockEntities[blockEntity.Coordinates] = blockEntity;
 
-								chunkColumn.SetBlockEntity(new BlockCoordinates(x, y, z), (NbtCompound) file.RootTag);
-
-								if (Log.IsTraceEnabled())
-									Log.Trace($"Blockentity:\n{file.RootTag}");
+								if (Log.IsTraceEnabled()) Log.Trace($"Blockentity:\n{file.RootTag}");
 							}
 						}
 					}

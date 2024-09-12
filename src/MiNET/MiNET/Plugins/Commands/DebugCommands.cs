@@ -148,11 +148,11 @@ namespace MiNET.Plugins.Commands
 						return false;
 
 					var chunk = args.Level.GetChunk(coords);
-					chunk.BlockEntities.TryGetValue(coords, out var k);
+					var blockEntity = chunk.GetBlockEntity(coords);
 
 					args.Player.SendMessage($"Id: {block.Id}:{chunk.GetBlockRuntimeId(coords.X & 0x0f, coords.Y, coords.Z & 0x0f)}\n" +
 						$"{string.Join("\n", block.States.Select(s => $"{s.Name}: {s.GetValue()}"))}\n" +
-						$"{k}", MessageType.Tip);
+						$"{blockEntity?.GetCompound()}", MessageType.Tip);
 
 					return true;
 				}

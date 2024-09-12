@@ -23,13 +23,14 @@
 
 #endregion
 
-using MiNET.BlockEntities;
+using System.Numerics;
 using MiNET.Items;
+using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public partial class EnderChest : ChestBase
+	public partial class EnderChest : Block
 	{
 		public EnderChest() : base()
 		{
@@ -40,9 +41,11 @@ namespace MiNET.Blocks
 			FuelEfficiency = 0;
 		}
 
-		protected override ChestBlockEntity CreateBlockEntity()
+		public override bool Interact(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoord)
 		{
-			return new EnderChestBlockEntity();
+			// each enderchest inventory is a players individual inventory stored in their main inventory
+
+			return base.Interact(world, player, blockCoordinates, face, faceCoord);
 		}
 
 		public override Item[] GetDrops(Level world, Item tool)

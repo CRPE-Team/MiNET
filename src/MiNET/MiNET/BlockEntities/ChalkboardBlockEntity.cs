@@ -23,7 +23,8 @@
 
 #endregion
 
-using fNbt;
+using fNbt.Serialization;
+using fNbt.Serialization.NamingStrategy;
 using MiNET.Utils.Vectors;
 
 namespace MiNET.BlockEntities
@@ -31,10 +32,12 @@ namespace MiNET.BlockEntities
 	public class ChalkboardBlockEntity : BlockEntity
 	{
 		public string Text { get; set; }
-		public bool Locked { get; set; }
-		public bool OnGround { get; set; }
-		public long Owner { get; set; }
-		public int Size { get; set; }
+		public bool? Locked { get; set; }
+		public bool? OnGround { get; set; }
+		public long? Owner { get; set; }
+		public int? Size { get; set; }
+
+		[NbtFlatProperty(typeof(BaseNamingStrategy))]
 		public BlockCoordinates BaseCoordinates { get; set; }
 
 		public ChalkboardBlockEntity() : base(BlockEntityIds.ChalkboardBlock)
@@ -42,64 +45,12 @@ namespace MiNET.BlockEntities
 			Text = string.Empty;
 		}
 
-		public override NbtCompound GetCompound()
+		private class BaseNamingStrategy : NbtNamingStrategy
 		{
-			NbtCompound compound;
-			if (Coordinates == BaseCoordinates)
+			public override string ResolveMemberName(string name)
 			{
-				compound = new NbtCompound(string.Empty)
-				{
-					new NbtInt("BaseX", BaseCoordinates.X),
-					new NbtInt("BaseY", BaseCoordinates.Y),
-					new NbtInt("BaseZ", BaseCoordinates.Z),
-					new NbtByte("Locked", (byte) (Locked ? 1 : 0)),
-					new NbtByte("OnGround", (byte) (OnGround ? 1 : 0)),
-					new NbtLong("Owner", Owner),
-					new NbtInt("Size", Size),
-					new NbtString("Text", Text ?? string.Empty),
-					new NbtString("id", Id),
-					new NbtInt("x", Coordinates.X),
-					new NbtInt("y", Coordinates.Y),
-					new NbtInt("z", Coordinates.Z)
-				};
+				return $"Base{name}";
 			}
-			else
-			{
-				compound = new NbtCompound(string.Empty)
-				{
-					new NbtInt("BaseX", BaseCoordinates.X),
-					new NbtInt("BaseY", BaseCoordinates.Y),
-					new NbtInt("BaseZ", BaseCoordinates.Z),
-					new NbtString("id", Id),
-					new NbtInt("x", Coordinates.X),
-					new NbtInt("y", Coordinates.Y),
-					new NbtInt("z", Coordinates.Z)
-				};
-			}
-
-			return compound;
-		}
-
-		public override void SetCompound(NbtCompound compound)
-		{
-			if (compound.TryGet("Locked", out var locked)) Locked = locked.ByteValue == 1;
-			if (compound.TryGet("OnGround", out var onGround)) OnGround = onGround.ByteValue == 1;
-			if (compound.TryGet("Owner", out var owner)) Owner = owner.LongValue;
-			if (compound.TryGet("Size", out var size)) Size = size.IntValue;
-
-			int x = 0, y = 0, z = 0;
-			if (compound.TryGet("BaseX", out var baseX)) x = baseX.IntValue;
-			if (compound.TryGet("BaseY", out var baseY)) y = baseY.IntValue;
-			if (compound.TryGet("BaseZ", out var baseZ)) z = baseZ.IntValue;
-			BaseCoordinates = new BlockCoordinates(x, y, z);
-
-			Text = GetTextValue(compound, "Text");
-		}
-
-		private string GetTextValue(NbtCompound compound, string key)
-		{
-			compound.TryGet(key, out NbtString text);
-			return text != null ? (text.StringValue ?? string.Empty) : string.Empty;
 		}
 	}
 }
