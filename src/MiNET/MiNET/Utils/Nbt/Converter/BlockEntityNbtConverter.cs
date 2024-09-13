@@ -3,7 +3,6 @@ using fNbt;
 using fNbt.Serialization;
 using fNbt.Serialization.Converters;
 using MiNET.BlockEntities;
-using MiNET.Utils.Vectors;
 
 namespace MiNET.Utils.Nbt.Converter
 {
@@ -26,6 +25,11 @@ namespace MiNET.Utils.Nbt.Converter
 
 		public override object Read(NbtBinaryReader stream, Type type, object value, string name, NbtSerializerSettings settings)
 		{
+			if (value != null)
+			{
+				return base.Read(stream, type, value, name, settings);
+			}
+
 			var tag = (NbtTag) TagNbtConverter.Read(stream, typeof(NbtCompound), value, name, settings);
 
 			return FromNbt(tag, type, value, settings);
@@ -47,15 +51,6 @@ namespace MiNET.Utils.Nbt.Converter
 			if (id == null) return null;
 
 			var blockEntity = value as BlockEntity ?? BlockEntityFactory.GetBlockEntityById(id);
-
-			var x = tag["x"]?.IntValue;
-			var y = tag["y"]?.IntValue;
-			var z = tag["z"]?.IntValue;
-
-			if (x.HasValue && y.HasValue && z.HasValue)
-			{
-				blockEntity.Coordinates = new BlockCoordinates(x.Value, y.Value, z.Value);
-			}
 
 			return base.FromNbt(tag, type, blockEntity, settings);
 		}

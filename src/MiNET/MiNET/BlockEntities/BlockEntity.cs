@@ -37,7 +37,7 @@ using MiNET.Worlds;
 namespace MiNET.BlockEntities
 {
 	[NbtObject]
-	public class BlockEntity : ICloneable
+	public abstract class BlockEntity : ICloneable
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(BlockEntity));
 
@@ -107,13 +107,18 @@ namespace MiNET.BlockEntities
 
 		public virtual List<Item> GetDrops()
 		{
-			return new List<Item>();
+			return [];
 		}
 
-		public object Clone()
+		public virtual object Clone()
 		{
-			// slow, but common solution
-			return NbtConvert.FromNbt(GetType(), GetCompound());
+			// Slow, but common solution. Recommended to implement real clone.
+
+			var type = GetType();
+			var clone = Activator.CreateInstance(type);
+
+			var settings = new NbtSerializerSettings() { Flavor = NbtFlavor.BedrockNoVarInt };
+			return NbtConvert.FromNbt(clone, NbtConvert.ToNbt(this, settings), settings);
 		}
 	}
 }

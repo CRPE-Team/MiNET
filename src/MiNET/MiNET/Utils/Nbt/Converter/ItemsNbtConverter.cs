@@ -10,6 +10,7 @@ namespace MiNET.Utils.Nbt.Converter
 	{
 		private const string SlotTagName = "Slot";
 
+		private static readonly ByteNbtConverter ByteNbtConverter = new ByteNbtConverter();
 		private static readonly TagNbtConverter TagNbtConverter = new TagNbtConverter();
 
 		public bool WriteSlots { get; set; } = true;
@@ -25,16 +26,26 @@ namespace MiNET.Utils.Nbt.Converter
 
 		protected override object ReadItem(NbtBinaryReader stream, ref int index, NbtSerializerSettings settings)
 		{
-			var tag = (NbtTag) TagNbtConverter.Read(stream, typeof(NbtCompound), null, string.Empty, settings);
+			if (WriteSlots)
+			{
+				var tag = (NbtTag) TagNbtConverter.Read(stream, typeof(NbtCompound), null, string.Empty, settings);
 
-			return ItemFromNbt(tag, ref index, settings);
+				return ItemFromNbt(tag, ref index, settings);
+			}
+			else
+			{
+				return base.ReadItem(stream, ref index, settings);
+			}
 		}
 
 		protected override void WriteItem(NbtBinaryWriter stream, object value, int index, NbtSerializerSettings settings)
 		{
-			var tag = ItemToNbt(value, index, settings);
+			if (WriteSlots)
+			{
+				ByteNbtConverter.Write(stream, (byte) index, SlotTagName, settings);
+			}
 
-			TagNbtConverter.WriteData(stream, tag, settings);
+			base.WriteItem(stream, value, index, settings);
 		}
 
 		protected override object ItemFromNbt(NbtTag tag, ref int index, NbtSerializerSettings settings)

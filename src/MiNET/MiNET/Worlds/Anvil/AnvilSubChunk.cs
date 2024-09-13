@@ -125,63 +125,66 @@ namespace MiNET.Worlds.Anvil
 
 		private ushort GetBiomeIndexFromeNoisedCoordinates(int x, int y, int z, long seed)
 		{
-			int leftX = x - 2;
-			int leftY = y - 2;
-			int leftZ = z - 2;
-			int oNoiseX = leftX >> 2;
-			int oNoiseY = leftY >> 2;
-			int oNoiseZ = leftZ >> 2;
-			double oDistX = (leftX & 3) / 4.0D;
-			double oDistY = (leftY & 3) / 4.0D;
-			double oDistZ = (leftZ & 3) / 4.0D;
-
-			int minSet = 0;
-
-			var minDist = double.PositiveInfinity;
-			for (int set = 0; set < 2; ++set)
+			unchecked
 			{
-				bool flagZ = (set & 1) == 0;
-				int sNoiseZ = flagZ ? oNoiseZ : oNoiseZ + 1;
-				double sDistZ = flagZ ? oDistZ : oDistZ - 1.0D;
-				double dist1 = FiddleCalculator.GetFiddledDistance(seed, oNoiseX, oNoiseY, sNoiseZ, oDistX, oDistY, sDistZ);
-				double dist2 = FiddleCalculator.GetFiddledDistance(seed, oNoiseX, oNoiseY + 1, sNoiseZ, oDistX, oDistY - 1.0D, sDistZ);
-				double dist3 = FiddleCalculator.GetFiddledDistance(seed, oNoiseX + 1, oNoiseY, sNoiseZ, oDistX - 1.0D, oDistY, sDistZ);
-				double dist4 = FiddleCalculator.GetFiddledDistance(seed, oNoiseX + 1, oNoiseY + 1, sNoiseZ, oDistX - 1.0D, oDistY - 1.0D, sDistZ);
-				if (minDist > dist1)
+				int leftX = x - 2;
+				int leftY = y - 2;
+				int leftZ = z - 2;
+				int oNoiseX = leftX >> 2;
+				int oNoiseY = leftY >> 2;
+				int oNoiseZ = leftZ >> 2;
+				double oDistX = (leftX & 3) / 4.0D;
+				double oDistY = (leftY & 3) / 4.0D;
+				double oDistZ = (leftZ & 3) / 4.0D;
+
+				int minSet = 0;
+
+				var minDist = double.PositiveInfinity;
+				for (int set = 0; set < 2; ++set)
 				{
-					minSet = set;
-					minDist = dist1;
+					bool flagZ = (set & 1) == 0;
+					int sNoiseZ = flagZ ? oNoiseZ : oNoiseZ + 1;
+					double sDistZ = flagZ ? oDistZ : oDistZ - 1.0D;
+					double dist1 = FiddleCalculator.GetFiddledDistance(seed, oNoiseX, oNoiseY, sNoiseZ, oDistX, oDistY, sDistZ);
+					double dist2 = FiddleCalculator.GetFiddledDistance(seed, oNoiseX, oNoiseY + 1, sNoiseZ, oDistX, oDistY - 1.0D, sDistZ);
+					double dist3 = FiddleCalculator.GetFiddledDistance(seed, oNoiseX + 1, oNoiseY, sNoiseZ, oDistX - 1.0D, oDistY, sDistZ);
+					double dist4 = FiddleCalculator.GetFiddledDistance(seed, oNoiseX + 1, oNoiseY + 1, sNoiseZ, oDistX - 1.0D, oDistY - 1.0D, sDistZ);
+					if (minDist > dist1)
+					{
+						minSet = set;
+						minDist = dist1;
+					}
+					if (minDist > dist2)
+					{
+						minSet = set | 2;
+						minDist = dist2;
+					}
+					if (minDist > dist3)
+					{
+						minSet = set | 4;
+						minDist = dist3;
+					}
+					if (minDist > dist4)
+					{
+						minSet = set | 6;
+						minDist = dist4;
+					}
 				}
-				if (minDist > dist2)
+
+				int noiseX = (minSet & 4) == 0 ? oNoiseX : oNoiseX + 1;
+				int noiseY = (minSet & 2) == 0 ? oNoiseY : oNoiseY + 1;
+				int noiseZ = (minSet & 1) == 0 ? oNoiseZ : oNoiseZ + 1;
+
+
+				if (X == noiseX >> 2 && Z == noiseZ >> 2 && Index - 4 == noiseY >> 2)
 				{
-					minSet = set | 2;
-					minDist = dist2;
+					return GetNoiseBiomeIndex(noiseX, noiseY, noiseZ);
 				}
-				if (minDist > dist3)
-				{
-					minSet = set | 4;
-					minDist = dist3;
-				}
-				if (minDist > dist4)
-				{
-					minSet = set | 6;
-					minDist = dist4;
-				}
+
+				var biome = _biomeManager.GetNoiseBiome(noiseX, noiseY, noiseZ);
+
+				return base.Biomes.GetPalettedId(biome);
 			}
-
-			int noiseX = (minSet & 4) == 0 ? oNoiseX : oNoiseX + 1;
-			int noiseY = (minSet & 2) == 0 ? oNoiseY : oNoiseY + 1;
-			int noiseZ = (minSet & 1) == 0 ? oNoiseZ : oNoiseZ + 1;
-
-
-			if (X == noiseX >> 2 && Z == noiseZ >> 2 && Index - 4 == noiseY >> 2)
-			{
-				return GetNoiseBiomeIndex(noiseX, noiseY, noiseZ);
-			}
-
-			var biome = _biomeManager.GetNoiseBiome(noiseX, noiseY, noiseZ);
-
-			return base.Biomes.GetPalettedId(biome);
 		}
 
 		private int GetNoiseIndex(int x, int y, int z)
@@ -197,18 +200,21 @@ namespace MiNET.Worlds.Anvil
 			public static double GetFiddledDistance(long seed, int x, int y, int z, double distX, double distY, double distZ)
 			{
 				//agressive optimisation
-				long __7 = seed * (seed * MULTIPLIER + INCREMENT) + x;
-				__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + y;
-				__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + z;
-				__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + x;
-				__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + y;
-				__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + z;
-				double rDistX = ((__7 >> 24 & 1023) / 1024.0D - 0.5D) * 0.9D + distX;
-				__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + seed;
-				double rDistY = ((__7 >> 24 & 1023) / 1024.0D - 0.5D) * 0.9D + distY;
-				__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + seed;
-				double rDistZ = ((__7 >> 24 & 1023) / 1024.0D - 0.5D) * 0.9D + distZ;
-				return rDistX * rDistX + rDistY * rDistY + rDistZ * rDistZ;
+				unchecked
+				{
+					long __7 = seed * (seed * MULTIPLIER + INCREMENT) + x;
+					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + y;
+					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + z;
+					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + x;
+					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + y;
+					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + z;
+					double rDistX = ((__7 >> 24 & 1023) - 512) / (1024.0D / 0.9D) + distX;
+					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + seed;
+					double rDistY = ((__7 >> 24 & 1023) - 512) / (1024.0D / 0.9D) + distY;
+					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + seed;
+					double rDistZ = ((__7 >> 24 & 1023) - 512) / (1024.0D / 0.9D) + distZ;
+					return rDistX * rDistX + rDistY * rDistY + rDistZ * rDistZ;
+				}
 			}
 		}
 	}

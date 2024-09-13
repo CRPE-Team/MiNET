@@ -28,14 +28,15 @@ namespace MiNET.Worlds.Anvil
 
 			int fixedY = Math.Clamp(y, MinNoiseY, MaxNoiseY);
 			int j = GetSectionIndex(ToBlock(fixedY));
+			var subChunk = chunk[j];
 
-			if (chunk[j] is AnvilSubChunk section)
+			if (subChunk is AnvilSubChunk section)
 			{
 				return section.GetNoiseBiome(x, fixedY, z);
 			}
 			else
 			{
-				return chunk[j].GetBiome(x << 2, fixedY << 2, z << 2);
+				return subChunk.GetBiome((x << 2) & 0xf, (fixedY << 2) & 0xf, (z << 2) & 0xf);
 			}
 		}
 
@@ -64,12 +65,7 @@ namespace MiNET.Worlds.Anvil
 			using (var sha256Hash = SHA256.Create())
 			{
 				var bytes = sha256Hash.ComputeHash(BitConverter.GetBytes(seed));
-
-				long retVal = bytes[0] & 0xFF;
-				for (int i = 1; i < Math.Min(bytes.Length, 8); i++)
-					retVal |= (bytes[i] & 0xFFL) << i * 8;
-
-				return retVal;
+				return BitConverter.ToInt64(bytes);
 			}
 		}
 	}

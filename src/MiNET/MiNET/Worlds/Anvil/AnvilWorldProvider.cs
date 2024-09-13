@@ -580,7 +580,7 @@ namespace MiNET.Worlds.Anvil
 									string itemName = sourceTag["id"].StringValue;
 
 									var item = ItemFactory.GetItem(itemName);
-									var itemTag = item.ToNbt();
+									var itemTag = NbtConvert.ToNbt<NbtCompound>(item);
 									itemTag.Remove("Count");
 
 									sourceTag.Remove("id");

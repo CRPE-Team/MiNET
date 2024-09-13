@@ -37,7 +37,7 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
-	public abstract class Block : BlockStateContainer, INbtSerializable, ICloneable
+	public abstract class Block : BlockStateContainer, ICloneable
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Block));
 
@@ -200,12 +200,6 @@ namespace MiNET.Blocks
 		public virtual BoundingBox GetBoundingBox()
 		{
 			return new BoundingBox(Coordinates, Coordinates + 1);
-		}
-
-		[Obsolete]
-		public virtual NbtCompound ToNbt(string name = null)
-		{
-			return NbtConvert.ToNbt<NbtCompound>(this, name);
 		}
 
 		public object Clone()

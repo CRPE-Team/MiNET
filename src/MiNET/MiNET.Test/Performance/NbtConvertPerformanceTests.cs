@@ -6,6 +6,7 @@ using BenchmarkDotNet.Attributes;
 using fNbt;
 using fNbt.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MiNET.BlockEntities;
 using MiNET.Items;
 
 namespace MiNET.Test.Performance
@@ -20,6 +21,9 @@ namespace MiNET.Test.Performance
 
 		private static Item _item;
 		private static NbtTag _itemTag;
+
+		private static BlockEntity _blockEntity;
+		private static NbtTag _blockEntityTag;
 
 		static NbtConvertPerformanceTests()
 		{
@@ -58,6 +62,22 @@ namespace MiNET.Test.Performance
 			var item = new ItemPrismarineBrickSlab();
 			item.Block.VerticalHalf = "top";
 			_itemTag = NbtConvert.ToNbt(_item = item);
+
+			//var blockEntity = new ChestBlockEntity() { PairX = 123, PairZ = 321 };
+			var blockEntity = new SignBlockEntity() { Coordinates = new(131, 1, 314) };
+			_blockEntityTag = NbtConvert.ToNbt(_blockEntity = blockEntity);
+		}
+
+		[Benchmark]
+		public void BlockEntityClone()
+		{
+			_blockEntity.Clone();
+		}
+
+		[Benchmark]
+		public void BlockEntityTagClone()
+		{
+			_blockEntityTag.Clone();
 		}
 
 		[Benchmark]

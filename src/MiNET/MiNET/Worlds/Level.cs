@@ -588,7 +588,7 @@ namespace MiNET.Worlds
 								var chunkTickMeasurement = blockAndChunkTickMeasurement?.Begin("Chunk tick");
 
 								var maxValue = (((height + 1) >> 4) + 1) * 16 - 1;
-								var ySpawn = random.Next(maxValue);
+								var ySpawn = random.Next(Math.Abs(maxValue));
 								var spawnCoordinates = new BlockCoordinates(x + spawnState.ChunkX * 16, ySpawn, z + spawnState.ChunkZ * 16);
 								var spawnBlock = GetBlock(spawnCoordinates, chunk);
 								if (spawnBlock.IsTransparent)

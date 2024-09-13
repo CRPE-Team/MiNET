@@ -71,12 +71,6 @@ namespace MiNET.Items
 			return RuntimeIdToId.GetValueOrDefault(id);
 		}
 
-		[Obsolete]
-		public static Item FromNbt(NbtTag tag)
-		{
-			return NbtConvert.FromNbt<Item>(tag);
-		}
-
 		public static ItemBlock GetItem(Block block, int count = 1)
 		{
 			return (ItemBlock) GetItem(block.Id, 0, count, block) ?? GetItem<Air>();

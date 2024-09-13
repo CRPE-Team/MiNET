@@ -26,6 +26,7 @@
 using System;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
 using fNbt;
 using fNbt.Serialization;
 using log4net;
@@ -47,7 +48,7 @@ namespace MiNET.Items
 	///     frames, which turn into an entity when placed, and beds, which turn into a group of blocks when placed. When
 	///     equipped, items (and blocks) briefly display their names above the HUD.
 	/// </summary>
-	public abstract class Item : INbtSerializable, ICloneable
+	public abstract class Item : ICloneable
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Item));
 
@@ -239,12 +240,6 @@ namespace MiNET.Items
 			return nbtCheck;
 		}
 
-		[Obsolete]
-		public virtual NbtCompound ToNbt(string name = null)
-		{
-			return NbtConvert.ToNbt<NbtCompound>(this, name);
-		}
-
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj)) return false;
@@ -276,11 +271,12 @@ namespace MiNET.Items
 			return false; // Not handled
 		}
 
-		private static int _uniqueIdIncrement;
+		private static int _uniqueIdIncrement = 100000;
 
 		public static int GetUniqueId()
 		{
-			return Math.Abs(Environment.TickCount + _uniqueIdIncrement++);
+			Interlocked.CompareExchange(ref _uniqueIdIncrement, 100000, int.MaxValue / 2);
+			return Interlocked.Increment(ref _uniqueIdIncrement);
 		}
 	}
 

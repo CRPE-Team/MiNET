@@ -206,8 +206,7 @@ namespace MiNET.Blocks
 
 					var nbt = new NbtFile()
 					{
-						BigEndian = false,
-						UseVarInt = true,
+						Flavor = NbtFlavor.Bedrock,
 						RootTag = record.StatesNbt
 					};
 
@@ -271,20 +270,6 @@ namespace MiNET.Blocks
 			}
 
 			return result;
-		}
-
-		public static Block FromNbt(NbtTag compound)
-		{
-			var id = compound["name"].StringValue;
-
-			var states = new PaletteBlockStateContainer(id, GetBlockStates(compound));
-
-			if (BlockStates.TryGetValue(states, out var blockState))
-			{
-				return GetBlockByRuntimeId(blockState.RuntimeId);
-			}
-
-			return null;
 		}
 
 		public static string GetBlockIdFromItemId(string id)
