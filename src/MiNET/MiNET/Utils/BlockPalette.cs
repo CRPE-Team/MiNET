@@ -310,11 +310,11 @@ namespace MiNET.Utils
 		public object GetValue();
 	}
 
-	public class BlockStateInt : IBlockState
+	public class BlockStateInt : IBlockState, ICloneable
 	{
 		public int Type { get; } = 3;
-		public string Name { get; set; }
-		public int Value { get; set; }
+		public virtual string Name { get; set; }
+		public virtual int Value { get; set; }
 
 		public object GetValue() => Value;
 
@@ -340,13 +340,18 @@ namespace MiNET.Utils
 		{
 			return $"{nameof(Name)}: {Name}, {nameof(Value)}: {Value}";
 		}
+
+		public object Clone()
+		{
+			return MemberwiseClone();
+		}
 	}
 
-	public class BlockStateByte : IBlockState
+	public class BlockStateByte : IBlockState, ICloneable
 	{
 		public int Type { get; } = 1;
-		public string Name { get; set; }
-		public byte Value { get; set; }
+		public virtual string Name { get; set; }
+		public virtual byte Value { get; set; }
 
 		public object GetValue() => Value;
 
@@ -372,13 +377,18 @@ namespace MiNET.Utils
 		{
 			return $"{nameof(Name)}: {Name}, {nameof(Value)}: {Value}";
 		}
+
+		public object Clone()
+		{
+			return MemberwiseClone();
+		}
 	}
 
-	public class BlockStateString : IBlockState
+	public class BlockStateString : IBlockState, ICloneable
 	{
 		public int Type { get; } = 8;
-		public string Name { get; set; }
-		public string Value { get; set; }
+		public virtual string Name { get; set; }
+		public virtual string Value { get; set; }
 
 		public object GetValue() => Value;
 
@@ -403,6 +413,11 @@ namespace MiNET.Utils
 		public override string ToString()
 		{
 			return $"{nameof(Name)}: {Name}, {nameof(Value)}: {Value}";
+		}
+
+		public object Clone()
+		{
+			return MemberwiseClone();
 		}
 	}
 }
