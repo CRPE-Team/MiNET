@@ -49,6 +49,19 @@ namespace MiNET.Items
 			{
 				Log.Warn($"Detected missing items [{missingItem}]");
 			}
+
+			if (!Config.GetProperty("EnableEdu", false))
+			{
+				foreach (var factory in IdToFactory.Values)
+				{
+					var item = factory();
+					if (item.Edu)
+					{
+						ItemStates.Remove(item.Id);
+						ItemStates.Remove(item.Id.Replace("minecraft:", "minecraft:item."));
+					}
+				}
+			}
 		}
 
 		public static string GetIdByType<T>()

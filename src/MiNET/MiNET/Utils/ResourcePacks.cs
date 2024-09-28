@@ -91,7 +91,15 @@ namespace MiNET.Utils
 		/// </summary>
 		public bool HasScripts { get; set; }
 
+		/// <summary>
+		/// Indicates this pack is part of an Add-On. Helps clients determine if the pack must be downloaded to join the server as Add-On packs are required to play without issues.
+		/// </summary>
 		public bool IsAddonPack { get; set; }
+
+		/// <summary>
+		/// RTXEnabled specifies if the texture pack uses the raytracing technology introduced in 1.16.200.
+		/// </summary>
+		public bool RtxEnabled { get; set; }
 
 		public void Write(Packet packet)
 		{
@@ -103,72 +111,12 @@ namespace MiNET.Utils
 			packet.Write(ContentIdentity);
 			packet.Write(HasScripts);
 			packet.Write(IsAddonPack);
-
-			WriteData(packet);
+			packet.Write(RtxEnabled);
 		}
-
-		protected virtual void WriteData(Packet packet) { }
 
 		public static ResourcePackInfo Read(Packet packet)
 		{
 			return new ResourcePackInfo()
-			{
-				UUID = packet.ReadString(),
-				Version = packet.ReadString(),
-				Size = packet.ReadUlong(),
-				ContentKey = packet.ReadString(),
-				SubPackName = packet.ReadString(),
-				ContentIdentity = packet.ReadString(),
-				HasScripts = packet.ReadBool(),
-				IsAddonPack = packet.ReadBool()
-			};
-		}
-	}
-
-	public class TexturePackInfos : List<TexturePackInfo>, IPacketDataObject
-	{
-		public void Write(Packet packet)
-		{
-			packet.Write((short) Count); // LE
-			//packet.WriteVarInt(Count);
-
-			foreach (var info in this)
-			{
-				packet.Write(info);
-			}
-		}
-
-		public static TexturePackInfos Read(Packet packet)
-		{
-			var packInfos = new TexturePackInfos();
-
-			var count = packet.ReadShort(); // LE
-			//var count = packet.ReadVarInt(); // LE
-
-			for (int i = 0; i < count; i++)
-			{
-				packInfos.Add(TexturePackInfo.Read(packet));
-			}
-
-			return packInfos;
-		}
-	}
-
-	public class TexturePackInfo : ResourcePackInfo, IPacketDataObject
-	{
-		/// <summary>
-		/// RTXEnabled specifies if the texture pack uses the raytracing technology introduced in 1.16.200.
-		/// </summary>
-		public bool RtxEnabled { get; set; }
-
-		protected override void WriteData(Packet packet)
-		{
-			packet.Write(RtxEnabled);
-		}
-
-		public static new TexturePackInfo Read(Packet packet)
-		{
-			return new TexturePackInfo()
 			{
 				UUID = packet.ReadString(),
 				Version = packet.ReadString(),

@@ -38,6 +38,8 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Jigsaw Structure Data | 0x139 | 19 |   
 | Current Structure Feature | 0x13a | 19 |   
 | Serverbound Diagnostics | 0x13b | 19 |   
+| Camera Aim Assist | 0x13c | 19 |   
+| Container Registry Cleanup | 0x13d | 19 |   
 | Rider Jump | 0x14 | 20 |   
 | Update Block | 0x15 | 21 |   
 | Add Painting | 0x16 | 22 |   
@@ -188,6 +190,8 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Experiments [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-Experiments) |
 | FixedString [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-FixedString) |
 | float [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-float) |
+| FullContainerName [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-FullContainerName) |
+| FullContainerName[] [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-FullContainerName[]) |
 | GameRules [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-GameRules) |
 | int [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-int) |
 | IPEndPoint [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-IPEndPoint) |
@@ -222,7 +226,6 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Skin [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-Skin) |
 | string [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-string) |
 | SubChunkPositionOffset[] [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-SubChunkPositionOffset[]) |
-| TexturePackInfos [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-TexturePackInfos) |
 | Transaction [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-Transaction) |
 | uint [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-uint) |
 | ulong [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ulong) |
@@ -232,6 +235,7 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | ushort [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ushort) |
 | UUID [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-UUID) |
 | VarInt [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-VarInt) |
+| Vector2 [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-Vector2) |
 | Vector3 [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-Vector3) |
 
 ## Constants
@@ -345,9 +349,7 @@ Wiki: [Resource Packs Info](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 |Must Accept | bool |  |
 |Has Addons | bool |  |
 |Has Scripts | bool |  |
-|Force Server Packs | bool |  |
-|BehahaviorPackInfos | ResourcePackInfos |  |
-|TexturePacks | TexturePackInfos |  |
+|Resource Packs | ResourcePackInfos |  |
 |Cdn Urls | CdnUrls |  |
 -----------------------------------------------------------------------
 ### Resource Pack Stack (0x07)
@@ -1260,6 +1262,7 @@ Wiki: [Inventory Content](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol
 |:-----|:-----|:-----|
 |Inventory Id | UnsignedVarInt |  |
 |Input | ItemStacks |  |
+|Container Name | FullContainerName |  |
 |Dynamic Container Id | UnsignedVarInt |  |
 -----------------------------------------------------------------------
 ### Inventory Slot (0x32)
@@ -1277,6 +1280,7 @@ Wiki: [Inventory Slot](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-In
 |:-----|:-----|:-----|
 |Inventory Id | UnsignedVarInt |  |
 |Slot | UnsignedVarInt |  |
+|Container Name | FullContainerName |  |
 |Dynamic Container Id | UnsignedVarInt |  |
 |Item | Item |  |
 -----------------------------------------------------------------------
@@ -1842,6 +1846,7 @@ Wiki: [Transfer](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Transfer
 |:-----|:-----|:-----|
 |Server Address | string |  |
 |Port | ushort |  |
+|Reload World | bool |  |
 -----------------------------------------------------------------------
 ### Play Sound (0x56)
 Wiki: [Play Sound](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-PlaySound)
@@ -3211,6 +3216,39 @@ Wiki: [Serverbound Diagnostics](https://github.com/NiclasOlofsson/MiNET/wiki//Pr
 |Avg End Frame Time MS | float |  |
 |Avg Remainder Time Percent | float |  |
 |Avg Unaccounted Time Percent | float |  |
+-----------------------------------------------------------------------
+### Camera Aim Assist (0x13c)
+Wiki: [Camera Aim Assist](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-CameraAimAssist)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|View Angle | Vector2 |  |
+|Distance | float |  |
+|Target Mode | byte |  |
+|Action Type | byte |  |
+-----------------------------------------------------------------------
+### Container Registry Cleanup (0x13d)
+Wiki: [Container Registry Cleanup](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ContainerRegistryCleanup)
+
+**Sent from server:** false  
+**Sent from client:** true
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Removed Containers | FullContainerName[] |  |
 -----------------------------------------------------------------------
 ### Alex Entity Animation (0xe0)
 Wiki: [Alex Entity Animation](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AlexEntityAnimation)

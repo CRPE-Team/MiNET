@@ -206,6 +206,8 @@ namespace MiNET
 				MinValue = MinHunger,
 				MaxValue = MaxHunger,
 				Value = Hunger,
+				MinDefault = 0,
+				MaxDefault = 20,
 				Default = MaxHunger,
 				Modifiers = new AttributeModifiers()
 			};
@@ -216,6 +218,8 @@ namespace MiNET
 				MinValue = 0,
 				MaxValue = MaxHunger,
 				Value = (float) Saturation,
+				MinDefault = 0,
+				MaxDefault = 20,
 				Default = MaxHunger,
 				Modifiers = new AttributeModifiers()
 			};
@@ -225,6 +229,8 @@ namespace MiNET
 				MinValue = 0,
 				MaxValue = 5,
 				Value = (float) Exhaustion,
+				MinDefault = 0,
+				MaxDefault = 5,
 				Default = 5,
 				Modifiers = new AttributeModifiers()
 			};

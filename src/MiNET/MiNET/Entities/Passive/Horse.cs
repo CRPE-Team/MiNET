@@ -369,9 +369,10 @@ namespace MiNET.Entities.Passive
 
 			player.SendPacket(equ);
 
-			McpeInventoryContent containerSetContent = McpeInventoryContent.CreateObject();
+			var containerSetContent = McpeInventoryContent.CreateObject();
 			containerSetContent.inventoryId = 2;
 			containerSetContent.input = new ItemStacks([Slot0, Slot1]);
+			containerSetContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
 			player.SendPacket(containerSetContent);
 		}
 

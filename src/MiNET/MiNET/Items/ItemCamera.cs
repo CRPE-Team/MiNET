@@ -32,9 +32,9 @@ namespace MiNET.Items
 {
 	public partial class ItemCamera
 	{
-		public ItemCamera() : base()
+		public ItemCamera()
 		{
-
+			Edu = true;
 		}
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)

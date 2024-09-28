@@ -445,6 +445,7 @@ namespace MiNET
 			sendSlot.inventoryId = (uint) windowId;
 			sendSlot.slot = (uint) slot;
 			sendSlot.item = item;
+			sendSlot.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
 			Player.SendPacket(sendSlot);
 		}
 

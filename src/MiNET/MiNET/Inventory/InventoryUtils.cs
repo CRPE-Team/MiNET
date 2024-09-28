@@ -21,7 +21,9 @@ namespace MiNET.Inventory
 
 			var creativeItems = ResourceUtil.ReadResource<List<ExternalDataItem>>("creativeitems.json", typeof(InventoryUtils), "Data");
 
-			var uniqueId = 0;
+			CreativeInventoryItems.Add(new ItemAir());
+
+			var uniqueId = 1;
 			foreach (var itemData in creativeItems)
 			{
 				if (TryGetItemFromExternalData(itemData, out var item))

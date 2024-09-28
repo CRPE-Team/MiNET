@@ -238,13 +238,6 @@ namespace MiNET.Worlds.Anvil
 					new PropertyValueStateMapper("south", "3"),
 					new PropertyValueStateMapper("east", "4"),
 					new PropertyValueStateMapper("west", "5"));
-			var oldFacingDirectionMap2 = new PropertyStateMapper("facing", "facing_direction",
-					new PropertyValueStateMapper("down", "0"),
-					new PropertyValueStateMapper("up", "1"),
-					new PropertyValueStateMapper("south", "2"),
-					new PropertyValueStateMapper("north", "3"),
-					new PropertyValueStateMapper("west", "4"),
-					new PropertyValueStateMapper("east", "5"));
 			var oldFacingDirectionMap3 = new PropertyStateMapper("facing", "facing_direction",
 					new PropertyValueStateMapper("down", "0"),
 					new PropertyValueStateMapper("up", "1"),
@@ -350,9 +343,6 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add(new BlockStateMapper("minecraft:nether_portal", "minecraft:portal",
 				new PropertyStateMapper("axis", "portal_axis")));
 
-			_mapper.Add(new BlockStateMapper("minecraft:purpur_pillar", "minecraft:purpur_block",
-				new AdditionalPropertyStateMapper("chisel_type", "lines")));
-
 			_mapper.Add(new BlockStateMapper("minecraft:note_block", "minecraft:noteblock",
 				new SkipPropertyStateMapper("instrument"),
 				new SkipPropertyStateMapper("note"),
@@ -406,9 +396,6 @@ namespace MiNET.Worlds.Anvil
 
 			_mapper.Add(new BlockStateMapper("minecraft:farmland",
 				new PropertyStateMapper("moisture", "moisturized_amount")));
-
-			_mapper.Add(new BlockStateMapper("minecraft:sponge", new AdditionalPropertyStateMapper("sponge_type", "dry")));
-			_mapper.Add(new BlockStateMapper("minecraft:wet_sponge", "minecraft:sponge", new AdditionalPropertyStateMapper("sponge_type", "wet")));
 
 			_mapper.Add(new BlockStateMapper("minecraft:mangrove_propagule",
 				new PropertyStateMapper("hanging"),
@@ -1375,25 +1362,6 @@ namespace MiNET.Worlds.Anvil
 
 			foreach (var material in _slabMaterialsList)
 			{
-				var addWallBlockType = material switch
-				{
-					"cobblestone"
-					or "mossy_cobblestone"
-					or "granite"
-					or "diorite" 
-					or "andesite"
-					or "sandstone"
-					or "brick"
-					or "stone_brick"
-					or "mossy_stone_brick"
-					or "nether_brick"
-					or "end_stone_brick"
-					or "prismarine"
-					or "red_sandstone"
-					or "red_nether_brick" => true,
-					_ => false
-				};
-
 				var materialOverride = material switch
 				{
 					"end_stone_brick" => "end_brick",
@@ -1401,16 +1369,6 @@ namespace MiNET.Worlds.Anvil
 				};
 
 				_mapper.Add($"minecraft:{material}_wall", new BlockStateMapper(
-					context =>
-					{
-						if (addWallBlockType)
-						{
-							context.Properties.Add(new NbtString("wall_block_type", materialOverride));
-							return "minecraft:cobblestone_wall";
-						}
-
-						return context.AnvilName;
-					},
 					new PropertyStateMapper("up", "wall_post_bit"),
 					new PropertyStateMapper("east", "wall_connection_type_east", wallConnectionMap),
 					new PropertyStateMapper("north", "wall_connection_type_north", wallConnectionMap),

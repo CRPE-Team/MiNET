@@ -825,6 +825,71 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class AndesiteWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:andesite_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
+	} // class
+
 	public partial class Anvil : AnvilBase
 	{
 		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
@@ -3496,6 +3561,71 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class BrickWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:brick_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
+	} // class
+
 	public partial class BrownCandle : Block
 	{
 		private readonly BlockStateInt _candles = new BlockStateInt() { Name = "candles", Value = 0 };
@@ -4315,47 +4445,6 @@ namespace MiNET.Blocks
 	public partial class ChemicalHeat : Block
 	{
 		public override string Id => "minecraft:chemical_heat";
-	} // class
-
-	public partial class ChemistryTable : Block
-	{
-		private readonly BlockStateString _chemistryTableType = new BlockStateString() { Name = "chemistry_table_type", Value = "compound_creator" };
-		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
-
-		public override string Id => "minecraft:chemistry_table";
-
-		[StateEnum("compound_creator", "element_constructor", "lab_table", "material_reducer")]
-		public string ChemistryTableType { get => _chemistryTableType.Value; set => NotifyStateUpdate(_chemistryTableType, value); }
-
-		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "chemistry_table_type":
-						NotifyStateUpdate(_chemistryTableType, s.Value);
-						break;
-					case BlockStateInt s when s.Name == "direction":
-						NotifyStateUpdate(_direction, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _chemistryTableType;
-			yield return _direction;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _chemistryTableType, _direction);
-		} // method
 	} // class
 
 	public partial class CherryButton : Block
@@ -5473,7 +5562,6 @@ namespace MiNET.Blocks
 
 	public partial class CobblestoneWall : Block
 	{
-		private readonly BlockStateString _wallBlockType = new BlockStateString() { Name = "wall_block_type", Value = "cobblestone" };
 		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
 		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
 		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
@@ -5481,9 +5569,6 @@ namespace MiNET.Blocks
 		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 0 };
 
 		public override string Id => "minecraft:cobblestone_wall";
-
-		[StateEnum("andesite", "brick", "cobblestone", "diorite", "end_brick", "granite", "mossy_cobblestone", "mossy_stone_brick", "nether_brick", "prismarine", "red_nether_brick", "red_sandstone", "sandstone", "stone_brick")]
-		public string WallBlockType { get => _wallBlockType.Value; set => NotifyStateUpdate(_wallBlockType, value); }
 
 		[StateEnum("none", "short", "tall")]
 		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
@@ -5506,9 +5591,6 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateString s when s.Name == "wall_block_type":
-						NotifyStateUpdate(_wallBlockType, s.Value);
-						break;
 					case BlockStateString s when s.Name == "wall_connection_type_east":
 						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
 						break;
@@ -5530,7 +5612,6 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _wallBlockType;
 			yield return _wallConnectionTypeEast;
 			yield return _wallConnectionTypeNorth;
 			yield return _wallConnectionTypeSouth;
@@ -5540,7 +5621,7 @@ namespace MiNET.Blocks
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _wallBlockType, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
 		} // method
 	} // class
 
@@ -5585,15 +5666,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class ColoredTorchBp : Block
+	public partial class ColoredTorchBlue : ColoredTorchBase
 	{
-		private readonly BlockStateByte _colorBit = new BlockStateByte() { Name = "color_bit", Value = 0 };
 		private readonly BlockStateString _torchFacingDirection = new BlockStateString() { Name = "torch_facing_direction", Value = "unknown" };
 
-		public override string Id => "minecraft:colored_torch_bp";
-
-		[StateBit]
-		public bool ColorBit { get => Convert.ToBoolean(_colorBit.Value); set => NotifyStateUpdate(_colorBit, value); }
+		public override string Id => "minecraft:colored_torch_blue";
 
 		[StateEnum("east", "north", "south", "top", "unknown", "west")]
 		public string TorchFacingDirection { get => _torchFacingDirection.Value; set => NotifyStateUpdate(_torchFacingDirection, value); }
@@ -5604,9 +5681,6 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "color_bit":
-						NotifyStateUpdate(_colorBit, s.Value);
-						break;
 					case BlockStateString s when s.Name == "torch_facing_direction":
 						NotifyStateUpdate(_torchFacingDirection, s.Value);
 						break;
@@ -5616,25 +5690,20 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _colorBit;
 			yield return _torchFacingDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _colorBit, _torchFacingDirection);
+			return HashCode.Combine(Id, _torchFacingDirection);
 		} // method
 	} // class
 
-	public partial class ColoredTorchRg : Block
+	public partial class ColoredTorchGreen : ColoredTorchBase
 	{
-		private readonly BlockStateByte _colorBit = new BlockStateByte() { Name = "color_bit", Value = 0 };
 		private readonly BlockStateString _torchFacingDirection = new BlockStateString() { Name = "torch_facing_direction", Value = "unknown" };
 
-		public override string Id => "minecraft:colored_torch_rg";
-
-		[StateBit]
-		public bool ColorBit { get => Convert.ToBoolean(_colorBit.Value); set => NotifyStateUpdate(_colorBit, value); }
+		public override string Id => "minecraft:colored_torch_green";
 
 		[StateEnum("east", "north", "south", "top", "unknown", "west")]
 		public string TorchFacingDirection { get => _torchFacingDirection.Value; set => NotifyStateUpdate(_torchFacingDirection, value); }
@@ -5645,9 +5714,6 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "color_bit":
-						NotifyStateUpdate(_colorBit, s.Value);
-						break;
 					case BlockStateString s when s.Name == "torch_facing_direction":
 						NotifyStateUpdate(_torchFacingDirection, s.Value);
 						break;
@@ -5657,13 +5723,78 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _colorBit;
 			yield return _torchFacingDirection;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _colorBit, _torchFacingDirection);
+			return HashCode.Combine(Id, _torchFacingDirection);
+		} // method
+	} // class
+
+	public partial class ColoredTorchPurple : ColoredTorchBase
+	{
+		private readonly BlockStateString _torchFacingDirection = new BlockStateString() { Name = "torch_facing_direction", Value = "unknown" };
+
+		public override string Id => "minecraft:colored_torch_purple";
+
+		[StateEnum("east", "north", "south", "top", "unknown", "west")]
+		public string TorchFacingDirection { get => _torchFacingDirection.Value; set => NotifyStateUpdate(_torchFacingDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "torch_facing_direction":
+						NotifyStateUpdate(_torchFacingDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _torchFacingDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _torchFacingDirection);
+		} // method
+	} // class
+
+	public partial class ColoredTorchRed : ColoredTorchBase
+	{
+		private readonly BlockStateString _torchFacingDirection = new BlockStateString() { Name = "torch_facing_direction", Value = "unknown" };
+
+		public override string Id => "minecraft:colored_torch_red";
+
+		[StateEnum("east", "north", "south", "top", "unknown", "west")]
+		public string TorchFacingDirection { get => _torchFacingDirection.Value; set => NotifyStateUpdate(_torchFacingDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "torch_facing_direction":
+						NotifyStateUpdate(_torchFacingDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _torchFacingDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _torchFacingDirection);
 		} // method
 	} // class
 
@@ -5738,6 +5869,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _composterFillLevel);
+		} // method
+	} // class
+
+	public partial class CompoundCreator : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+
+		public override string Id => "minecraft:compound_creator";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction);
 		} // method
 	} // class
 
@@ -8623,6 +8787,72 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class DeprecatedPurpurBlock1 : Block
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
+
+		public override string Id => "minecraft:deprecated_purpur_block_1";
+
+		[StateEnum("x", "y", "z")]
+		public string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
+	public partial class DeprecatedPurpurBlock2 : Block
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
+
+		public override string Id => "minecraft:deprecated_purpur_block_2";
+
+		[StateEnum("x", "y", "z")]
+		public string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+	} // class
+
 	public partial class DetectorRail : Block
 	{
 		private readonly BlockStateByte _railDataBit = new BlockStateByte() { Name = "rail_data_bit", Value = 0 };
@@ -8783,6 +9013,71 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class DioriteWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:diorite_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
 		} // method
 	} // class
 
@@ -9521,6 +9816,39 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:element_99";
 	} // class
 
+	public partial class ElementConstructor : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+
+		public override string Id => "minecraft:element_constructor";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction);
+		} // method
+	} // class
+
 	public partial class EmeraldBlock : Block
 	{
 		public override string Id => "minecraft:emerald_block";
@@ -9737,7 +10065,72 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class EnderChest
+	public partial class EndStoneBrickWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:end_stone_brick_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
+	} // class
+
+	public partial class EnderChest : Block
 	{
 		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "north" };
 
@@ -10739,6 +11132,71 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class GraniteWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:granite_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
+	} // class
+
 	public partial class GrassBlock : Block
 	{
 		public override string Id => "minecraft:grass_block";
@@ -11094,172 +11552,172 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:hanging_roots";
 	} // class
 
-	public partial class HardBlackStainedGlass : StainedGlassBase
+	public partial class HardBlackStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_black_stained_glass";
 	} // class
 
-	public partial class HardBlackStainedGlassPane : StainedGlassPaneBase
+	public partial class HardBlackStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_black_stained_glass_pane";
 	} // class
 
-	public partial class HardBlueStainedGlass : StainedGlassBase
+	public partial class HardBlueStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_blue_stained_glass";
 	} // class
 
-	public partial class HardBlueStainedGlassPane : StainedGlassPaneBase
+	public partial class HardBlueStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_blue_stained_glass_pane";
 	} // class
 
-	public partial class HardBrownStainedGlass : StainedGlassBase
+	public partial class HardBrownStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_brown_stained_glass";
 	} // class
 
-	public partial class HardBrownStainedGlassPane : StainedGlassPaneBase
+	public partial class HardBrownStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_brown_stained_glass_pane";
 	} // class
 
-	public partial class HardCyanStainedGlass : StainedGlassBase
+	public partial class HardCyanStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_cyan_stained_glass";
 	} // class
 
-	public partial class HardCyanStainedGlassPane : StainedGlassPaneBase
+	public partial class HardCyanStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_cyan_stained_glass_pane";
 	} // class
 
-	public partial class HardGlass : Block
+	public partial class HardGlass
 	{
 		public override string Id => "minecraft:hard_glass";
 	} // class
 
-	public partial class HardGlassPane : Block
+	public partial class HardGlassPane
 	{
 		public override string Id => "minecraft:hard_glass_pane";
 	} // class
 
-	public partial class HardGrayStainedGlass : StainedGlassBase
+	public partial class HardGrayStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_gray_stained_glass";
 	} // class
 
-	public partial class HardGrayStainedGlassPane : StainedGlassPaneBase
+	public partial class HardGrayStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_gray_stained_glass_pane";
 	} // class
 
-	public partial class HardGreenStainedGlass : StainedGlassBase
+	public partial class HardGreenStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_green_stained_glass";
 	} // class
 
-	public partial class HardGreenStainedGlassPane : StainedGlassPaneBase
+	public partial class HardGreenStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_green_stained_glass_pane";
 	} // class
 
-	public partial class HardLightBlueStainedGlass : StainedGlassBase
+	public partial class HardLightBlueStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_light_blue_stained_glass";
 	} // class
 
-	public partial class HardLightBlueStainedGlassPane : StainedGlassPaneBase
+	public partial class HardLightBlueStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_light_blue_stained_glass_pane";
 	} // class
 
-	public partial class HardLightGrayStainedGlass : StainedGlassBase
+	public partial class HardLightGrayStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_light_gray_stained_glass";
 	} // class
 
-	public partial class HardLightGrayStainedGlassPane : StainedGlassPaneBase
+	public partial class HardLightGrayStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_light_gray_stained_glass_pane";
 	} // class
 
-	public partial class HardLimeStainedGlass : StainedGlassBase
+	public partial class HardLimeStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_lime_stained_glass";
 	} // class
 
-	public partial class HardLimeStainedGlassPane : StainedGlassPaneBase
+	public partial class HardLimeStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_lime_stained_glass_pane";
 	} // class
 
-	public partial class HardMagentaStainedGlass : StainedGlassBase
+	public partial class HardMagentaStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_magenta_stained_glass";
 	} // class
 
-	public partial class HardMagentaStainedGlassPane : StainedGlassPaneBase
+	public partial class HardMagentaStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_magenta_stained_glass_pane";
 	} // class
 
-	public partial class HardOrangeStainedGlass : StainedGlassBase
+	public partial class HardOrangeStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_orange_stained_glass";
 	} // class
 
-	public partial class HardOrangeStainedGlassPane : StainedGlassPaneBase
+	public partial class HardOrangeStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_orange_stained_glass_pane";
 	} // class
 
-	public partial class HardPinkStainedGlass : StainedGlassBase
+	public partial class HardPinkStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_pink_stained_glass";
 	} // class
 
-	public partial class HardPinkStainedGlassPane : StainedGlassPaneBase
+	public partial class HardPinkStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_pink_stained_glass_pane";
 	} // class
 
-	public partial class HardPurpleStainedGlass : StainedGlassBase
+	public partial class HardPurpleStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_purple_stained_glass";
 	} // class
 
-	public partial class HardPurpleStainedGlassPane : StainedGlassPaneBase
+	public partial class HardPurpleStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_purple_stained_glass_pane";
 	} // class
 
-	public partial class HardRedStainedGlass : StainedGlassBase
+	public partial class HardRedStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_red_stained_glass";
 	} // class
 
-	public partial class HardRedStainedGlassPane : StainedGlassPaneBase
+	public partial class HardRedStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_red_stained_glass_pane";
 	} // class
 
-	public partial class HardWhiteStainedGlass : StainedGlassBase
+	public partial class HardWhiteStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_white_stained_glass";
 	} // class
 
-	public partial class HardWhiteStainedGlassPane : StainedGlassPaneBase
+	public partial class HardWhiteStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_white_stained_glass_pane";
 	} // class
 
-	public partial class HardYellowStainedGlass : StainedGlassBase
+	public partial class HardYellowStainedGlass : HardStainedGlassBase
 	{
 		public override string Id => "minecraft:hard_yellow_stained_glass";
 	} // class
 
-	public partial class HardYellowStainedGlassPane : StainedGlassPaneBase
+	public partial class HardYellowStainedGlassPane : HardStainedGlassPaneBase
 	{
 		public override string Id => "minecraft:hard_yellow_stained_glass_pane";
 	} // class
@@ -12364,6 +12822,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _kelpAge);
+		} // method
+	} // class
+
+	public partial class LabTable : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+
+		public override string Id => "minecraft:lab_table";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction);
 		} // method
 	} // class
 
@@ -14183,6 +14674,39 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class MaterialReducer : Block
+	{
+		private readonly BlockStateInt _direction = new BlockStateInt() { Name = "direction", Value = 0 };
+
+		public override string Id => "minecraft:material_reducer";
+
+		[StateRange(0, 3)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == "direction":
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction);
+		} // method
+	} // class
+
 	public partial class MediumAmethystBud : Block
 	{
 		private readonly BlockStateString _blockFace = new BlockStateString() { Name = "minecraft:block_face", Value = "down" };
@@ -14389,6 +14913,71 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class MossyCobblestoneWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:mossy_cobblestone_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
+	} // class
+
 	public partial class MossyStoneBrickDoubleSlab : DoubleSlabBase
 	{
 		private readonly BlockStateString _verticalHalf = new BlockStateString() { Name = "minecraft:vertical_half", Value = "bottom" };
@@ -14493,6 +15082,71 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class MossyStoneBrickWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:mossy_stone_brick_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
 		} // method
 	} // class
 
@@ -14840,6 +15494,71 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class NetherBrickWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:nether_brick_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
 		} // method
 	} // class
 
@@ -17904,6 +18623,71 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class PrismarineWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:prismarine_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
+	} // class
+
 	public partial class Pumpkin : Block
 	{
 		private readonly BlockStateString _cardinalDirection = new BlockStateString() { Name = "minecraft:cardinal_direction", Value = "south" };
@@ -18127,13 +18911,9 @@ namespace MiNET.Blocks
 
 	public partial class PurpurBlock : Block
 	{
-		private readonly BlockStateString _chiselType = new BlockStateString() { Name = "chisel_type", Value = "default" };
 		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
 
 		public override string Id => "minecraft:purpur_block";
-
-		[StateEnum("chiseled", "default", "lines", "smooth")]
-		public string ChiselType { get => _chiselType.Value; set => NotifyStateUpdate(_chiselType, value); }
 
 		[StateEnum("x", "y", "z")]
 		public string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
@@ -18144,9 +18924,6 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateString s when s.Name == "chisel_type":
-						NotifyStateUpdate(_chiselType, s.Value);
-						break;
 					case BlockStateString s when s.Name == "pillar_axis":
 						NotifyStateUpdate(_pillarAxis, s.Value);
 						break;
@@ -18156,13 +18933,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _chiselType;
 			yield return _pillarAxis;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _chiselType, _pillarAxis);
+			return HashCode.Combine(Id, _pillarAxis);
 		} // method
 	} // class
 
@@ -18196,6 +18972,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+	} // class
+
+	public partial class PurpurPillar : Block
+	{
+		private readonly BlockStateString _pillarAxis = new BlockStateString() { Name = "pillar_axis", Value = "y" };
+
+		public override string Id => "minecraft:purpur_pillar";
+
+		[StateEnum("x", "y", "z")]
+		public string PillarAxis { get => _pillarAxis.Value; set => NotifyStateUpdate(_pillarAxis, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "pillar_axis":
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
 		} // method
 	} // class
 
@@ -18776,6 +19585,71 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class RedNetherBrickWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:red_nether_brick_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
+	} // class
+
 	public partial class RedSand : Block
 	{
 		public override string Id => "minecraft:red_sand";
@@ -18890,6 +19764,71 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class RedSandstoneWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:red_sandstone_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
 		} // method
 	} // class
 
@@ -19268,6 +20207,71 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class SandstoneWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:sandstone_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
 		} // method
 	} // class
 
@@ -20400,35 +21404,7 @@ namespace MiNET.Blocks
 
 	public partial class Sponge : Block
 	{
-		private readonly BlockStateString _spongeType = new BlockStateString() { Name = "sponge_type", Value = "dry" };
-
 		public override string Id => "minecraft:sponge";
-
-		[StateEnum("dry", "wet")]
-		public string SpongeType { get => _spongeType.Value; set => NotifyStateUpdate(_spongeType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "sponge_type":
-						NotifyStateUpdate(_spongeType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _spongeType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _spongeType);
-		} // method
 	} // class
 
 	public partial class SporeBlossom : Block
@@ -21286,6 +22262,71 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+	} // class
+
+	public partial class StoneBrickWall : Block
+	{
+		private readonly BlockStateString _wallConnectionTypeEast = new BlockStateString() { Name = "wall_connection_type_east", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeNorth = new BlockStateString() { Name = "wall_connection_type_north", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeSouth = new BlockStateString() { Name = "wall_connection_type_south", Value = "none" };
+		private readonly BlockStateString _wallConnectionTypeWest = new BlockStateString() { Name = "wall_connection_type_west", Value = "none" };
+		private readonly BlockStateByte _wallPostBit = new BlockStateByte() { Name = "wall_post_bit", Value = 1 };
+
+		public override string Id => "minecraft:stone_brick_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeEast { get => _wallConnectionTypeEast.Value; set => NotifyStateUpdate(_wallConnectionTypeEast, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeNorth { get => _wallConnectionTypeNorth.Value; set => NotifyStateUpdate(_wallConnectionTypeNorth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeSouth { get => _wallConnectionTypeSouth.Value; set => NotifyStateUpdate(_wallConnectionTypeSouth, value); }
+
+		[StateEnum("none", "short", "tall")]
+		public string WallConnectionTypeWest { get => _wallConnectionTypeWest.Value; set => NotifyStateUpdate(_wallConnectionTypeWest, value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == "wall_connection_type_east":
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_north":
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_south":
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == "wall_connection_type_west":
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == "wall_post_bit":
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
 		} // method
 	} // class
 
@@ -22175,35 +23216,7 @@ namespace MiNET.Blocks
 
 	public partial class StructureVoid : Block
 	{
-		private readonly BlockStateString _structureVoidType = new BlockStateString() { Name = "structure_void_type", Value = "void" };
-
 		public override string Id => "minecraft:structure_void";
-
-		[StateEnum("air", "void")]
-		public string StructureVoidType { get => _structureVoidType.Value; set => NotifyStateUpdate(_structureVoidType, value); }
-
-		public override void SetStates(IEnumerable<IBlockState> states)
-		{
-			foreach (var state in states)
-			{
-				switch (state)
-				{
-					case BlockStateString s when s.Name == "structure_void_type":
-						NotifyStateUpdate(_structureVoidType, s.Value);
-						break;
-				} // switch
-			} // foreach
-		} // method
-
-		protected override IEnumerable<IBlockState> GetStates()
-		{
-			yield return _structureVoidType;
-		} // method
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Id, _structureVoidType);
-		} // method
 	} // class
 
 	public partial class Sunflower : DoublePlantBase
@@ -22399,13 +23412,9 @@ namespace MiNET.Blocks
 
 	public partial class Tnt : Block
 	{
-		private readonly BlockStateByte _allowUnderwaterBit = new BlockStateByte() { Name = "allow_underwater_bit", Value = 0 };
 		private readonly BlockStateByte _explodeBit = new BlockStateByte() { Name = "explode_bit", Value = 0 };
 
 		public override string Id => "minecraft:tnt";
-
-		[StateBit]
-		public bool AllowUnderwaterBit { get => Convert.ToBoolean(_allowUnderwaterBit.Value); set => NotifyStateUpdate(_allowUnderwaterBit, value); }
 
 		[StateBit]
 		public bool ExplodeBit { get => Convert.ToBoolean(_explodeBit.Value); set => NotifyStateUpdate(_explodeBit, value); }
@@ -22416,9 +23425,6 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == "allow_underwater_bit":
-						NotifyStateUpdate(_allowUnderwaterBit, s.Value);
-						break;
 					case BlockStateByte s when s.Name == "explode_bit":
 						NotifyStateUpdate(_explodeBit, s.Value);
 						break;
@@ -22428,13 +23434,12 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _allowUnderwaterBit;
 			yield return _explodeBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _allowUnderwaterBit, _explodeBit);
+			return HashCode.Combine(Id, _explodeBit);
 		} // method
 	} // class
 
@@ -23239,6 +24244,39 @@ namespace MiNET.Blocks
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, _twistingVinesAge);
+		} // method
+	} // class
+
+	public partial class UnderwaterTnt : Block
+	{
+		private readonly BlockStateByte _explodeBit = new BlockStateByte() { Name = "explode_bit", Value = 0 };
+
+		public override string Id => "minecraft:underwater_tnt";
+
+		[StateBit]
+		public bool ExplodeBit { get => Convert.ToBoolean(_explodeBit.Value); set => NotifyStateUpdate(_explodeBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == "explode_bit":
+						NotifyStateUpdate(_explodeBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _explodeBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _explodeBit);
 		} // method
 	} // class
 
@@ -25588,6 +26626,11 @@ namespace MiNET.Blocks
 		{
 			return HashCode.Combine(Id, _weepingVinesAge);
 		} // method
+	} // class
+
+	public partial class WetSponge : Block
+	{
+		public override string Id => "minecraft:wet_sponge";
 	} // class
 
 	public partial class Wheat

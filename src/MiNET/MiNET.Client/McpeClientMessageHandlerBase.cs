@@ -114,11 +114,11 @@ namespace MiNET.Client
 			//response.responseStatus = 3;
 			//SendPackage(response);
 
-			if (message.behahaviorpackinfos.Count != 0)
+			if (message.resourcePacks.Count != 0)
 			{
 				var resourcePackIds = new ResourcePackIds();
 
-				foreach (ResourcePackInfo packInfo in message.behahaviorpackinfos)
+				foreach (var packInfo in message.resourcePacks)
 				{
 					resourcePackIds.Add(packInfo.UUID);
 				}
@@ -779,6 +779,11 @@ namespace MiNET.Client
 		public void HandleMcpeServerboundDiagnostics(McpeServerboundDiagnostics message)
 		{
 			
+		}
+
+		public void HandleMcpeCameraAimAssist(McpeCameraAimAssist message)
+		{
+
 		}
 	}
 

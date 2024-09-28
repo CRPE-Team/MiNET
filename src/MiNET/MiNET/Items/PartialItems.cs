@@ -168,6 +168,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:andesite_stairs";
 	}
 
+	public partial class ItemAndesiteWall : ItemBlock<AndesiteWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:andesite_wall";
+	}
+
 	public partial class ItemAnglerPotterySherd : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:angler_pottery_sherd";
@@ -859,6 +864,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:brick_stairs";
 	}
 
+	public partial class ItemBrickWall : ItemBlock<BrickWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:brick_wall";
+	}
+
 	public partial class ItemBrownCandle : ItemBlock<BrownCandle>
 	{
 		public override string Id { get; protected set; } = "minecraft:brown_candle";
@@ -1125,7 +1135,7 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:chemical_heat";
 	}
 
-	public partial class ItemChemistryTable : ItemBlock<ChemistryTable>
+	public partial class ItemChemistryTable : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:chemistry_table";
 	}
@@ -1445,12 +1455,32 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:cod_spawn_egg";
 	}
 
-	public partial class ItemColoredTorchBp : ItemBlock<ColoredTorchBp>
+	public partial class ItemColoredTorchBlue : ItemBlock<ColoredTorchBlue>
+	{
+		public override string Id { get; protected set; } = "minecraft:colored_torch_blue";
+	}
+
+	public partial class ItemColoredTorchBp : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:colored_torch_bp";
 	}
 
-	public partial class ItemColoredTorchRg : ItemBlock<ColoredTorchRg>
+	public partial class ItemColoredTorchGreen : ItemBlock<ColoredTorchGreen>
+	{
+		public override string Id { get; protected set; } = "minecraft:colored_torch_green";
+	}
+
+	public partial class ItemColoredTorchPurple : ItemBlock<ColoredTorchPurple>
+	{
+		public override string Id { get; protected set; } = "minecraft:colored_torch_purple";
+	}
+
+	public partial class ItemColoredTorchRed : ItemBlock<ColoredTorchRed>
+	{
+		public override string Id { get; protected set; } = "minecraft:colored_torch_red";
+	}
+
+	public partial class ItemColoredTorchRg : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:colored_torch_rg";
 	}
@@ -1483,6 +1513,11 @@ namespace MiNET.Items
 	public partial class ItemCompound : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:compound";
+	}
+
+	public partial class ItemCompoundCreator : ItemBlock<CompoundCreator>
+	{
+		public override string Id { get; protected set; } = "minecraft:compound_creator";
 	}
 
 	public partial class ItemConcrete : Item
@@ -2217,6 +2252,16 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:deprecated_anvil";
 	}
 
+	public partial class ItemDeprecatedPurpurBlock1 : ItemBlock<DeprecatedPurpurBlock1>
+	{
+		public override string Id { get; protected set; } = "minecraft:deprecated_purpur_block_1";
+	}
+
+	public partial class ItemDeprecatedPurpurBlock2 : ItemBlock<DeprecatedPurpurBlock2>
+	{
+		public override string Id { get; protected set; } = "minecraft:deprecated_purpur_block_2";
+	}
+
 	public partial class ItemDetectorRail : ItemBlock<DetectorRail>
 	{
 		public override string Id { get; protected set; } = "minecraft:detector_rail";
@@ -2363,6 +2408,11 @@ namespace MiNET.Items
 	public partial class ItemDioriteStairs : ItemBlock<DioriteStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:diorite_stairs";
+	}
+
+	public partial class ItemDioriteWall : ItemBlock<DioriteWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:diorite_wall";
 	}
 
 	public partial class ItemDirt : ItemBlock<Dirt>
@@ -3080,6 +3130,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:element_99";
 	}
 
+	public partial class ItemElementConstructor : ItemBlock<ElementConstructor>
+	{
+		public override string Id { get; protected set; } = "minecraft:element_constructor";
+	}
+
 	public partial class ItemElytra
 	{
 		public override string Id { get; protected set; } = "minecraft:elytra";
@@ -3174,6 +3229,11 @@ namespace MiNET.Items
 	public partial class ItemEndStoneBrickSlab : ItemBlock<EndStoneBrickSlab>
 	{
 		public override string Id { get; protected set; } = "minecraft:end_stone_brick_slab";
+	}
+
+	public partial class ItemEndStoneBrickWall : ItemBlock<EndStoneBrickWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:end_stone_brick_wall";
 	}
 
 	public partial class ItemEnderChest : ItemBlock<EnderChest>
@@ -3692,6 +3752,11 @@ namespace MiNET.Items
 	public partial class ItemGraniteStairs : ItemBlock<GraniteStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:granite_stairs";
+	}
+
+	public partial class ItemGraniteWall : ItemBlock<GraniteWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:granite_wall";
 	}
 
 	public partial class ItemGrassBlock : ItemBlock<GrassBlock>
@@ -4626,6 +4691,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:jungle_wood";
 	}
 
+	public partial class ItemLabTable : ItemBlock<LabTable>
+	{
+		public override string Id { get; protected set; } = "minecraft:lab_table";
+	}
+
 	public partial class ItemLadder : ItemBlock<Ladder>
 	{
 		public override string Id { get; protected set; } = "minecraft:ladder";
@@ -5110,11 +5180,9 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:loom";
 	}
 
-	public partial class ItemMace : ItemSwordBase
+	public partial class ItemMace : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:mace";
-
-		public override ItemType ItemType { get; set; } = ItemType.Sword;
 
 		public override ItemMaterial ItemMaterial { get; set; } = ItemMaterial.Diamond;
 
@@ -5298,6 +5366,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:mangrove_wood";
 	}
 
+	public partial class ItemMaterialReducer : ItemBlock<MaterialReducer>
+	{
+		public override string Id { get; protected set; } = "minecraft:material_reducer";
+	}
+
 	public partial class ItemMedicine : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:medicine";
@@ -5395,6 +5468,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:mossy_cobblestone_stairs";
 	}
 
+	public partial class ItemMossyCobblestoneWall : ItemBlock<MossyCobblestoneWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:mossy_cobblestone_wall";
+	}
+
 	public partial class ItemMossyStoneBrickDoubleSlab : ItemBlock<MossyStoneBrickDoubleSlab>
 	{
 		public override string Id { get; protected set; } = "minecraft:mossy_stone_brick_double_slab";
@@ -5408,6 +5486,11 @@ namespace MiNET.Items
 	public partial class ItemMossyStoneBrickStairs : ItemBlock<MossyStoneBrickStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:mossy_stone_brick_stairs";
+	}
+
+	public partial class ItemMossyStoneBrickWall : ItemBlock<MossyStoneBrickWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:mossy_stone_brick_wall";
 	}
 
 	public partial class ItemMossyStoneBricks : ItemBlock<MossyStoneBricks>
@@ -5614,6 +5697,11 @@ namespace MiNET.Items
 	public partial class ItemNetherBrickStairs : ItemBlock<NetherBrickStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:nether_brick_stairs";
+	}
+
+	public partial class ItemNetherBrickWall : ItemBlock<NetherBrickWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:nether_brick_wall";
 	}
 
 	public partial class ItemNetherGoldOre : ItemBlock<NetherGoldOre>
@@ -6499,6 +6587,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:prismarine_stairs";
 	}
 
+	public partial class ItemPrismarineWall : ItemBlock<PrismarineWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:prismarine_wall";
+	}
+
 	public partial class ItemPrizePotterySherd : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:prize_pottery_sherd";
@@ -6609,6 +6702,11 @@ namespace MiNET.Items
 	public partial class ItemPurpurDoubleSlab : ItemBlock<PurpurDoubleSlab>
 	{
 		public override string Id { get; protected set; } = "minecraft:purpur_double_slab";
+	}
+
+	public partial class ItemPurpurPillar : ItemBlock<PurpurPillar>
+	{
+		public override string Id { get; protected set; } = "minecraft:purpur_pillar";
 	}
 
 	public partial class ItemPurpurSlab : ItemBlock<PurpurSlab>
@@ -6813,6 +6911,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:red_nether_brick_stairs";
 	}
 
+	public partial class ItemRedNetherBrickWall : ItemBlock<RedNetherBrickWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:red_nether_brick_wall";
+	}
+
 	public partial class ItemRedSand : ItemBlock<RedSand>
 	{
 		public override string Id { get; protected set; } = "minecraft:red_sand";
@@ -6836,6 +6939,11 @@ namespace MiNET.Items
 	public partial class ItemRedSandstoneStairs : ItemBlock<RedSandstoneStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:red_sandstone_stairs";
+	}
+
+	public partial class ItemRedSandstoneWall : ItemBlock<RedSandstoneWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:red_sandstone_wall";
 	}
 
 	public partial class ItemRedShulkerBox : ItemBlock<RedShulkerBox>
@@ -6981,6 +7089,11 @@ namespace MiNET.Items
 	public partial class ItemSandstoneStairs : ItemBlock<SandstoneStairs>
 	{
 		public override string Id { get; protected set; } = "minecraft:sandstone_stairs";
+	}
+
+	public partial class ItemSandstoneWall : ItemBlock<SandstoneWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:sandstone_wall";
 	}
 
 	public partial class ItemSapling : Item
@@ -7549,6 +7662,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:stone_brick_stairs";
 	}
 
+	public partial class ItemStoneBrickWall : ItemBlock<StoneBrickWall>
+	{
+		public override string Id { get; protected set; } = "minecraft:stone_brick_wall";
+	}
+
 	public partial class ItemStoneBricks : ItemBlock<StoneBricks>
 	{
 		public override string Id { get; protected set; } = "minecraft:stone_bricks";
@@ -8024,6 +8142,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:twisting_vines";
 	}
 
+	public partial class ItemUnderwaterTnt : ItemBlock<UnderwaterTnt>
+	{
+		public override string Id { get; protected set; } = "minecraft:underwater_tnt";
+	}
+
 	public partial class ItemUnderwaterTorch : ItemBlock<UnderwaterTorch>
 	{
 		public override string Id { get; protected set; } = "minecraft:underwater_torch";
@@ -8492,6 +8615,11 @@ namespace MiNET.Items
 	public partial class ItemWeepingVines : ItemBlock<WeepingVines>
 	{
 		public override string Id { get; protected set; } = "minecraft:weeping_vines";
+	}
+
+	public partial class ItemWetSponge : ItemBlock<WetSponge>
+	{
+		public override string Id { get; protected set; } = "minecraft:wet_sponge";
 	}
 
 	public partial class ItemWheatSeeds

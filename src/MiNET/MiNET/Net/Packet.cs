@@ -77,7 +77,7 @@ namespace MiNET.Net
 		{
 			Timer.Start();
 		}
-		
+
 		public void Write(sbyte value)
 		{
 			_writer.Write(value);
@@ -85,9 +85,9 @@ namespace MiNET.Net
 
 		public sbyte ReadSByte()
 		{
-			return (sbyte)_reader.ReadByte();
+			return (sbyte) _reader.ReadByte();
 		}
-		
+
 		public void Write(byte value)
 		{
 			_writer.Write(value);
@@ -517,12 +517,11 @@ namespace MiNET.Net
 			}
 
 			WriteLength(dataObjects.Count());
-			foreach(var dataObject in dataObjects)
+			foreach (var dataObject in dataObjects)
 			{
 				Write(dataObject);
 			}
 		}
-
 
 		public void Write(BlockCoordinates coord)
 		{
@@ -765,6 +764,22 @@ namespace MiNET.Net
 		public EnchantOptions ReadEnchantOptions()
 		{
 			return EnchantOptions.Read(this);
+		}
+
+		public FullContainerName ReadFullContainerName()
+		{
+			return FullContainerName.Read(this);
+		}
+
+		public FullContainerName[] ReadFullContainerNames()
+		{
+			var containers = new FullContainerName[ReadLength()];
+			for (var i = 0; i < containers.Length; i++)
+			{
+				containers[i] = FullContainerName.Read(this);
+			}
+
+			return containers;
 		}
 
 		public AnimationKey[] ReadAnimationKeys()
@@ -1105,22 +1120,6 @@ namespace MiNET.Net
 		public EntityLinks ReadEntityLinks()
 		{
 			return EntityLinks.Read(this);
-		}
-
-		public void Write(TexturePackInfos packInfos)
-		{
-			if (packInfos == null || packInfos.Count == 0)
-			{
-				Write((short) 0);
-				return;
-			}
-
-			packInfos.Write(this);
-		}
-
-		public TexturePackInfos ReadTexturePackInfos()
-		{
-			return TexturePackInfos.Read(this);
 		}
 
 		public CdnUrls ReadCdnUrls()

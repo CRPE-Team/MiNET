@@ -371,7 +371,7 @@ namespace MiNET
 			if (_serverHaveResources)
 			{
 				packInfo.mustAccept = false;
-				packInfo.behahaviorpackinfos = new ResourcePackInfos
+				packInfo.resourcePacks = new ResourcePackInfos
 				{
 					new ResourcePackInfo()
 					{
@@ -1831,6 +1831,7 @@ namespace MiNET
 			var inventoryContent = McpeInventoryContent.CreateObject();
 			inventoryContent.inventoryId = (byte) WindowId.Inventory;
 			inventoryContent.input = Inventory.GetSlots();
+			inventoryContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
 			SendPacket(inventoryContent);
 
 			SendPlayerArmor();
@@ -1838,11 +1839,13 @@ namespace MiNET
 			var uiContent = McpeInventoryContent.CreateObject();
 			uiContent.inventoryId = (byte) WindowId.UI;
 			uiContent.input = Inventory.GetUiSlots();
+			uiContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
 			SendPacket(uiContent);
 
 			var offHandContent = McpeInventoryContent.CreateObject();
 			offHandContent.inventoryId = (byte) WindowId.Offhand;
 			offHandContent.input = Inventory.GetOffHand();
+			offHandContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
 			SendPacket(offHandContent);
 
 			var mobEquipment = McpeMobEquipment.CreateObject();
@@ -1858,6 +1861,7 @@ namespace MiNET
 			var armorContent = McpeInventoryContent.CreateObject();
 			armorContent.inventoryId = (byte) WindowId.Armor;
 			armorContent.input = Inventory.GetArmor();
+			armorContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
 			SendPacket(armorContent);
 		}
 
@@ -2348,6 +2352,7 @@ namespace MiNET
 				sendSlot.slot = args.Slot;
 				//sendSlot.uniqueid = itemStack.UniqueId;
 				sendSlot.item = args.Item;
+				sendSlot.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
 				SendPacket(sendSlot);
 			}
 
@@ -3080,6 +3085,8 @@ namespace MiNET
 				MinValue = 1,
 				MaxValue = 1,
 				Value = 1,
+				MinDefault = 1,
+				MaxDefault = 1,
 				Default = 1,
 				Modifiers = new AttributeModifiers()
 			};
@@ -3089,6 +3096,8 @@ namespace MiNET
 				MinValue = 0,
 				MaxValue = float.MaxValue,
 				Value = HealthManager.Absorption,
+				MinDefault = 0,
+				MaxDefault = float.MaxValue,
 				Default = 0,
 				Modifiers = new AttributeModifiers()
 			};
@@ -3098,6 +3107,8 @@ namespace MiNET
 				MinValue = 0,
 				MaxValue = HealthManager.MaxHearts,
 				Value = HealthManager.Hearts,
+				MinDefault = 0,
+				MaxDefault = 20,
 				Default = HealthManager.MaxHearts,
 				Modifiers = new AttributeModifiers()
 			};
@@ -3107,6 +3118,8 @@ namespace MiNET
 				MinValue = 0,
 				MaxValue = 0.5f,
 				Value = MovementSpeed,
+				MinDefault = 0,
+				MaxDefault = 0.5f,
 				Default = MovementSpeed,
 				Modifiers = new AttributeModifiers()
 			};
@@ -3116,6 +3129,8 @@ namespace MiNET
 				MinValue = 0,
 				MaxValue = 1,
 				Value = 0,
+				MinDefault = 0,
+				MaxDefault = 1,
 				Default = 0,
 				Modifiers = new AttributeModifiers()
 			};
@@ -3125,6 +3140,8 @@ namespace MiNET
 				MinValue = -1025,
 				MaxValue = 1024,
 				Value = 0,
+				MinDefault = -1025,
+				MaxDefault = 1024,
 				Default = 0,
 				Modifiers = new AttributeModifiers()
 			};
@@ -3134,6 +3151,8 @@ namespace MiNET
 				MinValue = 0,
 				MaxValue = 2048,
 				Value = 16,
+				MinDefault = 0,
+				MaxDefault = 2048,
 				Default = 16,
 				Modifiers = new AttributeModifiers()
 			};
@@ -3791,6 +3810,11 @@ namespace MiNET
 		public void HandleMcpeServerboundLoadingScreen(McpeServerboundLoadingScreen message)
 		{
 			
+		}
+
+		public void HandleMcpeContainerRegistryCleanup(McpeContainerRegistryCleanup message)
+		{
+
 		}
 	}
 

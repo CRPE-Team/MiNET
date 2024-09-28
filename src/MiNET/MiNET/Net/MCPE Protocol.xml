@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.21.20" protocolVersion="712">
+<protocol gameVersion="1.21.30" protocolVersion="729">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -153,9 +153,7 @@
 		<field name="Must Accept" type="bool" />
 		<field name="Has Addons" type="bool" />
 		<field name="Has Scripts" type="bool" />
-		<field name="Force Server Packs" type="bool" />
-		<field name="BehahaviorPackInfos" type="ResourcePackInfos" />
-		<field name="TexturePacks" type="TexturePackInfos" />
+		<field name="Resource Packs" type="ResourcePackInfos" />
 		<field name="Cdn Urls" type="CdnUrls" />
 	</pdu>
 
@@ -593,12 +591,14 @@
 	<pdu id="0x31" online="false" client="true" server="true" name="MCPE_INVENTORY_CONTENT">
 		<field name="Inventory Id" type="UnsignedVarInt" />
 		<field name="Input" type="ItemStacks" />
+		<field name="Container Name" type="FullContainerName" />
 		<field name="Dynamic Container Id" type="UnsignedVarInt" />
 	</pdu>
 
 	<pdu id="0x32" online="false" client="true" server="true" name="MCPE_INVENTORY_SLOT">
 		<field name="Inventory Id" type="UnsignedVarInt" />
 		<field name="Slot" type="UnsignedVarInt" />
+		<field name="Container Name" type="FullContainerName" />
 		<field name="Dynamic Container Id" type="UnsignedVarInt" />
 		<field name="Item" type="Item" />
 	</pdu>
@@ -847,6 +847,7 @@
 	<pdu id="0x55" online="false" client="false" server="true" name="MCPE_TRANSFER">
 		<field name="Server Address" type="string" />
 		<field name="Port" type="ushort" />
+		<field name="Reload World" type="bool" />
 	</pdu>
 
 	<pdu id="0x56" online="false" client="false" server="true" name="MCPE_PLAY_SOUND">
@@ -1353,6 +1354,17 @@
 		<field name="Avg End Frame Time MS" type="float" />
 		<field name="Avg Remainder Time Percent" type="float" />
 		<field name="Avg Unaccounted Time Percent" type="float" />	
+	</pdu>
+
+	<pdu id="0x13c" online="false" client="false" server="true" name="MCPE_CAMERA_AIM_ASSIST">
+		<field name="View Angle" type="Vector2" />
+		<field name="Distance" type="float" />
+		<field name="Target Mode" type="byte" />
+		<field name="Action Type" type="byte" />
+	</pdu>
+
+	<pdu id="0x13d" online="false" client="true" server="false" name="MCPE_CONTAINER_REGISTRY_CLEANUP">
+		<field name="Removed Containers" type="FullContainerName[]" />
 	</pdu>
 
 	<pdu id="0xe0" online="false" client="false" server="true" name="MCPE_ALEX_ENTITY_ANIMATION">

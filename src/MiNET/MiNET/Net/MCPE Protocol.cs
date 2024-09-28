@@ -45,8 +45,8 @@ namespace MiNET.Net
 {
 	public class McpeProtocolInfo
 	{
-		public const int ProtocolVersion = 712;
-		public const string GameVersion = "1.21.20";
+		public const int ProtocolVersion = 729;
+		public const string GameVersion = "1.21.30";
 	}
 
 	public interface IMcpeMessageHandler
@@ -113,6 +113,7 @@ namespace MiNET.Net
 		void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message);
 		void HandleMcpeSetPlayerInventoryOptions(McpeSetPlayerInventoryOptions message);
 		void HandleMcpeServerboundLoadingScreen(McpeServerboundLoadingScreen message);
+		void HandleMcpeContainerRegistryCleanup(McpeContainerRegistryCleanup message);
 	}
 
 	public interface IMcpeClientMessageHandler
@@ -252,6 +253,7 @@ namespace MiNET.Net
 		void HandleMcpeJigsawStructureData(McpeJigsawStructureData message);
 		void HandleMcpeCurrentStructureFeature(McpeCurrentStructureFeature message);
 		void HandleMcpeServerboundDiagnostics(McpeServerboundDiagnostics message);
+		void HandleMcpeCameraAimAssist(McpeCameraAimAssist message);
 		void HandleMcpeAlexEntityAnimation(McpeAlexEntityAnimation message);
 		void HandleFtlCreatePlayer(FtlCreatePlayer message);
 	}
@@ -674,6 +676,9 @@ namespace MiNET.Net
 				case McpeServerboundDiagnostics msg:
 					_messageHandler.HandleMcpeServerboundDiagnostics(msg);
 					break;
+				case McpeCameraAimAssist msg:
+					_messageHandler.HandleMcpeCameraAimAssist(msg);
+					break;
 				case McpeAlexEntityAnimation msg:
 					_messageHandler.HandleMcpeAlexEntityAnimation(msg);
 					break;
@@ -1063,6 +1068,10 @@ namespace MiNET.Net
 						return McpeCurrentStructureFeature.CreateObject().Decode(buffer);
 					case 0x13b:
 						return McpeServerboundDiagnostics.CreateObject().Decode(buffer);
+					case 0x13c:
+						return McpeCameraAimAssist.CreateObject().Decode(buffer);
+					case 0x13d:
+						return McpeContainerRegistryCleanup.CreateObject().Decode(buffer);
 					case 0xe0:
 						return McpeAlexEntityAnimation.CreateObject().Decode(buffer);
 				}
@@ -2228,9 +2237,7 @@ namespace MiNET.Net
 		public bool mustAccept;
 		public bool hasAddons;
 		public bool hasScripts;
-		public bool forceServerPacks;
-		public ResourcePackInfos behahaviorpackinfos;
-		public TexturePackInfos texturepacks;
+		public ResourcePackInfos resourcePacks;
 		public CdnUrls cdnUrls;
 
 		public McpeResourcePacksInfo()
@@ -2248,9 +2255,7 @@ namespace MiNET.Net
 			Write(mustAccept);
 			Write(hasAddons);
 			Write(hasScripts);
-			Write(forceServerPacks);
-			Write(behahaviorpackinfos);
-			Write(texturepacks);
+			Write(resourcePacks);
 			Write(cdnUrls);
 
 			AfterEncode();
@@ -2268,9 +2273,7 @@ namespace MiNET.Net
 			mustAccept = ReadBool();
 			hasAddons = ReadBool();
 			hasScripts = ReadBool();
-			forceServerPacks = ReadBool();
-			behahaviorpackinfos = ReadResourcePackInfos();
-			texturepacks = ReadTexturePackInfos();
+			resourcePacks = ReadResourcePackInfos();
 			cdnUrls = ReadCdnUrls();
 
 			AfterDecode();
@@ -2286,9 +2289,7 @@ namespace MiNET.Net
 			mustAccept = default;
 			hasAddons = default;
 			hasScripts = default;
-			forceServerPacks = default;
-			behahaviorpackinfos = default;
-			texturepacks = default;
+			resourcePacks = default;
 			cdnUrls = default;
 		}
 
@@ -4885,6 +4886,7 @@ namespace MiNET.Net
 
 		public uint inventoryId;
 		public ItemStacks input;
+		public FullContainerName containerName;
 		public uint dynamicContainerId;
 
 		public McpeInventoryContent()
@@ -4901,6 +4903,7 @@ namespace MiNET.Net
 
 			WriteUnsignedVarInt(inventoryId);
 			Write(input);
+			Write(containerName);
 			WriteUnsignedVarInt(dynamicContainerId);
 
 			AfterEncode();
@@ -4917,6 +4920,7 @@ namespace MiNET.Net
 
 			inventoryId = ReadUnsignedVarInt();
 			input = ReadItemStacks();
+			containerName = ReadFullContainerName();
 			dynamicContainerId = ReadUnsignedVarInt();
 
 			AfterDecode();
@@ -4931,6 +4935,7 @@ namespace MiNET.Net
 
 			inventoryId = default;
 			input = default;
+			containerName = default;
 			dynamicContainerId = default;
 		}
 
@@ -4941,6 +4946,7 @@ namespace MiNET.Net
 
 		public uint inventoryId;
 		public uint slot;
+		public FullContainerName containerName;
 		public uint dynamicContainerId;
 		public Item item;
 
@@ -4958,6 +4964,7 @@ namespace MiNET.Net
 
 			WriteUnsignedVarInt(inventoryId);
 			WriteUnsignedVarInt(slot);
+			Write(containerName);
 			WriteUnsignedVarInt(dynamicContainerId);
 			Write(item);
 
@@ -4975,6 +4982,7 @@ namespace MiNET.Net
 
 			inventoryId = ReadUnsignedVarInt();
 			slot = ReadUnsignedVarInt();
+			containerName = ReadFullContainerName();
 			dynamicContainerId = ReadUnsignedVarInt();
 			item = ReadItem();
 
@@ -4990,6 +4998,7 @@ namespace MiNET.Net
 
 			inventoryId = default;
 			slot = default;
+			containerName = default;
 			dynamicContainerId = default;
 			item = default;
 		}
@@ -6768,6 +6777,7 @@ namespace MiNET.Net
 
 		public string serverAddress;
 		public ushort port;
+		public bool reloadWorld;
 
 		public McpeTransfer()
 		{
@@ -6783,6 +6793,7 @@ namespace MiNET.Net
 
 			Write(serverAddress);
 			Write(port);
+			Write(reloadWorld);
 
 			AfterEncode();
 		}
@@ -6798,6 +6809,7 @@ namespace MiNET.Net
 
 			serverAddress = ReadString();
 			port = ReadUshort();
+			reloadWorld = ReadBool();
 
 			AfterDecode();
 		}
@@ -6811,6 +6823,7 @@ namespace MiNET.Net
 
 			serverAddress = default;
 			port = default;
+			reloadWorld = default;
 		}
 
 	}
@@ -10964,6 +10977,114 @@ namespace MiNET.Net
 			avgEndFrameTimeMs = default;
 			avgRemainderTimePercent = default;
 			avgUnaccountedTimePercent = default;
+		}
+
+	}
+
+	public partial class McpeCameraAimAssist : Packet<McpeCameraAimAssist>
+	{
+
+		public Vector2 viewAngle;
+		public float distance;
+		public byte targetMode;
+		public byte actionType;
+
+		public McpeCameraAimAssist()
+		{
+			Id = 0x13c;
+			IsMcpe = true;
+		}
+
+		protected override void EncodePacket()
+		{
+			base.EncodePacket();
+
+			BeforeEncode();
+
+			Write(viewAngle);
+			Write(distance);
+			Write(targetMode);
+			Write(actionType);
+
+			AfterEncode();
+		}
+
+		partial void BeforeEncode();
+		partial void AfterEncode();
+
+		protected override void DecodePacket()
+		{
+			base.DecodePacket();
+
+			BeforeDecode();
+
+			viewAngle = ReadVector2();
+			distance = ReadFloat();
+			targetMode = ReadByte();
+			actionType = ReadByte();
+
+			AfterDecode();
+		}
+
+		partial void BeforeDecode();
+		partial void AfterDecode();
+
+		protected override void ResetPacket()
+		{
+			base.ResetPacket();
+
+			viewAngle = default;
+			distance = default;
+			targetMode = default;
+			actionType = default;
+		}
+
+	}
+
+	public partial class McpeContainerRegistryCleanup : Packet<McpeContainerRegistryCleanup>
+	{
+
+		public FullContainerName[] removedContainers;
+
+		public McpeContainerRegistryCleanup()
+		{
+			Id = 0x13d;
+			IsMcpe = true;
+		}
+
+		protected override void EncodePacket()
+		{
+			base.EncodePacket();
+
+			BeforeEncode();
+
+			Write(removedContainers);
+
+			AfterEncode();
+		}
+
+		partial void BeforeEncode();
+		partial void AfterEncode();
+
+		protected override void DecodePacket()
+		{
+			base.DecodePacket();
+
+			BeforeDecode();
+
+			removedContainers = ReadFullContainerNames();
+
+			AfterDecode();
+		}
+
+		partial void BeforeDecode();
+		partial void AfterDecode();
+
+		protected override void ResetPacket()
+		{
+			base.ResetPacket();
+
+			removedContainers = default;
 		}
 
 	}

@@ -76,6 +76,8 @@ namespace MiNET
 				MinValue = 0,
 				MaxValue = 1,
 				Value = CalculateXp(),
+				MinDefault = 0,
+				MaxDefault = 1,
 				Default = 0,
 				Modifiers = new AttributeModifiers()
 			};
@@ -85,6 +87,8 @@ namespace MiNET
 				MinValue = 0,
 				MaxValue = 24791,
 				Value = ExperienceLevel,
+				MinDefault = 0,
+				MaxDefault = 24791,
 				Default = 0,
 				Modifiers = new AttributeModifiers()
 			};

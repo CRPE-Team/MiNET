@@ -45,6 +45,7 @@ namespace MiNET.Blocks
 
 		public Chalkboard() : base()
 		{
+			Edu = true;
 			IsTransparent = true;
 			IsSolid = false;
 			BlastResistance = 5;

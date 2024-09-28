@@ -63,7 +63,7 @@ namespace MiNET.Items
 		[NbtProperty] public byte Count { get; set; } = 1;
 		[NbtProperty("tag")] public virtual NbtCompound ExtraData { get; set; }
 
-		public bool Edu { get; protected set; } = false;
+		public virtual bool Edu { get; protected set; } = false;
 
 		[JsonIgnore] public virtual ItemMaterial ItemMaterial { get; set; } = ItemMaterial.None;
 

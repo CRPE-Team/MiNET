@@ -71,6 +71,8 @@ namespace MiNET
 		public float MinValue { get; set; }
 		public float MaxValue { get; set; }
 		public float Value { get; set; }
+		public float MinDefault { get; set; }
+		public float MaxDefault { get; set; }
 		public float Default { get; set; }
 		public AttributeModifiers Modifiers { get; set; }
 		
@@ -79,7 +81,9 @@ namespace MiNET
 			packet.Write(MinValue);
 			packet.Write(MaxValue);
 			packet.Write(Value);
-			packet.Write(Default); // unknown
+			packet.Write(MinDefault);
+			packet.Write(MaxDefault);
+			packet.Write(Default);
 			packet.Write(Name);
 			packet.Write(Modifiers);
 		}
@@ -91,6 +95,8 @@ namespace MiNET
 				MinValue = packet.ReadFloat(),
 				MaxValue = packet.ReadFloat(),
 				Value = packet.ReadFloat(),
+				MinDefault = packet.ReadFloat(),
+				MaxDefault = packet.ReadFloat(),
 				Default = packet.ReadFloat(),
 				Name = packet.ReadString(),
 				Modifiers = packet.ReadAttributeModifiers()
@@ -99,7 +105,7 @@ namespace MiNET
 
 		public override string ToString()
 		{
-			return $"{{Name: {Name}, MinValue: {MinValue}, MaxValue: {MaxValue}, Value: {Value}, Default: {Default}}}";
+			return $"{{Name: {Name}, MinValue: {MinValue}, MaxValue: {MaxValue}, Value: {Value}, MinDefault: {MinDefault}, MaxDefault: {MaxDefault}, Default: {Default}}}";
 		}
 
 	}

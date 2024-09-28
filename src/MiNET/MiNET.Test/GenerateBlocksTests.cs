@@ -633,13 +633,17 @@ namespace MiNET.Test
 			{
 				return nameof(CarpetBase);
 			}
-			if (name.StartsWith("element_"))
+			if (name.StartsWith("element_") && name != "element_constructor")
 			{
 				return nameof(ElementBase);
 			}
 			if (name.StartsWith("infested"))
 			{
 				return nameof(InfestedBlockBase);
+			}
+			if (name.StartsWith("colored_torch_"))
+			{
+				return nameof(ColoredTorchBase);
 			}
 			if (id.EndsWith("_concrete"))
 			{
@@ -648,6 +652,14 @@ namespace MiNET.Test
 			if (id.EndsWith("_concrete_powder"))
 			{
 				return nameof(ConcretePowderBase);
+			}
+			if (name.StartsWith("hard_") && id.EndsWith("_stained_glass"))
+			{
+				return nameof(HardStainedGlassBase);
+			}
+			if (name.StartsWith("hard_") && id.EndsWith("_stained_glass_pane"))
+			{
+				return nameof(HardStainedGlassPaneBase);
 			}
 			if (id.EndsWith("_stained_glass"))
 			{

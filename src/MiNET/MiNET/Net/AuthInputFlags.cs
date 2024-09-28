@@ -131,5 +131,10 @@ public enum AuthInputFlags : long
 	AckEntityData = 1L << 44,
 	InClientPredictedVehicle = 1L << 45,
 	Paddlingleft = 1L << 46,
-	Paddlingright = 1L << 47
+	Paddlingright = 1L << 47,
+	BlockBreakingDelayEnabled = 1L << 48,
+	HorizontalCollision = 1L << 49,
+	VerticalCollision = 1L << 50,
+	DownLeft = 1L << 51,
+	DownRight = 1L << 52,
 }

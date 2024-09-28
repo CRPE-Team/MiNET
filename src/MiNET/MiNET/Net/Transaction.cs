@@ -154,12 +154,17 @@ namespace MiNET.Net
 	{
 		public ContainerId ContainerId { get; set; }
 
-		public int DynamicId { get; set; }
+		public int? DynamicId { get; set; }
 
 		public void Write(Packet packet)
 		{
 			packet.Write((byte) ContainerId);
-			packet.Write(DynamicId);
+
+			packet.Write(DynamicId.HasValue);
+			if (DynamicId.HasValue)
+			{
+				packet.Write(DynamicId.Value);
+			}
 		}
 
 		public static FullContainerName Read(Packet packet)
@@ -167,7 +172,7 @@ namespace MiNET.Net
 			return new FullContainerName()
 			{
 				ContainerId = (ContainerId) packet.ReadByte(),
-				DynamicId = packet.ReadInt()
+				DynamicId = packet.ReadBool() ? packet.ReadInt() : null
 			};
 		}
 	}

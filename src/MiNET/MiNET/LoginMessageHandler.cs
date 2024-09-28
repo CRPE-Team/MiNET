@@ -790,6 +790,10 @@ namespace MiNET
 		public void HandleMcpeServerboundLoadingScreen(McpeServerboundLoadingScreen message)
 		{
 		}
+
+		public void HandleMcpeContainerRegistryCleanup(McpeContainerRegistryCleanup message)
+		{
+		}
 	}
 
 	public interface IServerManager

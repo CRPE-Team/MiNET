@@ -182,6 +182,7 @@ namespace MiNET.Inventory
 			var containerSetContent = McpeInventoryContent.CreateObject();
 			containerSetContent.inventoryId = WindowsId;
 			containerSetContent.input = Slots;
+			containerSetContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
 			player.SendPacket(containerSetContent);
 		}
 
