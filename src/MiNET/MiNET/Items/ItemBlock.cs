@@ -29,6 +29,7 @@ using fNbt.Serialization;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Entities;
+using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 using Newtonsoft.Json;
@@ -88,18 +89,7 @@ namespace MiNET.Items
 			return Block.GetSmelt(block) ?? base.GetSmelt(block);
 		}
 
-		public static int GetFacingDirectionFromEntity(Entity entity)
-		{
-			return entity.GetDirectionEmum() switch
-			{
-				Entity.Direction.South => 4,
-				Entity.Direction.West => 2,
-				Entity.Direction.North => 5,
-				Entity.Direction.East => 3,
-				_ => throw new ArgumentOutOfRangeException()
-			};
-		}
-
+		[Obsolete]
 		public static BlockAxis GetPillarAxisFromFace(BlockFace face)
 		{
 			return face switch

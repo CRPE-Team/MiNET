@@ -1,6 +1,7 @@
 ﻿using fNbt.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiNET.Blocks;
+using MiNET.Blocks.States;
 using MiNET.Items;
 
 namespace MiNET.Test
@@ -12,7 +13,7 @@ namespace MiNET.Test
 		public void ItemConvertTest()
 		{
 			var item = new ItemPrismarineBrickSlab();
-			item.Block.VerticalHalf = "top";
+			item.Block.VerticalHalf = VerticalHalf.Top;
 
 			var tag = NbtConvert.ToNbt(item);
 
@@ -27,7 +28,7 @@ namespace MiNET.Test
 		public void BlockConvertTest()
 		{
 			var block = new Bell();
-			block.Attachment = "side";
+			block.Attachment = Attachment.Side;
 			block.Direction = 2;
 			block.ToggleBit = true;
 

@@ -24,8 +24,8 @@
 #endregion
 
 using System.Numerics;
+using MiNET.Blocks.States;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -33,8 +33,7 @@ namespace MiNET.Blocks
 {
 	public abstract class RedstoneTorchBase : Block
 	{
-		[StateEnum("east", "north", "south", "top", "unknown", "west")]
-		public virtual string TorchFacingDirection { get; set; }
+		public virtual TorchFacingDirection TorchFacingDirection { get; set; }
 
 		public RedstoneTorchBase() : base()
 		{
@@ -62,27 +61,9 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			if (face == BlockFace.Down)
-				return true;
+			if (face == BlockFace.Down) return true;
 
-			switch (face)
-			{
-				case BlockFace.Up:
-					TorchFacingDirection = "top";
-					break;
-				case BlockFace.North:
-					TorchFacingDirection = "south";
-					break;
-				case BlockFace.South:
-					TorchFacingDirection = "north";
-					break;
-				case BlockFace.West:
-					TorchFacingDirection = "east";
-					break;
-				case BlockFace.East:
-					TorchFacingDirection = "west";
-					break;
-			}
+			TorchFacingDirection = face;
 
 			return false;
 		}

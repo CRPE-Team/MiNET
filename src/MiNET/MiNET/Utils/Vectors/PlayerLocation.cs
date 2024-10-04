@@ -144,7 +144,12 @@ namespace MiNET.Utils.Vectors
 			return new PlayerLocation(v.X, v.Y, v.Z);
 		}
 
-		public object Clone()
+        public Direction ToDirection()
+        {
+            return (Direction) ((int) Math.Floor((HeadYaw * 4F) / 360F + 0.5D) & 0x03);
+        }
+
+        public object Clone()
 		{
 			return MemberwiseClone();
 		}

@@ -27,7 +27,7 @@ using System;
 using System.Numerics;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
-using MiNET.Utils;
+using MiNET.Blocks.States;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -47,7 +47,7 @@ namespace MiNET.Items
 			{
 				var skull = new Skull();
 				skull.Coordinates = coor;
-				skull.FacingDirection = 1; // Skull on floor, rotation in block entity
+				skull.FacingDirection = OldFacingDirection1.Up; // Skull on floor, rotation in block entity
 				world.SetBlock(skull);
 			}
 			else if (face == BlockFace.Down) // At the bottom of block
@@ -59,7 +59,7 @@ namespace MiNET.Items
 			{
 				var skull = new Skull();
 				skull.Coordinates = coor;
-				skull.FacingDirection = (int) face; // Skull on floor, rotation in block entity
+				skull.FacingDirection = face; // Skull on floor, rotation in block entity
 				world.SetBlock(skull);
 			}
 

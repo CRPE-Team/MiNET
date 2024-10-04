@@ -1,7 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Running;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiNET.Blocks;
+using MiNET.Blocks.States;
 
 namespace MiNET.Test.Performance
 {
@@ -24,7 +24,7 @@ namespace MiNET.Test.Performance
 		[Benchmark]
 		public void CreationWithCustomStates()
 		{
-			_ = new OakLog() { PillarAxis = "z" }.RuntimeId;
+			_ = new OakLog() { PillarAxis = PillarAxis.Z }.RuntimeId;
 		}
 	}
 }

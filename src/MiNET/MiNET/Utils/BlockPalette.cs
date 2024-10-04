@@ -327,7 +327,7 @@ namespace MiNET.Utils
 		{
 			if (ReferenceEquals(null, obj)) return false;
 			if (ReferenceEquals(this, obj)) return true;
-			if (obj.GetType() != this.GetType()) return false;
+			if (!obj.GetType().IsAssignableTo(GetType())) return false;
 			return Equals((BlockStateInt) obj);
 		}
 
@@ -364,7 +364,7 @@ namespace MiNET.Utils
 		{
 			if (ReferenceEquals(null, obj)) return false;
 			if (ReferenceEquals(this, obj)) return true;
-			if (obj.GetType() != GetType()) return false;
+			if (!obj.GetType().IsAssignableTo(GetType())) return false;
 			return Equals((BlockStateByte) obj);
 		}
 
@@ -401,7 +401,7 @@ namespace MiNET.Utils
 		{
 			if (ReferenceEquals(null, obj)) return false;
 			if (ReferenceEquals(this, obj)) return true;
-			if (obj.GetType() != this.GetType()) return false;
+			if (!obj.GetType().IsAssignableTo(GetType())) return false;
 			return Equals((BlockStateString) obj);
 		}
 

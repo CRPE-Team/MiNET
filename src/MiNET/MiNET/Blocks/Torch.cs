@@ -39,48 +39,11 @@ namespace MiNET.Blocks
 			LightLevel = 14;
 		}
 
-		//protected override bool CanPlace(Level world, BlockCoordinates blockCoordinates, BlockFace face)
-		//{
-		//	Block block = world.GetBlockId(blockCoordinates);
-		//	if (block is Farmland
-		//	    || block is Ice
-		//		/*|| block is Glowstone || block is Leaves  */
-		//	    || block is Tnt
-		//	    || block is BlockStairs
-		//	    || block is StoneSlab
-		//	    || block is WoodSlab) return false;
-		//	Log.Debug("2");
-
-		//	//TODO: More checks here, but PE blocks it pretty good right now
-		//	if (block is Glass && face == BlockFace.Up) return true;
-
-		//	Log.Debug($"3 {block.Id} {!block.IsTransparent}");
-
-		//	return !block.IsTransparent;
-		//}
-
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
 			if (face == BlockFace.Down) return true;
 
-			switch (face)
-			{
-				case BlockFace.Up:
-					TorchFacingDirection = "top";
-					break;
-				case BlockFace.North:
-					TorchFacingDirection = "south";
-					break;
-				case BlockFace.South:
-					TorchFacingDirection = "north";
-					break;
-				case BlockFace.West:
-					TorchFacingDirection = "east";
-					break;
-				case BlockFace.East:
-					TorchFacingDirection = "west";
-					break;
-			}
+			TorchFacingDirection = face;
 
 			return false;
 		}

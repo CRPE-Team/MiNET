@@ -179,7 +179,7 @@ namespace MiNET.Items
 			blocks.Add(new Portal
 			{
 				Coordinates = coordinates,
-				PortalAxis = dir.ToString().ToLower()
+				PortalAxis = dir
 			});
 		}
 

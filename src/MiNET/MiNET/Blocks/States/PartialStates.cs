@@ -38,9 +38,13 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly PillarAxis Y = new PillarAxis("y");
-		public static readonly PillarAxis X = new PillarAxis("x");
-		public static readonly PillarAxis Z = new PillarAxis("z");
+		protected const string YValue = "y";
+		protected const string XValue = "x";
+		protected const string ZValue = "z";
+
+		public static readonly PillarAxis Y = new PillarAxis(YValue);
+		public static readonly PillarAxis X = new PillarAxis(XValue);
+		public static readonly PillarAxis Z = new PillarAxis(ZValue);
 
 		public static PillarAxis[] Values()
 		{
@@ -127,6 +131,115 @@ namespace MiNET.Blocks.States
 
 	} // class
 
+	public partial class WallConnectionTypeEast : BlockStateString
+	{
+		public override string Name => "wall_connection_type_east";
+
+		protected WallConnectionTypeEast(string value)
+		{
+			Value = value;
+		}
+
+		protected const string NoneValue = "none";
+		protected const string ShortValue = "short";
+		protected const string TallValue = "tall";
+
+		public static readonly WallConnectionTypeEast None = new WallConnectionTypeEast(NoneValue);
+		public static readonly WallConnectionTypeEast Short = new WallConnectionTypeEast(ShortValue);
+		public static readonly WallConnectionTypeEast Tall = new WallConnectionTypeEast(TallValue);
+
+		public static WallConnectionTypeEast[] Values()
+		{
+			return [None, Short, Tall];
+		}
+
+	} // class
+
+	public partial class WallConnectionTypeNorth : BlockStateString
+	{
+		public override string Name => "wall_connection_type_north";
+
+		protected WallConnectionTypeNorth(string value)
+		{
+			Value = value;
+		}
+
+		protected const string NoneValue = "none";
+		protected const string ShortValue = "short";
+		protected const string TallValue = "tall";
+
+		public static readonly WallConnectionTypeNorth None = new WallConnectionTypeNorth(NoneValue);
+		public static readonly WallConnectionTypeNorth Short = new WallConnectionTypeNorth(ShortValue);
+		public static readonly WallConnectionTypeNorth Tall = new WallConnectionTypeNorth(TallValue);
+
+		public static WallConnectionTypeNorth[] Values()
+		{
+			return [None, Short, Tall];
+		}
+
+	} // class
+
+	public partial class WallConnectionTypeSouth : BlockStateString
+	{
+		public override string Name => "wall_connection_type_south";
+
+		protected WallConnectionTypeSouth(string value)
+		{
+			Value = value;
+		}
+
+		protected const string NoneValue = "none";
+		protected const string ShortValue = "short";
+		protected const string TallValue = "tall";
+
+		public static readonly WallConnectionTypeSouth None = new WallConnectionTypeSouth(NoneValue);
+		public static readonly WallConnectionTypeSouth Short = new WallConnectionTypeSouth(ShortValue);
+		public static readonly WallConnectionTypeSouth Tall = new WallConnectionTypeSouth(TallValue);
+
+		public static WallConnectionTypeSouth[] Values()
+		{
+			return [None, Short, Tall];
+		}
+
+	} // class
+
+	public partial class WallConnectionTypeWest : BlockStateString
+	{
+		public override string Name => "wall_connection_type_west";
+
+		protected WallConnectionTypeWest(string value)
+		{
+			Value = value;
+		}
+
+		protected const string NoneValue = "none";
+		protected const string ShortValue = "short";
+		protected const string TallValue = "tall";
+
+		public static readonly WallConnectionTypeWest None = new WallConnectionTypeWest(NoneValue);
+		public static readonly WallConnectionTypeWest Short = new WallConnectionTypeWest(ShortValue);
+		public static readonly WallConnectionTypeWest Tall = new WallConnectionTypeWest(TallValue);
+
+		public static WallConnectionTypeWest[] Values()
+		{
+			return [None, Short, Tall];
+		}
+
+	} // class
+
+	public partial class WallPostBit : BlockStateByte
+	{
+		public override string Name => "wall_post_bit";
+
+		public static byte MaxValue { get; } = 1;
+
+		public static byte[] Values()
+		{
+			return [0, 1];
+		}
+
+	} // class
+
 	public partial class InWallBit : BlockStateByte
 	{
 		public override string Name => "in_wall_bit";
@@ -188,8 +301,11 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly VerticalHalf Bottom = new VerticalHalf("bottom");
-		public static readonly VerticalHalf Top = new VerticalHalf("top");
+		protected const string BottomValue = "bottom";
+		protected const string TopValue = "top";
+
+		public static readonly VerticalHalf Bottom = new VerticalHalf(BottomValue);
+		public static readonly VerticalHalf Top = new VerticalHalf(TopValue);
 
 		public static VerticalHalf[] Values()
 		{
@@ -337,9 +453,13 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly SeaGrassType Default = new SeaGrassType("default");
-		public static readonly SeaGrassType DoubleTop = new SeaGrassType("double_top");
-		public static readonly SeaGrassType DoubleBot = new SeaGrassType("double_bot");
+		protected const string DefaultValue = "default";
+		protected const string DoubleTopValue = "double_top";
+		protected const string DoubleBotValue = "double_bot";
+
+		public static readonly SeaGrassType Default = new SeaGrassType(DefaultValue);
+		public static readonly SeaGrassType DoubleTop = new SeaGrassType(DoubleTopValue);
+		public static readonly SeaGrassType DoubleBot = new SeaGrassType(DoubleBotValue);
 
 		public static SeaGrassType[] Values()
 		{
@@ -409,12 +529,19 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly BlockFace Down = new BlockFace("down");
-		public static readonly BlockFace Up = new BlockFace("up");
-		public static readonly BlockFace North = new BlockFace("north");
-		public static readonly BlockFace South = new BlockFace("south");
-		public static readonly BlockFace West = new BlockFace("west");
-		public static readonly BlockFace East = new BlockFace("east");
+		protected const string DownValue = "down";
+		protected const string UpValue = "up";
+		protected const string NorthValue = "north";
+		protected const string SouthValue = "south";
+		protected const string WestValue = "west";
+		protected const string EastValue = "east";
+
+		public static readonly BlockFace Down = new BlockFace(DownValue);
+		public static readonly BlockFace Up = new BlockFace(UpValue);
+		public static readonly BlockFace North = new BlockFace(NorthValue);
+		public static readonly BlockFace South = new BlockFace(SouthValue);
+		public static readonly BlockFace West = new BlockFace(WestValue);
+		public static readonly BlockFace East = new BlockFace(EastValue);
 
 		public static BlockFace[] Values()
 		{
@@ -458,10 +585,15 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly CardinalDirection South = new CardinalDirection("south");
-		public static readonly CardinalDirection West = new CardinalDirection("west");
-		public static readonly CardinalDirection North = new CardinalDirection("north");
-		public static readonly CardinalDirection East = new CardinalDirection("east");
+		protected const string SouthValue = "south";
+		protected const string WestValue = "west";
+		protected const string NorthValue = "north";
+		protected const string EastValue = "east";
+
+		public static readonly CardinalDirection South = new CardinalDirection(SouthValue);
+		public static readonly CardinalDirection West = new CardinalDirection(WestValue);
+		public static readonly CardinalDirection North = new CardinalDirection(NorthValue);
+		public static readonly CardinalDirection East = new CardinalDirection(EastValue);
 
 		public static CardinalDirection[] Values()
 		{
@@ -522,99 +654,6 @@ namespace MiNET.Blocks.States
 
 	} // class
 
-	public partial class WallConnectionTypeEast : BlockStateString
-	{
-		public override string Name => "wall_connection_type_east";
-
-		protected WallConnectionTypeEast(string value)
-		{
-			Value = value;
-		}
-
-		public static readonly WallConnectionTypeEast None = new WallConnectionTypeEast("none");
-		public static readonly WallConnectionTypeEast Short = new WallConnectionTypeEast("short");
-		public static readonly WallConnectionTypeEast Tall = new WallConnectionTypeEast("tall");
-
-		public static WallConnectionTypeEast[] Values()
-		{
-			return [None, Short, Tall];
-		}
-
-	} // class
-
-	public partial class WallConnectionTypeNorth : BlockStateString
-	{
-		public override string Name => "wall_connection_type_north";
-
-		protected WallConnectionTypeNorth(string value)
-		{
-			Value = value;
-		}
-
-		public static readonly WallConnectionTypeNorth None = new WallConnectionTypeNorth("none");
-		public static readonly WallConnectionTypeNorth Short = new WallConnectionTypeNorth("short");
-		public static readonly WallConnectionTypeNorth Tall = new WallConnectionTypeNorth("tall");
-
-		public static WallConnectionTypeNorth[] Values()
-		{
-			return [None, Short, Tall];
-		}
-
-	} // class
-
-	public partial class WallConnectionTypeSouth : BlockStateString
-	{
-		public override string Name => "wall_connection_type_south";
-
-		protected WallConnectionTypeSouth(string value)
-		{
-			Value = value;
-		}
-
-		public static readonly WallConnectionTypeSouth None = new WallConnectionTypeSouth("none");
-		public static readonly WallConnectionTypeSouth Short = new WallConnectionTypeSouth("short");
-		public static readonly WallConnectionTypeSouth Tall = new WallConnectionTypeSouth("tall");
-
-		public static WallConnectionTypeSouth[] Values()
-		{
-			return [None, Short, Tall];
-		}
-
-	} // class
-
-	public partial class WallConnectionTypeWest : BlockStateString
-	{
-		public override string Name => "wall_connection_type_west";
-
-		protected WallConnectionTypeWest(string value)
-		{
-			Value = value;
-		}
-
-		public static readonly WallConnectionTypeWest None = new WallConnectionTypeWest("none");
-		public static readonly WallConnectionTypeWest Short = new WallConnectionTypeWest("short");
-		public static readonly WallConnectionTypeWest Tall = new WallConnectionTypeWest("tall");
-
-		public static WallConnectionTypeWest[] Values()
-		{
-			return [None, Short, Tall];
-		}
-
-	} // class
-
-	public partial class WallPostBit : BlockStateByte
-	{
-		public override string Name => "wall_post_bit";
-
-		public static byte MaxValue { get; } = 1;
-
-		public static byte[] Values()
-		{
-			return [0, 1];
-		}
-
-	} // class
-
 	public partial class PoweredBit : BlockStateByte
 	{
 		public override string Name => "powered_bit";
@@ -624,25 +663,6 @@ namespace MiNET.Blocks.States
 		public static byte[] Values()
 		{
 			return [0, 1];
-		}
-
-	} // class
-
-	public partial class SpongeType : BlockStateString
-	{
-		public override string Name => "sponge_type";
-
-		protected SpongeType(string value)
-		{
-			Value = value;
-		}
-
-		public static readonly SpongeType Dry = new SpongeType("dry");
-		public static readonly SpongeType Wet = new SpongeType("wet");
-
-		public static SpongeType[] Values()
-		{
-			return [Dry, Wet];
 		}
 
 	} // class
@@ -695,16 +715,36 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly TorchFacingDirection Unknown = new TorchFacingDirection("unknown");
-		public static readonly TorchFacingDirection West = new TorchFacingDirection("west");
-		public static readonly TorchFacingDirection East = new TorchFacingDirection("east");
-		public static readonly TorchFacingDirection North = new TorchFacingDirection("north");
-		public static readonly TorchFacingDirection South = new TorchFacingDirection("south");
-		public static readonly TorchFacingDirection Top = new TorchFacingDirection("top");
+		protected const string UnknownValue = "unknown";
+		protected const string WestValue = "west";
+		protected const string EastValue = "east";
+		protected const string NorthValue = "north";
+		protected const string SouthValue = "south";
+		protected const string TopValue = "top";
+
+		public static readonly TorchFacingDirection Unknown = new TorchFacingDirection(UnknownValue);
+		public static readonly TorchFacingDirection West = new TorchFacingDirection(WestValue);
+		public static readonly TorchFacingDirection East = new TorchFacingDirection(EastValue);
+		public static readonly TorchFacingDirection North = new TorchFacingDirection(NorthValue);
+		public static readonly TorchFacingDirection South = new TorchFacingDirection(SouthValue);
+		public static readonly TorchFacingDirection Top = new TorchFacingDirection(TopValue);
 
 		public static TorchFacingDirection[] Values()
 		{
 			return [Unknown, West, East, North, South, Top];
+		}
+
+	} // class
+
+	public partial class ExplodeBit : BlockStateByte
+	{
+		public override string Name => "explode_bit";
+
+		public static byte MaxValue { get; } = 1;
+
+		public static byte[] Values()
+		{
+			return [0, 1];
 		}
 
 	} // class
@@ -735,37 +775,6 @@ namespace MiNET.Blocks.States
 
 	} // class
 
-	public partial class WallBlockType : BlockStateString
-	{
-		public override string Name => "wall_block_type";
-
-		protected WallBlockType(string value)
-		{
-			Value = value;
-		}
-
-		public static readonly WallBlockType Cobblestone = new WallBlockType("cobblestone");
-		public static readonly WallBlockType MossyCobblestone = new WallBlockType("mossy_cobblestone");
-		public static readonly WallBlockType Granite = new WallBlockType("granite");
-		public static readonly WallBlockType Diorite = new WallBlockType("diorite");
-		public static readonly WallBlockType Andesite = new WallBlockType("andesite");
-		public static readonly WallBlockType Sandstone = new WallBlockType("sandstone");
-		public static readonly WallBlockType Brick = new WallBlockType("brick");
-		public static readonly WallBlockType StoneBrick = new WallBlockType("stone_brick");
-		public static readonly WallBlockType MossyStoneBrick = new WallBlockType("mossy_stone_brick");
-		public static readonly WallBlockType NetherBrick = new WallBlockType("nether_brick");
-		public static readonly WallBlockType EndBrick = new WallBlockType("end_brick");
-		public static readonly WallBlockType Prismarine = new WallBlockType("prismarine");
-		public static readonly WallBlockType RedSandstone = new WallBlockType("red_sandstone");
-		public static readonly WallBlockType RedNetherBrick = new WallBlockType("red_nether_brick");
-
-		public static WallBlockType[] Values()
-		{
-			return [Cobblestone, MossyCobblestone, Granite, Diorite, Andesite, Sandstone, Brick, StoneBrick, MossyStoneBrick, NetherBrick, EndBrick, Prismarine, RedSandstone, RedNetherBrick];
-		}
-
-	} // class
-
 	public partial class FacingDirection : BlockStateString
 	{
 		public override string Name => "minecraft:facing_direction";
@@ -775,12 +784,19 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly FacingDirection Down = new FacingDirection("down");
-		public static readonly FacingDirection Up = new FacingDirection("up");
-		public static readonly FacingDirection North = new FacingDirection("north");
-		public static readonly FacingDirection South = new FacingDirection("south");
-		public static readonly FacingDirection West = new FacingDirection("west");
-		public static readonly FacingDirection East = new FacingDirection("east");
+		protected const string DownValue = "down";
+		protected const string UpValue = "up";
+		protected const string NorthValue = "north";
+		protected const string SouthValue = "south";
+		protected const string WestValue = "west";
+		protected const string EastValue = "east";
+
+		public static readonly FacingDirection Down = new FacingDirection(DownValue);
+		public static readonly FacingDirection Up = new FacingDirection(UpValue);
+		public static readonly FacingDirection North = new FacingDirection(NorthValue);
+		public static readonly FacingDirection South = new FacingDirection(SouthValue);
+		public static readonly FacingDirection West = new FacingDirection(WestValue);
+		public static readonly FacingDirection East = new FacingDirection(EastValue);
 
 		public static FacingDirection[] Values()
 		{
@@ -850,9 +866,13 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly BambooLeafSize NoLeaves = new BambooLeafSize("no_leaves");
-		public static readonly BambooLeafSize SmallLeaves = new BambooLeafSize("small_leaves");
-		public static readonly BambooLeafSize LargeLeaves = new BambooLeafSize("large_leaves");
+		protected const string NoLeavesValue = "no_leaves";
+		protected const string SmallLeavesValue = "small_leaves";
+		protected const string LargeLeavesValue = "large_leaves";
+
+		public static readonly BambooLeafSize NoLeaves = new BambooLeafSize(NoLeavesValue);
+		public static readonly BambooLeafSize SmallLeaves = new BambooLeafSize(SmallLeavesValue);
+		public static readonly BambooLeafSize LargeLeaves = new BambooLeafSize(LargeLeavesValue);
 
 		public static BambooLeafSize[] Values()
 		{
@@ -870,8 +890,11 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly BambooStalkThickness Thin = new BambooStalkThickness("thin");
-		public static readonly BambooStalkThickness Thick = new BambooStalkThickness("thick");
+		protected const string ThinValue = "thin";
+		protected const string ThickValue = "thick";
+
+		public static readonly BambooStalkThickness Thin = new BambooStalkThickness(ThinValue);
+		public static readonly BambooStalkThickness Thick = new BambooStalkThickness(ThickValue);
 
 		public static BambooStalkThickness[] Values()
 		{
@@ -915,25 +938,6 @@ namespace MiNET.Blocks.States
 		public static byte[] Values()
 		{
 			return [0, 1];
-		}
-
-	} // class
-
-	public partial class StructureVoidType : BlockStateString
-	{
-		public override string Name => "structure_void_type";
-
-		protected StructureVoidType(string value)
-		{
-			Value = value;
-		}
-
-		public static readonly StructureVoidType Void = new StructureVoidType("void");
-		public static readonly StructureVoidType Air = new StructureVoidType("air");
-
-		public static StructureVoidType[] Values()
-		{
-			return [Void, Air];
 		}
 
 	} // class
@@ -1142,10 +1146,15 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly BigDripleafTilt None = new BigDripleafTilt("none");
-		public static readonly BigDripleafTilt Unstable = new BigDripleafTilt("unstable");
-		public static readonly BigDripleafTilt PartialTilt = new BigDripleafTilt("partial_tilt");
-		public static readonly BigDripleafTilt FullTilt = new BigDripleafTilt("full_tilt");
+		protected const string NoneValue = "none";
+		protected const string UnstableValue = "unstable";
+		protected const string PartialTiltValue = "partial_tilt";
+		protected const string FullTiltValue = "full_tilt";
+
+		public static readonly BigDripleafTilt None = new BigDripleafTilt(NoneValue);
+		public static readonly BigDripleafTilt Unstable = new BigDripleafTilt(UnstableValue);
+		public static readonly BigDripleafTilt PartialTilt = new BigDripleafTilt(PartialTiltValue);
+		public static readonly BigDripleafTilt FullTilt = new BigDripleafTilt(FullTiltValue);
 
 		public static BigDripleafTilt[] Values()
 		{
@@ -1189,10 +1198,15 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly VaultState Inactive = new VaultState("inactive");
-		public static readonly VaultState Active = new VaultState("active");
-		public static readonly VaultState Unlocking = new VaultState("unlocking");
-		public static readonly VaultState Ejecting = new VaultState("ejecting");
+		protected const string InactiveValue = "inactive";
+		protected const string ActiveValue = "active";
+		protected const string UnlockingValue = "unlocking";
+		protected const string EjectingValue = "ejecting";
+
+		public static readonly VaultState Inactive = new VaultState(InactiveValue);
+		public static readonly VaultState Active = new VaultState(ActiveValue);
+		public static readonly VaultState Unlocking = new VaultState(UnlockingValue);
+		public static readonly VaultState Ejecting = new VaultState(EjectingValue);
 
 		public static VaultState[] Values()
 		{
@@ -1210,12 +1224,19 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly StructureBlockType Data = new StructureBlockType("data");
-		public static readonly StructureBlockType Save = new StructureBlockType("save");
-		public static readonly StructureBlockType Load = new StructureBlockType("load");
-		public static readonly StructureBlockType Corner = new StructureBlockType("corner");
-		public static readonly StructureBlockType Invalid = new StructureBlockType("invalid");
-		public static readonly StructureBlockType Export = new StructureBlockType("export");
+		protected const string DataValue = "data";
+		protected const string SaveValue = "save";
+		protected const string LoadValue = "load";
+		protected const string CornerValue = "corner";
+		protected const string InvalidValue = "invalid";
+		protected const string ExportValue = "export";
+
+		public static readonly StructureBlockType Data = new StructureBlockType(DataValue);
+		public static readonly StructureBlockType Save = new StructureBlockType(SaveValue);
+		public static readonly StructureBlockType Load = new StructureBlockType(LoadValue);
+		public static readonly StructureBlockType Corner = new StructureBlockType(CornerValue);
+		public static readonly StructureBlockType Invalid = new StructureBlockType(InvalidValue);
+		public static readonly StructureBlockType Export = new StructureBlockType(ExportValue);
 
 		public static StructureBlockType[] Values()
 		{
@@ -1233,14 +1254,23 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly LeverDirection DownEastWest = new LeverDirection("down_east_west");
-		public static readonly LeverDirection East = new LeverDirection("east");
-		public static readonly LeverDirection West = new LeverDirection("west");
-		public static readonly LeverDirection South = new LeverDirection("south");
-		public static readonly LeverDirection North = new LeverDirection("north");
-		public static readonly LeverDirection UpNorthSouth = new LeverDirection("up_north_south");
-		public static readonly LeverDirection UpEastWest = new LeverDirection("up_east_west");
-		public static readonly LeverDirection DownNorthSouth = new LeverDirection("down_north_south");
+		protected const string DownEastWestValue = "down_east_west";
+		protected const string EastValue = "east";
+		protected const string WestValue = "west";
+		protected const string SouthValue = "south";
+		protected const string NorthValue = "north";
+		protected const string UpNorthSouthValue = "up_north_south";
+		protected const string UpEastWestValue = "up_east_west";
+		protected const string DownNorthSouthValue = "down_north_south";
+
+		public static readonly LeverDirection DownEastWest = new LeverDirection(DownEastWestValue);
+		public static readonly LeverDirection East = new LeverDirection(EastValue);
+		public static readonly LeverDirection West = new LeverDirection(WestValue);
+		public static readonly LeverDirection South = new LeverDirection(SouthValue);
+		public static readonly LeverDirection North = new LeverDirection(NorthValue);
+		public static readonly LeverDirection UpNorthSouth = new LeverDirection(UpNorthSouthValue);
+		public static readonly LeverDirection UpEastWest = new LeverDirection(UpEastWestValue);
+		public static readonly LeverDirection DownNorthSouth = new LeverDirection(DownNorthSouthValue);
 
 		public static LeverDirection[] Values()
 		{
@@ -1288,32 +1318,6 @@ namespace MiNET.Blocks.States
 
 	} // class
 
-	public partial class AllowUnderwaterBit : BlockStateByte
-	{
-		public override string Name => "allow_underwater_bit";
-
-		public static byte MaxValue { get; } = 1;
-
-		public static byte[] Values()
-		{
-			return [0, 1];
-		}
-
-	} // class
-
-	public partial class ExplodeBit : BlockStateByte
-	{
-		public override string Name => "explode_bit";
-
-		public static byte MaxValue { get; } = 1;
-
-		public static byte[] Values()
-		{
-			return [0, 1];
-		}
-
-	} // class
-
 	public partial class ToggleBit : BlockStateByte
 	{
 		public override string Name => "toggle_bit";
@@ -1336,10 +1340,15 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly Attachment Standing = new Attachment("standing");
-		public static readonly Attachment Hanging = new Attachment("hanging");
-		public static readonly Attachment Side = new Attachment("side");
-		public static readonly Attachment Multiple = new Attachment("multiple");
+		protected const string StandingValue = "standing";
+		protected const string HangingValue = "hanging";
+		protected const string SideValue = "side";
+		protected const string MultipleValue = "multiple";
+
+		public static readonly Attachment Standing = new Attachment(StandingValue);
+		public static readonly Attachment Hanging = new Attachment(HangingValue);
+		public static readonly Attachment Side = new Attachment(SideValue);
+		public static readonly Attachment Multiple = new Attachment(MultipleValue);
 
 		public static Attachment[] Values()
 		{
@@ -1370,9 +1379,13 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly CrackedState NoCracks = new CrackedState("no_cracks");
-		public static readonly CrackedState Cracked = new CrackedState("cracked");
-		public static readonly CrackedState MaxCracked = new CrackedState("max_cracked");
+		protected const string NoCracksValue = "no_cracks";
+		protected const string CrackedValue = "cracked";
+		protected const string MaxCrackedValue = "max_cracked";
+
+		public static readonly CrackedState NoCracks = new CrackedState(NoCracksValue);
+		public static readonly CrackedState Cracked = new CrackedState(CrackedValue);
+		public static readonly CrackedState MaxCracked = new CrackedState(MaxCrackedValue);
 
 		public static CrackedState[] Values()
 		{
@@ -1407,27 +1420,6 @@ namespace MiNET.Blocks.States
 
 	} // class
 
-	public partial class ChemistryTableType : BlockStateString
-	{
-		public override string Name => "chemistry_table_type";
-
-		protected ChemistryTableType(string value)
-		{
-			Value = value;
-		}
-
-		public static readonly ChemistryTableType CompoundCreator = new ChemistryTableType("compound_creator");
-		public static readonly ChemistryTableType MaterialReducer = new ChemistryTableType("material_reducer");
-		public static readonly ChemistryTableType ElementConstructor = new ChemistryTableType("element_constructor");
-		public static readonly ChemistryTableType LabTable = new ChemistryTableType("lab_table");
-
-		public static ChemistryTableType[] Values()
-		{
-			return [CompoundCreator, MaterialReducer, ElementConstructor, LabTable];
-		}
-
-	} // class
-
 	public partial class TriggeredBit : BlockStateByte
 	{
 		public override string Name => "triggered_bit";
@@ -1450,11 +1442,17 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly DripstoneThickness Tip = new DripstoneThickness("tip");
-		public static readonly DripstoneThickness Frustum = new DripstoneThickness("frustum");
-		public static readonly DripstoneThickness Middle = new DripstoneThickness("middle");
-		public static readonly DripstoneThickness Base = new DripstoneThickness("base");
-		public static readonly DripstoneThickness Merge = new DripstoneThickness("merge");
+		protected const string TipValue = "tip";
+		protected const string FrustumValue = "frustum";
+		protected const string MiddleValue = "middle";
+		protected const string BaseValue = "base";
+		protected const string MergeValue = "merge";
+
+		public static readonly DripstoneThickness Tip = new DripstoneThickness(TipValue);
+		public static readonly DripstoneThickness Frustum = new DripstoneThickness(FrustumValue);
+		public static readonly DripstoneThickness Middle = new DripstoneThickness(MiddleValue);
+		public static readonly DripstoneThickness Base = new DripstoneThickness(BaseValue);
+		public static readonly DripstoneThickness Merge = new DripstoneThickness(MergeValue);
 
 		public static DripstoneThickness[] Values()
 		{
@@ -1498,9 +1496,13 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly CauldronLiquid Water = new CauldronLiquid("water");
-		public static readonly CauldronLiquid Lava = new CauldronLiquid("lava");
-		public static readonly CauldronLiquid PowderSnow = new CauldronLiquid("powder_snow");
+		protected const string WaterValue = "water";
+		protected const string LavaValue = "lava";
+		protected const string PowderSnowValue = "powder_snow";
+
+		public static readonly CauldronLiquid Water = new CauldronLiquid(WaterValue);
+		public static readonly CauldronLiquid Lava = new CauldronLiquid(LavaValue);
+		public static readonly CauldronLiquid PowderSnow = new CauldronLiquid(PowderSnowValue);
 
 		public static CauldronLiquid[] Values()
 		{
@@ -1518,19 +1520,6 @@ namespace MiNET.Blocks.States
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6];
-		}
-
-	} // class
-
-	public partial class ColorBit : BlockStateByte
-	{
-		public override string Name => "color_bit";
-
-		public static byte MaxValue { get; } = 1;
-
-		public static byte[] Values()
-		{
-			return [0, 1];
 		}
 
 	} // class
@@ -1574,27 +1563,6 @@ namespace MiNET.Blocks.States
 
 	} // class
 
-	public partial class ChiselType : BlockStateString
-	{
-		public override string Name => "chisel_type";
-
-		protected ChiselType(string value)
-		{
-			Value = value;
-		}
-
-		public static readonly ChiselType Default = new ChiselType("default");
-		public static readonly ChiselType Chiseled = new ChiselType("chiseled");
-		public static readonly ChiselType Lines = new ChiselType("lines");
-		public static readonly ChiselType Smooth = new ChiselType("smooth");
-
-		public static ChiselType[] Values()
-		{
-			return [Default, Chiseled, Lines, Smooth];
-		}
-
-	} // class
-
 	public partial class PortalAxis : BlockStateString
 	{
 		public override string Name => "portal_axis";
@@ -1604,9 +1572,13 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly PortalAxis Unknown = new PortalAxis("unknown");
-		public static readonly PortalAxis X = new PortalAxis("x");
-		public static readonly PortalAxis Z = new PortalAxis("z");
+		protected const string UnknownValue = "unknown";
+		protected const string XValue = "x";
+		protected const string ZValue = "z";
+
+		public static readonly PortalAxis Unknown = new PortalAxis(UnknownValue);
+		public static readonly PortalAxis X = new PortalAxis(XValue);
+		public static readonly PortalAxis Z = new PortalAxis(ZValue);
 
 		public static PortalAxis[] Values()
 		{
@@ -1637,18 +1609,31 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly Orientation DownEast = new Orientation("down_east");
-		public static readonly Orientation DownNorth = new Orientation("down_north");
-		public static readonly Orientation DownSouth = new Orientation("down_south");
-		public static readonly Orientation DownWest = new Orientation("down_west");
-		public static readonly Orientation UpEast = new Orientation("up_east");
-		public static readonly Orientation UpNorth = new Orientation("up_north");
-		public static readonly Orientation UpSouth = new Orientation("up_south");
-		public static readonly Orientation UpWest = new Orientation("up_west");
-		public static readonly Orientation WestUp = new Orientation("west_up");
-		public static readonly Orientation EastUp = new Orientation("east_up");
-		public static readonly Orientation NorthUp = new Orientation("north_up");
-		public static readonly Orientation SouthUp = new Orientation("south_up");
+		protected const string DownEastValue = "down_east";
+		protected const string DownNorthValue = "down_north";
+		protected const string DownSouthValue = "down_south";
+		protected const string DownWestValue = "down_west";
+		protected const string UpEastValue = "up_east";
+		protected const string UpNorthValue = "up_north";
+		protected const string UpSouthValue = "up_south";
+		protected const string UpWestValue = "up_west";
+		protected const string WestUpValue = "west_up";
+		protected const string EastUpValue = "east_up";
+		protected const string NorthUpValue = "north_up";
+		protected const string SouthUpValue = "south_up";
+
+		public static readonly Orientation DownEast = new Orientation(DownEastValue);
+		public static readonly Orientation DownNorth = new Orientation(DownNorthValue);
+		public static readonly Orientation DownSouth = new Orientation(DownSouthValue);
+		public static readonly Orientation DownWest = new Orientation(DownWestValue);
+		public static readonly Orientation UpEast = new Orientation(UpEastValue);
+		public static readonly Orientation UpNorth = new Orientation(UpNorthValue);
+		public static readonly Orientation UpSouth = new Orientation(UpSouthValue);
+		public static readonly Orientation UpWest = new Orientation(UpWestValue);
+		public static readonly Orientation WestUp = new Orientation(WestUpValue);
+		public static readonly Orientation EastUp = new Orientation(EastUpValue);
+		public static readonly Orientation NorthUp = new Orientation(NorthUpValue);
+		public static readonly Orientation SouthUp = new Orientation(SouthUpValue);
 
 		public static Orientation[] Values()
 		{
@@ -1666,10 +1651,15 @@ namespace MiNET.Blocks.States
 			Value = value;
 		}
 
-		public static readonly TurtleEggCount OneEgg = new TurtleEggCount("one_egg");
-		public static readonly TurtleEggCount TwoEgg = new TurtleEggCount("two_egg");
-		public static readonly TurtleEggCount ThreeEgg = new TurtleEggCount("three_egg");
-		public static readonly TurtleEggCount FourEgg = new TurtleEggCount("four_egg");
+		protected const string OneEggValue = "one_egg";
+		protected const string TwoEggValue = "two_egg";
+		protected const string ThreeEggValue = "three_egg";
+		protected const string FourEggValue = "four_egg";
+
+		public static readonly TurtleEggCount OneEgg = new TurtleEggCount(OneEggValue);
+		public static readonly TurtleEggCount TwoEgg = new TurtleEggCount(TwoEggValue);
+		public static readonly TurtleEggCount ThreeEgg = new TurtleEggCount(ThreeEggValue);
+		public static readonly TurtleEggCount FourEgg = new TurtleEggCount(FourEggValue);
 
 		public static TurtleEggCount[] Values()
 		{

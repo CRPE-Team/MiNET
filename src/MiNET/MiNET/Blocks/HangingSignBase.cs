@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using MiNET.BlockEntities;
+using MiNET.Blocks.States;
 using MiNET.Items;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
@@ -11,7 +12,7 @@ namespace MiNET.Blocks
 	{
 		public virtual bool AttachedBit { get; set; }
 
-		public virtual int FacingDirection { get; set; }
+		public virtual SignFacingDirection FacingDirection { get; set; }
 
 		public virtual int GroundSignDirection { get; set; }
 
@@ -26,7 +27,7 @@ namespace MiNET.Blocks
 				var targetBlock = world.GetBlock(targetCoordinates);
 
 				if (targetBlock.IsSolid && !targetBlock.IsTransparent
-					|| targetBlock is SlabBase slab && slab.VerticalHalf == "bottom"
+					|| targetBlock is SlabBase slab && slab.VerticalHalf == VerticalHalf.Bottom
 					|| targetBlock is BlockStairs stairs && !stairs.UpsideDownBit)
 				{
 					if (player.IsSneaking)
@@ -35,7 +36,7 @@ namespace MiNET.Blocks
 					}
 				}
 				else if (targetBlock is EndRod endRod && (endRod.FacingDirection == 0 || endRod.FacingDirection == 1)
-					|| targetBlock is Chain chain && chain.PillarAxis == "y"
+					|| targetBlock is Chain chain && chain.PillarAxis == PillarAxis.Y
 					|| targetBlock is HangingSignBase)
 				{
 					if (targetBlock is not HangingSignBase || player.IsSneaking || groundSignDirection % 4 != 0)
@@ -52,7 +53,7 @@ namespace MiNET.Blocks
 			}
 			else if (face == BlockFace.Up)
 			{
-				var direction = player.GetDirection() % 2;
+				var direction = (int) player.KnownPosition.ToDirection() % 2;
 				var faceX = new[] { BlockFace.West, BlockFace.East };
 				var faceZ = new[] { BlockFace.South, BlockFace.North };
 
@@ -77,14 +78,7 @@ namespace MiNET.Blocks
 			}
 			else if (Hanging)
 			{
-				FacingDirection = player.GetDirection() switch
-				{
-					0 => 4,
-					1 => 2,
-					2 => 5,
-					3 => 3,
-					_ => 0
-				};
+				FacingDirection = player.KnownPosition.ToDirection();
 			}
 
 			var blockEntity = new HangingSignBlockEntity() { Coordinates = Coordinates };
@@ -110,14 +104,14 @@ namespace MiNET.Blocks
 			return true;
 		}
 
-		private int GetXDirection(float headYaw)
+		private SignFacingDirection GetXDirection(float headYaw)
 		{
-			return Math.Abs(headYaw) <= 90 ? 2 : 3;
+			return Math.Abs(headYaw) <= 90 ? SignFacingDirection.North : SignFacingDirection.South;
 		}
 
-		private int GetZDirection(float headYaw)
+		private SignFacingDirection GetZDirection(float headYaw)
 		{
-			return headYaw > 0 ? 5 : 4;
+			return headYaw > 0 ? SignFacingDirection.East : SignFacingDirection.West;
 		}
 	}
 }

@@ -7,6 +7,7 @@ using fNbt;
 using fNbt.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiNET.BlockEntities;
+using MiNET.Blocks.States;
 using MiNET.Items;
 
 namespace MiNET.Test.Performance
@@ -60,7 +61,7 @@ namespace MiNET.Test.Performance
 			_testStream.Position = 0;
 
 			var item = new ItemPrismarineBrickSlab();
-			item.Block.VerticalHalf = "top";
+			item.Block.VerticalHalf = VerticalHalf.Top;
 			_itemTag = NbtConvert.ToNbt(_item = item);
 
 			//var blockEntity = new ChestBlockEntity() { PairX = 123, PairZ = 321 };

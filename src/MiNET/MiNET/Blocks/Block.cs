@@ -25,13 +25,10 @@
 
 using System;
 using System.Numerics;
-using fNbt;
-using fNbt.Serialization;
 using log4net;
 using MiNET.Items;
 using MiNET.Particles;
 using MiNET.Utils;
-using MiNET.Utils.Nbt;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -202,7 +199,7 @@ namespace MiNET.Blocks
 			return new BoundingBox(Coordinates, Coordinates + 1);
 		}
 
-		public object Clone()
+		public virtual object Clone()
 		{
 			return MemberwiseClone();
 		}

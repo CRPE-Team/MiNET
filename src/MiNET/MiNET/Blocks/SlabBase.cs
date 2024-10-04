@@ -25,6 +25,7 @@
 
 using System.Collections.Generic;
 using System.Numerics;
+using MiNET.Blocks.States;
 using MiNET.Items;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
@@ -49,7 +50,7 @@ namespace MiNET.Blocks
 			}
 		}
 
-		public virtual string VerticalHalf { get; set; } = "bottom";
+		public virtual VerticalHalf VerticalHalf { get; set; }
 
 		public SlabBase()
 		{
@@ -63,7 +64,7 @@ namespace MiNET.Blocks
 		{
 			var bottom = (Vector3)Coordinates;
 
-			if (VerticalHalf == "top") bottom.Y += 0.5f;
+			if (VerticalHalf == VerticalHalf.Top) bottom.Y += 0.5f;
 			
 			var top = bottom + new Vector3(1f, 0.5f, 1f);
 			
@@ -98,7 +99,7 @@ namespace MiNET.Blocks
 			{
 				if (face != BlockFace.Up && faceCoords.Y > 0.5 || (face == BlockFace.Down && faceCoords.Y == 0.0))
 				{
-					VerticalHalf = "top";
+					VerticalHalf = VerticalHalf.Top;
 				}
 
 				return false;
@@ -116,7 +117,7 @@ namespace MiNET.Blocks
 			var item = ItemFactory.GetItem(this);
 			var block = item.Block as SlabBase;
 
-			block.VerticalHalf = "bottom";
+			block.VerticalHalf = VerticalHalf.Bottom;
 
 			return item;
 		}

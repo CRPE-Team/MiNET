@@ -37,6 +37,7 @@ using fNbt;
 using log4net;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
+using MiNET.Blocks.States;
 using MiNET.Crafting;
 using MiNET.Effects;
 using MiNET.Entities;
@@ -1476,7 +1477,7 @@ namespace MiNET
 						if (b)
 						{
 							var portal = (Portal) level.GetBlock(coord);
-							if (portal.PortalAxis == "z")
+							if (portal.PortalAxis == PortalAxis.X)
 							{
 								b &= level.IsBlock(coord.BlockNorth(), portalId);
 							}
@@ -1631,7 +1632,7 @@ namespace MiNET
 								level.SetBlock(new Portal
 								{
 									Coordinates = coordinates,
-									PortalAxis = "x"
+									PortalAxis = PortalAxis.X
 								});
 								if (!haveSetCoordinate)
 								{
@@ -1651,7 +1652,7 @@ namespace MiNET
 								level.SetBlock(new Portal
 								{
 									Coordinates = coordinates,
-									PortalAxis = "z",
+									PortalAxis = PortalAxis.Z,
 								});
 								if (!haveSetCoordinate)
 								{

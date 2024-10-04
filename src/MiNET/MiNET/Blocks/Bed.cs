@@ -27,7 +27,6 @@ using System;
 using System.Numerics;
 using log4net;
 using MiNET.BlockEntities;
-using MiNET.Entities;
 using MiNET.Items;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
@@ -62,12 +61,12 @@ namespace MiNET.Blocks
 
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
-			Direction = player.GetDirectionEmum() switch
+			Direction = player.KnownPosition.ToDirection() switch
 			{
-				Entity.Direction.West => 0,
-				Entity.Direction.North => 1,
-				Entity.Direction.East => 2,
-				Entity.Direction.South => 3,
+				MiNET.Utils.Direction.West => 0,
+				MiNET.Utils.Direction.North => 1,
+				MiNET.Utils.Direction.East => 2,
+				MiNET.Utils.Direction.South => 3,
 				_ => throw new ArgumentOutOfRangeException()
 			};
 

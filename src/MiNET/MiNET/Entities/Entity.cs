@@ -809,16 +809,19 @@ namespace MiNET.Entities
 			return Vector3.Distance(KnownPosition, entity.KnownPosition);
 		}
 
+		[Obsolete]
 		public byte GetOppositeDirection()
 		{
 			return (byte) ((GetDirection() + 1) % 4);
 		}
 
+		[Obsolete]
 		public byte GetDirection()
 		{
 			return DirectionByRotationFlat(KnownPosition.Yaw);
 		}
 
+		[Obsolete]
 		public byte GetProperDirection()
 		{
 			return DirectionByRotationFlat(KnownPosition.Yaw) switch
@@ -831,28 +834,7 @@ namespace MiNET.Entities
 			};
 		}
 
-		public enum Direction
-		{
-			South = 0,
-			West = 1,
-			North = 2,
-			East = 3,
-		}
-
-		public enum ProperDirection
-		{
-			East = 0,
-			West = 1,
-			South = 2,
-			North = 3,
-		}
-
-		public Direction GetDirectionEmum()
-		{
-			return (Direction) DirectionByRotationFlat(KnownPosition.Yaw);
-		}
-
-
+		[Obsolete]
 		public static byte DirectionByRotationFlat(float yaw)
 		{
 			byte direction = (byte) ((int) Math.Floor((yaw * 4F) / 360F + 0.5D) & 0x03);

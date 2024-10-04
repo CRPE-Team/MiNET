@@ -24,17 +24,17 @@
 #endregion
 
 using System.Numerics;
+using MiNET.Blocks.States;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
-using static MiNET.Entities.Entity;
 
 namespace MiNET.Blocks
 {
 	public abstract class AnvilBase : Block
 	{
-		public virtual string CardinalDirection { get; set; }
+		public virtual CardinalDirection CardinalDirection { get; set; }
 
 		public AnvilBase() : base()
 		{
@@ -45,8 +45,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			var direction = (player.GetDirection() + 2) % 4;
-			CardinalDirection = ((Direction) direction).ToString().ToLower();
+			CardinalDirection = player.KnownPosition.ToDirection().Opposite();
 
 			return false;
 		}

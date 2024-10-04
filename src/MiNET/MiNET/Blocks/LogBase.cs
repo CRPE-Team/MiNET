@@ -24,6 +24,7 @@
 #endregion
 
 using System.Numerics;
+using MiNET.Blocks.States;
 using MiNET.Items;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
@@ -32,7 +33,7 @@ namespace MiNET.Blocks
 {
 	public abstract class LogBase : Block
 	{
-		public virtual string PillarAxis { get; set; } = "y";
+		public virtual PillarAxis PillarAxis { get; set; } = PillarAxis.Y;
 
 		public LogBase() : base()
 		{
@@ -44,7 +45,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			PillarAxis = ItemBlock.GetPillarAxisFromFace(face).ToString();
+			PillarAxis = ItemBlock.GetPillarAxisFromFace(face);
 			return false;
 		}
 	}

@@ -31,7 +31,7 @@ namespace MiNET.Test
 			string fileName = Path.GetTempPath() + "MissingItems_" + Guid.NewGuid() + ".txt";
 			using (FileStream file = File.OpenWrite(fileName))
 			{
-				var writer = new IndentedTextWriter(new StreamWriter(file));
+				var writer = new IndentedTextWriter(new StreamWriter(file), "\t");
 
 				Console.WriteLine($"Directory:\n{Path.GetTempPath()}");
 				Console.WriteLine($"Filename:\n{fileName}");

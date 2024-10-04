@@ -24,8 +24,8 @@
 #endregion
 
 using System.Collections.Generic;
+using MiNET.Blocks.States;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -55,7 +55,7 @@ namespace MiNET.Blocks
 			shouldKeep &= IsValid(level.GetBlock(Coordinates.BlockDown()));
 
 			//if (Metadata < 2)
-			if (PortalAxis == "x")
+			if (PortalAxis == PortalAxis.X)
 			{
 				shouldKeep &= IsValid(level.GetBlock(Coordinates.BlockWest()));
 				shouldKeep &= IsValid(level.GetBlock(Coordinates.BlockEast()));
@@ -98,7 +98,7 @@ namespace MiNET.Blocks
 				level.SetAir(coordinates);
 
 				//if (Metadata == 0)
-				if (PortalAxis == "x")
+				if (PortalAxis == PortalAxis.X)
 				{
 					visits.Enqueue(coordinates + Level.East);
 					visits.Enqueue(coordinates + Level.West);
