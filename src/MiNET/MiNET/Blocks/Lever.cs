@@ -24,11 +24,9 @@
 #endregion
 
 using System.Numerics;
-using MiNET.Utils;
+using MiNET.Blocks.States;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
-using MiNET.Blocks.States;
-using Direction = MiNET.Utils.Direction;
 
 namespace MiNET.Blocks
 {
@@ -44,31 +42,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			var direction = player.KnownPosition.ToDirection();
-
-			switch (face)
-			{
-				case BlockFace.Down:
-					if (direction == Direction.West || direction == Direction.East) LeverDirection = LeverDirection.DownNorthSouth;
-					else LeverDirection = LeverDirection.DownEastWest;
-					break;
-				case BlockFace.North:
-					LeverDirection = LeverDirection.North;
-					break;
-				case BlockFace.South:
-					LeverDirection = LeverDirection.South;
-					break;
-				case BlockFace.West:
-					LeverDirection = LeverDirection.West;
-					break;
-				case BlockFace.East:
-					LeverDirection = LeverDirection.East;
-					break;
-				case BlockFace.Up:
-					if (direction == Direction.West || direction == Direction.East) LeverDirection = LeverDirection.UpNorthSouth;
-					else LeverDirection = LeverDirection.UpEastWest;
-					break;
-			}
+			LeverDirection = LeverDirection.FromFaceAndDirections(face, player.KnownPosition.ToDirection());
 
 			return false;
 		}

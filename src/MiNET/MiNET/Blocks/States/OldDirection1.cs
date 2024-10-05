@@ -11,7 +11,6 @@
 		/// <summary>3</summary>
 		private const int EastValue = 3;
 
-
 		internal OldDirection1() { }
 
 		private OldDirection1(int value)
@@ -47,7 +46,7 @@
 				MiNET.Utils.Direction.West => West,
 				MiNET.Utils.Direction.North => North,
 				MiNET.Utils.Direction.East => East,
-				_ => North
+				_ => South
 			};
 		}
 
@@ -59,7 +58,7 @@
 				MiNET.BlockFace.West => West,
 				MiNET.BlockFace.North => North,
 				MiNET.BlockFace.East => East,
-				_ => North
+				_ => South
 			};
 		}
 
@@ -71,7 +70,7 @@
 				WestValue => MiNET.BlockFace.West,
 				NorthValue => MiNET.BlockFace.North,
 				EastValue => MiNET.BlockFace.East,
-				_ => North
+				_ => MiNET.BlockFace.South
 			};
 		}
 
@@ -83,7 +82,7 @@
 				WestValue => MiNET.Utils.Direction.West,
 				NorthValue => MiNET.Utils.Direction.North,
 				EastValue => MiNET.Utils.Direction.East,
-				_ => North
+				_ => MiNET.Utils.Direction.South
 			};
 		}
 	}

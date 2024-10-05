@@ -1,6 +1,4 @@
-﻿using MiNET.Utils.Vectors;
-
-namespace MiNET.Blocks.States
+﻿namespace MiNET.Blocks.States
 {
 	public partial class CardinalDirection
 	{
@@ -13,6 +11,17 @@ namespace MiNET.Blocks.States
 				MiNET.Utils.Direction.North => North,
 				MiNET.Utils.Direction.East => East,
 				_ => South
+			};
+		}
+		public static implicit operator MiNET.Utils.Direction(CardinalDirection direction)
+		{
+			return direction.Value switch
+			{
+				SouthValue => MiNET.Utils.Direction.South,
+				WestValue => MiNET.Utils.Direction.West,
+				NorthValue => MiNET.Utils.Direction.North,
+				EastValue => MiNET.Utils.Direction.East,
+				_ => MiNET.Utils.Direction.South
 			};
 		}
 	}

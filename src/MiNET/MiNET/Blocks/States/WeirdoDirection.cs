@@ -2,6 +2,15 @@
 {
 	public partial class WeirdoDirection
 	{
+		/// <summary>0</summary>
+		private const int EastValue = 0;
+		/// <summary>1</summary>
+		private const int WestValue = 1;
+		/// <summary>2</summary>
+		private const int SouthValue = 2;
+		/// <summary>3</summary>
+		private const int NorthValue = 3;
+
 		internal WeirdoDirection() { }
 
 		private WeirdoDirection(int value)
@@ -10,24 +19,24 @@
 		}
 
 		/// <summary>
-		/// Value = 0
+		/// Value = <inheritdoc cref="SouthValue"/>
 		/// </summary>
-		public static readonly WeirdoDirection East = new WeirdoDirection(0);
+		public static readonly WeirdoDirection South = new WeirdoDirection(SouthValue);
 
 		/// <summary>
-		/// Value = 1
+		/// Value = <inheritdoc cref="WestValue"/>
 		/// </summary>
-		public static readonly WeirdoDirection West = new WeirdoDirection(1);
+		public static readonly WeirdoDirection West = new WeirdoDirection(WestValue);
 
 		/// <summary>
-		/// Value = 2
+		/// Value = <inheritdoc cref="NorthValue"/>
 		/// </summary>
-		public static readonly WeirdoDirection South = new WeirdoDirection(2);
+		public static readonly WeirdoDirection North = new WeirdoDirection(NorthValue);
 
 		/// <summary>
-		/// Value = 3
+		/// Value = <inheritdoc cref="EastValue"/>
 		/// </summary>
-		public static readonly WeirdoDirection North = new WeirdoDirection(3);
+		public static readonly WeirdoDirection East = new WeirdoDirection(EastValue);
 
 		public static implicit operator WeirdoDirection(MiNET.Utils.Direction direction)
 		{
@@ -37,7 +46,43 @@
 				MiNET.Utils.Direction.West => West,
 				MiNET.Utils.Direction.North => North,
 				MiNET.Utils.Direction.East => East,
-				_ => North
+				_ => West
+			};
+		}
+
+		public static implicit operator WeirdoDirection(MiNET.BlockFace face)
+		{
+			return face switch
+			{
+				MiNET.BlockFace.South => South,
+				MiNET.BlockFace.West => West,
+				MiNET.BlockFace.North => North,
+				MiNET.BlockFace.East => East,
+				_ => West
+			};
+		}
+
+		public static implicit operator MiNET.BlockFace(WeirdoDirection direction)
+		{
+			return direction.Value switch
+			{
+				SouthValue => MiNET.BlockFace.South,
+				WestValue => MiNET.BlockFace.West,
+				NorthValue => MiNET.BlockFace.North,
+				EastValue => MiNET.BlockFace.East,
+				_ => MiNET.BlockFace.West
+			};
+		}
+
+		public static implicit operator MiNET.Utils.Direction(WeirdoDirection direction)
+		{
+			return direction.Value switch
+			{
+				SouthValue => MiNET.Utils.Direction.South,
+				WestValue => MiNET.Utils.Direction.West,
+				NorthValue => MiNET.Utils.Direction.North,
+				EastValue => MiNET.Utils.Direction.East,
+				_ => MiNET.Utils.Direction.West
 			};
 		}
 	}
