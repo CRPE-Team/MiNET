@@ -25,6 +25,7 @@
 
 using System;
 using System.Numerics;
+using LibNoise.Model;
 
 namespace MiNET.Utils.Vectors
 {
@@ -94,7 +95,7 @@ namespace MiNET.Utils.Vectors
 		//	return new Vector3((float)x, (float)y, (float)z);
 		//}
 
-		public Vector3 GetDirection()
+		public Vector3 GetDirectionVector()
 		{
 			Vector3 vector = new Vector3();
 			double pitch = Pitch.ToRadians();
@@ -105,7 +106,7 @@ namespace MiNET.Utils.Vectors
 			return vector;
 		}
 
-		public Vector3 GetHeadDirection()
+		public Vector3 GetHeadDirectionVector()
 		{
 			Vector3 vector = new Vector3();
 
@@ -116,6 +117,21 @@ namespace MiNET.Utils.Vectors
 			vector.Z = (float) (Math.Cos(yaw) * Math.Cos(pitch));
 
 			return vector;
+		}
+
+		public Direction GetDirection()
+		{
+			return (Direction) ((int) Math.Floor(HeadYaw * 4 / 360 + 0.5) & 0x03);
+		}
+
+		public int GetDirection16()
+		{
+			return (byte) Math.Floor(HeadYaw * 16 / 360 + 0.5) & 0x0f;
+		}
+
+		public int GetOppositeDirection16()
+		{
+			return (byte) Math.Floor((HeadYaw + 180) * 16 / 360 + 0.5) & 0x0f;
 		}
 
 		public static PlayerLocation operator +(PlayerLocation b, Vector3 a)
@@ -143,11 +159,6 @@ namespace MiNET.Utils.Vectors
 		{
 			return new PlayerLocation(v.X, v.Y, v.Z);
 		}
-
-        public Direction ToDirection()
-        {
-            return (Direction) ((int) Math.Floor((HeadYaw * 4F) / 360F + 0.5D) & 0x03);
-        }
 
         public object Clone()
 		{

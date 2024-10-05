@@ -53,7 +53,7 @@ namespace MiNET.Items
 					return;
 				}
 
-				Vector3 velocity = Vector3.Normalize(player.KnownPosition.GetHeadDirection()) * (float) currentSpeed;
+				Vector3 velocity = Vector3.Normalize(player.KnownPosition.GetHeadDirectionVector()) * (float) currentSpeed;
 				float factor = (float) (1 + 1 / (1 + currentSpeed * 2));
 				velocity *= factor;
 

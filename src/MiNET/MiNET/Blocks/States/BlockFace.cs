@@ -1,4 +1,6 @@
-﻿namespace MiNET.Blocks.States
+﻿using System;
+
+namespace MiNET.Blocks.States
 {
 	public partial class BlockFace
 	{
@@ -12,7 +14,7 @@
 				MiNET.BlockFace.South => South,
 				MiNET.BlockFace.West => West,
 				MiNET.BlockFace.East => East,
-				_ => Down
+				_ => throw new ArgumentOutOfRangeException(nameof(face), face, null)
 			};
 		}
 
@@ -26,7 +28,7 @@
 				SouthValue => MiNET.BlockFace.South,
 				WestValue => MiNET.BlockFace.West,
 				EastValue => MiNET.BlockFace.East,
-				_ => default
+				_ => throw new ArgumentOutOfRangeException(nameof(face), face, null)
 			};
 		}
 	}

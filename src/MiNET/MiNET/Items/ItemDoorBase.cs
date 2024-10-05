@@ -43,7 +43,7 @@ namespace MiNET.Items
 		{
 			//TODO - should move to the DoorBase
 
-			var direction = player.KnownPosition.ToDirection().Opposite();
+			var direction = player.KnownPosition.GetDirection().Opposite();
 
 			var coordinates = GetNewCoordinatesFromFace(blockCoordinates, face);
 

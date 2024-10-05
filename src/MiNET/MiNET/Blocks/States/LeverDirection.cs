@@ -1,4 +1,5 @@
-﻿using Direction = MiNET.Utils.Direction;
+﻿using System;
+using Direction = MiNET.Utils.Direction;
 
 namespace MiNET.Blocks.States
 {
@@ -14,7 +15,7 @@ namespace MiNET.Blocks.States
 				MiNET.BlockFace.West => West,
 				MiNET.BlockFace.North => North,
 				MiNET.BlockFace.East => East,
-				_ => South
+				_ => throw new ArgumentOutOfRangeException(nameof(face), face, null)
 			};
 		}
 

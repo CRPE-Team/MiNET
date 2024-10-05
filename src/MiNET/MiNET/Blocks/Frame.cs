@@ -27,7 +27,6 @@ using System.Numerics;
 using log4net;
 using MiNET.BlockEntities;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -48,7 +47,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			FacingDirection = (int) face;
+			FacingDirection = face;
 
 			var itemFrameBlockEntity = new ItemFrameBlockEntity {Coordinates = Coordinates};
 			world.SetBlockEntity(itemFrameBlockEntity);

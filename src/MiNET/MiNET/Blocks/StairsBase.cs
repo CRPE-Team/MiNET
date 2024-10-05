@@ -50,7 +50,7 @@ namespace MiNET.Blocks
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
 			UpsideDownBit = ((faceCoords.Y > 0.5 && face != BlockFace.Up) || face == BlockFace.Down);
-			WeirdoDirection = player.KnownPosition.ToDirection().Opposite();
+			WeirdoDirection = player.KnownPosition.GetDirection().Opposite();
 
 			world.SetBlock(this);
 			return true;

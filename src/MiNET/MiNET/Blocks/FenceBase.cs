@@ -25,7 +25,7 @@
 
 namespace MiNET.Blocks
 {
-	public abstract partial class FenceBase : Block
+	public abstract class FenceBase : Block
 	{
 		public FenceBase() : base()
 		{

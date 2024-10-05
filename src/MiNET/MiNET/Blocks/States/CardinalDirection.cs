@@ -1,4 +1,6 @@
-﻿namespace MiNET.Blocks.States
+﻿using System;
+
+namespace MiNET.Blocks.States
 {
 	public partial class CardinalDirection
 	{
@@ -10,7 +12,7 @@
 				MiNET.Utils.Direction.West => West,
 				MiNET.Utils.Direction.North => North,
 				MiNET.Utils.Direction.East => East,
-				_ => South
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 		public static implicit operator MiNET.Utils.Direction(CardinalDirection direction)
@@ -21,7 +23,7 @@
 				WestValue => MiNET.Utils.Direction.West,
 				NorthValue => MiNET.Utils.Direction.North,
 				EastValue => MiNET.Utils.Direction.East,
-				_ => MiNET.Utils.Direction.South
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 	}

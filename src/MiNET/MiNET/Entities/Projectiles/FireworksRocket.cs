@@ -84,7 +84,7 @@ namespace MiNET.Entities.Projectiles
 
 		public override void SpawnEntity()
 		{
-			Velocity = Force = KnownPosition.GetDirection().Normalize() * 0.06055374f;
+			Velocity = Force = KnownPosition.GetDirectionVector().Normalize() * 0.06055374f;
 			KnownPosition.Yaw = (float) Velocity.GetYaw();
 			KnownPosition.Pitch = (float) Velocity.GetPitch();
 

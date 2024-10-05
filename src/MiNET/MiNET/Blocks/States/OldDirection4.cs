@@ -1,4 +1,6 @@
-﻿namespace MiNET.Blocks.States
+﻿using System;
+
+namespace MiNET.Blocks.States
 {
 	public class OldDirection4 : OldDirection
 	{
@@ -46,7 +48,7 @@
 				MiNET.Utils.Direction.West => West,
 				MiNET.Utils.Direction.North => North,
 				MiNET.Utils.Direction.East => East,
-				_ => West
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 
@@ -58,7 +60,7 @@
 				MiNET.BlockFace.West => West,
 				MiNET.BlockFace.North => North,
 				MiNET.BlockFace.East => East,
-				_ => West
+				_ => throw new ArgumentOutOfRangeException(nameof(face), face, null)
 			};
 		}
 
@@ -70,7 +72,7 @@
 				WestValue => MiNET.BlockFace.West,
 				NorthValue => MiNET.BlockFace.North,
 				EastValue => MiNET.BlockFace.East,
-				_ => MiNET.BlockFace.West
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 
@@ -82,7 +84,7 @@
 				WestValue => MiNET.Utils.Direction.West,
 				NorthValue => MiNET.Utils.Direction.North,
 				EastValue => MiNET.Utils.Direction.East,
-				_ => MiNET.Utils.Direction.West
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 	}

@@ -11,7 +11,7 @@ namespace MiNET.Blocks.States
 				BlockAxis.X => X,
 				BlockAxis.Y => Y,
 				BlockAxis.Z => Z,
-				_ => X
+				_ => throw new ArgumentOutOfRangeException(nameof(axis), axis, null)
 			};
 		}
 
@@ -22,7 +22,7 @@ namespace MiNET.Blocks.States
 				XValue => BlockAxis.X,
 				YValue => BlockAxis.Y,
 				ZValue => BlockAxis.Z,
-				_ => default
+				_ => throw new ArgumentOutOfRangeException(nameof(axis), axis, null)
 			};
 		}
 

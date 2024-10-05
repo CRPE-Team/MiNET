@@ -23,7 +23,6 @@
 
 #endregion
 
-using System;
 using System.Numerics;
 using MiNET.BlockEntities;
 using MiNET.Utils.Vectors;
@@ -33,7 +32,7 @@ namespace MiNET.Blocks
 {
 	public abstract class StandingSignBase : SignBase
 	{
-		public virtual int GroundSignDirection { get; set; }
+		public abstract int GroundSignDirection { get; set; }
 
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
@@ -42,7 +41,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			GroundSignDirection = (int) Math.Floor((player.KnownPosition.HeadYaw + 180) * 16 / 360 + 0.5) & 0x0f;
+			GroundSignDirection = player.KnownPosition.GetOppositeDirection16();
 
 			var blockEntity = new SignBlockEntity { Coordinates = Coordinates };
 			world.SetBlockEntity(blockEntity);

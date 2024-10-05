@@ -1,4 +1,6 @@
-﻿namespace MiNET.Blocks.States
+﻿using System;
+
+namespace MiNET.Blocks.States
 {
 	public partial class TorchFacingDirection
 	{
@@ -6,10 +8,10 @@
 		{
 			return direction switch
 			{
-				MiNET.Utils.Direction.North => South,
-				MiNET.Utils.Direction.South => North,
-				MiNET.Utils.Direction.West => East,
-				MiNET.Utils.Direction.East => West,
+				MiNET.Utils.Direction.North => North,
+				MiNET.Utils.Direction.South => South,
+				MiNET.Utils.Direction.West => West,
+				MiNET.Utils.Direction.East => East,
 				_ => Top
 			};
 		}
@@ -18,11 +20,11 @@
 		{
 			return direction.Value switch
 			{
-				NorthValue => MiNET.Utils.Direction.South,
-				SouthValue => MiNET.Utils.Direction.North,
-				WestValue => MiNET.Utils.Direction.East,
-				EastValue => MiNET.Utils.Direction.West,
-				_ => MiNET.Utils.Direction.North
+				NorthValue => MiNET.Utils.Direction.North,
+				SouthValue => MiNET.Utils.Direction.South,
+				WestValue => MiNET.Utils.Direction.West,
+				EastValue => MiNET.Utils.Direction.East,
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 
@@ -30,10 +32,10 @@
 		{
 			return face switch
 			{
-				MiNET.BlockFace.North => South,
-				MiNET.BlockFace.South => North,
-				MiNET.BlockFace.West => East,
-				MiNET.BlockFace.East => West,
+				MiNET.BlockFace.North => North,
+				MiNET.BlockFace.South => South,
+				MiNET.BlockFace.West => West,
+				MiNET.BlockFace.East => East,
 				_ => Top
 			};
 		}
@@ -42,11 +44,12 @@
 		{
 			return direction.Value switch
 			{
-				NorthValue => MiNET.BlockFace.South,
-				SouthValue => MiNET.BlockFace.North,
-				WestValue => MiNET.BlockFace.East,
-				EastValue => MiNET.BlockFace.West,
-				_ => MiNET.BlockFace.Up
+				TopValue => MiNET.BlockFace.Up,
+				NorthValue => MiNET.BlockFace.North,
+				SouthValue => MiNET.BlockFace.South,
+				WestValue => MiNET.BlockFace.West,
+				EastValue => MiNET.BlockFace.East,
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 	}

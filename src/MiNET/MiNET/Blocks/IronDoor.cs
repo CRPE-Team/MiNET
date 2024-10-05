@@ -23,11 +23,6 @@
 
 #endregion
 
-using System.Numerics;
-using MiNET.Utils;
-using MiNET.Utils.Vectors;
-using MiNET.Worlds;
-
 namespace MiNET.Blocks
 {
 	public partial class IronDoor

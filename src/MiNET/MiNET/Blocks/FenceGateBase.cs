@@ -23,12 +23,23 @@
 
 #endregion
 
+using MiNET.Blocks.States;
+
 namespace MiNET.Blocks
 {
-	public partial class FenceGate : FenceGateBlocks
+	public abstract class FenceGateBase : Block
 	{
-		public FenceGate() : base()
+		public abstract OldDirection1 Direction { get; set; }
+		public abstract bool InWallBit { get; set; }
+		public abstract bool OpenBit { get; set; }
+
+		public FenceGateBase() : base()
 		{
+			FuelEfficiency = 15;
+			IsTransparent = true;
+			BlastResistance = 15;
+			Hardness = 2;
+			IsFlammable = true;
 		}
 	}
 }

@@ -1,4 +1,6 @@
-﻿namespace MiNET.Blocks.States
+﻿using System;
+
+namespace MiNET.Blocks.States
 {
 	public partial class CoralFanDirection
 	{
@@ -27,19 +29,19 @@
 				MiNET.Utils.Direction.West => EastWest,
 				MiNET.Utils.Direction.North => NorthSouth,
 				MiNET.Utils.Direction.East => EastWest,
-				_ => EastWest
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 
-		public static implicit operator CoralFanDirection(MiNET.BlockFace blockFace)
+		public static implicit operator CoralFanDirection(MiNET.BlockFace face)
 		{
-			return blockFace switch
+			return face switch
 			{
 				MiNET.BlockFace.South => NorthSouth,
 				MiNET.BlockFace.West => EastWest,
 				MiNET.BlockFace.North => NorthSouth,
 				MiNET.BlockFace.East => EastWest,
-				_ => EastWest
+				_ => throw new ArgumentOutOfRangeException(nameof(face), face, null)
 			};
 		}
 	}

@@ -62,7 +62,7 @@ namespace MiNET.Blocks
 
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
-			Direction = player.KnownPosition.ToDirection().Opposite();
+			Direction = player.KnownPosition.GetDirection().Opposite();
 
 			return world.GetBlock(blockCoordinates).IsReplaceable && world.GetBlock(GetOtherPart()).IsReplaceable;
 		}
@@ -148,7 +148,7 @@ namespace MiNET.Blocks
 		{
 			var face = (BlockFace) Direction;
 
-			if (HeadPieceBit) face = face.Opposide();
+			if (HeadPieceBit) face = face.Opposite();
 
 			return GetNewCoordinatesFromFace(Coordinates, face);
 		}

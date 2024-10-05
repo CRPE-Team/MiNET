@@ -128,7 +128,7 @@ namespace MiNET.Items
 			arrow.KnownPosition = (PlayerLocation) player.KnownPosition.Clone();
 			arrow.KnownPosition.Y += 1.50f;
 
-			var vector = arrow.KnownPosition.GetHeadDirection().Normalize();
+			var vector = arrow.KnownPosition.GetHeadDirectionVector().Normalize();
 			//arrow.KnownPosition += vector * 0.5f + vector * force;
 
 			arrow.Velocity = vector * force * 3;

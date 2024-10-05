@@ -49,7 +49,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			CardinalDirection = player.KnownPosition.ToDirection();
+			CardinalDirection = player.KnownPosition.GetDirection();
 
 			var blockEntity = new ChestBlockEntity();
 			blockEntity.Coordinates = Coordinates;

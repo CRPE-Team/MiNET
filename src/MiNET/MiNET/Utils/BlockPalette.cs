@@ -304,11 +304,22 @@ namespace MiNET.Utils
 
 	public class BlockStateInt : IBlockState, ICloneable, IEquatable<BlockStateInt>
 	{
+		private int _value;
+
 		public int Type { get; } = 3;
 		public virtual string Name { get; set; }
-		public virtual int Value { get; set; }
 
-		public object GetValue() => Value;
+		public virtual int Value
+		{
+			get => _value; 
+			set
+			{
+				ValidateValue(value);
+				_value = value;
+			}
+		}
+
+		public object GetValue() => _value;
 
 		public bool Equals(BlockStateInt other)
 		{
@@ -346,6 +357,16 @@ namespace MiNET.Utils
 		public static bool operator !=(BlockStateInt x, BlockStateInt y)
 		{
 			return !x.Equals(y);
+		}
+
+		protected virtual void ValidateValue(int value)
+		{
+
+		}
+
+		protected void ThrowArgumentException(int value)
+		{
+			throw new ArgumentOutOfRangeException(Name, value, null);
 		}
 	}
 

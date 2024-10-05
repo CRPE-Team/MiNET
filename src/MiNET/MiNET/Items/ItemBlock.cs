@@ -28,8 +28,6 @@ using System.Numerics;
 using fNbt.Serialization;
 using log4net;
 using MiNET.Blocks;
-using MiNET.Entities;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 using Newtonsoft.Json;
@@ -87,21 +85,6 @@ namespace MiNET.Items
 		public override Item GetSmelt(string block)
 		{
 			return Block.GetSmelt(block) ?? base.GetSmelt(block);
-		}
-
-		[Obsolete]
-		public static BlockAxis GetPillarAxisFromFace(BlockFace face)
-		{
-			return face switch
-			{
-				BlockFace.Down => BlockAxis.Y,
-				BlockFace.Up => BlockAxis.Y,
-				BlockFace.North => BlockAxis.Z,
-				BlockFace.South => BlockAxis.Z,
-				BlockFace.West => BlockAxis.X,
-				BlockFace.East => BlockAxis.X,
-				_ => throw new ArgumentOutOfRangeException(nameof(face), face, null)
-			};
 		}
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)

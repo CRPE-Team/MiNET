@@ -212,10 +212,10 @@ namespace MiNET.Entities
 			//if (Math.Abs(_lastSentDir - Direction) < 1.1) Direction = _lastSentDir;
 			//if (Math.Abs(_lastSentHeadYaw - KnownPosition.HeadYaw) < 1.1) KnownPosition.HeadYaw = (float) _lastSentHeadYaw;
 
-			if ((_lastSentPos - KnownPosition).Length() > 0.01 || KnownPosition.GetDirection() != _lastSentRotation)
+			if ((_lastSentPos - KnownPosition).Length() > 0.01 || KnownPosition.GetDirectionVector() != _lastSentRotation)
 			{
 				_lastSentPos = KnownPosition;
-				_lastSentRotation = KnownPosition.GetDirection();
+				_lastSentRotation = KnownPosition.GetDirectionVector();
 
 				if (!IsRidden)
 				{

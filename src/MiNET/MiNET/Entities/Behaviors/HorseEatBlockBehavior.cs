@@ -53,7 +53,7 @@ namespace MiNET.Entities.Behaviors
 			if (_entity.Level.Random.Next(1000) != 0) return false;
 
 			var coordinates = _entity.KnownPosition;
-			var direction = Vector3.Normalize(coordinates.GetHeadDirection());
+			var direction = Vector3.Normalize(coordinates.GetHeadDirectionVector());
 
 			BlockCoordinates coord = new Vector3(coordinates.X + direction.X, coordinates.Y, coordinates.Z + direction.Z);
 
@@ -80,7 +80,7 @@ namespace MiNET.Entities.Behaviors
 		public override void OnEnd()
 		{
 			var coordinates = _entity.KnownPosition;
-			var direction = Vector3.Normalize(coordinates.GetHeadDirection());
+			var direction = Vector3.Normalize(coordinates.GetHeadDirectionVector());
 
 			BlockCoordinates coord = new Vector3(coordinates.X + direction.X, coordinates.Y, coordinates.Z + direction.Z);
 

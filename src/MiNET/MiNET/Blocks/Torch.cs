@@ -23,8 +23,8 @@
 
 #endregion
 
+using System;
 using System.Numerics;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -39,11 +39,47 @@ namespace MiNET.Blocks
 			LightLevel = 14;
 		}
 
+		public override void BlockUpdate(Level level, BlockCoordinates blockCoordinates)
+		{;
+			var face = (BlockFace) TorchFacingDirection;
+			if (face == BlockFace.Up) face = BlockFace.Down;
+
+			if (level.GetBlock(Coordinates + face).IsTransparent)
+			{
+				level.BreakBlock(null, this);
+			}
+		}
+
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			if (face == BlockFace.Down) return true;
+			return !(PlaceInternal(world, face.Opposite()) || CanPlace(world));
+		}
+
+		private bool PlaceInternal(Level world, BlockFace face)
+		{
+			if (face == BlockFace.Up) return false;
+
+			if (world.GetBlock(Coordinates + face).IsTransparent)
+			{
+				return false;
+			}
 
 			TorchFacingDirection = face;
+
+			return true;
+		}
+
+		private bool CanPlace(Level level)
+		{
+			if (PlaceInternal(level, BlockFace.Down)) return true;
+
+			foreach (var direction in Enum.GetValues<BlockFace>())
+			{
+				if (PlaceInternal(level, direction))
+				{
+					return true;
+				}
+			}
 
 			return false;
 		}

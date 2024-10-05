@@ -1,4 +1,6 @@
-﻿namespace MiNET.Blocks.States
+﻿using System;
+
+namespace MiNET.Blocks.States
 {
 	public partial class PortalAxis
 	{
@@ -18,9 +20,9 @@
 			return axis.Value switch
 			{
 				XValue => BlockAxis.X,
-				UnknownValue => default,
+				UnknownValue => BlockAxis.Y,
 				ZValue => BlockAxis.Z,
-				_ => default
+				_ => throw new ArgumentOutOfRangeException(nameof(axis), axis, null)
 			};
 		}
 	}

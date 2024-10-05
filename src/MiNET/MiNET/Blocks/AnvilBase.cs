@@ -45,7 +45,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			CardinalDirection = player.KnownPosition.ToDirection().Shift();
+			CardinalDirection = player.KnownPosition.GetDirection().Shift();
 
 			return false;
 		}

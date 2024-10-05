@@ -44,7 +44,7 @@ namespace MiNET.Items
 			var snowBall = new Snowball(player, world);
 			snowBall.KnownPosition = (PlayerLocation) player.KnownPosition.Clone();
 			snowBall.KnownPosition.Y += 1.62f;
-			snowBall.Velocity = snowBall.KnownPosition.GetDirection().Normalize() * force;
+			snowBall.Velocity = snowBall.KnownPosition.GetDirectionVector().Normalize() * force;
 			snowBall.SpawnEntity();
 		}
 	}

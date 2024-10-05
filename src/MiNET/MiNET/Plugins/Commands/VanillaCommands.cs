@@ -308,14 +308,14 @@ namespace MiNET.Plugins.Commands
 			if (mob != null)
 			{
 				mob.NoAi = noAi;
-				var direction = Vector3.Normalize(player.KnownPosition.GetHeadDirection()) * 1.5f;
+				var direction = Vector3.Normalize(player.KnownPosition.GetHeadDirectionVector()) * 1.5f;
 				mob.KnownPosition = new PlayerLocation(coordinates.X + direction.X, coordinates.Y, coordinates.Z + direction.Z, coordinates.HeadYaw, coordinates.Yaw);
 				mob.SpawnEntity();
 			}
 			else if (entity != null)
 			{
 				entity.NoAi = noAi;
-				var direction = Vector3.Normalize(player.KnownPosition.GetHeadDirection()) * 1.5f;
+				var direction = Vector3.Normalize(player.KnownPosition.GetHeadDirectionVector()) * 1.5f;
 				entity.KnownPosition = new PlayerLocation(coordinates.X + direction.X, coordinates.Y, coordinates.Z + direction.Z, coordinates.HeadYaw, coordinates.Yaw);
 				entity.SpawnEntity();
 			}

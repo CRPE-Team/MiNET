@@ -133,6 +133,42 @@ namespace MiNET.Utils.Vectors
 			return a.Equals(b);
 		}
 
+		public static BlockCoordinates operator +(BlockCoordinates a, Direction direction)
+		{
+			return direction switch
+			{
+				Direction.North => a.BlockNorth(),
+				Direction.South => a.BlockSouth(),
+				Direction.East => a.BlockEast(),
+				Direction.West => a.BlockWest(),
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+			};
+		}
+
+		public static BlockCoordinates operator -(BlockCoordinates a, Direction direction)
+		{
+			return a + direction.Opposite();
+		}
+
+		public static BlockCoordinates operator +(BlockCoordinates a, BlockFace face)
+		{
+			return face switch
+			{
+				BlockFace.Down => a.BlockDown(),
+				BlockFace.Up => a.BlockUp(),
+				BlockFace.North => a.BlockNorth(),
+				BlockFace.South => a.BlockSouth(),
+				BlockFace.East => a.BlockEast(),
+				BlockFace.West => a.BlockWest(),
+				_ => throw new ArgumentOutOfRangeException(nameof(face), face, null)
+			};
+		}
+
+		public static BlockCoordinates operator -(BlockCoordinates a, BlockFace face)
+		{
+			return a + face.Opposite();
+		}
+
 		public static BlockCoordinates operator +(BlockCoordinates a, BlockCoordinates b)
 		{
 			return new BlockCoordinates(a.X + b.X, a.Y + b.Y, a.Z + b.Z);

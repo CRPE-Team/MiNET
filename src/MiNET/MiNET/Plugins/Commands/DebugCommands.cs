@@ -120,7 +120,7 @@ namespace MiNET.Plugins.Commands
 
 		private void TraceBlock(object soruce, PlayerEventArgs args)
 		{
-			var ray = new Ray(args.Player.KnownPosition + new Vector3(0, 1.62f, 0), args.Player.KnownPosition.GetHeadDirection());
+			var ray = new Ray(args.Player.KnownPosition + new Vector3(0, 1.62f, 0), args.Player.KnownPosition.GetHeadDirectionVector());
 			var point = ray.Position;
 			var shift = ray.Direction / Vector3.Abs(ray.Direction);
 

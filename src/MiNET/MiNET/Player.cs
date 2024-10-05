@@ -2644,7 +2644,7 @@ namespace MiNET
 		{
 			var itemEntity = new ItemEntity(Level, item)
 			{
-				Velocity = KnownPosition.GetDirection().Normalize() * 0.3f,
+				Velocity = KnownPosition.GetDirectionVector().Normalize() * 0.3f,
 				KnownPosition = KnownPosition + new Vector3(0f, 1.62f, 0f)
 			};
 			itemEntity.SpawnEntity();

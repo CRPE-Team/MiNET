@@ -10,17 +10,17 @@ namespace MiNET.Blocks
 {
 	public abstract class HangingSignBase : SignBase
 	{
-		public virtual bool AttachedBit { get; set; }
+		public abstract bool AttachedBit { get; set; }
 
-		public virtual SignFacingDirection FacingDirection { get; set; }
+		public abstract OldFacingDirection4 FacingDirection { get; set; }
 
-		public virtual int GroundSignDirection { get; set; }
+		public abstract int GroundSignDirection { get; set; }
 
-		public virtual bool Hanging { get; set; }
+		public abstract bool Hanging { get; set; }
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			var groundSignDirection = (int) Math.Floor((player.KnownPosition.HeadYaw + 180) * 16 / 360 + 0.5) & 0x0f;
+			var groundSignDirection = player.KnownPosition.GetOppositeDirection16();
 
 			if (face == BlockFace.Down)
 			{
@@ -28,14 +28,14 @@ namespace MiNET.Blocks
 
 				if (targetBlock.IsSolid && !targetBlock.IsTransparent
 					|| targetBlock is SlabBase slab && slab.VerticalHalf == VerticalHalf.Bottom
-					|| targetBlock is BlockStairs stairs && !stairs.UpsideDownBit)
+					|| targetBlock is StairsBase stairs && !stairs.UpsideDownBit)
 				{
 					if (player.IsSneaking)
 					{
 						AttachedBit = true;
 					}
 				}
-				else if (targetBlock is EndRod endRod && (endRod.FacingDirection == 0 || endRod.FacingDirection == 1)
+				else if (targetBlock is EndRod endRod && (endRod.FacingDirection == OldFacingDirection3.Down || endRod.FacingDirection == OldFacingDirection3.Up)
 					|| targetBlock is Chain chain && chain.PillarAxis == PillarAxis.Y
 					|| targetBlock is HangingSignBase)
 				{
@@ -53,7 +53,7 @@ namespace MiNET.Blocks
 			}
 			else if (face == BlockFace.Up)
 			{
-				var direction = (int) player.KnownPosition.ToDirection() % 2;
+				var direction = (int) player.KnownPosition.GetDirection() % 2;
 				var faceX = new[] { BlockFace.West, BlockFace.East };
 				var faceZ = new[] { BlockFace.South, BlockFace.North };
 
@@ -78,7 +78,7 @@ namespace MiNET.Blocks
 			}
 			else if (Hanging)
 			{
-				FacingDirection = player.KnownPosition.ToDirection();
+				FacingDirection = player.KnownPosition.GetDirection();
 			}
 
 			var blockEntity = new HangingSignBlockEntity() { Coordinates = Coordinates };
@@ -104,14 +104,14 @@ namespace MiNET.Blocks
 			return true;
 		}
 
-		private SignFacingDirection GetXDirection(float headYaw)
+		private OldFacingDirection4 GetXDirection(float headYaw)
 		{
-			return Math.Abs(headYaw) <= 90 ? SignFacingDirection.North : SignFacingDirection.South;
+			return Math.Abs(headYaw) <= 90 ? OldFacingDirection4.North : OldFacingDirection4.South;
 		}
 
-		private SignFacingDirection GetZDirection(float headYaw)
+		private OldFacingDirection4 GetZDirection(float headYaw)
 		{
-			return headYaw > 0 ? SignFacingDirection.East : SignFacingDirection.West;
+			return headYaw > 0 ? OldFacingDirection4.East : OldFacingDirection4.West;
 		}
 	}
 }

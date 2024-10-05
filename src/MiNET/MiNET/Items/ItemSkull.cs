@@ -67,7 +67,7 @@ namespace MiNET.Items
 			var skullBlockEntity = new SkullBlockEntity
 			{
 				Coordinates = coor,
-				Rotation = (byte) ((int) (Math.Floor(((player.KnownPosition.Yaw)) * 16 / 360) + 0.5) & 0x0f),
+				Rotation = (byte) player.KnownPosition.GetDirection16(),
 				SkullType = (byte) Metadata
 			};
 

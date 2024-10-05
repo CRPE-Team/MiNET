@@ -1,4 +1,6 @@
-﻿namespace MiNET.Utils
+﻿using System;
+
+namespace MiNET.Utils
 {
 	public enum Direction
 	{
@@ -18,13 +20,25 @@
 				Direction.West => Direction.East,
 				Direction.North => Direction.South,
 				Direction.East => Direction.West,
-				_ => Direction.South
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 
 		public static Direction Shift(this Direction direction)
 		{
 			return (Direction) (((int) direction + 1) & 0x03);
+		}
+
+		public static BlockFace ToBlockFace(this Direction direction)
+		{
+			return direction switch
+			{
+				Direction.South => BlockFace.South,
+				Direction.West => BlockFace.West,
+				Direction.North => BlockFace.North,
+				Direction.East => BlockFace.East,
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+			};
 		}
 	}
 }

@@ -296,7 +296,7 @@ namespace MiNET.Test
 						var values = blockState.Select(s => s.GetValue());
 
 						//writer.WriteLine($"public static {stateTypeName} MinValue {{ get; }} = {values.Min()};");
-						writer.WriteLine($"public static {stateTypeName} MaxValue {{ get; }} = {values.Max()};");
+						writer.WriteLine($"public const {stateTypeName} MaxValue = {values.Max()};");
 
 						// values
 						writer.WriteLineNoTabs($"");
@@ -307,6 +307,24 @@ namespace MiNET.Test
 						writer.Indent--;
 						writer.WriteLine("}");
 						writer.WriteLineNoTabs($"");
+
+						if (type == typeof(BlockStateInt))
+						{
+							// validator
+							writer.WriteLineNoTabs($"");
+							writer.WriteLine($"protected override void ValidateValue(int value)");
+							writer.WriteLine("{");
+							writer.Indent++;
+							writer.WriteLine($"if (value < 0 || value > MaxValue)");
+							writer.WriteLine("{");
+							writer.Indent++;
+							writer.WriteLine($"ThrowArgumentException(value);");
+							writer.Indent--;
+							writer.WriteLine("}");
+							writer.Indent--;
+							writer.WriteLine("}");
+							writer.WriteLineNoTabs($"");
+						}
 					}
 
 					writer.Indent--;
@@ -793,6 +811,14 @@ namespace MiNET.Test
 			{
 				return nameof(AnvilBase);
 			}
+			if (name.EndsWith("fence"))
+			{
+				return nameof(FenceBase);
+			}
+			if (name.EndsWith("fence_gate"))
+			{
+				return nameof(FenceGateBase);
+			}
 
 			return nameof(Block);
 		}
@@ -811,11 +837,12 @@ namespace MiNET.Test
 					"repeating_command_block" or "chain_command_block" or
 					"command_block" or
 					"attached_melon_stem" or "melon_stem" or "wall_banner" => nameof(OldFacingDirection1),
+					_ when name.EndsWith("fence_gate") => nameof(OldFacingDirection4),
 
 					"end_rod" or "piston" or "sticky_piston" or "piston_head" or
 					"piston_arm_collision" or "sticky_piston_arm_collision" => nameof(OldFacingDirection3),
 
-					"skull" or "ladder" => nameof(OldFacingDirection4),
+					"skull" or "ladder" or "frame" or "glow_frame" or "jigsaw" => nameof(OldFacingDirection4),
 					_ when name.EndsWith("_button") || name.EndsWith("wall_sign") || 
 						name.EndsWith("hanging_sign") || name.EndsWith("_glazed_terracotta") => nameof(OldFacingDirection4),
 
@@ -834,6 +861,7 @@ namespace MiNET.Test
 					"trapdoor" => nameof(OldDirection2),
 					_ => null
 				},
+				"vine_direction_bits" => nameof(VineDirectionBits),
 				_ => null
 			};
 		}

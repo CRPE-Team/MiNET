@@ -1,4 +1,6 @@
-﻿namespace MiNET.Blocks.States
+﻿using System;
+
+namespace MiNET.Blocks.States
 {
 	public class OldFacingDirection1 : OldFacingDirection
 	{
@@ -51,7 +53,7 @@
 		/// <summary>
 		/// Value = <inheritdoc cref="WestValue"/>
 		/// </summary>
-		public static readonly OldFacingDirection1 West = new OldFacingDirection1(5);
+		public static readonly OldFacingDirection1 West = new OldFacingDirection1(WestValue);
 
 		public static implicit operator OldFacingDirection1(MiNET.Utils.Direction direction)
 		{
@@ -61,7 +63,7 @@
 				MiNET.Utils.Direction.West => West,
 				MiNET.Utils.Direction.North => North,
 				MiNET.Utils.Direction.East => East,
-				_ => Down
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 
@@ -73,13 +75,13 @@
 				WestValue => MiNET.Utils.Direction.West,
 				NorthValue => MiNET.Utils.Direction.North,
 				EastValue => MiNET.Utils.Direction.East,
-				_ => MiNET.Utils.Direction.North
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 
-		public static implicit operator OldFacingDirection1(MiNET.BlockFace blockFace)
+		public static implicit operator OldFacingDirection1(MiNET.BlockFace face)
 		{
-			return blockFace switch
+			return face switch
 			{
 				MiNET.BlockFace.Down => Down,
 				MiNET.BlockFace.Up => Up,
@@ -87,7 +89,7 @@
 				MiNET.BlockFace.West => West,
 				MiNET.BlockFace.North => North,
 				MiNET.BlockFace.East => East,
-				_ => Down
+				_ => throw new ArgumentOutOfRangeException(nameof(face), face, null)
 			};
 		}
 
@@ -101,7 +103,7 @@
 				WestValue => MiNET.BlockFace.West,
 				NorthValue => MiNET.BlockFace.North,
 				EastValue => MiNET.BlockFace.East,
-				_ => MiNET.BlockFace.Down
+				_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 			};
 		}
 	}

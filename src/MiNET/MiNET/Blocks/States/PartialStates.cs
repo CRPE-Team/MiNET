@@ -7,11 +7,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "candles";
 
-		public static int MaxValue { get; } = 3;
+		public const int MaxValue = 3;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -20,7 +29,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "lit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -57,11 +66,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "ground_sign_direction";
 
-		public static int MaxValue { get; } = 15;
+		public const int MaxValue = 15;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -70,11 +88,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "direction";
 
-		public static int MaxValue { get; } = 3;
+		public const int MaxValue = 3;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -83,7 +110,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "door_hinge_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -96,7 +123,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "open_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -109,7 +136,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "upper_block_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -122,11 +149,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "facing_direction";
 
-		public static int MaxValue { get; } = 5;
+		public const int MaxValue = 5;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -231,7 +267,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "wall_post_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -244,7 +280,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "in_wall_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -257,7 +293,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "button_pressed_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -270,7 +306,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "upside_down_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -283,11 +319,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "weirdo_direction";
 
-		public static int MaxValue { get; } = 3;
+		public const int MaxValue = 3;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -318,11 +363,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "redstone_signal";
 
-		public static int MaxValue { get; } = 15;
+		public const int MaxValue = 15;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -331,7 +385,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "attached_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -344,7 +398,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "hanging";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -357,7 +411,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "covered_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -370,11 +424,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "height";
 
-		public static int MaxValue { get; } = 7;
+		public const int MaxValue = 7;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -383,7 +446,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "item_frame_map_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -396,7 +459,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "item_frame_photo_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -409,11 +472,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "coral_fan_direction";
 
-		public static int MaxValue { get; } = 1;
+		public const int MaxValue = 1;
 
 		public static int[] Values()
 		{
 			return [0, 1];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -422,7 +494,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "active";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -435,7 +507,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "can_summon";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -472,11 +544,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "growth";
 
-		public static int MaxValue { get; } = 7;
+		public const int MaxValue = 7;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -485,11 +566,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "coral_direction";
 
-		public static int MaxValue { get; } = 3;
+		public const int MaxValue = 3;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -498,7 +588,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "update_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -511,11 +601,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "books_stored";
 
-		public static int MaxValue { get; } = 63;
+		public const int MaxValue = 63;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -554,7 +653,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "rail_data_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -567,11 +666,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "rail_direction";
 
-		public static int MaxValue { get; } = 9;
+		public const int MaxValue = 9;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -606,7 +714,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "output_lit_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -619,7 +727,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "output_subtract_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -632,7 +740,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "age_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -645,11 +753,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "age";
 
-		public static int MaxValue { get; } = 15;
+		public const int MaxValue = 15;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -658,7 +775,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "powered_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -671,11 +788,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "respawn_anchor_charge";
 
-		public static int MaxValue { get; } = 4;
+		public const int MaxValue = 4;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -684,11 +810,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "deprecated";
 
-		public static int MaxValue { get; } = 3;
+		public const int MaxValue = 3;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -697,7 +832,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "persistent_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -740,7 +875,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "explode_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -753,11 +888,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "vine_direction_bits";
 
-		public static int MaxValue { get; } = 15;
+		public const int MaxValue = 15;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -766,11 +910,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "brushed_progress";
 
-		public static int MaxValue { get; } = 3;
+		public const int MaxValue = 3;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -809,11 +962,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "stability";
 
-		public static int MaxValue { get; } = 7;
+		public const int MaxValue = 7;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -822,7 +984,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "stability_check";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -835,11 +997,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "huge_mushroom_bits";
 
-		public static int MaxValue { get; } = 15;
+		public const int MaxValue = 15;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -848,7 +1019,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "bloom";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -907,11 +1078,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "liquid_depth";
 
-		public static int MaxValue { get; } = 15;
+		public const int MaxValue = 15;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -920,11 +1100,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "moisturized_amount";
 
-		public static int MaxValue { get; } = 7;
+		public const int MaxValue = 7;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -933,7 +1122,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "stripped_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -946,11 +1135,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "sculk_sensor_phase";
 
-		public static int MaxValue { get; } = 2;
+		public const int MaxValue = 2;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -959,11 +1157,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "repeater_delay";
 
-		public static int MaxValue { get; } = 3;
+		public const int MaxValue = 3;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -972,11 +1179,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "growing_plant_age";
 
-		public static int MaxValue { get; } = 25;
+		public const int MaxValue = 25;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -985,11 +1201,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "rotation";
 
-		public static int MaxValue { get; } = 3;
+		public const int MaxValue = 3;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -998,11 +1223,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "composter_fill_level";
 
-		public static int MaxValue { get; } = 8;
+		public const int MaxValue = 8;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1011,11 +1245,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "kelp_age";
 
-		public static int MaxValue { get; } = 25;
+		public const int MaxValue = 25;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1024,11 +1267,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "weeping_vines_age";
 
-		public static int MaxValue { get; } = 25;
+		public const int MaxValue = 25;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1037,11 +1289,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "multi_face_direction_bits";
 
-		public static int MaxValue { get; } = 63;
+		public const int MaxValue = 63;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1050,11 +1311,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "twisting_vines_age";
 
-		public static int MaxValue { get; } = 25;
+		public const int MaxValue = 25;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1063,11 +1333,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "honey_level";
 
-		public static int MaxValue { get; } = 5;
+		public const int MaxValue = 5;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1076,7 +1355,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "drag_down";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1089,7 +1368,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "extinguished";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1102,11 +1381,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "cluster_count";
 
-		public static int MaxValue { get; } = 3;
+		public const int MaxValue = 3;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1115,7 +1403,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "dead_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1128,7 +1416,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "big_dripleaf_head";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1167,7 +1455,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "end_portal_eye_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1180,7 +1468,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "ominous";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1283,7 +1571,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "conditional_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1296,7 +1584,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "head_piece_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1309,7 +1597,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "occupied_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1322,7 +1610,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "toggle_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1361,11 +1649,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "propagule_stage";
 
-		public static int MaxValue { get; } = 4;
+		public const int MaxValue = 4;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1398,7 +1695,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "infiniburn_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1411,11 +1708,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "bite_counter";
 
-		public static int MaxValue { get; } = 6;
+		public const int MaxValue = 6;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1424,7 +1730,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "triggered_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1465,7 +1771,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "disarmed_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1478,7 +1784,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "suspended_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1515,11 +1821,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "fill_level";
 
-		public static int MaxValue { get; } = 6;
+		public const int MaxValue = 6;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5, 6];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1528,7 +1843,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "brewing_stand_slot_a_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1541,7 +1856,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "brewing_stand_slot_b_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1554,7 +1869,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "brewing_stand_slot_c_bit";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1591,7 +1906,7 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "crafting";
 
-		public static byte MaxValue { get; } = 1;
+		public const byte MaxValue = 1;
 
 		public static byte[] Values()
 		{
@@ -1672,11 +1987,20 @@ namespace MiNET.Blocks.States
 	{
 		public override string Name => "trial_spawner_state";
 
-		public static int MaxValue { get; } = 5;
+		public const int MaxValue = 5;
 
 		public static int[] Values()
 		{
 			return [0, 1, 2, 3, 4, 5];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
