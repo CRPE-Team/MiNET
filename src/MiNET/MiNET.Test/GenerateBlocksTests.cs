@@ -39,7 +39,7 @@ using MiNET.Utils;
 namespace MiNET.Test
 {
 	[TestClass]
-	//[Ignore("Manual code generation")]
+	[Ignore("Manual code generation")]
 	public class GenerateBlocksTests
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(GenerateBlocksTests));
