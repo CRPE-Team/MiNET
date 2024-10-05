@@ -24,12 +24,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Numerics;
 using log4net;
 using MiNET.BlockEntities;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 

@@ -29,7 +29,7 @@ namespace MiNET.Test
 		{
 			var block = new Bell();
 			block.Attachment = Attachment.Side;
-			block.Direction = 2;
+			block.Direction = OldDirection2.South;
 			block.ToggleBit = true;
 
 			var tag = NbtConvert.ToNbt(block);

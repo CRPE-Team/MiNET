@@ -33,7 +33,7 @@ namespace MiNET.Blocks
 {
 	public abstract class RedstoneTorchBase : Block
 	{
-		public virtual TorchFacingDirection TorchFacingDirection { get; set; }
+		public abstract TorchFacingDirection TorchFacingDirection { get; set; }
 
 		public RedstoneTorchBase() : base()
 		{
@@ -70,7 +70,7 @@ namespace MiNET.Blocks
 
 		public override Item[] GetDrops(Level world, Item tool)
 		{
-			return new[] { ItemFactory.GetItem<RedstoneTorch>() };
+			return [ItemFactory.GetItem<RedstoneTorch>()];
 		}
 	}
 }

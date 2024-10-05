@@ -5,10 +5,10 @@ using MiNET.Utils;
 namespace MiNET.Blocks
 {
 
-	public partial class AcaciaButton
+	public partial class AcaciaButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:acacia_button";
 
@@ -16,7 +16,7 @@ namespace MiNET.Blocks
 		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -50,15 +50,15 @@ namespace MiNET.Blocks
 			var block = (AcaciaButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class AcaciaDoor
+	public partial class AcaciaDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -66,7 +66,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:acacia_door";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
@@ -116,7 +116,7 @@ namespace MiNET.Blocks
 		{
 			var block = (AcaciaDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -174,7 +174,7 @@ namespace MiNET.Blocks
 
 	public partial class AcaciaFenceGate
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -224,7 +224,7 @@ namespace MiNET.Blocks
 		{
 			var block = (AcaciaFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -235,7 +235,7 @@ namespace MiNET.Blocks
 	public partial class AcaciaHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -245,7 +245,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -293,7 +293,7 @@ namespace MiNET.Blocks
 			var block = (AcaciaHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -525,7 +525,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class AcaciaStairs
+	public partial class AcaciaStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -536,7 +536,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -618,16 +618,16 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class AcaciaTrapdoor
+	public partial class AcaciaTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:acacia_trapdoor";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -670,7 +670,7 @@ namespace MiNET.Blocks
 		{
 			var block = (AcaciaTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -680,12 +680,12 @@ namespace MiNET.Blocks
 
 	public partial class AcaciaWallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:acacia_wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -714,7 +714,7 @@ namespace MiNET.Blocks
 		{
 			var block = (AcaciaWallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -969,7 +969,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class AndesiteStairs
+	public partial class AndesiteStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -980,7 +980,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1354,18 +1354,18 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooButton : Block
+	public partial class BambooButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:bamboo_button";
 
 		[StateBit]
-		public bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
+		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1399,15 +1399,15 @@ namespace MiNET.Blocks
 			var block = (BambooButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class BambooDoor : Block
+	public partial class BambooDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -1415,16 +1415,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1465,7 +1465,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BambooDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -1523,7 +1523,7 @@ namespace MiNET.Blocks
 
 	public partial class BambooFenceGate : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -1573,7 +1573,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BambooFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -1584,7 +1584,7 @@ namespace MiNET.Blocks
 	public partial class BambooHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -1594,7 +1594,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -1642,7 +1642,7 @@ namespace MiNET.Blocks
 			var block = (BambooHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -1739,7 +1739,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooMosaicStairs : Block
+	public partial class BambooMosaicStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -1747,10 +1747,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_mosaic_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1921,7 +1921,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooStairs : Block
+	public partial class BambooStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -1929,10 +1929,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bamboo_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2014,22 +2014,22 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BambooTrapdoor : Block
+	public partial class BambooTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:bamboo_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2066,7 +2066,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BambooTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -2076,12 +2076,12 @@ namespace MiNET.Blocks
 
 	public partial class BambooWallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:bamboo_wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2110,7 +2110,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BambooWallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -2221,14 +2221,14 @@ namespace MiNET.Blocks
 
 	public partial class Bed : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.HeadPieceBit _headPieceBit = new MiNET.Blocks.States.HeadPieceBit();
 		private MiNET.Blocks.States.OccupiedBit _occupiedBit = new MiNET.Blocks.States.OccupiedBit();
 
 		public override string Id => "minecraft:bed";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public bool HeadPieceBit { get => Convert.ToBoolean(_headPieceBit.Value); set => NotifyStateUpdate(_headPieceBit, value); }
@@ -2271,7 +2271,7 @@ namespace MiNET.Blocks
 		{
 			var block = (Bed) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._headPieceBit = (MiNET.Blocks.States.HeadPieceBit) _headPieceBit.Clone();
 			block._occupiedBit = (MiNET.Blocks.States.OccupiedBit) _occupiedBit.Clone();
 
@@ -2323,13 +2323,13 @@ namespace MiNET.Blocks
 
 	public partial class BeeNest : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.HoneyLevel _honeyLevel = new MiNET.Blocks.States.HoneyLevel();
 
 		public override string Id => "minecraft:bee_nest";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateRange(0, 5)]
 		public int HoneyLevel { get => _honeyLevel.Value; set => NotifyStateUpdate(_honeyLevel, value); }
@@ -2365,7 +2365,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BeeNest) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._honeyLevel = (MiNET.Blocks.States.HoneyLevel) _honeyLevel.Clone();
 
 			return block;
@@ -2374,13 +2374,13 @@ namespace MiNET.Blocks
 
 	public partial class Beehive : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.HoneyLevel _honeyLevel = new MiNET.Blocks.States.HoneyLevel();
 
 		public override string Id => "minecraft:beehive";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateRange(0, 5)]
 		public int HoneyLevel { get => _honeyLevel.Value; set => NotifyStateUpdate(_honeyLevel, value); }
@@ -2416,7 +2416,7 @@ namespace MiNET.Blocks
 		{
 			var block = (Beehive) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._honeyLevel = (MiNET.Blocks.States.HoneyLevel) _honeyLevel.Clone();
 
 			return block;
@@ -2468,7 +2468,7 @@ namespace MiNET.Blocks
 	public partial class Bell : Block
 	{
 		private MiNET.Blocks.States.Attachment _attachment = (States.Attachment) MiNET.Blocks.States.Attachment.Standing.Clone();
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection2 _direction = new MiNET.Blocks.States.OldDirection2();
 		private MiNET.Blocks.States.ToggleBit _toggleBit = new MiNET.Blocks.States.ToggleBit();
 
 		public override string Id => "minecraft:bell";
@@ -2477,7 +2477,7 @@ namespace MiNET.Blocks
 		public MiNET.Blocks.States.Attachment Attachment { get => _attachment; set => NotifyStateUpdate(_attachment, value.Value); }
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.OldDirection2 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public bool ToggleBit { get => Convert.ToBoolean(_toggleBit.Value); set => NotifyStateUpdate(_toggleBit, value); }
@@ -2518,7 +2518,7 @@ namespace MiNET.Blocks
 			var block = (Bell) base.Clone();
 
 			block._attachment = (MiNET.Blocks.States.Attachment) _attachment.Clone();
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection2) _direction.Clone();
 			block._toggleBit = (MiNET.Blocks.States.ToggleBit) _toggleBit.Clone();
 
 			return block;
@@ -2585,10 +2585,10 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BirchButton
+	public partial class BirchButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:birch_button";
 
@@ -2596,7 +2596,7 @@ namespace MiNET.Blocks
 		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2630,15 +2630,15 @@ namespace MiNET.Blocks
 			var block = (BirchButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class BirchDoor
+	public partial class BirchDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -2646,7 +2646,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:birch_door";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
@@ -2696,7 +2696,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BirchDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -2754,7 +2754,7 @@ namespace MiNET.Blocks
 
 	public partial class BirchFenceGate
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -2804,7 +2804,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BirchFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -2815,7 +2815,7 @@ namespace MiNET.Blocks
 	public partial class BirchHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -2825,7 +2825,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -2873,7 +2873,7 @@ namespace MiNET.Blocks
 			var block = (BirchHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -3105,7 +3105,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BirchStairs
+	public partial class BirchStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -3116,7 +3116,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3198,16 +3198,16 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BirchTrapdoor
+	public partial class BirchTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:birch_trapdoor";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -3250,7 +3250,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BirchTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -3260,12 +3260,12 @@ namespace MiNET.Blocks
 
 	public partial class BirchWallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:birch_wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3294,7 +3294,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BirchWallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -3452,12 +3452,12 @@ namespace MiNET.Blocks
 
 	public partial class BlackGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:black_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3486,7 +3486,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BlackGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -3606,7 +3606,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BlackstoneStairs
+	public partial class BlackstoneStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -3617,7 +3617,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3887,12 +3887,12 @@ namespace MiNET.Blocks
 
 	public partial class BlueGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:blue_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -3921,7 +3921,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BlueGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -4113,7 +4113,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:brain_coral_fan";
 
 		[StateRange(0, 1)]
-		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override MiNET.Blocks.States.CoralFanDirection CoralFanDirection { get => _coralFanDirection; set => NotifyStateUpdate(_coralFanDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4155,7 +4155,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:brain_coral_wall_fan";
 
 		[StateRange(0, 3)]
-		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+		public override MiNET.Blocks.States.CoralDirection CoralDirection { get => _coralDirection; set => NotifyStateUpdate(_coralDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4339,7 +4339,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class BrickStairs
+	public partial class BrickStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -4350,7 +4350,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4578,12 +4578,12 @@ namespace MiNET.Blocks
 
 	public partial class BrownGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:brown_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4612,7 +4612,7 @@ namespace MiNET.Blocks
 		{
 			var block = (BrownGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -4749,7 +4749,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bubble_coral_fan";
 
 		[StateRange(0, 1)]
-		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override MiNET.Blocks.States.CoralFanDirection CoralFanDirection { get => _coralFanDirection; set => NotifyStateUpdate(_coralFanDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4791,7 +4791,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:bubble_coral_wall_fan";
 
 		[StateRange(0, 3)]
-		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+		public override MiNET.Blocks.States.CoralDirection CoralDirection { get => _coralDirection; set => NotifyStateUpdate(_coralDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5431,7 +5431,7 @@ namespace MiNET.Blocks
 	public partial class ChainCommandBlock : Block
 	{
 		private MiNET.Blocks.States.ConditionalBit _conditionalBit = new MiNET.Blocks.States.ConditionalBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
 
 		public override string Id => "minecraft:chain_command_block";
 
@@ -5439,7 +5439,7 @@ namespace MiNET.Blocks
 		public bool ConditionalBit { get => Convert.ToBoolean(_conditionalBit.Value); set => NotifyStateUpdate(_conditionalBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5473,7 +5473,7 @@ namespace MiNET.Blocks
 			var block = (ChainCommandBlock) base.Clone();
 
 			block._conditionalBit = (MiNET.Blocks.States.ConditionalBit) _conditionalBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -5484,18 +5484,18 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:chemical_heat";
 	} // class
 
-	public partial class CherryButton : Block
+	public partial class CherryButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:cherry_button";
 
 		[StateBit]
-		public bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
+		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5529,15 +5529,15 @@ namespace MiNET.Blocks
 			var block = (CherryButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class CherryDoor : Block
+	public partial class CherryDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -5545,16 +5545,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cherry_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5595,7 +5595,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CherryDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -5653,7 +5653,7 @@ namespace MiNET.Blocks
 
 	public partial class CherryFenceGate : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -5703,7 +5703,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CherryFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -5714,7 +5714,7 @@ namespace MiNET.Blocks
 	public partial class CherryHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -5724,7 +5724,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -5772,7 +5772,7 @@ namespace MiNET.Blocks
 			var block = (CherryHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -6004,7 +6004,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherryStairs : Block
+	public partial class CherryStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -6012,10 +6012,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cherry_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6097,22 +6097,22 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CherryTrapdoor : Block
+	public partial class CherryTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:cherry_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6149,7 +6149,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CherryTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -6159,12 +6159,12 @@ namespace MiNET.Blocks
 
 	public partial class CherryWallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:cherry_wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6193,7 +6193,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CherryWallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -6337,7 +6337,7 @@ namespace MiNET.Blocks
 	public partial class ChiseledBookshelf : Block
 	{
 		private MiNET.Blocks.States.BooksStored _booksStored = new MiNET.Blocks.States.BooksStored();
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 
 		public override string Id => "minecraft:chiseled_bookshelf";
 
@@ -6345,7 +6345,7 @@ namespace MiNET.Blocks
 		public int BooksStored { get => _booksStored.Value; set => NotifyStateUpdate(_booksStored, value); }
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6379,7 +6379,7 @@ namespace MiNET.Blocks
 			var block = (ChiseledBookshelf) base.Clone();
 
 			block._booksStored = (MiNET.Blocks.States.BooksStored) _booksStored.Clone();
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 
 			return block;
 		} // method
@@ -6633,7 +6633,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CobbledDeepslateStairs : Block
+	public partial class CobbledDeepslateStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -6641,10 +6641,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cobbled_deepslate_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6932,7 +6932,7 @@ namespace MiNET.Blocks
 	public partial class Cocoa : Block
 	{
 		private MiNET.Blocks.States.Age _age = new MiNET.Blocks.States.Age();
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 
 		public override string Id => "minecraft:cocoa";
 
@@ -6940,7 +6940,7 @@ namespace MiNET.Blocks
 		public int Age { get => _age.Value; set => NotifyStateUpdate(_age, value); }
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6974,7 +6974,7 @@ namespace MiNET.Blocks
 			var block = (Cocoa) base.Clone();
 
 			block._age = (MiNET.Blocks.States.Age) _age.Clone();
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 
 			return block;
 		} // method
@@ -7151,7 +7151,7 @@ namespace MiNET.Blocks
 	public partial class CommandBlock : Block
 	{
 		private MiNET.Blocks.States.ConditionalBit _conditionalBit = new MiNET.Blocks.States.ConditionalBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
 
 		public override string Id => "minecraft:command_block";
 
@@ -7159,7 +7159,7 @@ namespace MiNET.Blocks
 		public bool ConditionalBit { get => Convert.ToBoolean(_conditionalBit.Value); set => NotifyStateUpdate(_conditionalBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7193,7 +7193,7 @@ namespace MiNET.Blocks
 			var block = (CommandBlock) base.Clone();
 
 			block._conditionalBit = (MiNET.Blocks.States.ConditionalBit) _conditionalBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -7243,7 +7243,7 @@ namespace MiNET.Blocks
 
 	public partial class CompoundCreator : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 
 		public override string Id => "minecraft:compound_creator";
 
@@ -7277,7 +7277,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CompoundCreator) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 
 			return block;
 		} // method
@@ -7344,9 +7344,9 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CopperDoor : Block
+	public partial class CopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -7354,16 +7354,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:copper_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7404,7 +7404,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -7423,22 +7423,22 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:copper_ore";
 	} // class
 
-	public partial class CopperTrapdoor : Block
+	public partial class CopperTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:copper_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7475,7 +7475,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CopperTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -7578,18 +7578,18 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:crafting_table";
 	} // class
 
-	public partial class CrimsonButton : Block
+	public partial class CrimsonButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:crimson_button";
 
 		[StateBit]
-		public bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
+		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7623,15 +7623,15 @@ namespace MiNET.Blocks
 			var block = (CrimsonButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class CrimsonDoor : Block
+	public partial class CrimsonDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -7639,16 +7639,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:crimson_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7689,7 +7689,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CrimsonDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -7747,7 +7747,7 @@ namespace MiNET.Blocks
 
 	public partial class CrimsonFenceGate : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -7797,7 +7797,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CrimsonFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -7813,7 +7813,7 @@ namespace MiNET.Blocks
 	public partial class CrimsonHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -7823,7 +7823,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -7871,7 +7871,7 @@ namespace MiNET.Blocks
 			var block = (CrimsonHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -8020,7 +8020,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CrimsonStairs
+	public partial class CrimsonStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -8031,7 +8031,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8155,16 +8155,16 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CrimsonTrapdoor
+	public partial class CrimsonTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:crimson_trapdoor";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -8207,7 +8207,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CrimsonTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -8217,12 +8217,12 @@ namespace MiNET.Blocks
 
 	public partial class CrimsonWallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:crimson_wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8251,7 +8251,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CrimsonWallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -8309,7 +8309,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class CutCopperStairs : Block
+	public partial class CutCopperStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -8317,10 +8317,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:cut_copper_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8648,12 +8648,12 @@ namespace MiNET.Blocks
 
 	public partial class CyanGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:cyan_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8682,7 +8682,7 @@ namespace MiNET.Blocks
 		{
 			var block = (CyanGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -8760,10 +8760,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dandelion";
 	} // class
 
-	public partial class DarkOakButton
+	public partial class DarkOakButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:dark_oak_button";
 
@@ -8771,7 +8771,7 @@ namespace MiNET.Blocks
 		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8805,15 +8805,15 @@ namespace MiNET.Blocks
 			var block = (DarkOakButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class DarkOakDoor
+	public partial class DarkOakDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -8821,7 +8821,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dark_oak_door";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
@@ -8871,7 +8871,7 @@ namespace MiNET.Blocks
 		{
 			var block = (DarkOakDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -8929,7 +8929,7 @@ namespace MiNET.Blocks
 
 	public partial class DarkOakFenceGate
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -8979,7 +8979,7 @@ namespace MiNET.Blocks
 		{
 			var block = (DarkOakFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -8990,7 +8990,7 @@ namespace MiNET.Blocks
 	public partial class DarkOakHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -9000,7 +9000,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -9048,7 +9048,7 @@ namespace MiNET.Blocks
 			var block = (DarkOakHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -9280,7 +9280,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class DarkOakStairs
+	public partial class DarkOakStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -9291,7 +9291,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -9331,16 +9331,16 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class DarkOakTrapdoor
+	public partial class DarkOakTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:dark_oak_trapdoor";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -9383,7 +9383,7 @@ namespace MiNET.Blocks
 		{
 			var block = (DarkOakTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -9522,7 +9522,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class DarkPrismarineStairs
+	public partial class DarkPrismarineStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -9533,7 +9533,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -9617,12 +9617,12 @@ namespace MiNET.Blocks
 
 	public partial class DarkoakWallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:darkoak_wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -9651,7 +9651,7 @@ namespace MiNET.Blocks
 		{
 			var block = (DarkoakWallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -9758,7 +9758,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_brain_coral_fan";
 
 		[StateRange(0, 1)]
-		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override MiNET.Blocks.States.CoralFanDirection CoralFanDirection { get => _coralFanDirection; set => NotifyStateUpdate(_coralFanDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -9800,7 +9800,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_brain_coral_wall_fan";
 
 		[StateRange(0, 3)]
-		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+		public override MiNET.Blocks.States.CoralDirection CoralDirection { get => _coralDirection; set => NotifyStateUpdate(_coralDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -9852,7 +9852,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_bubble_coral_fan";
 
 		[StateRange(0, 1)]
-		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override MiNET.Blocks.States.CoralFanDirection CoralFanDirection { get => _coralFanDirection; set => NotifyStateUpdate(_coralFanDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -9894,7 +9894,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_bubble_coral_wall_fan";
 
 		[StateRange(0, 3)]
-		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+		public override MiNET.Blocks.States.CoralDirection CoralDirection { get => _coralDirection; set => NotifyStateUpdate(_coralDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -9946,7 +9946,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_fire_coral_fan";
 
 		[StateRange(0, 1)]
-		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override MiNET.Blocks.States.CoralFanDirection CoralFanDirection { get => _coralFanDirection; set => NotifyStateUpdate(_coralFanDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -9988,7 +9988,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_fire_coral_wall_fan";
 
 		[StateRange(0, 3)]
-		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+		public override MiNET.Blocks.States.CoralDirection CoralDirection { get => _coralDirection; set => NotifyStateUpdate(_coralDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10040,7 +10040,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_horn_coral_fan";
 
 		[StateRange(0, 1)]
-		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override MiNET.Blocks.States.CoralFanDirection CoralFanDirection { get => _coralFanDirection; set => NotifyStateUpdate(_coralFanDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10082,7 +10082,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_horn_coral_wall_fan";
 
 		[StateRange(0, 3)]
-		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+		public override MiNET.Blocks.States.CoralDirection CoralDirection { get => _coralDirection; set => NotifyStateUpdate(_coralDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10134,7 +10134,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_tube_coral_fan";
 
 		[StateRange(0, 1)]
-		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override MiNET.Blocks.States.CoralFanDirection CoralFanDirection { get => _coralFanDirection; set => NotifyStateUpdate(_coralFanDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10176,7 +10176,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:dead_tube_coral_wall_fan";
 
 		[StateRange(0, 3)]
-		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+		public override MiNET.Blocks.States.CoralDirection CoralDirection { get => _coralDirection; set => NotifyStateUpdate(_coralDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10218,12 +10218,12 @@ namespace MiNET.Blocks
 
 	public partial class DecoratedPot : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection2 _direction = new MiNET.Blocks.States.OldDirection2();
 
 		public override string Id => "minecraft:decorated_pot";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.OldDirection2 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10252,7 +10252,7 @@ namespace MiNET.Blocks
 		{
 			var block = (DecoratedPot) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection2) _direction.Clone();
 
 			return block;
 		} // method
@@ -10384,7 +10384,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class DeepslateBrickStairs : Block
+	public partial class DeepslateBrickStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -10392,10 +10392,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:deepslate_brick_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -10642,7 +10642,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class DeepslateTileStairs : Block
+	public partial class DeepslateTileStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -10650,10 +10650,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:deepslate_tile_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11057,7 +11057,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class DioriteStairs
+	public partial class DioriteStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -11068,7 +11068,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -11952,7 +11952,7 @@ namespace MiNET.Blocks
 
 	public partial class ElementConstructor : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 
 		public override string Id => "minecraft:element_constructor";
 
@@ -11986,7 +11986,7 @@ namespace MiNET.Blocks
 		{
 			var block = (ElementConstructor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 
 			return block;
 		} // method
@@ -12007,7 +12007,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:enchanting_table";
 	} // class
 
-	public partial class EndBrickStairs
+	public partial class EndBrickStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -12018,7 +12018,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12436,9 +12436,9 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class ExposedCopperDoor : Block
+	public partial class ExposedCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -12446,16 +12446,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:exposed_copper_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12496,7 +12496,7 @@ namespace MiNET.Blocks
 		{
 			var block = (ExposedCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -12510,22 +12510,22 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:exposed_copper_grate";
 	} // class
 
-	public partial class ExposedCopperTrapdoor : Block
+	public partial class ExposedCopperTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:exposed_copper_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12562,7 +12562,7 @@ namespace MiNET.Blocks
 		{
 			var block = (ExposedCopperTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -12617,7 +12617,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class ExposedCutCopperStairs : Block
+	public partial class ExposedCutCopperStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -12625,10 +12625,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:exposed_cut_copper_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12754,7 +12754,7 @@ namespace MiNET.Blocks
 
 	public partial class FenceGate
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -12804,7 +12804,7 @@ namespace MiNET.Blocks
 		{
 			var block = (FenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -12876,7 +12876,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:fire_coral_fan";
 
 		[StateRange(0, 1)]
-		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override MiNET.Blocks.States.CoralFanDirection CoralFanDirection { get => _coralFanDirection; set => NotifyStateUpdate(_coralFanDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12918,7 +12918,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:fire_coral_wall_fan";
 
 		[StateRange(0, 3)]
-		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+		public override MiNET.Blocks.States.CoralDirection CoralDirection { get => _coralDirection; set => NotifyStateUpdate(_coralDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13515,7 +13515,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class GraniteStairs
+	public partial class GraniteStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -13526,7 +13526,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13769,12 +13769,12 @@ namespace MiNET.Blocks
 
 	public partial class GrayGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:gray_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13803,7 +13803,7 @@ namespace MiNET.Blocks
 		{
 			var block = (GrayGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -13944,12 +13944,12 @@ namespace MiNET.Blocks
 
 	public partial class GreenGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:green_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -13978,7 +13978,7 @@ namespace MiNET.Blocks
 		{
 			var block = (GreenGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -14012,7 +14012,7 @@ namespace MiNET.Blocks
 	public partial class Grindstone : Block
 	{
 		private MiNET.Blocks.States.Attachment _attachment = (States.Attachment) MiNET.Blocks.States.Attachment.Standing.Clone();
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 
 		public override string Id => "minecraft:grindstone";
 
@@ -14020,7 +14020,7 @@ namespace MiNET.Blocks
 		public MiNET.Blocks.States.Attachment Attachment { get => _attachment; set => NotifyStateUpdate(_attachment, value.Value); }
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14054,7 +14054,7 @@ namespace MiNET.Blocks
 			var block = (Grindstone) base.Clone();
 
 			block._attachment = (MiNET.Blocks.States.Attachment) _attachment.Clone();
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 
 			return block;
 		} // method
@@ -14416,7 +14416,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:horn_coral_fan";
 
 		[StateRange(0, 1)]
-		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override MiNET.Blocks.States.CoralFanDirection CoralFanDirection { get => _coralFanDirection; set => NotifyStateUpdate(_coralFanDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14458,7 +14458,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:horn_coral_wall_fan";
 
 		[StateRange(0, 3)]
-		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+		public override MiNET.Blocks.States.CoralDirection CoralDirection { get => _coralDirection; set => NotifyStateUpdate(_coralDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14595,9 +14595,9 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:iron_block";
 	} // class
 
-	public partial class IronDoor : Block
+	public partial class IronDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -14605,16 +14605,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:iron_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14655,7 +14655,7 @@ namespace MiNET.Blocks
 		{
 			var block = (IronDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -14669,22 +14669,22 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:iron_ore";
 	} // class
 
-	public partial class IronTrapdoor : Block
+	public partial class IronTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:iron_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14721,7 +14721,7 @@ namespace MiNET.Blocks
 		{
 			var block = (IronTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -14785,10 +14785,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:jukebox";
 	} // class
 
-	public partial class JungleButton
+	public partial class JungleButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:jungle_button";
 
@@ -14796,7 +14796,7 @@ namespace MiNET.Blocks
 		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14830,15 +14830,15 @@ namespace MiNET.Blocks
 			var block = (JungleButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class JungleDoor
+	public partial class JungleDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -14846,7 +14846,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:jungle_door";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
@@ -14896,7 +14896,7 @@ namespace MiNET.Blocks
 		{
 			var block = (JungleDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -14954,7 +14954,7 @@ namespace MiNET.Blocks
 
 	public partial class JungleFenceGate
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -15004,7 +15004,7 @@ namespace MiNET.Blocks
 		{
 			var block = (JungleFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -15015,7 +15015,7 @@ namespace MiNET.Blocks
 	public partial class JungleHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -15025,7 +15025,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -15073,7 +15073,7 @@ namespace MiNET.Blocks
 			var block = (JungleHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -15305,7 +15305,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class JungleStairs
+	public partial class JungleStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -15316,7 +15316,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -15398,16 +15398,16 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class JungleTrapdoor
+	public partial class JungleTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:jungle_trapdoor";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -15450,7 +15450,7 @@ namespace MiNET.Blocks
 		{
 			var block = (JungleTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -15460,12 +15460,12 @@ namespace MiNET.Blocks
 
 	public partial class JungleWallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:jungle_wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -15494,7 +15494,7 @@ namespace MiNET.Blocks
 		{
 			var block = (JungleWallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -15586,7 +15586,7 @@ namespace MiNET.Blocks
 
 	public partial class LabTable : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 
 		public override string Id => "minecraft:lab_table";
 
@@ -15620,7 +15620,7 @@ namespace MiNET.Blocks
 		{
 			var block = (LabTable) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 
 			return block;
 		} // method
@@ -15628,12 +15628,12 @@ namespace MiNET.Blocks
 
 	public partial class Ladder : Block
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:ladder";
 
 		[StateRange(0, 5)]
-		public MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -15662,7 +15662,7 @@ namespace MiNET.Blocks
 		{
 			var block = (Ladder) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -16138,12 +16138,12 @@ namespace MiNET.Blocks
 
 	public partial class LightBlueGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:light_blue_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -16172,7 +16172,7 @@ namespace MiNET.Blocks
 		{
 			var block = (LightBlueGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -16577,12 +16577,12 @@ namespace MiNET.Blocks
 
 	public partial class LimeGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:lime_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -16611,7 +16611,7 @@ namespace MiNET.Blocks
 		{
 			var block = (LimeGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -16832,12 +16832,12 @@ namespace MiNET.Blocks
 
 	public partial class Loom : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 
 		public override string Id => "minecraft:loom";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -16866,7 +16866,7 @@ namespace MiNET.Blocks
 		{
 			var block = (Loom) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 
 			return block;
 		} // method
@@ -16982,12 +16982,12 @@ namespace MiNET.Blocks
 
 	public partial class MagentaGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:magenta_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17016,7 +17016,7 @@ namespace MiNET.Blocks
 		{
 			var block = (MagentaGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -17052,18 +17052,18 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:magma";
 	} // class
 
-	public partial class MangroveButton : Block
+	public partial class MangroveButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:mangrove_button";
 
 		[StateBit]
-		public bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
+		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17097,15 +17097,15 @@ namespace MiNET.Blocks
 			var block = (MangroveButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class MangroveDoor : Block
+	public partial class MangroveDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -17113,16 +17113,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mangrove_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17163,7 +17163,7 @@ namespace MiNET.Blocks
 		{
 			var block = (MangroveDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -17221,7 +17221,7 @@ namespace MiNET.Blocks
 
 	public partial class MangroveFenceGate : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -17271,7 +17271,7 @@ namespace MiNET.Blocks
 		{
 			var block = (MangroveFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -17282,7 +17282,7 @@ namespace MiNET.Blocks
 	public partial class MangroveHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -17292,7 +17292,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -17340,7 +17340,7 @@ namespace MiNET.Blocks
 			var block = (MangroveHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -17586,7 +17586,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MangroveStairs : Block
+	public partial class MangroveStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -17594,10 +17594,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mangrove_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17679,22 +17679,22 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MangroveTrapdoor : Block
+	public partial class MangroveTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:mangrove_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17731,7 +17731,7 @@ namespace MiNET.Blocks
 		{
 			var block = (MangroveTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -17741,12 +17741,12 @@ namespace MiNET.Blocks
 
 	public partial class MangroveWallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:mangrove_wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17775,7 +17775,7 @@ namespace MiNET.Blocks
 		{
 			var block = (MangroveWallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -17834,7 +17834,7 @@ namespace MiNET.Blocks
 
 	public partial class MaterialReducer : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 
 		public override string Id => "minecraft:material_reducer";
 
@@ -17868,7 +17868,7 @@ namespace MiNET.Blocks
 		{
 			var block = (MaterialReducer) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 
 			return block;
 		} // method
@@ -17923,13 +17923,13 @@ namespace MiNET.Blocks
 
 	public partial class MelonStem : Block
 	{
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
 		private MiNET.Blocks.States.Growth _growth = new MiNET.Blocks.States.Growth();
 
 		public override string Id => "minecraft:melon_stem";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 7)]
 		public int Growth { get => _growth.Value; set => NotifyStateUpdate(_growth, value); }
@@ -17965,7 +17965,7 @@ namespace MiNET.Blocks
 		{
 			var block = (MelonStem) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
 			block._growth = (MiNET.Blocks.States.Growth) _growth.Clone();
 
 			return block;
@@ -18076,7 +18076,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MossyCobblestoneStairs
+	public partial class MossyCobblestoneStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -18087,7 +18087,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -18289,7 +18289,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MossyStoneBrickStairs
+	public partial class MossyStoneBrickStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -18300,7 +18300,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -18517,7 +18517,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class MudBrickStairs : Block
+	public partial class MudBrickStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -18525,10 +18525,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:mud_brick_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -18792,7 +18792,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class NetherBrickStairs
+	public partial class NetherBrickStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -18803,7 +18803,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19077,7 +19077,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class NormalStoneStairs
+	public partial class NormalStoneStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -19088,7 +19088,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19183,7 +19183,7 @@ namespace MiNET.Blocks
 	public partial class OakHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -19193,7 +19193,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -19241,7 +19241,7 @@ namespace MiNET.Blocks
 			var block = (OakHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -19431,7 +19431,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class OakStairs
+	public partial class OakStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -19442,7 +19442,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19732,12 +19732,12 @@ namespace MiNET.Blocks
 
 	public partial class OrangeGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:orange_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19766,7 +19766,7 @@ namespace MiNET.Blocks
 		{
 			var block = (OrangeGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -19868,9 +19868,9 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class OxidizedCopperDoor : Block
+	public partial class OxidizedCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -19878,16 +19878,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:oxidized_copper_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19928,7 +19928,7 @@ namespace MiNET.Blocks
 		{
 			var block = (OxidizedCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -19942,22 +19942,22 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:oxidized_copper_grate";
 	} // class
 
-	public partial class OxidizedCopperTrapdoor : Block
+	public partial class OxidizedCopperTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:oxidized_copper_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -19994,7 +19994,7 @@ namespace MiNET.Blocks
 		{
 			var block = (OxidizedCopperTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -20049,7 +20049,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class OxidizedCutCopperStairs : Block
+	public partial class OxidizedCutCopperStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -20057,10 +20057,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:oxidized_cut_copper_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -20430,12 +20430,12 @@ namespace MiNET.Blocks
 
 	public partial class PinkGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:pink_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -20464,7 +20464,7 @@ namespace MiNET.Blocks
 		{
 			var block = (PinkGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -20595,12 +20595,12 @@ namespace MiNET.Blocks
 
 	public partial class PistonArmCollision : Block
 	{
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection3 _facingDirection = new MiNET.Blocks.States.OldFacingDirection3();
 
 		public override string Id => "minecraft:piston_arm_collision";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public MiNET.Blocks.States.OldFacingDirection3 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -20629,7 +20629,7 @@ namespace MiNET.Blocks
 		{
 			var block = (PistonArmCollision) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection3) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -20873,7 +20873,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class PolishedAndesiteStairs
+	public partial class PolishedAndesiteStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -20884,7 +20884,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -21055,7 +21055,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class PolishedBlackstoneBrickStairs
+	public partial class PolishedBlackstoneBrickStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -21066,7 +21066,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -21189,18 +21189,18 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:polished_blackstone_bricks";
 	} // class
 
-	public partial class PolishedBlackstoneButton : Block
+	public partial class PolishedBlackstoneButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:polished_blackstone_button";
 
 		[StateBit]
-		public bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
+		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -21234,7 +21234,7 @@ namespace MiNET.Blocks
 			var block = (PolishedBlackstoneButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -21366,7 +21366,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class PolishedBlackstoneStairs
+	public partial class PolishedBlackstoneStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -21377,7 +21377,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -21584,7 +21584,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class PolishedDeepslateStairs : Block
+	public partial class PolishedDeepslateStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -21592,10 +21592,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:polished_deepslate_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -21802,7 +21802,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class PolishedDioriteStairs
+	public partial class PolishedDioriteStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -21813,7 +21813,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -21942,7 +21942,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class PolishedGraniteStairs
+	public partial class PolishedGraniteStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -21953,7 +21953,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -22082,7 +22082,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class PolishedTuffStairs : Block
+	public partial class PolishedTuffStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -22090,10 +22090,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:polished_tuff_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -22510,7 +22510,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:prismarine_bricks";
 	} // class
 
-	public partial class PrismarineBricksStairs
+	public partial class PrismarineBricksStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -22521,7 +22521,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -22645,7 +22645,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class PrismarineStairs
+	public partial class PrismarineStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -22656,7 +22656,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -22818,13 +22818,13 @@ namespace MiNET.Blocks
 
 	public partial class PumpkinStem : Block
 	{
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
 		private MiNET.Blocks.States.Growth _growth = new MiNET.Blocks.States.Growth();
 
 		public override string Id => "minecraft:pumpkin_stem";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 7)]
 		public int Growth { get => _growth.Value; set => NotifyStateUpdate(_growth, value); }
@@ -22860,7 +22860,7 @@ namespace MiNET.Blocks
 		{
 			var block = (PumpkinStem) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
 			block._growth = (MiNET.Blocks.States.Growth) _growth.Clone();
 
 			return block;
@@ -22977,12 +22977,12 @@ namespace MiNET.Blocks
 
 	public partial class PurpleGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:purple_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -23011,7 +23011,7 @@ namespace MiNET.Blocks
 		{
 			var block = (PurpleGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -23210,7 +23210,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class PurpurStairs
+	public partial class PurpurStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -23221,7 +23221,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -23439,7 +23439,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class QuartzStairs
+	public partial class QuartzStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -23450,7 +23450,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -23657,12 +23657,12 @@ namespace MiNET.Blocks
 
 	public partial class RedGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:red_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -23691,7 +23691,7 @@ namespace MiNET.Blocks
 		{
 			var block = (RedGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -23833,7 +23833,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class RedNetherBrickStairs
+	public partial class RedNetherBrickStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -23844,7 +23844,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -24056,7 +24056,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class RedSandstoneStairs
+	public partial class RedSandstoneStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -24067,7 +24067,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -24364,7 +24364,7 @@ namespace MiNET.Blocks
 	public partial class RepeatingCommandBlock : Block
 	{
 		private MiNET.Blocks.States.ConditionalBit _conditionalBit = new MiNET.Blocks.States.ConditionalBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
 
 		public override string Id => "minecraft:repeating_command_block";
 
@@ -24372,7 +24372,7 @@ namespace MiNET.Blocks
 		public bool ConditionalBit { get => Convert.ToBoolean(_conditionalBit.Value); set => NotifyStateUpdate(_conditionalBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -24406,7 +24406,7 @@ namespace MiNET.Blocks
 			var block = (RepeatingCommandBlock) base.Clone();
 
 			block._conditionalBit = (MiNET.Blocks.States.ConditionalBit) _conditionalBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -24595,7 +24595,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class SandstoneStairs
+	public partial class SandstoneStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -24606,7 +24606,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -25067,12 +25067,12 @@ namespace MiNET.Blocks
 
 	public partial class SilverGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:silver_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -25101,7 +25101,7 @@ namespace MiNET.Blocks
 		{
 			var block = (SilverGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -25109,12 +25109,12 @@ namespace MiNET.Blocks
 
 	public partial class Skull : Block
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:skull";
 
 		[StateRange(0, 5)]
-		public MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -25143,7 +25143,7 @@ namespace MiNET.Blocks
 		{
 			var block = (Skull) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -25425,7 +25425,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class SmoothQuartzStairs
+	public partial class SmoothQuartzStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -25436,7 +25436,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -25565,7 +25565,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class SmoothRedSandstoneStairs
+	public partial class SmoothRedSandstoneStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -25576,7 +25576,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -25705,7 +25705,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class SmoothSandstoneStairs
+	public partial class SmoothSandstoneStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -25716,7 +25716,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -26140,10 +26140,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:spore_blossom";
 	} // class
 
-	public partial class SpruceButton
+	public partial class SpruceButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:spruce_button";
 
@@ -26151,7 +26151,7 @@ namespace MiNET.Blocks
 		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -26185,15 +26185,15 @@ namespace MiNET.Blocks
 			var block = (SpruceButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class SpruceDoor
+	public partial class SpruceDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -26201,7 +26201,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:spruce_door";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
@@ -26251,7 +26251,7 @@ namespace MiNET.Blocks
 		{
 			var block = (SpruceDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -26309,7 +26309,7 @@ namespace MiNET.Blocks
 
 	public partial class SpruceFenceGate
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -26359,7 +26359,7 @@ namespace MiNET.Blocks
 		{
 			var block = (SpruceFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -26370,7 +26370,7 @@ namespace MiNET.Blocks
 	public partial class SpruceHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -26380,7 +26380,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -26428,7 +26428,7 @@ namespace MiNET.Blocks
 			var block = (SpruceHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -26660,7 +26660,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class SpruceStairs
+	public partial class SpruceStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -26671,7 +26671,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -26753,16 +26753,16 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class SpruceTrapdoor
+	public partial class SpruceTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:spruce_trapdoor";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -26805,7 +26805,7 @@ namespace MiNET.Blocks
 		{
 			var block = (SpruceTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -26815,12 +26815,12 @@ namespace MiNET.Blocks
 
 	public partial class SpruceWallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:spruce_wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -26849,7 +26849,7 @@ namespace MiNET.Blocks
 		{
 			var block = (SpruceWallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -27025,12 +27025,12 @@ namespace MiNET.Blocks
 
 	public partial class StickyPistonArmCollision : Block
 	{
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection3 _facingDirection = new MiNET.Blocks.States.OldFacingDirection3();
 
 		public override string Id => "minecraft:sticky_piston_arm_collision";
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public MiNET.Blocks.States.OldFacingDirection3 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -27059,7 +27059,7 @@ namespace MiNET.Blocks
 		{
 			var block = (StickyPistonArmCollision) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection3) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -27154,7 +27154,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class StoneBrickStairs
+	public partial class StoneBrickStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -27165,7 +27165,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -27288,10 +27288,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:stone_bricks";
 	} // class
 
-	public partial class StoneButton
+	public partial class StoneButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:stone_button";
 
@@ -27299,7 +27299,7 @@ namespace MiNET.Blocks
 		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -27333,7 +27333,7 @@ namespace MiNET.Blocks
 			var block = (StoneButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -27381,7 +27381,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class StoneStairs
+	public partial class StoneStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -27392,7 +27392,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -28777,16 +28777,16 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Trapdoor
+	public partial class Trapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:trapdoor";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -28829,7 +28829,7 @@ namespace MiNET.Blocks
 		{
 			var block = (Trapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -29002,7 +29002,7 @@ namespace MiNET.Blocks
 	public partial class TripwireHook : Block
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.PoweredBit _poweredBit = new MiNET.Blocks.States.PoweredBit();
 
 		public override string Id => "minecraft:tripwire_hook";
@@ -29011,7 +29011,7 @@ namespace MiNET.Blocks
 		public bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
@@ -29052,7 +29052,7 @@ namespace MiNET.Blocks
 			var block = (TripwireHook) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._poweredBit = (MiNET.Blocks.States.PoweredBit) _poweredBit.Clone();
 
 			return block;
@@ -29076,7 +29076,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:tube_coral_fan";
 
 		[StateRange(0, 1)]
-		public override int CoralFanDirection { get => _coralFanDirection.Value; set => NotifyStateUpdate(_coralFanDirection, value); }
+		public override MiNET.Blocks.States.CoralFanDirection CoralFanDirection { get => _coralFanDirection; set => NotifyStateUpdate(_coralFanDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -29118,7 +29118,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:tube_coral_wall_fan";
 
 		[StateRange(0, 3)]
-		public override int CoralDirection { get => _coralDirection.Value; set => NotifyStateUpdate(_coralDirection, value); }
+		public override MiNET.Blocks.States.CoralDirection CoralDirection { get => _coralDirection; set => NotifyStateUpdate(_coralDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -29242,7 +29242,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class TuffBrickStairs : Block
+	public partial class TuffBrickStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -29250,10 +29250,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:tuff_brick_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -29460,7 +29460,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class TuffStairs : Block
+	public partial class TuffStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -29468,10 +29468,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:tuff_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -30117,12 +30117,12 @@ namespace MiNET.Blocks
 
 	public partial class WallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -30151,24 +30151,24 @@ namespace MiNET.Blocks
 		{
 			var block = (WallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class WarpedButton : Block
+	public partial class WarpedButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:warped_button";
 
 		[StateBit]
-		public bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
+		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -30202,15 +30202,15 @@ namespace MiNET.Blocks
 			var block = (WarpedButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class WarpedDoor : Block
+	public partial class WarpedDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -30218,16 +30218,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:warped_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -30268,7 +30268,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WarpedDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -30326,7 +30326,7 @@ namespace MiNET.Blocks
 
 	public partial class WarpedFenceGate : Block
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection _direction = new MiNET.Blocks.States.OldDirection();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
@@ -30376,7 +30376,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WarpedFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
@@ -30392,7 +30392,7 @@ namespace MiNET.Blocks
 	public partial class WarpedHangingSign : HangingSignBase
 	{
 		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
 		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
 
@@ -30402,7 +30402,7 @@ namespace MiNET.Blocks
 		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		[StateRange(0, 15)]
 		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
@@ -30450,7 +30450,7 @@ namespace MiNET.Blocks
 			var block = (WarpedHangingSign) base.Clone();
 
 			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
 			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
 
@@ -30599,7 +30599,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WarpedStairs
+	public partial class WarpedStairs : WoodenStairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -30610,7 +30610,7 @@ namespace MiNET.Blocks
 		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public override int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -30734,16 +30734,16 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WarpedTrapdoor
+	public partial class WarpedTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:warped_trapdoor";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -30786,7 +30786,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WarpedTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -30796,12 +30796,12 @@ namespace MiNET.Blocks
 
 	public partial class WarpedWallSign : WallSignBase
 	{
-		private MiNET.Blocks.States.SignFacingDirection _facingDirection = new MiNET.Blocks.States.SignFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:warped_wall_sign";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.SignFacingDirection FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -30830,7 +30830,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WarpedWallSign) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.SignFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -30949,9 +30949,9 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WaxedCopperDoor : Block
+	public partial class WaxedCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -30959,16 +30959,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_copper_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -31009,7 +31009,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WaxedCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -31023,22 +31023,22 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_copper_grate";
 	} // class
 
-	public partial class WaxedCopperTrapdoor : Block
+	public partial class WaxedCopperTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:waxed_copper_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -31075,7 +31075,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WaxedCopperTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -31130,7 +31130,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WaxedCutCopperStairs : Block
+	public partial class WaxedCutCopperStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -31138,10 +31138,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_cut_copper_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -31284,9 +31284,9 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WaxedExposedCopperDoor : Block
+	public partial class WaxedExposedCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -31294,16 +31294,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_exposed_copper_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -31344,7 +31344,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WaxedExposedCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -31358,22 +31358,22 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_exposed_copper_grate";
 	} // class
 
-	public partial class WaxedExposedCopperTrapdoor : Block
+	public partial class WaxedExposedCopperTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:waxed_exposed_copper_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -31410,7 +31410,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WaxedExposedCopperTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -31465,7 +31465,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WaxedExposedCutCopperStairs : Block
+	public partial class WaxedExposedCutCopperStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -31473,10 +31473,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_exposed_cut_copper_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -31619,9 +31619,9 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WaxedOxidizedCopperDoor : Block
+	public partial class WaxedOxidizedCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -31629,16 +31629,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_oxidized_copper_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -31679,7 +31679,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WaxedOxidizedCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -31693,22 +31693,22 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_oxidized_copper_grate";
 	} // class
 
-	public partial class WaxedOxidizedCopperTrapdoor : Block
+	public partial class WaxedOxidizedCopperTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:waxed_oxidized_copper_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -31745,7 +31745,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WaxedOxidizedCopperTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -31800,7 +31800,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WaxedOxidizedCutCopperStairs : Block
+	public partial class WaxedOxidizedCutCopperStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -31808,10 +31808,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_oxidized_cut_copper_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -31954,9 +31954,9 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WaxedWeatheredCopperDoor : Block
+	public partial class WaxedWeatheredCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -31964,16 +31964,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_weathered_copper_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -32014,7 +32014,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WaxedWeatheredCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -32028,22 +32028,22 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_weathered_copper_grate";
 	} // class
 
-	public partial class WaxedWeatheredCopperTrapdoor : Block
+	public partial class WaxedWeatheredCopperTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:waxed_weathered_copper_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -32080,7 +32080,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WaxedWeatheredCopperTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -32135,7 +32135,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WaxedWeatheredCutCopperStairs : Block
+	public partial class WaxedWeatheredCutCopperStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -32143,10 +32143,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:waxed_weathered_cut_copper_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -32289,9 +32289,9 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WeatheredCopperDoor : Block
+	public partial class WeatheredCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -32299,16 +32299,16 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:weathered_copper_door";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -32349,7 +32349,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WeatheredCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -32363,22 +32363,22 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:weathered_copper_grate";
 	} // class
 
-	public partial class WeatheredCopperTrapdoor : Block
+	public partial class WeatheredCopperTrapdoor : TrapdoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 
 		public override string Id => "minecraft:weathered_copper_trapdoor";
 
 		[StateRange(0, 3)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
-		public bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -32415,7 +32415,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WeatheredCopperTrapdoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
 
@@ -32470,7 +32470,7 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class WeatheredCutCopperStairs : Block
+	public partial class WeatheredCutCopperStairs : StairsBase
 	{
 		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
 		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
@@ -32478,10 +32478,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:weathered_cut_copper_stairs";
 
 		[StateBit]
-		public bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
 
 		[StateRange(0, 3)]
-		public int WeirdoDirection { get => _weirdoDirection.Value; set => NotifyStateUpdate(_weirdoDirection, value); }
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -32767,12 +32767,12 @@ namespace MiNET.Blocks
 
 	public partial class WhiteGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:white_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -32801,7 +32801,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WhiteGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -32842,10 +32842,10 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:wither_rose";
 	} // class
 
-	public partial class WoodenButton
+	public partial class WoodenButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
-		private MiNET.Blocks.States.OldFacingDirection _facingDirection = new MiNET.Blocks.States.OldFacingDirection();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:wooden_button";
 
@@ -32853,7 +32853,7 @@ namespace MiNET.Blocks
 		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
 
 		[StateRange(0, 5)]
-		public override int FacingDirection { get => _facingDirection.Value; set => NotifyStateUpdate(_facingDirection, value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -32887,15 +32887,15 @@ namespace MiNET.Blocks
 			var block = (WoodenButton) base.Clone();
 
 			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
 	} // class
 
-	public partial class WoodenDoor
+	public partial class WoodenDoor : DoorBase
 	{
-		private MiNET.Blocks.States.Direction _direction = new MiNET.Blocks.States.Direction();
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
@@ -32903,7 +32903,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:wooden_door";
 
 		[StateRange(0, 3)]
-		public override int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
@@ -32953,7 +32953,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WoodenDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.Direction) _direction.Clone();
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
@@ -33114,12 +33114,12 @@ namespace MiNET.Blocks
 
 	public partial class YellowGlazedTerracotta : GlazedTerracottaBase
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:yellow_glazed_terracotta";
 
 		[StateRange(0, 5)]
-		public override MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -33148,7 +33148,7 @@ namespace MiNET.Blocks
 		{
 			var block = (YellowGlazedTerracotta) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method

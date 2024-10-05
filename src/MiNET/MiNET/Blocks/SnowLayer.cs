@@ -26,7 +26,6 @@
 using System.Numerics;
 using log4net;
 using MiNET.Items;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -35,9 +34,6 @@ namespace MiNET.Blocks
 	public partial class SnowLayer : Block
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SnowLayer));
-
-		//[StateBit] public bool CoveredBit { get; set; } = false;
-		//[StateRange(0, 7)] public int Height { get; set; } = 0;
 
 		public SnowLayer() : base()
 		{
@@ -49,7 +45,7 @@ namespace MiNET.Blocks
 
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
-			Block down = world.GetBlock(Coordinates.BlockDown());
+			var down = world.GetBlock(Coordinates.BlockDown());
 			if (down is Air)
 			{
 				return false;
@@ -85,8 +81,7 @@ namespace MiNET.Blocks
 
 		public override Item[] GetDrops(Level world, Item tool)
 		{
-			// One per layer.
-			return new[] { new ItemSnowball() { Count = (byte) (Height + 1) } };
+			return [new ItemSnowball() { Count = (byte) (Height + 1) }];
 		}
 	}
 }

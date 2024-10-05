@@ -25,7 +25,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using fNbt;
@@ -93,25 +92,8 @@ namespace MiNET.Utils
 		}
 	}
 
-	public class BlockStateContainerEqualityComparer : IEqualityComparer<IBlockStateContainer>
-	{
-		public bool Equals(IBlockStateContainer x, IBlockStateContainer y)
-		{
-			if (ReferenceEquals(x, y)) return true;
-
-			if (x.Id != y.Id) return false;
-
-			return x.States.SequenceEqual(y.States);
-		}
-
-		public int GetHashCode([DisallowNull] IBlockStateContainer obj)
-		{
-			return obj.GetHashCode();
-		}
-	}
-
 	[JsonObject(MemberSerialization.OptIn)]
-	public interface IBlockStateContainer
+	public interface IBlockStateContainer : IEquatable<IBlockStateContainer>
 	{
 		[JsonProperty]
 		public int RuntimeId { get; }
@@ -156,12 +138,17 @@ namespace MiNET.Utils
 			_states.Add(state);
 		}
 
+		public bool Equals(IBlockStateContainer obj)
+		{
+			return Id == obj?.Id && _states.SequenceEqual(obj.States);
+		}
+
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj)) return false;
 			if (ReferenceEquals(this, obj)) return true;
 			if (obj is not IBlockStateContainer other) return false;
-			return new BlockStateContainerEqualityComparer().Equals(this, other);
+			return Equals(other);
 		}
 
 		public override int GetHashCode()
@@ -184,7 +171,7 @@ namespace MiNET.Utils
 
 	public class BlockStateContainer : IBlockStateContainer
 	{
-		private static Dictionary<string, IBlockStateContainer> _defaultStates = new Dictionary<string, IBlockStateContainer>();
+		private static readonly Dictionary<string, IBlockStateContainer> _defaultStates = new();
 
 		private IBlockStateContainer _cache;
 		private bool _changed = false;
@@ -276,13 +263,18 @@ namespace MiNET.Utils
 		{
 			return [];
 		}
+
+		public bool Equals(IBlockStateContainer obj)
+		{
+			return Id == obj?.Id && GetStates().SequenceEqual(obj.States);
+		}
 		
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj)) return false;
 			if (ReferenceEquals(this, obj)) return true;
 			if (obj is not IBlockStateContainer other) return false;
-			return new BlockStateContainerEqualityComparer().Equals(this, other);
+			return Equals(other);
 		}
 
 		public override int GetHashCode()
@@ -310,7 +302,7 @@ namespace MiNET.Utils
 		public object GetValue();
 	}
 
-	public class BlockStateInt : IBlockState, ICloneable
+	public class BlockStateInt : IBlockState, ICloneable, IEquatable<BlockStateInt>
 	{
 		public int Type { get; } = 3;
 		public virtual string Name { get; set; }
@@ -318,7 +310,7 @@ namespace MiNET.Utils
 
 		public object GetValue() => Value;
 
-		protected bool Equals(BlockStateInt other)
+		public bool Equals(BlockStateInt other)
 		{
 			return Name == other.Name && Value == other.Value;
 		}
@@ -345,9 +337,19 @@ namespace MiNET.Utils
 		{
 			return MemberwiseClone();
 		}
+
+		public static bool operator ==(BlockStateInt x, BlockStateInt y)
+		{
+			return x.Equals(y);
+		}
+
+		public static bool operator !=(BlockStateInt x, BlockStateInt y)
+		{
+			return !x.Equals(y);
+		}
 	}
 
-	public class BlockStateByte : IBlockState, ICloneable
+	public class BlockStateByte : IBlockState, ICloneable, IEquatable<BlockStateByte>
 	{
 		public int Type { get; } = 1;
 		public virtual string Name { get; set; }
@@ -355,7 +357,7 @@ namespace MiNET.Utils
 
 		public object GetValue() => Value;
 
-		protected bool Equals(BlockStateByte other)
+		public bool Equals(BlockStateByte other)
 		{
 			return Name == other.Name && Value == other.Value;
 		}
@@ -382,9 +384,19 @@ namespace MiNET.Utils
 		{
 			return MemberwiseClone();
 		}
+
+		public static bool operator ==(BlockStateByte x, BlockStateByte y)
+		{
+			return x.Equals(y);
+		}
+
+		public static bool operator !=(BlockStateByte x, BlockStateByte y)
+		{
+			return !x.Equals(y);
+		}
 	}
 
-	public class BlockStateString : IBlockState, ICloneable
+	public class BlockStateString : IBlockState, ICloneable, IEquatable<BlockStateString>
 	{
 		public int Type { get; } = 8;
 		public virtual string Name { get; set; }
@@ -392,9 +404,9 @@ namespace MiNET.Utils
 
 		public object GetValue() => Value;
 
-		protected bool Equals(BlockStateString other)
+		public bool Equals(BlockStateString other)
 		{
-			return string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase) && string.Equals(Value, other.Value, StringComparison.OrdinalIgnoreCase);
+			return Name == other.Name && Value == other.Value;
 		}
 
 		public override bool Equals(object obj)
@@ -407,7 +419,7 @@ namespace MiNET.Utils
 
 		public override int GetHashCode()
 		{
-			return Value.ToLowerInvariant().GetHashCode();
+			return Value.GetHashCode();
 		}
 
 		public override string ToString()
@@ -418,6 +430,16 @@ namespace MiNET.Utils
 		public object Clone()
 		{
 			return MemberwiseClone();
+		}
+
+		public static bool operator ==(BlockStateString x, BlockStateString y)
+		{
+			return x.Equals(y);
+		}
+
+		public static bool operator !=(BlockStateString x, BlockStateString y)
+		{
+			return !x.Equals(y);
 		}
 	}
 }

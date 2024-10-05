@@ -217,7 +217,7 @@ namespace MiNET.Blocks
 					MetaBlockNameToState.TryAdd(GetMetaBlockName(record.Id, record.Data), record);
 				}
 
-				BlockStates = new HashSet<IBlockStateContainer>(BlockPalette, new BlockStateContainerEqualityComparer());
+				BlockStates = new HashSet<IBlockStateContainer>(BlockPalette);
 
 				(IdToType, TypeToId) = BuildIdTypeMapPair();
 				IdToFactory = BuildIdToFactory();

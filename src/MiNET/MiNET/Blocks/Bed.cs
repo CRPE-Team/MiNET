@@ -28,6 +28,7 @@ using System.Numerics;
 using log4net;
 using MiNET.BlockEntities;
 using MiNET.Items;
+using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -61,14 +62,7 @@ namespace MiNET.Blocks
 
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
-			Direction = player.KnownPosition.ToDirection() switch
-			{
-				MiNET.Utils.Direction.West => 0,
-				MiNET.Utils.Direction.North => 1,
-				MiNET.Utils.Direction.East => 2,
-				MiNET.Utils.Direction.South => 3,
-				_ => throw new ArgumentOutOfRangeException()
-			};
+			Direction = player.KnownPosition.ToDirection().Opposite();
 
 			return world.GetBlock(blockCoordinates).IsReplaceable && world.GetBlock(GetOtherPart()).IsReplaceable;
 		}
@@ -152,21 +146,11 @@ namespace MiNET.Blocks
 
 		private BlockCoordinates GetOtherPart()
 		{
-			var direction = Direction switch
-			{
-				0 => Level.North,
-				1 => Level.East,
-				2 => Level.South,
-				3 => Level.West,
-				_ => throw new ArgumentOutOfRangeException()
-			};
+			var face = (BlockFace) Direction;
 
-			if (!HeadPieceBit)
-			{
-				direction *= -1;
-			}
+			if (HeadPieceBit) face = face.Opposide();
 
-			return Coordinates + direction;
+			return GetNewCoordinatesFromFace(Coordinates, face);
 		}
 	}
 }

@@ -216,7 +216,7 @@ namespace MiNET.Test
 					var className = GenerationUtils.CodeName(name, true);
 					var baseName = type.Name;
 
-					if (blockState.Key == "facing_direction")
+					if (blockState.Key == "facing_direction" || blockState.Key == "direction")
 					{
 						className = $"Old{className}";
 					}
@@ -635,7 +635,7 @@ namespace MiNET.Test
 				var knownTypeName = GetIntStateNameByKnownBlockIds(id, state.Name);
 				if (knownTypeName != null) return knownTypeName;
 
-				if (state.Name == "facing_direction")
+				if (state.Name == "facing_direction" || state.Name == "direction")
 				{
 					return $"Old{typeName}";
 				}
@@ -668,6 +668,8 @@ namespace MiNET.Test
 							return nameof(LogBase);
 						case "wooden_slabs":
 							return nameof(WoodenSlabBase);
+						case "wooden_stairs":
+							return nameof(WoodenStairsBase);
 						case "double_wooden_slabs":
 							return nameof(DoubleWoodenSlabBase);
 						case "double_plants":
@@ -751,6 +753,10 @@ namespace MiNET.Test
 			{
 				return nameof(SaplingBase);
 			}
+			if (id.EndsWith("_stairs"))
+			{
+				return nameof(StairsBase);
+			}
 			if (name.EndsWith("standing_sign"))
 			{
 				return nameof(StandingSignBase);
@@ -758,6 +764,18 @@ namespace MiNET.Test
 			if (name.EndsWith("_hanging_sign"))
 			{
 				return nameof(HangingSignBase);
+			}
+			if (name.EndsWith("_button"))
+			{
+				return nameof(ButtonBase);
+			}
+			if (name.EndsWith("_door"))
+			{
+				return nameof(DoorBase);
+			}
+			if (name.EndsWith("trapdoor"))
+			{
+				return nameof(TrapdoorBase);
 			}
 			if (name.EndsWith("wall_sign"))
 			{
@@ -787,14 +805,33 @@ namespace MiNET.Test
 			{
 				"facing_direction" => name switch
 				{
-					"lightning_rod" or "ladder" or "dropper" or
+					"lightning_rod" or "dropper" or
 					"hopper" or "dispenser" or "barrel" or
-					"skull" or "attached_pumpkin_stem" or
-					"attached_melon_stem" or "wall_banner" => nameof(OldFacingDirection1),
-					_ when name.EndsWith("_glazed_terracotta") => nameof(OldFacingDirection1),
+					"attached_pumpkin_stem" or "pumpkin_stem" or
+					"repeating_command_block" or "chain_command_block" or
+					"command_block" or
+					"attached_melon_stem" or "melon_stem" or "wall_banner" => nameof(OldFacingDirection1),
 
-					"end_rod" or "piston" or "sticky_piston" or "piston_head" => nameof(OldFacingDirection3),
+					"end_rod" or "piston" or "sticky_piston" or "piston_head" or
+					"piston_arm_collision" or "sticky_piston_arm_collision" => nameof(OldFacingDirection3),
 
+					"skull" or "ladder" => nameof(OldFacingDirection4),
+					_ when name.EndsWith("_button") || name.EndsWith("wall_sign") || 
+						name.EndsWith("hanging_sign") || name.EndsWith("_glazed_terracotta") => nameof(OldFacingDirection4),
+
+					_ => null
+				},
+				"direction" => name switch
+				{
+					"beehive" or "bee_nest" or "loom" or 
+					"grindstone" or "chiseled_bookshelf" or 
+					"bed" or "tripwire_hook" or "cocoa" => nameof(OldDirection1),
+
+					"decorated_pot" or "bell" => nameof(OldDirection2),
+
+					_ when name.EndsWith("_door") => nameof(OldDirection3),
+
+					"trapdoor" => nameof(OldDirection2),
 					_ => null
 				},
 				_ => null

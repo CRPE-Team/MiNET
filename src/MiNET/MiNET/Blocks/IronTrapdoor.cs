@@ -23,35 +23,15 @@
 
 #endregion
 
-using System.Numerics;
-using MiNET.Utils;
-using MiNET.Utils.Vectors;
-using MiNET.Worlds;
-
 namespace MiNET.Blocks
 {
-	public partial class IronTrapdoor : Block
+	public partial class IronTrapdoor
 	{
 		public IronTrapdoor() : base()
 		{
 			IsTransparent = true;
 			BlastResistance = 25;
 			Hardness = 5;
-		}
-
-		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
-		{
-			UpsideDownBit = faceCoords.Y > 0.5 && face != BlockFace.Up || face == BlockFace.Down;
-
-			return false;
-		}
-
-		public override bool Interact(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoord)
-		{
-			OpenBit = !OpenBit;
-			world.SetBlock(this);
-
-			return true;
 		}
 	}
 }

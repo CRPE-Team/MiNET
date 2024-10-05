@@ -24,7 +24,7 @@
 #endregion
 
 using System.Numerics;
-using MiNET.Items;
+using MiNET.Blocks.States;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -32,7 +32,7 @@ namespace MiNET.Blocks
 {
 	public abstract class GlazedTerracottaBase : Block
 	{
-		[StateRange(0, 5)] public virtual int FacingDirection { get; set; } = 0;
+		public abstract OldFacingDirection4 FacingDirection { get; set; }
 
 		public GlazedTerracottaBase() : base()
 		{
@@ -40,7 +40,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			FacingDirection = ItemBlock.GetFacingDirectionFromEntity(player);
+			FacingDirection = player.KnownPosition.ToDirection();
 
 			return false;
 		}

@@ -25,7 +25,7 @@
 
 namespace MiNET.Blocks
 {
-	public partial class NetherBrickStairs : BlockStairs
+	public partial class NetherBrickStairs : StairsBase
 	{
 		public NetherBrickStairs() : base()
 		{

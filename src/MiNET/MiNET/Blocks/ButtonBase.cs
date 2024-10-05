@@ -23,13 +23,52 @@
 
 #endregion
 
+using System.Numerics;
+using MiNET.Blocks.States;
+using MiNET.Utils.Vectors;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
-	public partial class SpruceButton : Button
+	public abstract class ButtonBase : Block
 	{
-		public SpruceButton() : base()
+		public int TickRate { get; set; }
+
+		public abstract bool ButtonPressedBit { get; set; }
+		public abstract OldFacingDirection4 FacingDirection { get; set; }
+
+		protected ButtonBase() : base()
 		{
+			IsSolid = false;
+			IsTransparent = true;
+			BlastResistance = 2.5f;
+			Hardness = 0.5f;
+
 			TickRate = 30;
+		}
+
+		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
+		{
+			FacingDirection = face;
+
+			world.SetBlock(this);
+			return true;
+		}
+
+		public override bool Interact(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoord)
+		{
+			ButtonPressedBit = true;
+			world.SetBlock(this);
+			world.ScheduleBlockTick(this, TickRate);
+			return true;
+		}
+
+		public override void OnTick(Level level, bool isRandom)
+		{
+			if (isRandom) return;
+
+			ButtonPressedBit = false;
+			level.SetBlock(this);
 		}
 	}
 }

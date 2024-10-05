@@ -36,7 +36,7 @@ namespace MiNET.Blocks
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Flowing));
 
-		[StateRange(0, 15)] public virtual int LiquidDepth { get; set; } = 0;
+		public abstract int LiquidDepth { get; set; }
 
 		public string StationeryId { get; }
 

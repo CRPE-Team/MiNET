@@ -36,9 +36,9 @@ namespace MiNET.Blocks
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(LeavesBase));
 
-		public virtual bool PersistentBit { get; set; }
+		public abstract bool PersistentBit { get; set; }
 
-		public virtual bool UpdateBit { get; set; }
+		public abstract bool UpdateBit { get; set; }
 
 		public LeavesBase() : base()
 		{
@@ -101,7 +101,7 @@ namespace MiNET.Blocks
 				};
 			}
 
-			return Array.Empty<Item>();
+			return [];
 		}
 
 		private bool FindLog(Level level, BlockCoordinates coord, List<BlockCoordinates> visited, int distance)

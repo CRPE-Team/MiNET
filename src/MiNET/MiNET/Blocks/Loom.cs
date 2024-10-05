@@ -42,7 +42,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			Direction = player.GetOppositeDirection();
+			Direction = player.KnownPosition.ToDirection().Opposite();
 
 			return false;
 		}

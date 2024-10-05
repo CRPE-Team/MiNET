@@ -27,7 +27,6 @@ using System;
 using System.Numerics;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
-using MiNET.Blocks.States;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -37,7 +36,7 @@ namespace MiNET.Items
 	{
 		public ItemSkull() : base()
 		{
-			MaxStackSize = 1;
+
 		}
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
@@ -47,7 +46,7 @@ namespace MiNET.Items
 			{
 				var skull = new Skull();
 				skull.Coordinates = coor;
-				skull.FacingDirection = OldFacingDirection1.Up; // Skull on floor, rotation in block entity
+				skull.FacingDirection = BlockFace.Up; // Skull on floor, rotation in block entity
 				world.SetBlock(skull);
 			}
 			else if (face == BlockFace.Down) // At the bottom of block

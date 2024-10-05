@@ -25,13 +25,11 @@
 
 namespace MiNET.Blocks
 {
-	public partial class DarkOakStairs : BlockStairs
+	public partial class PolishedBlackstoneButton : ButtonBase
 	{
-		public DarkOakStairs() : base()
+		public PolishedBlackstoneButton() : base()
 		{
-			BlastResistance = 15;
-			Hardness = 2;
-			IsFlammable = true;
+			TickRate = 20;
 		}
 	}
 }

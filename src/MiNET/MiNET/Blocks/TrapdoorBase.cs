@@ -23,13 +23,42 @@
 
 #endregion
 
+using System.Numerics;
+using MiNET.Blocks.States;
+using MiNET.Utils;
+using MiNET.Utils.Vectors;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
-	public partial class BirchButton : Button
+	public abstract partial class TrapdoorBase : Block
 	{
-		public BirchButton() : base()
+		public abstract OldDirection4 Direction { get; set; }
+		public abstract bool OpenBit { get; set; }
+		public abstract bool UpsideDownBit { get; set; }
+
+		protected TrapdoorBase() : base()
 		{
-			TickRate = 30;
+			IsTransparent = true;
+			BlastResistance = 15;
+			Hardness = 5;
+		}
+
+		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
+		{
+			Direction = player.KnownPosition.ToDirection().Opposite();
+
+			UpsideDownBit = (faceCoords.Y > 0.5 && face != BlockFace.Up) || face == BlockFace.Down;
+
+			return false;
+		}
+
+		public override bool Interact(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoord)
+		{
+			OpenBit = !OpenBit;
+			world.SetBlock(this);
+
+			return true;
 		}
 	}
 }

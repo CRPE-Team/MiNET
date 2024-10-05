@@ -24,7 +24,6 @@
 #endregion
 
 using System.Numerics;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 
@@ -41,12 +40,16 @@ namespace MiNET.Blocks
 
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{
-			return !world.GetBlock(targetCoordinates).IsTransparent && face != BlockFace.Down && face != BlockFace.Up;
+			return base.CanPlace(world, player, blockCoordinates, targetCoordinates, face)
+				&& !world.GetBlock(targetCoordinates).IsTransparent 
+				&& face != BlockFace.Down 
+				&& face != BlockFace.Up;
 		}
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			FacingDirection = (int) face;
+			FacingDirection = face;
+
 			return false;
 		}
 	}

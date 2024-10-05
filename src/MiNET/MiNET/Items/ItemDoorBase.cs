@@ -41,14 +41,14 @@ namespace MiNET.Items
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			var blockId = Id.Replace("item.", "");
+			//TODO - should move to the DoorBase
 
-			byte direction = player.GetDirection();
+			var direction = player.KnownPosition.ToDirection().Opposite();
 
 			var coordinates = GetNewCoordinatesFromFace(blockCoordinates, face);
 
 			// Base block, meta sets orientation
-			DoorBase block = (DoorBase) BlockFactory.GetBlockById(blockId);
+			DoorBase block = BlockFactory.GetBlockById<DoorBase>(Id);
 			block.Coordinates = coordinates;
 			block.Direction = direction;
 			block.UpperBlockBit = false;
@@ -60,10 +60,10 @@ namespace MiNET.Items
 			int xd = 0;
 			int zd = 0;
 
-			if (direction == 0) zd = 1;
-			else if (direction == 1) xd = -1;
-			else if (direction == 2) zd = -1;
-			else if (direction == 3) xd = 1;
+			if (direction == Direction.East) zd = 1;
+			else if (direction == Direction.South) xd = -1;
+			else if (direction == Direction.West) zd = -1;
+			else if (direction == Direction.North) xd = 1;
 
 			int i1 = (world.GetBlock(x - xd, y, z - zd).IsSolid ? 1 : 0) + (world.GetBlock(x - xd, y + 1, z - zd).IsSolid ? 1 : 0);
 			int j1 = (world.GetBlock(x + xd, y, z + zd).IsSolid ? 1 : 0) + (world.GetBlock(x + xd, y + 1, z + zd).IsSolid ? 1 : 0);
@@ -86,8 +86,8 @@ namespace MiNET.Items
 
 			// The upper door block, meta marks upper and
 			// sets orientation based on adjacent blocks
-			DoorBase blockUpper = (DoorBase) BlockFactory.GetBlockById(blockId);
-			blockUpper.Coordinates = coordinates + Level.Up;
+			var blockUpper = BlockFactory.GetBlockById<DoorBase>(Id);
+			blockUpper.Coordinates = coordinates.BlockUp();
 			blockUpper.Direction = direction;
 			blockUpper.UpperBlockBit = true;
 			blockUpper.DoorHingeBit = flag2;

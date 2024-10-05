@@ -23,13 +23,37 @@
 
 #endregion
 
+using System.Numerics;
+using log4net;
+using MiNET.Blocks.States;
+using MiNET.Utils;
+using MiNET.Utils.Vectors;
+using MiNET.Worlds;
+
 namespace MiNET.Blocks
 {
-	public partial class JungleButton : Button
+	public abstract class StairsBase : Block
 	{
-		public JungleButton() : base()
+		private static readonly ILog Log = LogManager.GetLogger(typeof(StairsBase));
+
+		public abstract bool UpsideDownBit { get; set; }
+		public abstract WeirdoDirection WeirdoDirection { get; set; }
+
+		protected StairsBase() : base()
 		{
-			TickRate = 30;
+			BlastResistance = 30;
+			Hardness = 2;
+			IsTransparent = true; // Partial - blocks light.
+			IsBlockingSkylight = false; // Partial - blocks light.
+		}
+
+		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
+		{
+			UpsideDownBit = ((faceCoords.Y > 0.5 && face != BlockFace.Up) || face == BlockFace.Down);
+			WeirdoDirection = player.KnownPosition.ToDirection().Opposite();
+
+			world.SetBlock(this);
+			return true;
 		}
 	}
 }

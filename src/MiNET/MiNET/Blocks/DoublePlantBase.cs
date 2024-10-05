@@ -31,7 +31,7 @@ namespace MiNET.Blocks
 {
 	public abstract class DoublePlantBase : Block
 	{
-		public virtual bool UpperBlockBit { get; set; }
+		public abstract bool UpperBlockBit { get; set; }
 
 		public DoublePlantBase() : base()
 		{
@@ -67,7 +67,7 @@ namespace MiNET.Blocks
 		{
 			if (UpperBlockBit) return base.GetDrops(world, tool);
 
-			return new Item[0];
+			return [];
 		}
 	}
 }

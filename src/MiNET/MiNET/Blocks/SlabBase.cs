@@ -50,7 +50,7 @@ namespace MiNET.Blocks
 			}
 		}
 
-		public virtual VerticalHalf VerticalHalf { get; set; }
+		public abstract VerticalHalf VerticalHalf { get; set; }
 
 		public SlabBase()
 		{

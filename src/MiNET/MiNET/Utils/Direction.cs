@@ -21,5 +21,10 @@
 				_ => Direction.South
 			};
 		}
+
+		public static Direction Shift(this Direction direction)
+		{
+			return (Direction) (((int) direction + 1) & 0x03);
+		}
 	}
 }

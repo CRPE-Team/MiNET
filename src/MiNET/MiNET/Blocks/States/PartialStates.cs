@@ -66,7 +66,7 @@ namespace MiNET.Blocks.States
 
 	} // class
 
-	public partial class Direction : BlockStateInt
+	public partial class OldDirection : BlockStateInt
 	{
 		public override string Name => "direction";
 

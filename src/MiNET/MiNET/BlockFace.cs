@@ -42,4 +42,21 @@ namespace MiNET
 		Y,
 		Z
 	}
+
+	public static class BlockFaceExtensions
+	{
+		public static BlockFace Opposide(this BlockFace face)
+		{
+			return face switch
+			{
+				BlockFace.Down => BlockFace.Up,
+				BlockFace.Up => BlockFace.Down,
+				BlockFace.South => BlockFace.North,
+				BlockFace.West => BlockFace.East,
+				BlockFace.North => BlockFace.South,
+				BlockFace.East => BlockFace.West,
+				_ => BlockFace.Down
+			};
+		}
+	}
 }

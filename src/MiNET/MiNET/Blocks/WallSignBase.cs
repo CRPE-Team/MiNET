@@ -33,7 +33,7 @@ namespace MiNET.Blocks
 {
 	public abstract class WallSignBase : SignBase
 	{
-		public virtual SignFacingDirection FacingDirection { get; set; }
+		public abstract OldFacingDirection4 FacingDirection { get; set; }
 
 		protected override bool CanPlace(Level world, Player player, BlockCoordinates blockCoordinates, BlockCoordinates targetCoordinates, BlockFace face)
 		{

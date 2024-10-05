@@ -25,7 +25,7 @@
 
 namespace MiNET.Blocks
 {
-	public partial class StoneButton : Button
+	public partial class StoneButton : ButtonBase
 	{
 		public StoneButton() : base()
 		{

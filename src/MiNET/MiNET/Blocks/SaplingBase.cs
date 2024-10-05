@@ -34,7 +34,7 @@ namespace MiNET.Blocks
 {
 	public abstract class SaplingBase : Block
 	{
-		public virtual bool AgeBit { get; set; }
+		public abstract bool AgeBit { get; set; }
 
 		public SaplingBase() : base()
 		{

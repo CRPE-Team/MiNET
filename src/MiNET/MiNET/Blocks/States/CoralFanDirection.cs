@@ -1,0 +1,46 @@
+﻿namespace MiNET.Blocks.States
+{
+	public partial class CoralFanDirection
+	{
+		internal CoralFanDirection() { }
+
+		private CoralFanDirection(int value)
+		{
+			Value = value;
+		}
+
+		/// <summary>
+		/// Value = 0
+		/// </summary>
+		public static readonly CoralFanDirection EastWest = new CoralFanDirection(0);
+
+		/// <summary>
+		/// Value = 1
+		/// </summary>
+		public static readonly CoralFanDirection NorthSouth = new CoralFanDirection(1);
+
+		public static implicit operator CoralFanDirection(MiNET.Utils.Direction direction)
+		{
+			return direction switch
+			{
+				MiNET.Utils.Direction.South => NorthSouth,
+				MiNET.Utils.Direction.West => EastWest,
+				MiNET.Utils.Direction.North => NorthSouth,
+				MiNET.Utils.Direction.East => EastWest,
+				_ => EastWest
+			};
+		}
+
+		public static implicit operator CoralFanDirection(MiNET.BlockFace blockFace)
+		{
+			return blockFace switch
+			{
+				MiNET.BlockFace.South => NorthSouth,
+				MiNET.BlockFace.West => EastWest,
+				MiNET.BlockFace.North => NorthSouth,
+				MiNET.BlockFace.East => EastWest,
+				_ => EastWest
+			};
+		}
+	}
+}

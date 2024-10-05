@@ -53,7 +53,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates targetCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			FacingDirection = (int) face;
+			FacingDirection = face;
 
 			var bannerBlockEntity = new BannerBlockEntity
 			{

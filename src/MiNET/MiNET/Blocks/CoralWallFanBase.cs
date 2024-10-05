@@ -1,7 +1,9 @@
-﻿namespace MiNET.Blocks
+﻿using MiNET.Blocks.States;
+
+namespace MiNET.Blocks
 {
 	public abstract class CoralWallFanBase : Block
 	{
-		public virtual int CoralDirection { get; set; }
+		public abstract CoralDirection CoralDirection { get; set; }
 	}
 }
