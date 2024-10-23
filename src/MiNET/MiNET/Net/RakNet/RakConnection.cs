@@ -204,7 +204,7 @@ namespace MiNET.Net.RakNet
 		private static UdpClient CreateListener(IPEndPoint endpoint)
 		{
 			var listener = new UdpClient();
-			
+
 			if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 			{
 				listener.Client.ReceiveBufferSize = int.MaxValue;
@@ -212,7 +212,6 @@ namespace MiNET.Net.RakNet
 				
 				listener.DontFragment = false;
 			}
-			
 			//listener.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 500);
 			listener.EnableBroadcast = true;
 
