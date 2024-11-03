@@ -26,7 +26,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using fNbt;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Entities;
@@ -35,7 +34,7 @@ using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Worlds;
 
-namespace MiNET
+namespace MiNET.Inventories
 {
 	public class PlayerInventory
 	{
@@ -80,7 +79,8 @@ namespace MiNET
 
 		public virtual void DamageArmor()
 		{
-			if (Player.GameMode != GameMode.Survival) return;
+			if (Player.GameMode != GameMode.Survival)
+				return;
 
 			Helmet = DamageArmorItem(Helmet);
 			Chest = DamageArmorItem(Chest);
@@ -98,14 +98,15 @@ namespace MiNET
 
 		public virtual Item DamageItem(Item item, ItemDamageReason reason, Entity target, Block block)
 		{
-			if (Player.GameMode != GameMode.Survival) return item;
-			if (item.Unbreakable) return item;
+			if (Player.GameMode != GameMode.Survival)
+				return item;
+			if (item.Unbreakable)
+				return item;
 
 			var unbreakingLevel = item.GetEnchantingLevel(EnchantingType.Unbreaking);
 			if (unbreakingLevel > 0)
-			{
-				if (new Random().Next(1 + unbreakingLevel) != 0) return item;
-			}
+				if (new Random().Next(1 + unbreakingLevel) != 0)
+					return item;
 
 			if (item.DamageItem(Player, reason, target, block))
 			{
@@ -126,7 +127,8 @@ namespace MiNET
 		[Wired]
 		public virtual void SetInventorySlot(int slot, Item item, bool forceReplace = false)
 		{
-			if (item == null || item.Count <= 0) item = new ItemAir();
+			if (item == null || item.Count <= 0)
+				item = new ItemAir();
 
 			UpdateInventorySlot(slot, item, forceReplace);
 
@@ -137,9 +139,7 @@ namespace MiNET
 		public virtual void SetArmorSlot(ArmorType type, Item item, bool forceReplace = false)
 		{
 			if (item == null || item.Count <= 0)
-			{
 				item = new ItemAir();
-			}
 
 			UpdateArmorSlot(type, item, forceReplace);
 
@@ -151,9 +151,7 @@ namespace MiNET
 		public virtual void SetOffHandSlot(Item item, bool forceReplace = false)
 		{
 			if (item == null || item.Count <= 0)
-			{
 				item = new ItemAir();
-			}
 
 			UpdateOffHandSlot(item, forceReplace);
 
@@ -165,9 +163,7 @@ namespace MiNET
 		public virtual void SetUiSlot(int slot, Item item, bool forceReplace = false)
 		{
 			if (item == null || item.Count <= 0)
-			{
 				item = new ItemAir();
-			}
 
 			UpdateUiSlot(slot, item, forceReplace);
 			SendSetSlot(slot, UiInventory.Slots[slot], WindowId.UI);
@@ -197,7 +193,8 @@ namespace MiNET
 		{
 			var existing = GetArmorSlot(type);
 
-			if (existing == null) return;
+			if (existing == null)
+				return;
 
 			Action<Item> setItemDelegate = newItem =>
 			{
@@ -236,9 +233,7 @@ namespace MiNET
 			existing.ExtraData = item.ExtraData;
 
 			if (existing is ItemBlock existingItemBock && item is ItemBlock itemBlock)
-			{
 				existingItemBock.SetBlock(itemBlock.Block);
-			}
 		}
 
 		public ItemStacks GetSlots()
@@ -247,7 +242,8 @@ namespace MiNET
 
 			for (int i = 0; i < Slots.Count; i++)
 			{
-				if (Slots[i].Count == 0) Slots[i] = new ItemAir();
+				if (Slots[i].Count == 0)
+					Slots[i] = new ItemAir();
 				slotData[i] = Slots[i];
 			}
 
@@ -260,7 +256,8 @@ namespace MiNET
 
 			for (int i = 0; i < UiInventory.Slots.Count; i++)
 			{
-				if (UiInventory.Slots[i].Count == 0) UiInventory.Slots[i] = new ItemAir();
+				if (UiInventory.Slots[i].Count == 0)
+					UiInventory.Slots[i] = new ItemAir();
 
 				slotData[i] = UiInventory.Slots[i];
 			}
@@ -308,19 +305,17 @@ namespace MiNET
 					int take = Math.Min(item.Count, existingItem.MaxStackSize - existingItem.Count);
 					existingItem.Count += (byte) take;
 					item.Count -= (byte) take;
-					if (update) SendSetSlot(si);
+					if (update)
+						SendSetSlot(si);
 
 					if (item.Count <= 0)
-					{
 						return true;
-					}
 				}
 			}
 
 			for (int si = 0; si < Slots.Count; si++)
-			{
-				if (FirstEmptySlot(item, update, si)) return true;
-			}
+				if (FirstEmptySlot(item, update, si))
+					return true;
 
 			return false;
 		}
@@ -333,7 +328,8 @@ namespace MiNET
 			{
 				Slots[si] = (Item) item.Clone();
 				item.Count = 0;
-				if (update) SendSetSlot(si);
+				if (update)
+					SendSetSlot(si);
 				return true;
 			}
 
@@ -349,7 +345,8 @@ namespace MiNET
 				if (existingItem is ItemAir)
 				{
 					Slots[si] = item;
-					if (update) SendSetSlot(si);
+					if (update)
+						SendSetSlot(si);
 					return true;
 				}
 			}
@@ -392,23 +389,21 @@ namespace MiNET
 		public bool HasItem(Item item)
 		{
 			for (byte i = 0; i < Slots.Count; i++)
-			{
 				if (Slots[i].Id == item.Id && Slots[i].Metadata == item.Metadata)
-				{
 					return true;
-				}
-			}
 
 			return false;
 		}
 
 		public void RemoveItems(string id, byte count)
 		{
-			if (count <= 0) return;
+			if (count <= 0)
+				return;
 
 			for (byte i = 0; i < Slots.Count; i++)
 			{
-				if (count <= 0) break;
+				if (count <= 0)
+					break;
 
 				var slot = Slots[i];
 				if (slot.Id == id)
@@ -425,9 +420,7 @@ namespace MiNET
 					}
 
 					if (slot.Count == 0)
-					{
 						Slots[i] = new ItemAir();
-					}
 
 					SendSetSlot(i);
 				}
@@ -445,25 +438,29 @@ namespace MiNET
 			sendSlot.inventoryId = (uint) windowId;
 			sendSlot.slot = (uint) slot;
 			sendSlot.item = item;
-			sendSlot.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
+			sendSlot.containerName = FullContainerName.Unknown;
 			Player.SendPacket(sendSlot);
 		}
 
 		public void Clear()
 		{
 			for (int i = 0; i < Slots.Count; ++i)
-			{
-				if (Slots[i] is not ItemAir) Slots[i] = new ItemAir();
-			}
-			
+				if (Slots[i] is not ItemAir)
+					Slots[i] = new ItemAir();
+
 			UiInventory.Clear();
 
-			if (OffHand is not ItemAir) OffHand = new ItemAir();
+			if (OffHand is not ItemAir)
+				OffHand = new ItemAir();
 
-			if (Helmet is not ItemAir) Helmet = new ItemAir();
-			if (Chest is not ItemAir) Chest = new ItemAir();
-			if (Leggings is not ItemAir) Leggings = new ItemAir();
-			if (Boots is not ItemAir) Boots = new ItemAir();
+			if (Helmet is not ItemAir)
+				Helmet = new ItemAir();
+			if (Chest is not ItemAir)
+				Chest = new ItemAir();
+			if (Leggings is not ItemAir)
+				Leggings = new ItemAir();
+			if (Boots is not ItemAir)
+				Boots = new ItemAir();
 
 			Player.SendPlayerInventory();
 		}

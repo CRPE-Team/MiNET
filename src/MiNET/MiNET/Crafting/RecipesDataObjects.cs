@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using MiNET.Inventory;
+using MiNET.Inventories;
 
 namespace MiNET.Crafting
 {

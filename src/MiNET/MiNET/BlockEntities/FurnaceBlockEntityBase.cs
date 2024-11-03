@@ -26,7 +26,7 @@
 using fNbt.Serialization;
 using log4net;
 using MiNET.Blocks;
-using MiNET.Inventory;
+using MiNET.Inventories;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;

@@ -34,7 +34,7 @@ using MiNET.Net.Crafting;
 using MiNET.Utils;
 using MiNET.Worlds;
 
-namespace MiNET.Inventory
+namespace MiNET.Inventories
 {
 	public class ItemStackInventoryManager
 	{
@@ -652,7 +652,7 @@ namespace MiNET.Inventory
 				case ContainerId.FurnaceIngredient:
 				case ContainerId.FurnaceResult:
 				case ContainerId.BlastFurnaceIngredient:
-					if (_player._openInventory is ContainerInventory inventory)
+					if (_player._openInventory is Inventory inventory)
 					{
 						item = inventory.GetSlot((byte) slot);
 					}
@@ -698,7 +698,7 @@ namespace MiNET.Inventory
 				case ContainerId.FurnaceIngredient:
 				case ContainerId.FurnaceResult:
 				case ContainerId.BlastFurnaceIngredient:
-					if (_player._openInventory is ContainerInventory inventory)
+					if (_player._openInventory is Inventory inventory)
 					{
 						inventory.SetSlot(_player, (byte) slot, item);
 					}

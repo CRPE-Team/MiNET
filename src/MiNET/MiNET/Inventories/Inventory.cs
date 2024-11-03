@@ -31,16 +31,30 @@ using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
+using MiNET.Worlds;
 
-namespace MiNET.Inventory
+namespace MiNET.Inventories
 {
 	public interface IInventory
 	{
+		public WindowType Type { get; }
+		public ItemStacks Slots { get; }
+		public byte WindowsId { get; }
+
+		public long RuntimeEntityId { get; }
+		public BlockCoordinates Coordinates { get; }
+
+		public bool IsOpen { get; }
+
+		public bool Open(Player player);
+		public void Close();
+		public bool Close(Player player, bool closedByPlayer = false);
+		public void Clear();
 	}
 
-	public class ContainerInventory : IInventory
+	public class Inventory : IInventory
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(ContainerInventory));
+		private static readonly ILog Log = LogManager.GetLogger(typeof(Inventory));
 
 		public event EventHandler<InventoryChangeEventArgs> InventoryChanged;
 		public event EventHandler<InventoryOpenEventArgs> InventoryOpen;
@@ -51,19 +65,30 @@ namespace MiNET.Inventory
 		public virtual ItemStacks Slots { get; set; }
 		public byte WindowsId { get; set; } = GetNewWindowId();
 
-		public long RuntimeEntityId { get; set; } = -1;
+		public long RuntimeEntityId { get; set; } = EntityManager.EntityIdUndefined;
 		public BlockCoordinates Coordinates { get; set; }
 
-		public ContainerInventory(ItemStacks items, long runtimeEntityId)
+		public bool IsOpen => Observers.Any();
+
+		public Inventory(ItemStacks items, long runtimeEntityId)
 		{
 			Slots = items;
 			RuntimeEntityId = runtimeEntityId;
 		}
 
-		public ContainerInventory(ItemStacks items, BlockCoordinates coordinates)
+		public Inventory(ItemStacks items, BlockCoordinates coordinates)
 		{
 			Slots = items;
 			Coordinates = coordinates;
+		}
+
+		public Inventory(BlockCoordinates coordinates, WindowType type)
+		{
+			Coordinates = coordinates;
+			Type = type;
+
+			RuntimeEntityId = EntityManager.EntityIdSelf;
+			Slots = new ItemStacks(0);
 		}
 
 		public void SetSlot(Player player, byte slot, Item itemStack)
@@ -116,11 +141,6 @@ namespace MiNET.Inventory
 			OnInventoryChange(null, slot, slotData);
 		}
 
-		public bool IsOpen()
-		{
-			return Observers.Any();
-		}
-
 		public virtual bool Open(Player player)
 		{
 			var openedInventory = player.GetOpenInventory();
@@ -131,7 +151,7 @@ namespace MiNET.Inventory
 				player.CloseOpenedInventory();
 			}
 
-			var open = !IsOpen();
+			var open = !IsOpen;
 			if (!OnInventoryOpen(player, open)) return false;
 
 			player.SetOpenInventory(this);
@@ -166,13 +186,16 @@ namespace MiNET.Inventory
 			player.SetOpenInventory(null);
 			RemoveObserver(player);
 
-			var closePacket = McpeContainerClose.CreateObject();
-			closePacket.windowId = WindowsId;
-			closePacket.windowType = (sbyte) Type;
-			closePacket.server = !closedByPlayer;
-			player.SendPacket(closePacket);
+			SendClose(player, closedByPlayer);
 
-			OnInventoryClosed(player, !IsOpen());
+			foreach (var item in player.Inventory.UiInventory.Slots)
+			{
+				if (item is ItemAir) continue;
+
+				player.Inventory.SetFirstEmptySlot(item, true);
+			}
+
+			OnInventoryClosed(player, !IsOpen);
 
 			return true;
 		}
@@ -182,7 +205,7 @@ namespace MiNET.Inventory
 			var containerSetContent = McpeInventoryContent.CreateObject();
 			containerSetContent.inventoryId = WindowsId;
 			containerSetContent.input = Slots;
-			containerSetContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
+			containerSetContent.containerName = FullContainerName.Unknown;
 			player.SendPacket(containerSetContent);
 		}
 
@@ -194,6 +217,25 @@ namespace MiNET.Inventory
 			containerOpen.coordinates = Coordinates;
 			containerOpen.runtimeEntityId = RuntimeEntityId;
 			player.SendPacket(containerOpen);
+		}
+
+		protected void SendClose(Player player, bool closedByPlayer)
+		{
+			var closePacket = McpeContainerClose.CreateObject();
+			closePacket.windowId = WindowsId;
+			closePacket.windowType = (sbyte) Type;
+			closePacket.server = !closedByPlayer;
+			player.SendPacket(closePacket);
+		}
+
+		public virtual void Clear()
+		{
+			Slots.Reset();
+
+			foreach (var observer in Observers)
+			{
+				SendContent(observer);
+			}
 		}
 
 		protected virtual void OnInventoryChange(Player player, byte slot, Item itemStack)

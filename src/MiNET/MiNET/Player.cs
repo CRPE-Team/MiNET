@@ -43,7 +43,7 @@ using MiNET.Effects;
 using MiNET.Entities;
 using MiNET.Entities.Passive;
 using MiNET.Entities.World;
-using MiNET.Inventory;
+using MiNET.Inventories;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.Net.Crafting;
@@ -1832,7 +1832,7 @@ namespace MiNET
 			var inventoryContent = McpeInventoryContent.CreateObject();
 			inventoryContent.inventoryId = (byte) WindowId.Inventory;
 			inventoryContent.input = Inventory.GetSlots();
-			inventoryContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
+			inventoryContent.containerName = FullContainerName.Unknown;
 			SendPacket(inventoryContent);
 
 			SendPlayerArmor();
@@ -1840,13 +1840,13 @@ namespace MiNET
 			var uiContent = McpeInventoryContent.CreateObject();
 			uiContent.inventoryId = (byte) WindowId.UI;
 			uiContent.input = Inventory.GetUiSlots();
-			uiContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
+			uiContent.containerName = FullContainerName.Unknown;
 			SendPacket(uiContent);
 
 			var offHandContent = McpeInventoryContent.CreateObject();
 			offHandContent.inventoryId = (byte) WindowId.Offhand;
 			offHandContent.input = Inventory.GetOffHand();
-			offHandContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
+			offHandContent.containerName = FullContainerName.Unknown;
 			SendPacket(offHandContent);
 
 			var mobEquipment = McpeMobEquipment.CreateObject();
@@ -1862,7 +1862,7 @@ namespace MiNET
 			var armorContent = McpeInventoryContent.CreateObject();
 			armorContent.inventoryId = (byte) WindowId.Armor;
 			armorContent.input = Inventory.GetArmor();
-			armorContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
+			armorContent.containerName = FullContainerName.Unknown;
 			SendPacket(armorContent);
 		}
 
@@ -1931,7 +1931,7 @@ namespace MiNET
 				lock (_disconnectSync)
 				{
 					// must close due to events subscription
-					(_openInventory as ContainerInventory)?.Close(this);
+					(_openInventory as Inventory)?.Close(this);
 
 					if (IsConnected)
 					{
@@ -2159,7 +2159,7 @@ namespace MiNET
 			
 		}
 
-
+		[Obsolete]
 		public bool UsingAnvil { get; set; }
 
 		public void HandleMcpeItemStackRequest(McpeItemStackRequest message)
@@ -2298,12 +2298,12 @@ namespace MiNET
 
 		public virtual void SetOpenInventory(IInventory inventory)
 		{
-			if (_openInventory is ContainerInventory inv)
+			if (_openInventory is Inventory inv)
 			{
 				inv.InventoryChanged -= OnInventoryChanged;
 			}
 
-			if (inventory is ContainerInventory newInv)
+			if (inventory is Inventory newInv)
 			{
 				newInv.InventoryChanged += OnInventoryChanged;
 			}
@@ -2325,7 +2325,6 @@ namespace MiNET
 
 		public void OpenInventory(BlockCoordinates inventoryCoord)
 		{
-			// https://github.com/pmmp/PocketMine-MP/blob/stable/src/pocketmine/network/mcpe/protocol/types/WindowTypes.php
 			lock (_inventorySync)
 			{
 				var blockEntity = Level.GetBlockEntity(inventoryCoord) as ContainerBlockEntityBase;
@@ -2353,7 +2352,7 @@ namespace MiNET
 				sendSlot.slot = args.Slot;
 				//sendSlot.uniqueid = itemStack.UniqueId;
 				sendSlot.item = args.Item;
-				sendSlot.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
+				sendSlot.containerName = FullContainerName.Unknown;
 				SendPacket(sendSlot);
 			}
 
@@ -2663,7 +2662,7 @@ namespace MiNET
 
 			lock (_inventorySync)
 			{
-				if (_openInventory is ContainerInventory inventory)
+				if (_openInventory is Inventory inventory)
 				{
 					if (message != null && message.windowId != inventory.WindowsId) return;
 

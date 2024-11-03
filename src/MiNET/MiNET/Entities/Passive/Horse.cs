@@ -30,7 +30,7 @@ using fNbt;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Entities.Behaviors;
-using MiNET.Inventory;
+using MiNET.Inventories;
 using MiNET.Items;
 using MiNET.Items.Extensions;
 using MiNET.Net;
@@ -172,7 +172,7 @@ namespace MiNET.Entities.Passive
 
 				if (!IsSaddled)
 				{
-					Inventory.SetSlot(0, inHand);
+					Inventory.SetSlot(player, 0, inHand);
 					player.Inventory.RemoveItems(inHand.Id, 1); // Wrong. Should really be item in hand
 				}
 			}
@@ -331,84 +331,65 @@ namespace MiNET.Entities.Passive
 		}
 	}
 
-	public class HorseInventory : IInventory
+	public class HorseInventory : ContainerInventory
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(HorseInventory));
-
 		private readonly Horse _horse;
 
-		public Item Slot0 { get; private set; } = new ItemAir();
-		public Item Slot1 { get; private set; } = new ItemAir();
-
-		public HorseInventory(Horse horse)
+		public HorseInventory(Horse horse) 
+			: base(new ItemStacks(2), horse.EntityId)
 		{
 			_horse = horse;
+
+			Type = WindowType.Horse;
 		}
 
-		public void Open(Player player)
+		protected override bool OnInventoryOpen(Player player, bool open)
 		{
-			if (!_horse.IsTamed) return;
+			var opened = base.OnInventoryOpen(player, open);
 
-			player.SetOpenInventory(this);
-
-			McpeUpdateEquipment equ = McpeUpdateEquipment.CreateObject();
-			equ.entityId = _horse.EntityId;
-			equ.windowId = 2;
-			equ.windowType = 12;
-
-			Nbt nbt = new Nbt
+			if (opened)
 			{
-				NbtFile = new NbtFile
+				var equ = McpeUpdateEquipment.CreateObject();
+				equ.entityId = _horse.EntityId;
+				equ.windowId = WindowsId;
+				equ.windowType = (byte) Type;
+
+				equ.namedtag = new Nbt
 				{
-					BigEndian = false,
-					UseVarInt = true,
-					RootTag = GetNbt()
-				}
-			};
-			equ.namedtag = nbt;
+					NbtFile = new NbtFile(GetNbt())
+					{
+						Flavor = NbtFlavor.Bedrock
+					}
+				};
 
-			player.SendPacket(equ);
+				player.SendPacket(equ);
+			}
 
-			var containerSetContent = McpeInventoryContent.CreateObject();
-			containerSetContent.inventoryId = 2;
-			containerSetContent.input = new ItemStacks([Slot0, Slot1]);
-			containerSetContent.containerName = new FullContainerName() { ContainerId = ContainerId.Unknown };
-			player.SendPacket(containerSetContent);
+			return opened;
 		}
 
-		public Item GetSlot(int slot)
+		public override void SetSlot(Player player, byte slot, Item itemStack)
 		{
-			Item item = null;
-			if (slot == 0)
-				item = Slot0;
-			else if (slot == 1)
-				item = Slot1;
-
-			return item ?? new ItemAir();
-		}
-
-		public void SetSlot(int slot, Item item)
-		{
-			if (item == null) item = new ItemAir();
-
-			if (slot == 0)
+			switch (slot)
 			{
-				Slot0 = item;
+				case 0:
+					_horse.SaddleHorse(itemStack is ItemSaddle);
+					break;
+				case 1:
+					_horse.Chest = itemStack;
+					_horse.BroadcastArmor();
+					break;
+			}
 
-				_horse.SaddleHorse(item is ItemSaddle);
-			}
-			else if (slot == 1)
-			{
-				Slot1 = item;
-				_horse.Chest = item;
-				_horse.BroadcastArmor();
-			}
+			base.SetSlot(player, slot, itemStack);
 		}
 
 		public NbtCompound GetNbt()
 		{
-			NbtCompound root = new NbtCompound("");
-			root.Add(
+			// TODO - WTF?!
+
+			NbtCompound root = new NbtCompound("")
+			{
 				new NbtList("slots")
 				{
 					new NbtCompound()
@@ -427,9 +408,9 @@ namespace MiNET.Entities.Passive
 						},
 						new NbtCompound("item")
 						{
-							new NbtByte("Count", Slot0.Count),
-							new NbtShort("Damage", Slot0.Metadata),
-							new NbtShort("id", Slot0.LegacyId),
+							new NbtByte("Count", Slots[0].Count),
+							new NbtShort("Damage", Slots[0].Metadata),
+							new NbtShort("id", Slots[0].LegacyId),
 						},
 						new NbtInt("slotNumber", 0)
 					},
@@ -476,13 +457,14 @@ namespace MiNET.Entities.Passive
 						},
 						new NbtCompound("item")
 						{
-							new NbtByte("Count", Slot1.Count),
-							new NbtShort("Damage", Slot1.Metadata),
-							new NbtShort("id", Slot1.LegacyId),
+							new NbtByte("Count", Slots[1].Count),
+							new NbtShort("Damage", Slots[1].Metadata),
+							new NbtShort("id", Slots[1].LegacyId),
 						},
 						new NbtInt("slotNumber", 1)
 					},
-				});
+				}
+			};
 
 			return root;
 		}

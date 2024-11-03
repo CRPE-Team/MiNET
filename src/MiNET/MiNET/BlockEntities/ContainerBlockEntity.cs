@@ -1,4 +1,4 @@
-﻿using MiNET.Inventory;
+﻿using MiNET.Inventories;
 using MiNET.Net;
 using MiNET.Utils;
 

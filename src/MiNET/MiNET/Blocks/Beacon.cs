@@ -25,6 +25,7 @@
 
 using System.Numerics;
 using MiNET.BlockEntities;
+using MiNET.Inventories;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
@@ -71,12 +72,7 @@ namespace MiNET.Blocks
 
 		public override bool Interact(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoord)
 		{
-			var containerOpen = McpeContainerOpen.CreateObject();
-			containerOpen.windowId = 5 + 9;
-			containerOpen.type = (sbyte) WindowType.Beacon;
-			containerOpen.coordinates = blockCoordinates;
-			containerOpen.runtimeEntityId = -1;
-			player.SendPacket(containerOpen);
+			new Inventory(Coordinates, WindowType.Beacon).Open(player);
 
 			return true;
 		}

@@ -1,6 +1,6 @@
 ﻿using System;
 using fNbt.Serialization;
-using MiNET.Inventory;
+using MiNET.Inventories;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;

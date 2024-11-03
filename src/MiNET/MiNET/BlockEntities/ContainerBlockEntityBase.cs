@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using fNbt.Serialization;
-using MiNET.Inventory;
+using MiNET.Inventories;
 using MiNET.Items;
 using MiNET.Utils;
 using MiNET.Worlds;

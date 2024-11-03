@@ -25,6 +25,7 @@
 
 using System.Numerics;
 using MiNET.Blocks.States;
+using MiNET.Inventories;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Vectors;
@@ -53,12 +54,7 @@ namespace MiNET.Blocks
 		public override bool Interact(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoord)
 		{
 			player.UsingAnvil = true;
-			var containerOpen = McpeContainerOpen.CreateObject();
-			containerOpen.windowId = 14;
-			containerOpen.type = (sbyte) WindowType.Anvil;
-			containerOpen.coordinates = blockCoordinates;
-			containerOpen.runtimeEntityId = EntityManager.EntityIdSelf;
-			player.SendPacket(containerOpen);
+			new Inventory(Coordinates, WindowType.Anvil).Open(player);
 
 			//var sendSlot = McpeInventorySlot.CreateObject();
 			//sendSlot.inventoryId = 14;
