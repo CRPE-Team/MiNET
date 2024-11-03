@@ -8,7 +8,7 @@ namespace MiNET.Inventories
 
 		public Item Item { get; }
 
-		public InventoryChangeEventArgs(Player player, Inventory inventory, byte slot, Item item)
+		public InventoryChangeEventArgs(Player player, IInventory inventory, byte slot, Item item)
 			: base(player, inventory)
 		{
 			Slot = slot;

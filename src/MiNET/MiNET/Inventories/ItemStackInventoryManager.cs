@@ -652,7 +652,7 @@ namespace MiNET.Inventories
 				case ContainerId.FurnaceIngredient:
 				case ContainerId.FurnaceResult:
 				case ContainerId.BlastFurnaceIngredient:
-					if (_player._openInventory is Inventory inventory)
+					if (_player._openInventory is ContainerInventory inventory)
 					{
 						item = inventory.GetSlot((byte) slot);
 					}
@@ -698,7 +698,7 @@ namespace MiNET.Inventories
 				case ContainerId.FurnaceIngredient:
 				case ContainerId.FurnaceResult:
 				case ContainerId.BlastFurnaceIngredient:
-					if (_player._openInventory is Inventory inventory)
+					if (_player._openInventory is ContainerInventory inventory)
 					{
 						inventory.SetSlot(_player, (byte) slot, item);
 					}

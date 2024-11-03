@@ -4,7 +4,7 @@
 	{
 		public bool Closed { get; }
 
-		public InventoryClosedEventArgs(Player player, Inventory inventory, bool closed)
+		public InventoryClosedEventArgs(Player player, IInventory inventory, bool closed)
 			: base(player, inventory)
 		{
 			Closed = closed;

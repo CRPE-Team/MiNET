@@ -6,7 +6,7 @@
 
 		public bool Cancel { get; set; }
 
-		public InventoryOpenEventArgs(Player player, Inventory inventory, bool open)
+		public InventoryOpenEventArgs(Player player, IInventory inventory, bool open)
 			: base(player, inventory)
 		{
 			Open = open;

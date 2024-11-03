@@ -1931,7 +1931,7 @@ namespace MiNET
 				lock (_disconnectSync)
 				{
 					// must close due to events subscription
-					(_openInventory as Inventory)?.Close(this);
+					_openInventory?.Close(this);
 
 					if (IsConnected)
 					{
@@ -2298,12 +2298,12 @@ namespace MiNET
 
 		public virtual void SetOpenInventory(IInventory inventory)
 		{
-			if (_openInventory is Inventory inv)
+			if (_openInventory is CommonInventory inv)
 			{
 				inv.InventoryChanged -= OnInventoryChanged;
 			}
 
-			if (inventory is Inventory newInv)
+			if (inventory is CommonInventory newInv)
 			{
 				newInv.InventoryChanged += OnInventoryChanged;
 			}
@@ -2662,15 +2662,11 @@ namespace MiNET
 
 			lock (_inventorySync)
 			{
-				if (_openInventory is Inventory inventory)
+				if (_openInventory != null)
 				{
-					if (message != null && message.windowId != inventory.WindowsId) return;
+					if (message != null && message.windowId != _openInventory.WindowsId) return;
 
-					inventory.Close(this, message != null);
-				}
-				else if (_openInventory is HorseInventory horseInventory)
-				{
-					_openInventory = null;
+					_openInventory.Close(this, message != null);
 				}
 				else
 				{

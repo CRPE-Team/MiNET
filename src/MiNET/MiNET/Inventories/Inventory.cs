@@ -47,58 +47,154 @@ namespace MiNET.Inventories
 		public bool IsOpen { get; }
 
 		public bool Open(Player player);
-		public void Close();
 		public bool Close(Player player, bool closedByPlayer = false);
 		public void Clear();
 	}
 
-	public class Inventory : IInventory
+	public class ContainerInventory : CommonInventory
+	{
+		public override bool IsOpen => Observers.Any();
+
+		public ContainerInventory(ItemStacks items, long runtimeEntityId) 
+			: base(items, default, runtimeEntityId)
+		{
+		}
+
+		public ContainerInventory(ItemStacks items, BlockCoordinates coordinates) 
+			: base(items, coordinates, EntityManager.EntityIdUndefined)
+		{
+		}
+
+		public virtual void Close()
+		{
+			foreach (var observer in Observers.ToArray())
+			{
+				Close(observer);
+			}
+		}
+
+		public override void Clear()
+		{
+			base.Clear();
+
+			foreach (var observer in Observers)
+			{
+				SendContent(observer);
+			}
+		}
+
+		protected override bool OnInventoryOpen(Player player, bool open)
+		{
+			var opened = base.OnInventoryOpen(player, open);
+
+			if (opened)
+			{
+				AddObserver(player);
+			}
+
+			return opened;
+		}
+
+		protected override void OnInventoryClose(Player player)
+		{
+			base.OnInventoryClose(player);
+
+			RemoveObserver(player);
+		}
+
+		// Below is a workaround making it possible to send
+		// updates to only peopele that is looking at this inventory.
+		// Is should be converted to some sort of event based version.
+
+		public ConcurrentBag<Player> Observers { get; } = new ConcurrentBag<Player>();
+
+		protected virtual void AddObserver(Player player)
+		{
+			Observers.Add(player);
+		}
+
+		protected virtual void RemoveObserver(Player player)
+		{
+			// Need to arrange for this to work when players get disconnected
+			// from crash. It will leak players for sure.
+			Observers.TryTake(out player);
+		}
+	}
+
+	public class Inventory : CommonInventory
+	{
+		private bool _isOpen;
+
+		public override bool IsOpen => _isOpen;
+
+		public Inventory(BlockCoordinates coordinates, WindowType type)
+			: this(new ItemStacks(0), coordinates, type)
+		{
+
+		}
+
+		public Inventory(ItemStacks items, BlockCoordinates coordinates, WindowType type)
+			: base(items, coordinates, EntityManager.EntityIdSelf)
+		{
+			Type = type;
+		}
+
+		protected override bool OnInventoryOpen(Player player, bool open)
+		{
+			if (_isOpen) return false;
+
+			var opened = base.OnInventoryOpen(player, open);
+
+			if (opened)
+			{
+				_isOpen = true;
+			}
+
+			return opened;
+		}
+
+		protected override void OnInventoryClose(Player player)
+		{
+			base.OnInventoryClose(player);
+
+			_isOpen = false;
+		}
+	}
+
+	public abstract class CommonInventory : IInventory
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Inventory));
 
 		public event EventHandler<InventoryChangeEventArgs> InventoryChanged;
 		public event EventHandler<InventoryOpenEventArgs> InventoryOpen;
 		public event EventHandler<InventoryOpenedEventArgs> InventoryOpened;
+		public event EventHandler<InventoryEventArgs> InventoryClose;
 		public event EventHandler<InventoryClosedEventArgs> InventoryClosed;
 
 		public WindowType Type { get; set; }
 		public virtual ItemStacks Slots { get; set; }
 		public byte WindowsId { get; set; } = GetNewWindowId();
 
-		public long RuntimeEntityId { get; set; } = EntityManager.EntityIdUndefined;
+		public long RuntimeEntityId { get; set; }
 		public BlockCoordinates Coordinates { get; set; }
 
-		public bool IsOpen => Observers.Any();
+		public abstract bool IsOpen { get; }
 
-		public Inventory(ItemStacks items, long runtimeEntityId)
+		protected CommonInventory(ItemStacks items, BlockCoordinates coordinates, long runtimeEntityId)
 		{
 			Slots = items;
+			Coordinates = coordinates;
 			RuntimeEntityId = runtimeEntityId;
 		}
 
-		public Inventory(ItemStacks items, BlockCoordinates coordinates)
-		{
-			Slots = items;
-			Coordinates = coordinates;
-		}
-
-		public Inventory(BlockCoordinates coordinates, WindowType type)
-		{
-			Coordinates = coordinates;
-			Type = type;
-
-			RuntimeEntityId = EntityManager.EntityIdSelf;
-			Slots = new ItemStacks(0);
-		}
-
-		public void SetSlot(Player player, byte slot, Item itemStack)
+		public virtual void SetSlot(Player player, byte slot, Item itemStack)
 		{
 			Slots[slot] = itemStack;
 
 			OnInventoryChange(player, slot, itemStack);
 		}
 
-		public Item GetSlot(byte slot)
+		public virtual Item GetSlot(byte slot)
 		{
 			return Slots[slot];
 		}
@@ -126,7 +222,7 @@ namespace MiNET.Inventories
 
 		public void IncreaseSlot(byte slot, string id, short metadata)
 		{
-			Item slotData = Slots[slot];
+			var slotData = Slots[slot];
 			if (slotData is ItemAir)
 			{
 				slotData = ItemFactory.GetItem(id, metadata, 1);
@@ -156,22 +252,12 @@ namespace MiNET.Inventories
 
 			player.SetOpenInventory(this);
 
-			AddObserver(player);
-
 			SendOpen(player);
 			SendContent(player);
 
 			OnInventoryOpened(player, open);
 
 			return true;
-		}
-
-		public virtual void Close()
-		{
-			foreach (var observer in Observers.ToArray())
-			{
-				Close(observer);
-			}
 		}
 
 		public virtual bool Close(Player player, bool closedByPlayer = false)
@@ -183,8 +269,9 @@ namespace MiNET.Inventories
 				return false;
 			}
 
+			OnInventoryClose(player);
+
 			player.SetOpenInventory(null);
-			RemoveObserver(player);
 
 			SendClose(player, closedByPlayer);
 
@@ -231,11 +318,6 @@ namespace MiNET.Inventories
 		public virtual void Clear()
 		{
 			Slots.Reset();
-
-			foreach (var observer in Observers)
-			{
-				SendContent(observer);
-			}
 		}
 
 		protected virtual void OnInventoryChange(Player player, byte slot, Item itemStack)
@@ -256,27 +338,14 @@ namespace MiNET.Inventories
 			InventoryOpened?.Invoke(this, new InventoryOpenedEventArgs(player, this, opened));
 		}
 
+		protected virtual void OnInventoryClose(Player player)
+		{
+			InventoryClose?.Invoke(this, new InventoryEventArgs(player, this));
+		}
+
 		protected virtual void OnInventoryClosed(Player player, bool closed)
 		{
 			InventoryClosed?.Invoke(this, new InventoryClosedEventArgs(player, this, closed));
-		}
-
-		// Below is a workaround making it possible to send
-		// updates to only peopele that is looking at this inventory.
-		// Is should be converted to some sort of event based version.
-
-		public ConcurrentBag<Player> Observers { get; } = new ConcurrentBag<Player>();
-
-		public virtual void AddObserver(Player player)
-		{
-			Observers.Add(player);
-		}
-
-		public virtual void RemoveObserver(Player player)
-		{
-			// Need to arrange for this to work when players get disconnected
-			// from crash. It will leak players for sure.
-			Observers.TryTake(out player);
 		}
 
 		private static byte _lastWindowId;

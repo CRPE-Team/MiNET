@@ -2,9 +2,9 @@
 {
 	public class InventoryEventArgs : PlayerEventArgs
 	{
-		public Inventory Inventory { get; }
+		public IInventory Inventory { get; }
 
-		public InventoryEventArgs(Player player, Inventory inventory)
+		public InventoryEventArgs(Player player, IInventory inventory)
 			: base(player)
 		{
 			Inventory = inventory;

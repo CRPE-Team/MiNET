@@ -4,7 +4,7 @@
 	{
 		public bool Opened { get; }
 
-		public InventoryOpenedEventArgs(Player player, Inventory inventory, bool opened)
+		public InventoryOpenedEventArgs(Player player, IInventory inventory, bool opened)
 			: base(player, inventory)
 		{
 			Opened = opened;
