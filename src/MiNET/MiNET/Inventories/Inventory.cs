@@ -39,7 +39,7 @@ namespace MiNET.Inventories
 	{
 		public WindowType Type { get; }
 		public ItemStacks Slots { get; }
-		public byte WindowsId { get; }
+		public WindowId WindowId { get; }
 
 		public long RuntimeEntityId { get; }
 		public BlockCoordinates Coordinates { get; }
@@ -53,16 +53,72 @@ namespace MiNET.Inventories
 
 	public class ContainerInventory : CommonInventory
 	{
+		public event EventHandler<InventoryChangeEventArgs> InventoryChanged;
+
 		public override bool IsOpen => Observers.Any();
 
 		public ContainerInventory(ItemStacks items, long runtimeEntityId) 
 			: base(items, default, runtimeEntityId)
 		{
+
 		}
 
 		public ContainerInventory(ItemStacks items, BlockCoordinates coordinates) 
 			: base(items, coordinates, EntityManager.EntityIdUndefined)
 		{
+
+		}
+
+		public virtual void SetSlot(Player player, byte slot, Item itemStack)
+		{
+			Slots[slot] = itemStack;
+
+			OnInventoryChange(player, slot, itemStack);
+			BroadcastSetSlot(player, slot);
+		}
+
+		public virtual Item GetSlot(byte slot)
+		{
+			return Slots[slot];
+		}
+
+		public bool DecreaseSlot(byte slot)
+		{
+			var slotData = Slots[slot];
+			if (slotData is ItemAir) return false;
+			var count = slotData.Count;
+
+			slotData.Count--;
+
+			if (slotData.Count <= 0)
+			{
+				slotData = new ItemAir();
+			}
+
+			SetSlot(null, slot, slotData);
+
+			if (count <= 0) return false;
+
+			OnInventoryChange(null, slot, slotData);
+			BroadcastSetSlot(slot);
+			return true;
+		}
+
+		public void IncreaseSlot(byte slot, string id, short metadata)
+		{
+			var slotData = Slots[slot];
+			if (slotData is ItemAir)
+			{
+				slotData = ItemFactory.GetItem(id, metadata, 1);
+			}
+			else
+			{
+				slotData.Count++;
+			}
+
+			SetSlot(null, slot, slotData);
+
+			OnInventoryChange(null, slot, slotData);
 		}
 
 		public virtual void Close()
@@ -80,6 +136,23 @@ namespace MiNET.Inventories
 			foreach (var observer in Observers)
 			{
 				SendContent(observer);
+			}
+		}
+
+		protected virtual void BroadcastSetSlot(int slot)
+		{
+			BroadcastSetSlot(null, slot);
+		}
+
+		protected virtual void BroadcastSetSlot(Player sender, int slot)
+		{
+			var item = Slots[slot];
+
+			foreach (var observer in Observers)
+			{
+				if (observer == sender) continue;
+
+				SendSetSlot(observer, slot, item, WindowId);
 			}
 		}
 
@@ -119,6 +192,11 @@ namespace MiNET.Inventories
 			// from crash. It will leak players for sure.
 			Observers.TryTake(out player);
 		}
+
+		protected virtual void OnInventoryChange(Player player, byte slot, Item itemStack)
+		{
+			InventoryChanged?.Invoke(this, new InventoryChangeEventArgs(player, this, slot, itemStack));
+		}
 	}
 
 	public class Inventory : CommonInventory
@@ -135,6 +213,12 @@ namespace MiNET.Inventories
 
 		public Inventory(ItemStacks items, BlockCoordinates coordinates, WindowType type)
 			: base(items, coordinates, EntityManager.EntityIdSelf)
+		{
+			Type = type;
+		}
+
+		public Inventory(int size, long runtimeEntityId, WindowType type)
+			: base(ItemStacks.CreateAir(size), default, runtimeEntityId)
 		{
 			Type = type;
 		}
@@ -165,7 +249,6 @@ namespace MiNET.Inventories
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Inventory));
 
-		public event EventHandler<InventoryChangeEventArgs> InventoryChanged;
 		public event EventHandler<InventoryOpenEventArgs> InventoryOpen;
 		public event EventHandler<InventoryOpenedEventArgs> InventoryOpened;
 		public event EventHandler<InventoryEventArgs> InventoryClose;
@@ -173,7 +256,7 @@ namespace MiNET.Inventories
 
 		public WindowType Type { get; set; }
 		public virtual ItemStacks Slots { get; set; }
-		public byte WindowsId { get; set; } = GetNewWindowId();
+		public WindowId WindowId { get; set; } = GetNewWindowId();
 
 		public long RuntimeEntityId { get; set; }
 		public BlockCoordinates Coordinates { get; set; }
@@ -185,56 +268,6 @@ namespace MiNET.Inventories
 			Slots = items;
 			Coordinates = coordinates;
 			RuntimeEntityId = runtimeEntityId;
-		}
-
-		public virtual void SetSlot(Player player, byte slot, Item itemStack)
-		{
-			Slots[slot] = itemStack;
-
-			OnInventoryChange(player, slot, itemStack);
-		}
-
-		public virtual Item GetSlot(byte slot)
-		{
-			return Slots[slot];
-		}
-
-		public bool DecreaseSlot(byte slot)
-		{
-			var slotData = Slots[slot];
-			if (slotData is ItemAir) return false;
-			var count = slotData.Count;
-
-			slotData.Count--;
-
-			if (slotData.Count <= 0)
-			{
-				slotData = new ItemAir();
-			}
-
-			SetSlot(null, slot, slotData);
-
-			if (count <= 0) return false;
-
-			OnInventoryChange(null, slot, slotData);
-			return true;
-		}
-
-		public void IncreaseSlot(byte slot, string id, short metadata)
-		{
-			var slotData = Slots[slot];
-			if (slotData is ItemAir)
-			{
-				slotData = ItemFactory.GetItem(id, metadata, 1);
-			}
-			else
-			{
-				slotData.Count++;
-			}
-
-			SetSlot(null, slot, slotData);
-
-			OnInventoryChange(null, slot, slotData);
 		}
 
 		public virtual bool Open(Player player)
@@ -275,12 +308,7 @@ namespace MiNET.Inventories
 
 			SendClose(player, closedByPlayer);
 
-			foreach (var item in player.Inventory.UiInventory.Slots)
-			{
-				if (item is ItemAir) continue;
-
-				player.Inventory.SetFirstEmptySlot(item, true);
-			}
+			player.Inventory.CloseUiInventory();
 
 			OnInventoryClosed(player, !IsOpen);
 
@@ -290,39 +318,49 @@ namespace MiNET.Inventories
 		public void SendContent(Player player)
 		{
 			var containerSetContent = McpeInventoryContent.CreateObject();
-			containerSetContent.inventoryId = WindowsId;
+			containerSetContent.inventoryId = (byte) WindowId;
 			containerSetContent.input = Slots;
 			containerSetContent.containerName = FullContainerName.Unknown;
 			player.SendPacket(containerSetContent);
 		}
 
-		protected void SendOpen(Player player)
+		protected virtual void SendOpen(Player player)
 		{
 			var containerOpen = McpeContainerOpen.CreateObject();
-			containerOpen.windowId = WindowsId;
+			containerOpen.windowId = (byte) WindowId;
 			containerOpen.type = (sbyte) Type;
 			containerOpen.coordinates = Coordinates;
 			containerOpen.runtimeEntityId = RuntimeEntityId;
 			player.SendPacket(containerOpen);
 		}
 
-		protected void SendClose(Player player, bool closedByPlayer)
+		protected virtual void SendClose(Player player, bool closedByPlayer)
 		{
 			var closePacket = McpeContainerClose.CreateObject();
-			closePacket.windowId = WindowsId;
+			closePacket.windowId = (byte) WindowId;
 			closePacket.windowType = (sbyte) Type;
 			closePacket.server = !closedByPlayer;
 			player.SendPacket(closePacket);
 		}
 
+		protected virtual void SendSetSlot(Player player, int slot)
+		{
+			SendSetSlot(player, slot, Slots[slot], WindowId);
+		}
+
+		protected virtual void SendSetSlot(Player player, int slot, Item item, WindowId windowId)
+		{
+			var sendSlot = McpeInventorySlot.CreateObject();
+			sendSlot.inventoryId = (uint) windowId;
+			sendSlot.slot = (uint) slot;
+			sendSlot.item = item;
+			sendSlot.containerName = FullContainerName.Unknown;
+			player.SendPacket(sendSlot);
+		}
+
 		public virtual void Clear()
 		{
 			Slots.Reset();
-		}
-
-		protected virtual void OnInventoryChange(Player player, byte slot, Item itemStack)
-		{
-			InventoryChanged?.Invoke(this, new InventoryChangeEventArgs(player, this, slot, itemStack));
 		}
 
 		protected virtual bool OnInventoryOpen(Player player, bool open)
@@ -350,9 +388,9 @@ namespace MiNET.Inventories
 
 		private static byte _lastWindowId;
 
-		private static byte GetNewWindowId()
+		private static WindowId GetNewWindowId()
 		{
-			return _lastWindowId = (byte) Math.Max((byte) WindowId.First, ++_lastWindowId % (byte) WindowId.Last);
+			return (WindowId) (_lastWindowId = (byte) Math.Max((byte) WindowId.First, ++_lastWindowId % (byte) WindowId.Last));
 		}
 	}
 }

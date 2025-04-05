@@ -24,7 +24,6 @@
 #endregion
 
 using fNbt.Serialization;
-using MiNET.Utils;
 
 namespace MiNET.BlockEntities
 {
@@ -33,7 +32,7 @@ namespace MiNET.BlockEntities
 		[NbtProperty("rott")]
 		public float BookRotation { get; set; }
 
-		public EnchantingTableBlockEntity() : base(BlockEntityIds.EnchantTable, 2, WindowType.Enchantment)
+		public EnchantingTableBlockEntity() : base(BlockEntityIds.EnchantTable, 2)
 		{
 
 		}

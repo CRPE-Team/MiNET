@@ -106,7 +106,7 @@ namespace MiNET.Items
 			{
 				//TODO: Consume arrows properly
 				//TODO: Make sure we deal with arrows based on "potions"
-				for (byte i = 0; i < inventory.Slots.Count; i++)
+				for (byte i = 0; i < inventory.Slots.Length; i++)
 				{
 					Item itemStack = inventory.Slots[i];
 					if (itemStack is ItemArrow)

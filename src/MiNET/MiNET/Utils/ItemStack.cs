@@ -14,7 +14,7 @@ namespace MiNET.Utils
 
 		public virtual int Length => _items.Length;
 
-		public virtual Item this[int index] { get => _items[index]; set => _items[index] = value; }
+		public virtual Item this[int index] { get => GetItem(index); set => SetItem(index, value); }
 
 		protected ItemStacks()
 		{
@@ -29,6 +29,12 @@ namespace MiNET.Utils
 		public ItemStacks(Item[] collection)
 		{
 			_items = collection;
+		}
+
+		public ItemStacks(ItemStacks collection)
+			: this(collection.Length)
+		{
+			collection.CopyTo(_items, 0);
 		}
 
 		public static ItemStacks CreateAir(int length)
@@ -96,7 +102,11 @@ namespace MiNET.Utils
 		{
 			for (int i = 0; i < _items.Length; i++)
 			{
-				_items[i] = new ItemAir();
+				ref var slot = ref _items[i];
+				if (slot is not ItemAir)
+				{
+					slot = new ItemAir();
+				}
 			}
 		}
 
@@ -105,9 +115,36 @@ namespace MiNET.Utils
 			return ((ICollection<Item>) _items).GetEnumerator();
 		}
 
+		public virtual ItemStacks CreateCopy()
+		{
+			return new ItemStacks(this);
+		}
+
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return _items.GetEnumerator();
+		}
+
+		private Item GetItem(int index)
+		{
+			var item = _items[index];
+
+			if (item is not ItemAir && item.Count <= 0)
+			{
+				item = _items[index] = new ItemAir();
+			}
+
+			return item;
+		}
+
+		private void SetItem(int index, Item item)
+		{
+			if (item is not ItemAir && item.Count <= 0)
+			{
+				item = new ItemAir();
+			}
+
+			_items[index] = item;
 		}
 	}
 
@@ -134,6 +171,18 @@ namespace MiNET.Utils
 		{
 			_oneContainerSize = container.Length;
 			_containers = [container];
+		}
+
+		public ContainerItemStacks(ContainerItemStacks collection)
+		{
+			_oneContainerSize = collection._oneContainerSize;
+			_containers = collection._containers.Select(c =>
+			{
+				var container = new Item[c.Length];
+				c.CopyTo(container, 0);
+
+				return container;
+			}).ToList();
 		}
 
 		public override int IndexOf(Item item)
@@ -216,6 +265,7 @@ namespace MiNET.Utils
 				}
 			}
 		}
+
 		public override void Reset()
 		{
 			foreach (var container in _containers)
@@ -225,6 +275,11 @@ namespace MiNET.Utils
 					container[i] = new ItemAir();
 				}
 			}
+		}
+
+		public override ItemStacks CreateCopy()
+		{
+			return new ContainerItemStacks(this);
 		}
 	}
 

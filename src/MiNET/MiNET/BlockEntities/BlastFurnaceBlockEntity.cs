@@ -24,14 +24,13 @@
 #endregion
 
 using MiNET.Blocks;
-using MiNET.Utils;
 
 namespace MiNET.BlockEntities
 {
 	public class BlastFurnaceBlockEntity : FurnaceBlockEntityBase<BlastFurnace, LitBlastFurnace>
 	{
 		public BlastFurnaceBlockEntity()
-			: base(BlockEntityIds.BlastFurnace, WindowType.BlastFurnace, 100)
+			: base(BlockEntityIds.BlastFurnace, 100)
 		{
 
 		}

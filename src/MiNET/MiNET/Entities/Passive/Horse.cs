@@ -351,7 +351,7 @@ namespace MiNET.Entities.Passive
 			{
 				var equ = McpeUpdateEquipment.CreateObject();
 				equ.entityId = _horse.EntityId;
-				equ.windowId = WindowsId;
+				equ.windowId = (byte) WindowId;
 				equ.windowType = (byte) Type;
 
 				equ.namedtag = new Nbt

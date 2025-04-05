@@ -1,4 +1,6 @@
-﻿namespace MiNET.Utils
+﻿using System;
+
+namespace MiNET.Utils
 {
 	public enum ContainerId
 	{
@@ -68,5 +70,76 @@
 		SmithingTableTemplate = 61,
 		Crafter = 62,
 		Dynamic = 63
+	}
+
+	public static class WindowIdExtensions
+	{
+		public static WindowId ToWindowId(this ContainerId containerId)
+		{
+			return ToWindowId(containerId, WindowId.None);
+		}
+
+		public static WindowId ToWindowId(this ContainerId containerId, WindowId currentWindowId)
+		{
+			switch (containerId)
+			{
+				case ContainerId.Armor:
+					return WindowId.Armor;
+
+				case ContainerId.Hotbar:
+				case ContainerId.Inventory:
+				case ContainerId.CombinedHotbarAndInventory:
+					return WindowId.Inventory;
+
+				case ContainerId.Offhand:
+					return WindowId.Offhand;
+
+				case ContainerId.AnvilInput:
+				case ContainerId.AnvilMaterial:
+				case ContainerId.BeaconPayment:
+				case ContainerId.CartographyAdditional:
+				case ContainerId.CartographyInput:
+				case ContainerId.CompoundCreatorInput:
+				case ContainerId.CraftingInput:
+				case ContainerId.CreatedOutput:
+				case ContainerId.Cursor:
+				case ContainerId.EnchantingInput:
+				case ContainerId.EnchantingMaterial:
+				case ContainerId.GrindstoneAdditional:
+				case ContainerId.GrindstoneInput:
+				case ContainerId.LabTableInput:
+				case ContainerId.LoomDye:
+				case ContainerId.LoomInput:
+				case ContainerId.LoomMaterial:
+				case ContainerId.MaterialReducerInput:
+				case ContainerId.MaterialReducerOutput:
+				case ContainerId.SmithingTableInput:
+				case ContainerId.SmithingTableMaterial:
+				case ContainerId.SmithingTableTemplate:
+				case ContainerId.StonecutterInput:
+				case ContainerId.Trade2Ingredient1:
+				case ContainerId.Trade2Ingredient2:
+				case ContainerId.TradeIngredient1:
+				case ContainerId.TradeIngredient2:
+					return WindowId.UI;
+
+				case ContainerId.Barrel:
+				case ContainerId.BlastFurnaceIngredient:
+				case ContainerId.BrewingStandFuel:
+				case ContainerId.BrewingStandInput:
+				case ContainerId.BrewingStandResult:
+				case ContainerId.FurnaceFuel:
+				case ContainerId.FurnaceIngredient:
+				case ContainerId.FurnaceResult:
+				case ContainerId.HorseEquip:
+				case ContainerId.LevelEntity: //chest
+				case ContainerId.ShulkerBox:
+				case ContainerId.SmokerIngredient:
+					return currentWindowId;
+
+				default:
+					throw new Exception($"Unexpected container ID {containerId}");
+			};
+		}
 	}
 }

@@ -29,7 +29,6 @@ using MiNET.Blocks;
 using MiNET.Inventories;
 using MiNET.Items;
 using MiNET.Net;
-using MiNET.Utils;
 using MiNET.Worlds;
 
 namespace MiNET.BlockEntities
@@ -52,7 +51,7 @@ namespace MiNET.BlockEntities
 		[NbtIgnore]
 		public short SmeltingTime { get; }
 
-		public FurnaceBlockEntityBase(string id, WindowType windowType, short smeltingTime) : base(id, 3, windowType)
+		public FurnaceBlockEntityBase(string id, short smeltingTime) : base(id, 3)
 		{
 			SmeltingTime = smeltingTime;
 			UpdatesOnTick = true;
@@ -167,19 +166,19 @@ namespace MiNET.BlockEntities
 		private void SendContainerData(Player player)
 		{
 			var cookTimeSetData = McpeContainerSetData.CreateObject();
-			cookTimeSetData.windowId = Inventory.WindowsId;
+			cookTimeSetData.windowId = (byte) Inventory.WindowId;
 			cookTimeSetData.property = 0;
 			cookTimeSetData.value = CookTime;
 			player.SendPacket(cookTimeSetData);
 
 			var burnTimeSetData = McpeContainerSetData.CreateObject();
-			burnTimeSetData.windowId = Inventory.WindowsId;
+			burnTimeSetData.windowId = (byte) Inventory.WindowId;
 			burnTimeSetData.property = 1;
 			burnTimeSetData.value = BurnTime;
 			player.SendPacket(burnTimeSetData);
 
 			var fuelEfficientySetData = McpeContainerSetData.CreateObject();
-			fuelEfficientySetData.windowId = Inventory.WindowsId;
+			fuelEfficientySetData.windowId = (byte) Inventory.WindowId;
 			fuelEfficientySetData.property = 2;
 			fuelEfficientySetData.value = FuelEfficiency;
 			player.SendPacket(fuelEfficientySetData);

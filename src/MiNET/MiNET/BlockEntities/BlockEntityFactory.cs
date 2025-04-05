@@ -23,6 +23,8 @@
 
 #endregion
 
+using MiNET.Utils;
+
 namespace MiNET.BlockEntities
 {
 	public interface ICustomBlockEntityFactory
@@ -65,6 +67,24 @@ namespace MiNET.BlockEntities
 				BlockEntityIds.Cauldron => new CauldronBlockEntity(),
 				_ => blockEntity
 			};
+		}
+
+		public static bool TryGetWindowTypeById(string blockEntityId, out WindowType windowType)
+		{
+			windowType = blockEntityId switch
+			{
+				BlockEntityIds.Chest => WindowType.Container,
+				BlockEntityIds.EnderChest => WindowType.Container,
+				BlockEntityIds.EnchantTable => WindowType.Enchantment,
+				BlockEntityIds.Furnace => WindowType.Furnace,
+				BlockEntityIds.BlastFurnace => WindowType.BlastFurnace,
+				BlockEntityIds.Beacon => WindowType.Beacon,
+				BlockEntityIds.ShulkerBox => WindowType.Container,
+				BlockEntityIds.StructureBlock => WindowType.StructureEditor,
+				_ => WindowType.None
+			};
+
+			return windowType != WindowType.None;
 		}
 	}
 }

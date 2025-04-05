@@ -24,8 +24,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Entities;
@@ -36,15 +34,13 @@ using MiNET.Worlds;
 
 namespace MiNET.Inventories
 {
-	public class PlayerInventory
+	public class PlayerInventory : Inventory
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerInventory));
 
 		public const int HotbarSize = 9;
 		public const int InventorySize = HotbarSize + 36;
 		public Player Player { get; }
-
-		public List<Item> Slots { get; }
 
 		public int InHandSlot { get; set; }
 		public Item OffHand { get; set; } = new ItemAir();
@@ -59,12 +55,12 @@ namespace MiNET.Inventories
 
 
 		public PlayerInventory(Player player)
+			: base(InventorySize, player.EntityId, WindowType.Inventory)
 		{
 			Player = player;
 
-			Slots = Enumerable.Repeat((Item) new ItemAir(), InventorySize).ToList();
-
 			InHandSlot = 0;
+			WindowId = WindowId.Inventory;
 		}
 
 		public virtual Item GetItemInHand()
@@ -238,31 +234,7 @@ namespace MiNET.Inventories
 
 		public ItemStacks GetSlots()
 		{
-			var slotData = new ItemStacks(Slots.Count);
-
-			for (int i = 0; i < Slots.Count; i++)
-			{
-				if (Slots[i].Count == 0)
-					Slots[i] = new ItemAir();
-				slotData[i] = Slots[i];
-			}
-
-			return slotData;
-		}
-
-		public ItemStacks GetUiSlots()
-		{
-			var slotData = new ItemStacks(UiInventory.Slots.Count);
-
-			for (int i = 0; i < UiInventory.Slots.Count; i++)
-			{
-				if (UiInventory.Slots[i].Count == 0)
-					UiInventory.Slots[i] = new ItemAir();
-
-				slotData[i] = UiInventory.Slots[i];
-			}
-
-			return slotData;
+			return new ItemStacks(Slots);
 		}
 
 		public ItemStacks GetOffHand()
@@ -295,7 +267,7 @@ namespace MiNET.Inventories
 
 		public virtual bool SetFirstEmptySlot(Item item, bool update)
 		{
-			for (int si = 0; si < Slots.Count; si++)
+			for (int si = 0; si < Slots.Length; si++)
 			{
 				Item existingItem = Slots[si];
 
@@ -313,7 +285,7 @@ namespace MiNET.Inventories
 				}
 			}
 
-			for (int si = 0; si < Slots.Count; si++)
+			for (int si = 0; si < Slots.Length; si++)
 				if (FirstEmptySlot(item, update, si))
 					return true;
 
@@ -338,7 +310,7 @@ namespace MiNET.Inventories
 
 		public bool AddItem(Item item, bool update)
 		{
-			for (int si = 0; si < Slots.Count; si++)
+			for (int si = 0; si < Slots.Length; si++)
 			{
 				Item existingItem = Slots[si];
 
@@ -388,7 +360,7 @@ namespace MiNET.Inventories
 
 		public bool HasItem(Item item)
 		{
-			for (byte i = 0; i < Slots.Count; i++)
+			for (byte i = 0; i < Slots.Length; i++)
 				if (Slots[i].Id == item.Id && Slots[i].Metadata == item.Metadata)
 					return true;
 
@@ -400,7 +372,7 @@ namespace MiNET.Inventories
 			if (count <= 0)
 				return;
 
-			for (byte i = 0; i < Slots.Count; i++)
+			for (byte i = 0; i < Slots.Length; i++)
 			{
 				if (count <= 0)
 					break;
@@ -429,24 +401,39 @@ namespace MiNET.Inventories
 
 		public virtual void SendSetSlot(int slot)
 		{
-			SendSetSlot(slot, Slots[slot]);
+			SendSetSlot(Player, slot);
 		}
 
-		public virtual void SendSetSlot(int slot, Item item, WindowId windowId = WindowId.Inventory)
+		public virtual void SendSetSlot(int slot, Item item, WindowId windowId)
 		{
-			var sendSlot = McpeInventorySlot.CreateObject();
-			sendSlot.inventoryId = (uint) windowId;
-			sendSlot.slot = (uint) slot;
-			sendSlot.item = item;
-			sendSlot.containerName = FullContainerName.Unknown;
-			Player.SendPacket(sendSlot);
+			SendSetSlot(Player, slot, item, windowId);
 		}
 
-		public void Clear()
+		public virtual bool Open()
 		{
-			for (int i = 0; i < Slots.Count; ++i)
-				if (Slots[i] is not ItemAir)
-					Slots[i] = new ItemAir();
+			return base.Open(Player);
+		}
+
+		internal void CloseUiInventory()
+		{
+			foreach (var item in UiInventory.Slots)
+			{
+				if (item is ItemAir) continue;
+
+				SetFirstEmptySlot(item, true);
+			}
+
+			UiInventory.Clear();
+		}
+
+		private new bool Open(Player player)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Clear()
+		{
+			base.Clear();
 
 			UiInventory.Clear();
 

@@ -1,13 +1,12 @@
 ﻿using MiNET.Inventories;
 using MiNET.Net;
-using MiNET.Utils;
 
 namespace MiNET.BlockEntities
 {
 	public abstract class ContainerBlockEntity : ContainerBlockEntityBase
 	{
 		protected ContainerBlockEntity(string id) 
-			: base(id, 27, WindowType.Container)
+			: base(id, 27)
 		{
 			
 		}

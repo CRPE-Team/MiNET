@@ -22,9 +22,12 @@ namespace MiNET.BlockEntities
 
 		public string Lock { get; set; }
 
-		protected ContainerBlockEntityBase(string id, int size, WindowType windowType) : base(id)
+		protected ContainerBlockEntityBase(string id, int size) : base(id)
 		{
-			WindowType = windowType;
+			if (BlockEntityFactory.TryGetWindowTypeById(id, out var windowType))
+			{
+				WindowType = windowType;
+			}
 
 			_items = Enumerable.Range(0, size).Select<int, Item>(_ => new ItemAir()).ToArray();
 		}

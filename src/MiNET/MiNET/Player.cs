@@ -46,7 +46,6 @@ using MiNET.Entities.World;
 using MiNET.Inventories;
 using MiNET.Items;
 using MiNET.Net;
-using MiNET.Net.Crafting;
 using MiNET.Particles;
 using MiNET.UI;
 using MiNET.Utils;
@@ -70,7 +69,8 @@ namespace MiNET
 		private Dictionary<ChunkCoordinates, McpeWrapper> _chunksUsed = new Dictionary<ChunkCoordinates, McpeWrapper>();
 		private ChunkCoordinates _currentChunkPosition = new ChunkCoordinates(int.MaxValue);
 
-		internal IInventory _openInventory;
+		private IInventory _openInventory;
+
 		public PlayerInventory Inventory { get; set; }
 		public ItemStackInventoryManager ItemStackInventoryManager { get; set; }
 
@@ -1839,7 +1839,7 @@ namespace MiNET
 
 			var uiContent = McpeInventoryContent.CreateObject();
 			uiContent.inventoryId = (byte) WindowId.UI;
-			uiContent.input = Inventory.GetUiSlots();
+			uiContent.input = Inventory.UiInventory.GetSlots();
 			uiContent.containerName = FullContainerName.Unknown;
 			SendPacket(uiContent);
 
@@ -2159,9 +2159,6 @@ namespace MiNET
 			
 		}
 
-		[Obsolete]
-		public bool UsingAnvil { get; set; }
-
 		public void HandleMcpeItemStackRequest(McpeItemStackRequest message)
 		{
 			var response = McpeItemStackResponse.CreateObject();
@@ -2298,12 +2295,12 @@ namespace MiNET
 
 		public virtual void SetOpenInventory(IInventory inventory)
 		{
-			if (_openInventory is CommonInventory inv)
+			if (_openInventory is ContainerInventory inv)
 			{
 				inv.InventoryChanged -= OnInventoryChanged;
 			}
 
-			if (inventory is CommonInventory newInv)
+			if (inventory is ContainerInventory newInv)
 			{
 				newInv.InventoryChanged += OnInventoryChanged;
 			}
@@ -2338,30 +2335,10 @@ namespace MiNET
 			}
 		}
 
-		private void OnInventoryChanged(object sender, InventoryChangeEventArgs args)
+		protected virtual void OnInventoryChanged(object sender, InventoryChangeEventArgs args)
 		{
-			if (args.Player == this)
-			{
-				//TODO: This needs to be synced to work properly under heavy load (SG).
-				//Level.SetBlockEntity(inventory.BlockEntity, false);
-			}
-			else
-			{
-				var sendSlot = McpeInventorySlot.CreateObject();
-				sendSlot.inventoryId = args.Inventory.WindowsId;
-				sendSlot.slot = args.Slot;
-				//sendSlot.uniqueid = itemStack.UniqueId;
-				sendSlot.item = args.Item;
-				sendSlot.containerName = FullContainerName.Unknown;
-				SendPacket(sendSlot);
-			}
-
-			//if(inventory.BlockEntity != null)
-			//{
-			//	Level.SetBlockEntity(inventory.BlockEntity, false);
-			//}
+			
 		}
-
 
 		public void HandleMcpeInventorySlot(McpeInventorySlot message)
 		{
@@ -2658,13 +2635,11 @@ namespace MiNET
 
 		public virtual void HandleMcpeContainerClose(McpeContainerClose message)
 		{
-			UsingAnvil = false;
-
 			lock (_inventorySync)
 			{
 				if (_openInventory != null)
 				{
-					if (message != null && message.windowId != _openInventory.WindowsId) return;
+					if (message != null && message.windowId != (byte) _openInventory.WindowId) return;
 
 					_openInventory.Close(this, message != null);
 				}
@@ -2676,14 +2651,7 @@ namespace MiNET
 					closePacket.server = message == null ? true : false;
 					SendPacket(closePacket);
 
-					foreach (var item in Inventory.UiInventory.Slots)
-					{
-						if (item is ItemAir) continue;
-
-						Inventory.SetFirstEmptySlot(item, true);
-					}
-
-					Inventory.UiInventory.Clear();
+					Inventory.CloseUiInventory();
 				}
 			}
 		}
@@ -2743,11 +2711,7 @@ namespace MiNET
 				{
 					if (target == this)
 					{
-						var containerOpen = McpeContainerOpen.CreateObject();
-						containerOpen.windowId = 0;
-						containerOpen.type = (sbyte) WindowType.Inventory;
-						containerOpen.runtimeEntityId = EntityId;
-						SendPacket(containerOpen);
+						Inventory.Open();
 					}
 					else if (IsRiding) // Riding; Open inventory
 					{
