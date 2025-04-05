@@ -33,7 +33,7 @@
     <EmbeddedResource Include="Crafting\Data\shapeless_crafting.json" />
     <EmbeddedResource Include="Crafting\Data\shapeless_shulker_box.json" />
     <EmbeddedResource Include="Crafting\Data\smelting.json" />
-    <EmbeddedResource Include="Inventory\Data\creativeitems.json" />
+    <EmbeddedResource Include="Inventories\Data\creativeitems.json" />
     <EmbeddedResource Include="Items\Data\item_tags.json" />
     <EmbeddedResource Include="Items\Data\r16_to_current_item_map.json" />
     <EmbeddedResource Include="Items\Data\required_item_list.json" />

@@ -27,7 +27,7 @@ using log4net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiNET.Blocks;
 using MiNET.Crafting;
-using MiNET.Inventory;
+using MiNET.Inventories;
 using MiNET.Items;
 
 namespace MiNET.Test

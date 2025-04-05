@@ -6,7 +6,7 @@ using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
 
-namespace MiNET.Inventory
+namespace MiNET.Inventories
 {
 	public static class InventoryUtils
 	{

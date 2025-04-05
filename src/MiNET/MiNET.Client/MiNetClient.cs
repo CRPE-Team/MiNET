@@ -43,7 +43,7 @@ using fNbt;
 using Jose;
 using log4net;
 using MiNET.Entities;
-using MiNET.Inventory;
+using MiNET.Inventories;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.Net.Crafting;

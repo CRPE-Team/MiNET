@@ -24,7 +24,7 @@
 #endregion
 
 using fNbt.Serialization;
-using MiNET.Inventory;
+using MiNET.Inventories;
 
 namespace MiNET.BlockEntities
 {

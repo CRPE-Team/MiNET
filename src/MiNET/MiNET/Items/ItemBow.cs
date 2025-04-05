@@ -81,7 +81,7 @@ namespace MiNET.Items
 				return;
 			}
 
-			PlayerInventory inventory = player.Inventory;
+			var inventory = player.Inventory;
 
 			bool isInfinity = this.GetEnchantingLevel(EnchantingType.Infinity) > 0;
 			bool haveArrow = player.GameMode == GameMode.Creative;
@@ -106,7 +106,7 @@ namespace MiNET.Items
 			{
 				//TODO: Consume arrows properly
 				//TODO: Make sure we deal with arrows based on "potions"
-				for (byte i = 0; i < inventory.Slots.Count; i++)
+				for (byte i = 0; i < inventory.Slots.Length; i++)
 				{
 					Item itemStack = inventory.Slots[i];
 					if (itemStack is ItemArrow)

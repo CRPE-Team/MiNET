@@ -1,6 +1,6 @@
 ﻿using MiNET.Items;
 
-namespace MiNET.Inventory
+namespace MiNET.Inventories
 {
 	public class InventoryChangeEventArgs : InventoryEventArgs
 	{
@@ -8,7 +8,7 @@ namespace MiNET.Inventory
 
 		public Item Item { get; }
 
-		public InventoryChangeEventArgs(Player player, ContainerInventory inventory, byte slot, Item item)
+		public InventoryChangeEventArgs(Player player, IInventory inventory, byte slot, Item item)
 			: base(player, inventory)
 		{
 			Slot = slot;

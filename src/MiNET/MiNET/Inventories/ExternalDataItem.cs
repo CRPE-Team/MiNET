@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Newtonsoft.Json;
 
-namespace MiNET.Inventory
+namespace MiNET.Inventories
 {
 	public class ExternalDataItem
 	{

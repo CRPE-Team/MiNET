@@ -152,6 +152,8 @@ namespace MiNET.Net
 
 	public class FullContainerName : IPacketDataObject
 	{
+		public static readonly FullContainerName Unknown = new FullContainerName { ContainerId = ContainerId.Unknown };
+
 		public ContainerId ContainerId { get; set; }
 
 		public int? DynamicId { get; set; }

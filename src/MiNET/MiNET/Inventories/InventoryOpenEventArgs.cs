@@ -1,4 +1,4 @@
-﻿namespace MiNET.Inventory
+﻿namespace MiNET.Inventories
 {
 	public class InventoryOpenEventArgs : InventoryEventArgs
 	{
@@ -6,7 +6,7 @@
 
 		public bool Cancel { get; set; }
 
-		public InventoryOpenEventArgs(Player player, ContainerInventory inventory, bool open)
+		public InventoryOpenEventArgs(Player player, IInventory inventory, bool open)
 			: base(player, inventory)
 		{
 			Open = open;

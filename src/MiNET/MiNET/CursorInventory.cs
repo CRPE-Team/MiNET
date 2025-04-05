@@ -23,10 +23,9 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using log4net;
 using MiNET.Items;
+using MiNET.Utils;
 
 namespace MiNET
 {
@@ -34,7 +33,7 @@ namespace MiNET
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(CursorInventory));
 
-		public List<Item> Slots { get; } = Enumerable.Repeat((Item) new ItemAir(), 51).ToList();
+		public ItemStacks Slots { get; } = ItemStacks.CreateAir((byte) UIInventorySlot.SlotsCount);
 
 		public Item Cursor
 		{
@@ -44,14 +43,17 @@ namespace MiNET
 
 		public CursorInventory()
 		{
+
+		}
+
+		public ItemStacks GetSlots()
+		{
+			return new ItemStacks(Slots);
 		}
 
 		public void Clear()
 		{
-			for (int i = 0; i < Slots.Count; i++)
-			{
-				if (Slots[i] is not ItemAir) Slots[i] = new ItemAir();
-			}
+			Slots.Reset();
 		}
 	}
 }
