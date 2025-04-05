@@ -75,8 +75,7 @@ namespace MiNET.Inventories
 
 		public virtual void DamageArmor()
 		{
-			if (Player.GameMode != GameMode.Survival)
-				return;
+			if (Player.GameMode != GameMode.Survival) return;
 
 			Helmet = DamageArmorItem(Helmet);
 			Chest = DamageArmorItem(Chest);
@@ -94,15 +93,14 @@ namespace MiNET.Inventories
 
 		public virtual Item DamageItem(Item item, ItemDamageReason reason, Entity target, Block block)
 		{
-			if (Player.GameMode != GameMode.Survival)
-				return item;
-			if (item.Unbreakable)
-				return item;
+			if (Player.GameMode != GameMode.Survival) return item;
+			if (item.Unbreakable) return item;
 
 			var unbreakingLevel = item.GetEnchantingLevel(EnchantingType.Unbreaking);
 			if (unbreakingLevel > 0)
-				if (new Random().Next(1 + unbreakingLevel) != 0)
-					return item;
+			{
+				if (new Random().Next(1 + unbreakingLevel) != 0) return item;
+			}
 
 			if (item.DamageItem(Player, reason, target, block))
 			{
@@ -124,7 +122,9 @@ namespace MiNET.Inventories
 		public virtual void SetInventorySlot(int slot, Item item, bool forceReplace = false)
 		{
 			if (item == null || item.Count <= 0)
+			{
 				item = new ItemAir();
+			}
 
 			UpdateInventorySlot(slot, item, forceReplace);
 
@@ -135,7 +135,9 @@ namespace MiNET.Inventories
 		public virtual void SetArmorSlot(ArmorType type, Item item, bool forceReplace = false)
 		{
 			if (item == null || item.Count <= 0)
+			{
 				item = new ItemAir();
+			}
 
 			UpdateArmorSlot(type, item, forceReplace);
 
@@ -147,7 +149,9 @@ namespace MiNET.Inventories
 		public virtual void SetOffHandSlot(Item item, bool forceReplace = false)
 		{
 			if (item == null || item.Count <= 0)
+			{
 				item = new ItemAir();
+			}
 
 			UpdateOffHandSlot(item, forceReplace);
 
@@ -159,7 +163,9 @@ namespace MiNET.Inventories
 		public virtual void SetUiSlot(int slot, Item item, bool forceReplace = false)
 		{
 			if (item == null || item.Count <= 0)
+			{
 				item = new ItemAir();
+			}
 
 			UpdateUiSlot(slot, item, forceReplace);
 			SendSetSlot(slot, UiInventory.Slots[slot], WindowId.UI);
@@ -189,8 +195,7 @@ namespace MiNET.Inventories
 		{
 			var existing = GetArmorSlot(type);
 
-			if (existing == null)
-				return;
+			if (existing == null) return;
 
 			Action<Item> setItemDelegate = newItem =>
 			{
@@ -229,7 +234,9 @@ namespace MiNET.Inventories
 			existing.ExtraData = item.ExtraData;
 
 			if (existing is ItemBlock existingItemBock && item is ItemBlock itemBlock)
+			{
 				existingItemBock.SetBlock(itemBlock.Block);
+			}
 		}
 
 		public ItemStacks GetSlots()
@@ -277,17 +284,16 @@ namespace MiNET.Inventories
 					int take = Math.Min(item.Count, existingItem.MaxStackSize - existingItem.Count);
 					existingItem.Count += (byte) take;
 					item.Count -= (byte) take;
-					if (update)
-						SendSetSlot(si);
+					if (update) SendSetSlot(si);
 
-					if (item.Count <= 0)
-						return true;
+					if (item.Count <= 0) return true;
 				}
 			}
 
 			for (int si = 0; si < Slots.Length; si++)
-				if (FirstEmptySlot(item, update, si))
-					return true;
+			{
+				if (FirstEmptySlot(item, update, si)) return true;
+			}
 
 			return false;
 		}
@@ -300,8 +306,8 @@ namespace MiNET.Inventories
 			{
 				Slots[si] = (Item) item.Clone();
 				item.Count = 0;
-				if (update)
-					SendSetSlot(si);
+				if (update) SendSetSlot(si);
+
 				return true;
 			}
 
@@ -317,8 +323,8 @@ namespace MiNET.Inventories
 				if (existingItem is ItemAir)
 				{
 					Slots[si] = item;
-					if (update)
-						SendSetSlot(si);
+					if (update) SendSetSlot(si);
+
 					return true;
 				}
 			}
@@ -361,21 +367,23 @@ namespace MiNET.Inventories
 		public bool HasItem(Item item)
 		{
 			for (byte i = 0; i < Slots.Length; i++)
+			{
 				if (Slots[i].Id == item.Id && Slots[i].Metadata == item.Metadata)
+				{
 					return true;
+				}
+			}
 
 			return false;
 		}
 
 		public void RemoveItems(string id, byte count)
 		{
-			if (count <= 0)
-				return;
+			if (count <= 0) return;
 
 			for (byte i = 0; i < Slots.Length; i++)
 			{
-				if (count <= 0)
-					break;
+				if (count <= 0) break;
 
 				var slot = Slots[i];
 				if (slot.Id == id)
@@ -392,7 +400,9 @@ namespace MiNET.Inventories
 					}
 
 					if (slot.Count == 0)
+					{
 						Slots[i] = new ItemAir();
+					}
 
 					SendSetSlot(i);
 				}
@@ -437,17 +447,12 @@ namespace MiNET.Inventories
 
 			UiInventory.Clear();
 
-			if (OffHand is not ItemAir)
-				OffHand = new ItemAir();
+			if (OffHand is not ItemAir) OffHand = new ItemAir();
 
-			if (Helmet is not ItemAir)
-				Helmet = new ItemAir();
-			if (Chest is not ItemAir)
-				Chest = new ItemAir();
-			if (Leggings is not ItemAir)
-				Leggings = new ItemAir();
-			if (Boots is not ItemAir)
-				Boots = new ItemAir();
+			if (Helmet is not ItemAir) Helmet = new ItemAir();
+			if (Chest is not ItemAir) Chest = new ItemAir();
+			if (Leggings is not ItemAir) Leggings = new ItemAir();
+			if (Boots is not ItemAir) Boots = new ItemAir();
 
 			Player.SendPlayerInventory();
 		}
