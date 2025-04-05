@@ -73,14 +73,20 @@ namespace MiNET.BlockEntities
 		{
 			windowType = blockEntityId switch
 			{
-				BlockEntityIds.Chest => WindowType.Container,
-				BlockEntityIds.EnderChest => WindowType.Container,
-				BlockEntityIds.EnchantTable => WindowType.Enchantment,
-				BlockEntityIds.Furnace => WindowType.Furnace,
-				BlockEntityIds.BlastFurnace => WindowType.BlastFurnace,
+				BlockEntityIds.Barrel => WindowType.Container,
 				BlockEntityIds.Beacon => WindowType.Beacon,
+				BlockEntityIds.BlastFurnace => WindowType.BlastFurnace,
+				BlockEntityIds.BrewingStand => WindowType.BrewingStand,
+				BlockEntityIds.Chest => WindowType.Container,
+				BlockEntityIds.EnchantTable => WindowType.Enchantment,
+				BlockEntityIds.EnderChest => WindowType.Container,
+				BlockEntityIds.Furnace => WindowType.Furnace,
+				BlockEntityIds.Hopper => WindowType.Hopper,
+				BlockEntityIds.Lectern => WindowType.Lectern,
 				BlockEntityIds.ShulkerBox => WindowType.Container,
+				BlockEntityIds.Smoker => WindowType.Smoker,
 				BlockEntityIds.StructureBlock => WindowType.StructureEditor,
+
 				_ => WindowType.None
 			};
 
