@@ -7,7 +7,7 @@
 		Furnace,
 		FurnaceData,
 		Multi,
-		ShulkerBox,
+		ShalepessUserData,
 		ShalepessChemistry,
 		ShapedChemistry,
 		SmithingTransform,

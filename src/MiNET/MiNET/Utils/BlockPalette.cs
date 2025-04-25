@@ -97,8 +97,10 @@ namespace MiNET.Utils
 	{
 		[JsonProperty]
 		public int RuntimeId { get; }
+
 		[JsonProperty]
 		public string Id { get; }
+
 		[JsonProperty]
 		public short Data { get; }
 
@@ -115,6 +117,7 @@ namespace MiNET.Utils
 		private readonly List<IBlockState> _states;
 
 		public int RuntimeId { get; set; }
+
 		public string Id { get; set; }
 		public short Data { get; set; }
 		public IEnumerable<IBlockState> States => _states;

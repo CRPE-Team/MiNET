@@ -60,7 +60,7 @@ namespace MiNET.Crafting
 				//craftingData.isClean = true;
 				var packet = Level.CreateMcpeBatch(craftingData.Encode());
 				craftingData.PutPool();
-				packet.MarkPermanent(true);
+				packet.MarkPermanent();
 				_craftingData = packet;
 			}
 
@@ -74,7 +74,7 @@ namespace MiNET.Crafting
 			LoadShapedRecipes();
 			//LoadShapedChemistryRecipes(); // Edu only
 			LoadShapelessRecipes();
-			LoadShapelessShulkerBoxRecipes();
+			LoadShapelessShapelessUserDataRecipes();
 			//LoadShapelessChemistryRecipes(); // Edu only
 			LoadSmeltingRecipes();
 
@@ -100,7 +100,7 @@ namespace MiNET.Crafting
 			return recipe switch
 			{
 				ShapedRecipe shapedRecipe => ValidateRecipe(shapedRecipe, input, times, out resultItems, out consumeItems),
-				ShapelessRecipe shapedRecipe => ValidateRecipe(shapedRecipe, input, times, out resultItems, out consumeItems),
+				ShapelessRecipeBase shapedRecipe => ValidateRecipe(shapedRecipe, input, times, out resultItems, out consumeItems),
 
 				_ => false
 			};
@@ -165,7 +165,7 @@ namespace MiNET.Crafting
 			return true;
 		}
 
-		private static bool ValidateRecipe(ShapelessRecipe recipe, List<Item> input, int times, out List<Item> resultItems, out Item[] consumeItems)
+		private static bool ValidateRecipe(ShapelessRecipeBase recipe, List<Item> input, int times, out List<Item> resultItems, out Item[] consumeItems)
 		{
 			consumeItems = new Item[input.Count];
 			resultItems = new List<Item>();
@@ -177,15 +177,18 @@ namespace MiNET.Crafting
 				var ingredient = recipe.Input[i];
 				var count = ingredient.Count * times;
 
-				var item = inputClone.FirstOrDefault(ingredient.ValidateItem);
+				var index = inputClone.FindIndex(ingredient.ValidateItem);
+				if (index < 0) return false;
+
+				var item = inputClone[index];
 				if (item == null) return false;
 				if (item.Count < count) return false;
 
 				item = item.Clone() as Item;
 				item.Count = (byte) count;
-				consumeItems[inputClone.IndexOf(item)] = item;
+				consumeItems[index] = item;
 
-				if (!inputClone.Remove(item)) return false;
+				inputClone[index] = new ItemAir();
 			}
 
 			foreach (var item in recipe.Output)
@@ -209,13 +212,14 @@ namespace MiNET.Crafting
 				});
 		}
 
-		private static void LoadShapelessShulkerBoxRecipes()
+		private static void LoadShapelessShapelessUserDataRecipes()
 		{
-			LoadShapelessRecipesBase("shapeless_shulker_box.json", recipe => 
-				new ShapelessShulkerBoxRecipe(recipe.Output, recipe.Input, recipe.Block)
+			LoadShapelessRecipesBase("shapeless_shulker_box.json", recipe =>
+				new ShapelessUserDataRecipe(recipe.Output, recipe.Input, recipe.Block)
 				{
 					Priority = recipe.Priority,
-					UniqueId = recipe.UniqueId
+					UniqueId = recipe.UniqueId,
+					UnlockingRequirement = recipe.UnlockingRequirement,
 				});
 		}
 
@@ -239,7 +243,7 @@ namespace MiNET.Crafting
 
 				if (input.Any(val => val == null))
 				{
-					Log.Warn($"Missing shapeless recipe Inputs: {JsonConvert.SerializeObject(recipeData)}");
+					Log.Debug($"Missing shapeless recipe Inputs: {JsonConvert.SerializeObject(recipeData)}");
 
 					continue;
 				}
@@ -253,12 +257,33 @@ namespace MiNET.Crafting
 
 				if (output.Any(val => val == null))
 				{
-					Log.Warn($"Missing shapeless recipe Outputs: {JsonConvert.SerializeObject(recipeData)}");
+					Log.Debug($"Missing shapeless recipe Outputs: {JsonConvert.SerializeObject(recipeData)}");
 
 					continue;
 				}
 
-				ShapelessRecipeBase recipe = new ShapelessRecipe(output, input, recipeData.Block) { Priority = recipeData.Priority, UniqueId = _recipeUniqueIdCounter++ };
+				var requirements = recipeData.UnlockingIngredients?.Select(data =>
+				{
+					TryGetRecipeIngredientFromExternalData(data, out var ingredient);
+
+					return ingredient;
+				}).ToArray() ?? [];
+
+				if (requirements.Any(val => val == null))
+				{
+					Log.Debug($"Missing shapeless recipe UnlockingIngredients: {JsonConvert.SerializeObject(recipeData)}");
+
+					continue;
+				}
+
+				ShapelessRecipeBase recipe = new ShapelessRecipe(output, input, recipeData.Block) 
+				{
+					Priority = recipeData.Priority,
+					UniqueId = _recipeUniqueIdCounter++
+				};
+
+				recipe.UnlockingRequirement.UnlockingIngredients = requirements;
+
 				recipe = getRecipe(recipe);
 				NetworkIdRecipeMap.Add(recipe.UniqueId, recipe);
 				IdRecipeMap.Add(recipe.Id, recipe);
@@ -269,11 +294,11 @@ namespace MiNET.Crafting
 		private static void LoadShapedChemistryRecipes()
 		{
 			LoadShapedRecipesBase("shaped_chemistry_asymmetric.json", recipe =>
-			new ShapedChemistryRecipe(recipe.Width, recipe.Height, recipe.Output, recipe.Input, recipe.Block) 
-			{ 
-				Priority = recipe.Priority, 
-				UniqueId = recipe.UniqueId 
-			});
+				new ShapedChemistryRecipe(recipe.Width, recipe.Height, recipe.Output, recipe.Input, recipe.Block) 
+				{ 
+					Priority = recipe.Priority, 
+					UniqueId = recipe.UniqueId 
+				});
 		}
 
 
@@ -297,7 +322,7 @@ namespace MiNET.Crafting
 
 				if (input.Values.Any(val => val == null))
 				{
-					Log.Warn($"Missing shaped recipe Inputs: {JsonConvert.SerializeObject(recipeData)}");
+					Log.Debug($"Missing shaped recipe Inputs: {JsonConvert.SerializeObject(recipeData)}");
 
 					continue;
 				}
@@ -311,7 +336,21 @@ namespace MiNET.Crafting
 
 				if (output.Any(val => val == null))
 				{
-					Log.Warn($"Missing shaped recipe Outputs: {JsonConvert.SerializeObject(recipeData)}");
+					Log.Debug($"Missing shaped recipe Outputs: {JsonConvert.SerializeObject(recipeData)}");
+
+					continue;
+				}
+
+				var requirements = recipeData.UnlockingIngredients?.Select(data =>
+				{
+					TryGetRecipeIngredientFromExternalData(data, out var ingredient);
+
+					return ingredient;
+				}).ToArray() ?? [];
+
+				if (requirements.Any(val => val == null))
+				{
+					Log.Debug($"Missing shapeless recipe UnlockingIngredients: {JsonConvert.SerializeObject(recipeData)}");
 
 					continue;
 				}
@@ -336,7 +375,14 @@ namespace MiNET.Crafting
 					}
 				}
 
-				ShapedRecipeBase recipe = new ShapedRecipe(width, height, output, inputShape.ToArray(), recipeData.Block) { Priority = recipeData.Priority, UniqueId = _recipeUniqueIdCounter++ };
+				ShapedRecipeBase recipe = new ShapedRecipe(width, height, output, inputShape.ToArray(), recipeData.Block) 
+				{ 
+					Priority = recipeData.Priority,
+					UniqueId = _recipeUniqueIdCounter++
+				};
+
+				recipe.UnlockingRequirement.UnlockingIngredients = requirements;
+
 				recipe = getRecipe(recipe);
 				NetworkIdRecipeMap.Add(recipe.UniqueId, recipe);
 				IdRecipeMap.Add(recipe.Id, recipe);
@@ -352,14 +398,14 @@ namespace MiNET.Crafting
 			{
 				if (!InventoryUtils.TryGetItemFromExternalData(recipeData.Input, out var input))
 				{
-					Log.Warn($"Missing smelting recipe Input: {JsonConvert.SerializeObject(recipeData)}");
+					Log.Debug($"Missing smelting recipe Input: {JsonConvert.SerializeObject(recipeData)}");
 
 					continue;
 				}
 
 				if (!InventoryUtils.TryGetItemFromExternalData(recipeData.Output, out var output))
 				{
-					Log.Warn($"Missing smelting recipe Output: {JsonConvert.SerializeObject(recipeData)}");
+					Log.Debug($"Missing smelting recipe Output: {JsonConvert.SerializeObject(recipeData)}");
 
 					continue;
 				}

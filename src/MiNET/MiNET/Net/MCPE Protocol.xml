@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.21.30" protocolVersion="729">
+<protocol gameVersion="1.21.40" protocolVersion="748">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -154,7 +154,6 @@
 		<field name="Has Addons" type="bool" />
 		<field name="Has Scripts" type="bool" />
 		<field name="Resource Packs" type="ResourcePackInfos" />
-		<field name="Cdn Urls" type="CdnUrls" />
 	</pdu>
 
 	<pdu id="0x07" online="false" client="false" server="true" name="MCPE_RESOURCE_PACK_STACK">
@@ -206,7 +205,11 @@
 	</pdu>
 
 	<pdu id="0x0b" online="false" client="false" server="true" name="MCPE_START_GAME">
-		
+		<enums id="Server auth movement mode">
+			<enum id="Legacy Client Authoritative V1" value="0" />
+			<enum id="Server Authoritative V2" value="1" />
+			<enum id="Server Authoritative V3" value="2" />
+		</enums>
 	</pdu>
 
 	<pdu id="0x0c" online="false" client="false" server="true" name="MCPE_ADD_PLAYER">
@@ -399,7 +402,7 @@
 		<field name="Amplifier" type="SignedVarInt" />
 		<field name="Particles" type="bool" />
 		<field name="Duration" type="SignedVarInt" />
-		<field name="Tick" type="long" />
+		<field name="Tick" type="UnsignedVarLong" />
 	</pdu>
 
 	<pdu id="0x1d" online="false" client="false" server="true" name="MCPE_UPDATE_ATTRIBUTES">
@@ -592,14 +595,14 @@
 		<field name="Inventory Id" type="UnsignedVarInt" />
 		<field name="Input" type="ItemStacks" />
 		<field name="Container Name" type="FullContainerName" />
-		<field name="Dynamic Container Id" type="UnsignedVarInt" />
+		<field name="Storage" type="Item" />
 	</pdu>
 
 	<pdu id="0x32" online="false" client="true" server="true" name="MCPE_INVENTORY_SLOT">
 		<field name="Inventory Id" type="UnsignedVarInt" />
 		<field name="Slot" type="UnsignedVarInt" />
 		<field name="Container Name" type="FullContainerName" />
-		<field name="Dynamic Container Id" type="UnsignedVarInt" />
+		<field name="Storage" type="Item" />
 		<field name="Item" type="Item" />
 	</pdu>
 
@@ -1143,7 +1146,6 @@
 	public const PLAYER_AUTH_INPUT_PACKET = 0x90;
 	public const PLAYER_ARMOR_DAMAGE_PACKET = 0x95;
 	public const CODE_BUILDER_PACKET = 0x96;
-	public const UPDATE_PLAYER_GAME_TYPE_PACKET = 0x97;
 	public const EMOTE_LIST_PACKET = 0x98;
 	public const POSITION_TRACKING_D_B_SERVER_BROADCAST_PACKET = 0x99;
 	public const POSITION_TRACKING_D_B_CLIENT_REQUEST_PACKET = 0x9a;
@@ -1184,7 +1186,7 @@
 	<pdu id="0x97" online="false" client="true" server="false" name="MCPE_UPDATE_PLAYER_GAME_TYPE">
 		<field name="Game Mode" type="VarInt" />
 		<field name="Player Entity Unique Id" type="ulong" />
-		<field name="Tick" type="UnsignedVarInt" />
+		<field name="Tick" type="UnsignedVarLong" />
 	</pdu>
 
 	<pdu id="0x9c" online="false" client="true" server="false" name="MCPE_PACKET_VIOLATION_WARNING">
@@ -1365,6 +1367,22 @@
 
 	<pdu id="0x13d" online="false" client="true" server="false" name="MCPE_CONTAINER_REGISTRY_CLEANUP">
 		<field name="Removed Containers" type="FullContainerName[]" />
+	</pdu>
+
+	<pdu id="0x13e" online="false" client="false" server="true" name="MCPE_MOVEMENT_EFFECT">
+		<enums id="Movement effect type">
+			<enum id="Invalid" value="-1" />
+			<enum id="Glide Boost" value="0" />
+		</enums>
+		
+		<field name="Runtime Entity ID" type="UnsignedVarLong" />
+		<field name="Effect Type" type="UnsignedVarInt" />
+		<field name="Duration" type="UnsignedVarInt" />
+		<field name="Tick" type="UnsignedVarLong" />
+	</pdu>
+
+	<pdu id="0x13f" online="false" client="false" server="true" name="MCPE_SET_MOVEMENT_AUTHORITY">
+		<field name="Mode" type="byte" />
 	</pdu>
 
 	<pdu id="0xe0" online="false" client="false" server="true" name="MCPE_ALEX_ENTITY_ANIMATION">

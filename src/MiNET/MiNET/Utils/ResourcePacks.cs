@@ -30,7 +30,7 @@ namespace MiNET.Utils
 	{
 		public void Write(Packet packet)
 		{
-			packet.Write((short) Count); // LE
+			packet.Write((ushort) Count); // LE
 			//packet.WriteVarInt(packInfos.Count);
 
 			foreach (var info in this)
@@ -41,7 +41,7 @@ namespace MiNET.Utils
 
 		public static ResourcePackInfos Read(Packet packet)
 		{
-			var count = packet.ReadShort(); // LE
+			var count = packet.ReadUshort(); // LE
 			//var count = ReadVarInt(); // LE
 
 			var packInfos = new ResourcePackInfos();
@@ -101,6 +101,8 @@ namespace MiNET.Utils
 		/// </summary>
 		public bool RtxEnabled { get; set; }
 
+		public string CdnUrl { get; set; }
+
 		public void Write(Packet packet)
 		{
 			packet.Write(UUID);
@@ -112,6 +114,7 @@ namespace MiNET.Utils
 			packet.Write(HasScripts);
 			packet.Write(IsAddonPack);
 			packet.Write(RtxEnabled);
+			packet.Write(CdnUrl);
 		}
 
 		public static ResourcePackInfo Read(Packet packet)
@@ -126,7 +129,8 @@ namespace MiNET.Utils
 				ContentIdentity = packet.ReadString(),
 				HasScripts = packet.ReadBool(),
 				IsAddonPack = packet.ReadBool(),
-				RtxEnabled = packet.ReadBool()
+				RtxEnabled = packet.ReadBool(),
+				CdnUrl = packet.ReadString()
 			};
 		}
 	}

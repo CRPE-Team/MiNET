@@ -6202,15 +6202,11 @@ namespace MiNET.Blocks
 	public partial class CherryWood : LogBase
 	{
 		private MiNET.Blocks.States.PillarAxis _pillarAxis = (States.PillarAxis) MiNET.Blocks.States.PillarAxis.Y.Clone();
-		private MiNET.Blocks.States.StrippedBit _strippedBit = new MiNET.Blocks.States.StrippedBit();
 
 		public override string Id => "minecraft:cherry_wood";
 
 		[StateEnum("x", "y", "z")]
 		public override MiNET.Blocks.States.PillarAxis PillarAxis { get => _pillarAxis; set => NotifyStateUpdate(_pillarAxis, value.Value); }
-
-		[StateBit]
-		public bool StrippedBit { get => Convert.ToBoolean(_strippedBit.Value); set => NotifyStateUpdate(_strippedBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6221,9 +6217,6 @@ namespace MiNET.Blocks
 					case BlockStateString s when s.Name == _pillarAxis.Name:
 						NotifyStateUpdate(_pillarAxis, s.Value);
 						break;
-					case BlockStateByte s when s.Name == _strippedBit.Name:
-						NotifyStateUpdate(_strippedBit, s.Value);
-						break;
 				} // switch
 			} // foreach
 		} // method
@@ -6231,12 +6224,11 @@ namespace MiNET.Blocks
 		protected override IEnumerable<IBlockState> GetStates()
 		{
 			yield return _pillarAxis;
-			yield return _strippedBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _pillarAxis, _strippedBit);
+			return HashCode.Combine(Id, _pillarAxis);
 		} // method
 
 		public override object Clone()
@@ -6244,7 +6236,6 @@ namespace MiNET.Blocks
 			var block = (CherryWood) base.Clone();
 
 			block._pillarAxis = (MiNET.Blocks.States.PillarAxis) _pillarAxis.Clone();
-			block._strippedBit = (MiNET.Blocks.States.StrippedBit) _strippedBit.Clone();
 
 			return block;
 		} // method
@@ -7576,6 +7567,48 @@ namespace MiNET.Blocks
 	public partial class CraftingTable : Block
 	{
 		public override string Id => "minecraft:crafting_table";
+	} // class
+
+	public partial class CreeperHead : HeadBase
+	{
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
+
+		public override string Id => "minecraft:creeper_head";
+
+		[StateRange(0, 5)]
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _facingDirection.Name:
+						NotifyStateUpdate(_facingDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _facingDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _facingDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (CreeperHead) base.Clone();
+
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
+
+			return block;
+		} // method
 	} // class
 
 	public partial class CrimsonButton : ButtonBase
@@ -11292,6 +11325,48 @@ namespace MiNET.Blocks
 	public partial class DragonEgg : Block
 	{
 		public override string Id => "minecraft:dragon_egg";
+	} // class
+
+	public partial class DragonHead : HeadBase
+	{
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
+
+		public override string Id => "minecraft:dragon_head";
+
+		[StateRange(0, 5)]
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _facingDirection.Name:
+						NotifyStateUpdate(_facingDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _facingDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _facingDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (DragonHead) base.Clone();
+
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
+
+			return block;
+		} // method
 	} // class
 
 	public partial class DriedKelpBlock : Block
@@ -17784,15 +17859,11 @@ namespace MiNET.Blocks
 	public partial class MangroveWood : LogBase
 	{
 		private MiNET.Blocks.States.PillarAxis _pillarAxis = (States.PillarAxis) MiNET.Blocks.States.PillarAxis.Y.Clone();
-		private MiNET.Blocks.States.StrippedBit _strippedBit = new MiNET.Blocks.States.StrippedBit();
 
 		public override string Id => "minecraft:mangrove_wood";
 
 		[StateEnum("x", "y", "z")]
 		public override MiNET.Blocks.States.PillarAxis PillarAxis { get => _pillarAxis; set => NotifyStateUpdate(_pillarAxis, value.Value); }
-
-		[StateBit]
-		public bool StrippedBit { get => Convert.ToBoolean(_strippedBit.Value); set => NotifyStateUpdate(_strippedBit, value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17803,9 +17874,6 @@ namespace MiNET.Blocks
 					case BlockStateString s when s.Name == _pillarAxis.Name:
 						NotifyStateUpdate(_pillarAxis, s.Value);
 						break;
-					case BlockStateByte s when s.Name == _strippedBit.Name:
-						NotifyStateUpdate(_strippedBit, s.Value);
-						break;
 				} // switch
 			} // foreach
 		} // method
@@ -17813,12 +17881,11 @@ namespace MiNET.Blocks
 		protected override IEnumerable<IBlockState> GetStates()
 		{
 			yield return _pillarAxis;
-			yield return _strippedBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _pillarAxis, _strippedBit);
+			return HashCode.Combine(Id, _pillarAxis);
 		} // method
 
 		public override object Clone()
@@ -17826,7 +17893,6 @@ namespace MiNET.Blocks
 			var block = (MangroveWood) base.Clone();
 
 			block._pillarAxis = (MiNET.Blocks.States.PillarAxis) _pillarAxis.Clone();
-			block._strippedBit = (MiNET.Blocks.States.StrippedBit) _strippedBit.Clone();
 
 			return block;
 		} // method
@@ -18688,6 +18754,48 @@ namespace MiNET.Blocks
 			var block = (MuddyMangroveRoots) base.Clone();
 
 			block._pillarAxis = (MiNET.Blocks.States.PillarAxis) _pillarAxis.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class MushroomStem : Block
+	{
+		private MiNET.Blocks.States.HugeMushroomBits _hugeMushroomBits = new MiNET.Blocks.States.HugeMushroomBits();
+
+		public override string Id => "minecraft:mushroom_stem";
+
+		[StateRange(0, 15)]
+		public int HugeMushroomBits { get => _hugeMushroomBits.Value; set => NotifyStateUpdate(_hugeMushroomBits, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _hugeMushroomBits.Name:
+						NotifyStateUpdate(_hugeMushroomBits, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _hugeMushroomBits;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _hugeMushroomBits);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (MushroomStem) base.Clone();
+
+			block._hugeMushroomBits = (MiNET.Blocks.States.HugeMushroomBits) _hugeMushroomBits.Clone();
 
 			return block;
 		} // method
@@ -20320,6 +20428,48 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class PiglinHead : HeadBase
+	{
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
+
+		public override string Id => "minecraft:piglin_head";
+
+		[StateRange(0, 5)]
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _facingDirection.Name:
+						NotifyStateUpdate(_facingDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _facingDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _facingDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PiglinHead) base.Clone();
+
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
+
+			return block;
+		} // method
+	} // class
+
 	public partial class PinkCandle : Block
 	{
 		private MiNET.Blocks.States.Candles _candles = new MiNET.Blocks.States.Candles();
@@ -20723,6 +20873,48 @@ namespace MiNET.Blocks
 			var block = (PitcherPlant) base.Clone();
 
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PlayerHead : HeadBase
+	{
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
+
+		public override string Id => "minecraft:player_head";
+
+		[StateRange(0, 5)]
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _facingDirection.Name:
+						NotifyStateUpdate(_facingDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _facingDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _facingDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PlayerHead) base.Clone();
+
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -25107,14 +25299,14 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
-	public partial class Skull : Block
+	public partial class SkeletonSkull : HeadBase
 	{
 		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
-		public override string Id => "minecraft:skull";
+		public override string Id => "minecraft:skeleton_skull";
 
 		[StateRange(0, 5)]
-		public MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -25141,7 +25333,7 @@ namespace MiNET.Blocks
 
 		public override object Clone()
 		{
-			var block = (Skull) base.Clone();
+			var block = (SkeletonSkull) base.Clone();
 
 			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
@@ -30075,12 +30267,12 @@ namespace MiNET.Blocks
 
 	public partial class WallBanner : Block
 	{
-		private MiNET.Blocks.States.OldFacingDirection1 _facingDirection = new MiNET.Blocks.States.OldFacingDirection1();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
 
 		public override string Id => "minecraft:wall_banner";
 
 		[StateRange(0, 5)]
-		public MiNET.Blocks.States.OldFacingDirection1 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+		public MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -30109,7 +30301,7 @@ namespace MiNET.Blocks
 		{
 			var block = (WallBanner) base.Clone();
 
-			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection1) _facingDirection.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
 
 			return block;
 		} // method
@@ -32842,6 +33034,48 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:wither_rose";
 	} // class
 
+	public partial class WitherSkeletonSkull : HeadBase
+	{
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
+
+		public override string Id => "minecraft:wither_skeleton_skull";
+
+		[StateRange(0, 5)]
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _facingDirection.Name:
+						NotifyStateUpdate(_facingDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _facingDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _facingDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (WitherSkeletonSkull) base.Clone();
+
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
+
+			return block;
+		} // method
+	} // class
+
 	public partial class WoodenButton : ButtonBase
 	{
 		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
@@ -33177,5 +33411,47 @@ namespace MiNET.Blocks
 	public partial class YellowWool : WoolBase
 	{
 		public override string Id => "minecraft:yellow_wool";
+	} // class
+
+	public partial class ZombieHead : HeadBase
+	{
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
+
+		public override string Id => "minecraft:zombie_head";
+
+		[StateRange(0, 5)]
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _facingDirection.Name:
+						NotifyStateUpdate(_facingDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _facingDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _facingDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (ZombieHead) base.Clone();
+
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
+
+			return block;
+		} // method
 	} // class
 }

@@ -58,7 +58,7 @@ namespace MiNET.Net.Crafting
 				RecipeType.Furnace => SmeltingRecipe.ReadData(packet),
 				RecipeType.FurnaceData => SmeltingDataRecipe.ReadData(packet),
 				RecipeType.Multi => MultiRecipe.ReadData(packet),
-				RecipeType.ShulkerBox => ShapelessShulkerBoxRecipe.ReadData(packet),
+				RecipeType.ShalepessUserData => ShapelessUserDataRecipe.ReadData(packet),
 				RecipeType.ShalepessChemistry => ShapelessChemistryRecipe.ReadData(packet),
 				RecipeType.ShapedChemistry => ShapelessChemistryRecipe.ReadData(packet),
 				RecipeType.SmithingTransform => SmithingTransformRecipe.ReadData(packet),
@@ -126,33 +126,29 @@ namespace MiNET.Net.Crafting
 
 		internal static Recipe ReadData(Packet packet)
 		{
-			packet.ReadString(); // some unique id
-
 			return ReadData(packet, new ShapelessChemistryRecipe());
 		}
 	}
 
-	public class ShapelessShulkerBoxRecipe : ShapelessRecipeBase
+	public class ShapelessUserDataRecipe : ShapelessRecipeBase
 	{
-		public override RecipeType Type => RecipeType.ShulkerBox;
+		public override RecipeType Type => RecipeType.ShalepessUserData;
 
-		public ShapelessShulkerBoxRecipe()
+		public ShapelessUserDataRecipe()
 		{
 		}
 
-		public ShapelessShulkerBoxRecipe(List<Item> output, List<RecipeIngredient> input, string block = null) : base(output, input, block)
+		public ShapelessUserDataRecipe(List<Item> output, List<RecipeIngredient> input, string block = null) : base(output, input, block)
 		{
 		}
 
-		public ShapelessShulkerBoxRecipe(Item output, List<RecipeIngredient> input, string block = null) : base(output, input, block)
+		public ShapelessUserDataRecipe(Item output, List<RecipeIngredient> input, string block = null) : base(output, input, block)
 		{
 		}
 
 		internal static Recipe ReadData(Packet packet)
 		{
-			packet.ReadString(); // some unique id
-
-			return ReadData(packet, new ShapelessShulkerBoxRecipe());
+			return ReadData(packet, new ShapelessUserDataRecipe());
 		}
 	}
 
@@ -174,8 +170,6 @@ namespace MiNET.Net.Crafting
 
 		internal static Recipe ReadData(Packet packet)
 		{
-			packet.ReadString(); // some unique id
-
 			return ReadData(packet, new ShapelessRecipe());
 		}
 	}
@@ -231,7 +225,8 @@ namespace MiNET.Net.Crafting
 			packet.Write(Block);
 			packet.WriteSignedVarInt(Priority);
 
-			if (Type == RecipeType.Shapeless)
+			if (Type == RecipeType.Shapeless
+				|| Type == RecipeType.ShalepessUserData)
 			{
 				packet.Write(UnlockingRequirement);
 			}

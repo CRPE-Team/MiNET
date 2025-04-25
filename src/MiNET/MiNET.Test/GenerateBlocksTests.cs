@@ -819,6 +819,10 @@ namespace MiNET.Test
 			{
 				return nameof(FenceGateBase);
 			}
+			if (name.EndsWith("_head") || name.EndsWith("_skull"))
+			{
+				return nameof(HeadBase);
+			}
 
 			return nameof(Block);
 		}
@@ -842,10 +846,11 @@ namespace MiNET.Test
 					"end_rod" or "piston" or "sticky_piston" or "piston_head" or
 					"piston_arm_collision" or "sticky_piston_arm_collision" => nameof(OldFacingDirection3),
 
-					"skull" or "ladder" or "frame" or 
+					"ladder" or "frame" or 
 					"glow_frame" or "jigsaw" or "wall_banner" => nameof(OldFacingDirection4),
 					_ when name.EndsWith("_button") || name.EndsWith("wall_sign") || 
-						name.EndsWith("hanging_sign") || name.EndsWith("_glazed_terracotta") => nameof(OldFacingDirection4),
+						name.EndsWith("hanging_sign") || name.EndsWith("_glazed_terracotta")
+						 || name.EndsWith("_head") || name.EndsWith("_skull") => nameof(OldFacingDirection4),
 
 					_ => null
 				},

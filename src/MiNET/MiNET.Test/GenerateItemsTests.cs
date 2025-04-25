@@ -7,6 +7,7 @@ using log4net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiNET.Blocks;
 using MiNET.Items;
+using MiNET.Utils;
 
 namespace MiNET.Test
 {
@@ -21,7 +22,13 @@ namespace MiNET.Test
 		{
 			var assembly = typeof(Item).Assembly;
 
-			var itemStates = ItemFactory.ItemStates;
+			var itemStates = ResourceUtil.ReadResource<ItemStates>("required_item_list.json", typeof(ItemFactory), "Data");
+
+			var maxRuntimeId = itemStates.Max(state => state.Value.RuntimeId);
+			foreach (var blockId in BlockFactory.ItemToBlock.Values)
+			{
+				itemStates.TryAdd(blockId, new ItemState() { RuntimeId = ++maxRuntimeId });
+			};
 
 			var idToTag = ItemFactory.ItemTags
 				.SelectMany(tag => tag.Value.Select(itemId => (itemId, tag: tag.Key)))
@@ -141,13 +148,21 @@ namespace MiNET.Test
 		{
 			var name = id.Replace("minecraft:", "");
 
-			if (id.EndsWith("_carpet"))
+			if (name.EndsWith("_carpet"))
 			{
 				return new GenerationItemInfo(typeof(ItemCarpetBase).Name);
 			}
-			if (id.EndsWith("hanging_sign"))
+			if (name.EndsWith("hanging_sign"))
 			{
 				return new GenerationItemInfo(typeof(ItemHangingSignBase).Name);
+			}
+			if (name.EndsWith("_head") || name.EndsWith("_skull"))
+			{
+				return new GenerationItemInfo(typeof(ItemHeadBase).Name);
+			}
+			if (name.EndsWith("_bundle"))
+			{
+				return new GenerationItemInfo(typeof(ItemBundleBase).Name);
 			}
 
 			var genInfo = new GenerationItemInfo(associatedBlockId == null ? "Item" : "ItemBlock");

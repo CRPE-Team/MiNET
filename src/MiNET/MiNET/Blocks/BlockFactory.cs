@@ -54,10 +54,12 @@ namespace MiNET.Blocks
 			State = state;
 		}
 	}
-	
+
 	public static class BlockFactory
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(BlockFactory));
+
+		public static bool UseHashRuntimeIds { get; } = Config.GetProperty("UseHashedRuntimeIds", false);
 
 		public static ICustomBlockFactory CustomBlockFactory { get; set; }
 
@@ -66,6 +68,7 @@ namespace MiNET.Blocks
 
 		public static Dictionary<string, IBlockStateContainer> MetaBlockNameToState { get; private set; } = new Dictionary<string, IBlockStateContainer>();
 		public static List<string> RuntimeIdToId { get; private set; }
+		public static Dictionary<uint, IBlockStateContainer> HashRuntimeIdToState { get; private set; } = new Dictionary<uint, IBlockStateContainer>();
 		public static Dictionary<string, Type> IdToType { get; private set; } = new Dictionary<string, Type>();
 		public static Dictionary<Type, string> TypeToId { get; private set; } = new Dictionary<Type, string>();
 		public static Dictionary<string, Func<Block>> IdToFactory { get; private set; } = new Dictionary<string, Func<Block>>();
@@ -93,9 +96,20 @@ namespace MiNET.Blocks
 						var compound = Packet.ReadNbtCompound(stream, true);
 						var container = GetBlockStateContainer(compound);
 
-						container.RuntimeId = runtimeId++;
+						// TODO
+
+						//if (UseHashRuntimeIds)
+						//{
+						//	container.RuntimeId = compound.GetFnvHash(NbtFlavor.BedrockNoVarInt);
+						//	HashRuntimeIdToState.Add(container.HashRuntimeId, container);
+						//}
+						//else
+						{
+							container.RuntimeId = runtimeId++;
+							BlockPalette.Add(container);
+						}
+
 						ids.Add(container.Id);
-						BlockPalette.Add(container);
 					} while (stream.Position < stream.Length);
 				}
 
@@ -359,7 +373,7 @@ namespace MiNET.Blocks
 
 			var type = IdToType.GetValueOrDefault(id);
 
-			return type.IsAssignableTo(blockType);
+			return type?.IsAssignableTo(blockType) ?? false;
 		}
 
 		private static (Dictionary<string, Type>, Dictionary<Type, string>) BuildIdTypeMapPair()

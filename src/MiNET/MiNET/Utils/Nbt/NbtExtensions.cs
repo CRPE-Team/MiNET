@@ -23,47 +23,23 @@
 
 #endregion
 
-namespace MiNET.Net
+using fNbt;
+using MiNET.Utils.Cryptography;
+
+namespace MiNET.Utils.Nbt
 {
-	public enum PlayerAction
+	public static class NbtExtensions
 	{
-		StartBreak = 0,
-		AbortBreak = 1,
-		StopBreak = 2,
-		GetUpdatedBlock = 3,
-		DropItem = 4,
-		StartSleeping = 5,
-		StopSleeping = 6,
-		Respawn = 7,
-		Jump = 8,
-		StartSprint = 9,
-		StopSprint = 10,
-		StartSneak = 11,
-		StopSneak = 12,
-		CreativeDestroy = 13,
-		DimensionChangeAck = 14, //sent when spawning in a different dimension to tell the server we spawned
-		StartGlide = 15,
-		StopGlide = 16,
-		WorldImmutable = 17,
-		Breaking = 18,
-		ChangeSkin = 19,
-		SetEnchantmentSeed = 20, //no longer used
-		StartSwimming = 21,
-		StopSwimming = 22,
-		StartSpinAttack = 23,
-		StopSpinAttack = 24,
-		InteractBlock = 25,
-		PredictDestroyBlock = 26,
-		ContinueDestroyBlock = 27,
-		StartItemUse = 28,
-		StopItemUse = 29,
-		HandledTeleport = 30,
-		MissedSwing = 31,
-		StartCrawling = 32,
-		StopCrawling = 33,
-		StartFlying = 34,
-		StopFlying = 35,
-		AckEntityData = 36,
-		StartUsingItem = 37
+		public static uint GetFnvHash(this NbtCompound compound, NbtFlavor flavor, NbtCompression compression = NbtCompression.None)
+		{
+			return GetFnvHash(new NbtFile() { RootTag = compound, Flavor = flavor }, compression);
+		}
+
+		public static uint GetFnvHash(this NbtFile file, NbtCompression compression = NbtCompression.None)
+		{
+			var buffer = file.SaveToBuffer(compression);
+
+			return Fnv.ComputeHash(buffer);
+		}
 	}
 }

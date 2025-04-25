@@ -84,6 +84,28 @@ namespace MiNET.Blocks.States
 
 	} // class
 
+	public partial class OldFacingDirection : BlockStateInt
+	{
+		public override string Name => "facing_direction";
+
+		public const int MaxValue = 5;
+
+		public static int[] Values()
+		{
+			return [0, 1, 2, 3, 4, 5];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
+		}
+
+	} // class
+
 	public partial class OldDirection : BlockStateInt
 	{
 		public override string Name => "direction";
@@ -141,28 +163,6 @@ namespace MiNET.Blocks.States
 		public static byte[] Values()
 		{
 			return [0, 1];
-		}
-
-	} // class
-
-	public partial class OldFacingDirection : BlockStateInt
-	{
-		public override string Name => "facing_direction";
-
-		public const int MaxValue = 5;
-
-		public static int[] Values()
-		{
-			return [0, 1, 2, 3, 4, 5];
-		}
-
-
-		protected override void ValidateValue(int value)
-		{
-			if (value < 0 || value > MaxValue)
-			{
-				ThrowArgumentException(value);
-			}
 		}
 
 	} // class
@@ -1114,19 +1114,6 @@ namespace MiNET.Blocks.States
 			{
 				ThrowArgumentException(value);
 			}
-		}
-
-	} // class
-
-	public partial class StrippedBit : BlockStateByte
-	{
-		public override string Name => "stripped_bit";
-
-		public const byte MaxValue = 1;
-
-		public static byte[] Values()
-		{
-			return [0, 1];
 		}
 
 	} // class

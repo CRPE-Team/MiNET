@@ -783,6 +783,16 @@ namespace MiNET.Client
 		{
 
 		}
+
+		public void HandleMcpeMovementEffect(McpeMovementEffect message)
+		{
+
+		}
+
+		public void HandleMcpeSetMovementAuthority(McpeSetMovementAuthority message)
+		{
+
+		}
 	}
 
 	public class DefaultMessageHandler : McpeClientMessageHandlerBase

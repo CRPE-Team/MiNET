@@ -548,6 +548,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:birch_wood";
 	}
 
+	public partial class ItemBlackBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:black_bundle";
+	}
+
 	public partial class ItemBlackCandle : ItemBlock<BlackCandle>
 	{
 		public override string Id { get; protected set; } = "minecraft:black_candle";
@@ -663,6 +668,11 @@ namespace MiNET.Items
 	public partial class ItemBleach : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:bleach";
+	}
+
+	public partial class ItemBlueBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:blue_bundle";
 	}
 
 	public partial class ItemBlueCandle : ItemBlock<BlueCandle>
@@ -867,6 +877,11 @@ namespace MiNET.Items
 	public partial class ItemBrickWall : ItemBlock<BrickWall>
 	{
 		public override string Id { get; protected set; } = "minecraft:brick_wall";
+	}
+
+	public partial class ItemBrownBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:brown_bundle";
 	}
 
 	public partial class ItemBrownCandle : ItemBlock<BrownCandle>
@@ -1680,6 +1695,13 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:creeper_banner_pattern";
 	}
 
+	public partial class ItemCreeperHead : ItemHeadBase
+	{
+		public override string Id { get; protected set; } = "minecraft:creeper_head";
+
+		public override Block Block { get; protected set; } = new CreeperHead();
+	}
+
 	public partial class ItemCreeperSpawnEgg : ItemSpawnEggBase
 	{
 		public override string Id { get; protected set; } = "minecraft:creeper_spawn_egg";
@@ -1828,6 +1850,11 @@ namespace MiNET.Items
 	public partial class ItemCutSandstoneSlab : ItemBlock<CutSandstoneSlab>
 	{
 		public override string Id { get; protected set; } = "minecraft:cut_sandstone_slab";
+	}
+
+	public partial class ItemCyanBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:cyan_bundle";
 	}
 
 	public partial class ItemCyanCandle : ItemBlock<CyanCandle>
@@ -2483,6 +2510,13 @@ namespace MiNET.Items
 	public partial class ItemDragonEgg : ItemBlock<DragonEgg>
 	{
 		public override string Id { get; protected set; } = "minecraft:dragon_egg";
+	}
+
+	public partial class ItemDragonHead : ItemHeadBase
+	{
+		public override string Id { get; protected set; } = "minecraft:dragon_head";
+
+		public override Block Block { get; protected set; } = new DragonHead();
 	}
 
 	public partial class ItemDriedKelp : FoodItemBase
@@ -3774,6 +3808,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:gravel";
 	}
 
+	public partial class ItemGrayBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:gray_bundle";
+	}
+
 	public partial class ItemGrayCandle : ItemBlock<GrayCandle>
 	{
 		public override string Id { get; protected set; } = "minecraft:gray_candle";
@@ -3834,6 +3873,11 @@ namespace MiNET.Items
 	public partial class ItemGrayWool : ItemBlock<GrayWool>
 	{
 		public override string Id { get; protected set; } = "minecraft:gray_wool";
+	}
+
+	public partial class ItemGreenBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:green_bundle";
 	}
 
 	public partial class ItemGreenCandle : ItemBlock<GreenCandle>
@@ -4550,11 +4594,6 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:reeds";
 	}
 
-	public partial class ItemSkull : ItemBlock<Skull>
-	{
-		public override string Id { get; protected set; } = "minecraft:skull";
-	}
-
 	public partial class ItemSoulCampfire : ItemBlock<SoulCampfire>
 	{
 		public override string Id { get; protected set; } = "minecraft:soul_campfire";
@@ -4909,6 +4948,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:light_block_9";
 	}
 
+	public partial class ItemLightBlueBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:light_blue_bundle";
+	}
+
 	public partial class ItemLightBlueCandle : ItemBlock<LightBlueCandle>
 	{
 		public override string Id { get; protected set; } = "minecraft:light_blue_candle";
@@ -4969,6 +5013,11 @@ namespace MiNET.Items
 	public partial class ItemLightBlueWool : ItemBlock<LightBlueWool>
 	{
 		public override string Id { get; protected set; } = "minecraft:light_blue_wool";
+	}
+
+	public partial class ItemLightGrayBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:light_gray_bundle";
 	}
 
 	public partial class ItemLightGrayCandle : ItemBlock<LightGrayCandle>
@@ -5046,6 +5095,11 @@ namespace MiNET.Items
 	public partial class ItemLilyOfTheValley : ItemBlock<LilyOfTheValley>
 	{
 		public override string Id { get; protected set; } = "minecraft:lily_of_the_valley";
+	}
+
+	public partial class ItemLimeBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:lime_bundle";
 	}
 
 	public partial class ItemLimeCandle : ItemBlock<LimeCandle>
@@ -5180,13 +5234,20 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:loom";
 	}
 
-	public partial class ItemMace : Item
+	public partial class ItemMace : ItemSwordBase
 	{
 		public override string Id { get; protected set; } = "minecraft:mace";
+
+		public override ItemType ItemType { get; set; } = ItemType.Sword;
 
 		public override ItemMaterial ItemMaterial { get; set; } = ItemMaterial.Diamond;
 
 		public override int MaxStackSize { get; set; } = 1;
+	}
+
+	public partial class ItemMagentaBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:magenta_bundle";
 	}
 
 	public partial class ItemMagentaCandle : ItemBlock<MagentaCandle>
@@ -5546,6 +5607,11 @@ namespace MiNET.Items
 	public partial class ItemMuleSpawnEgg : ItemSpawnEggBase
 	{
 		public override string Id { get; protected set; } = "minecraft:mule_spawn_egg";
+	}
+
+	public partial class ItemMushroomStem : ItemBlock<MushroomStem>
+	{
+		public override string Id { get; protected set; } = "minecraft:mushroom_stem";
 	}
 
 	public partial class ItemMushroomStew : FoodItemBase
@@ -5973,6 +6039,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:ominous_trial_key";
 	}
 
+	public partial class ItemOrangeBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:orange_bundle";
+	}
+
 	public partial class ItemOrangeCandle : ItemBlock<OrangeCandle>
 	{
 		public override string Id { get; protected set; } = "minecraft:orange_candle";
@@ -6170,6 +6241,13 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:piglin_brute_spawn_egg";
 	}
 
+	public partial class ItemPiglinHead : ItemHeadBase
+	{
+		public override string Id { get; protected set; } = "minecraft:piglin_head";
+
+		public override Block Block { get; protected set; } = new PiglinHead();
+	}
+
 	public partial class ItemPiglinSpawnEgg : ItemSpawnEggBase
 	{
 		public override string Id { get; protected set; } = "minecraft:piglin_spawn_egg";
@@ -6178,6 +6256,11 @@ namespace MiNET.Items
 	public partial class ItemPillagerSpawnEgg : ItemSpawnEggBase
 	{
 		public override string Id { get; protected set; } = "minecraft:pillager_spawn_egg";
+	}
+
+	public partial class ItemPinkBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:pink_bundle";
 	}
 
 	public partial class ItemPinkCandle : ItemBlock<PinkCandle>
@@ -6280,6 +6363,13 @@ namespace MiNET.Items
 	public partial class ItemPlanks : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:planks";
+	}
+
+	public partial class ItemPlayerHead : ItemHeadBase
+	{
+		public override string Id { get; protected set; } = "minecraft:player_head";
+
+		public override Block Block { get; protected set; } = new PlayerHead();
 	}
 
 	public partial class ItemPlentyPotterySherd : Item
@@ -6632,6 +6722,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:pumpkin_stem";
 	}
 
+	public partial class ItemPurpleBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:purple_bundle";
+	}
+
 	public partial class ItemPurpleCandle : ItemBlock<PurpleCandle>
 	{
 		public override string Id { get; protected set; } = "minecraft:purple_candle";
@@ -6837,6 +6932,11 @@ namespace MiNET.Items
 	public partial class ItemRecoveryCompass : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:recovery_compass";
+	}
+
+	public partial class ItemRedBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:red_bundle";
 	}
 
 	public partial class ItemRedCandle : ItemBlock<RedCandle>
@@ -7231,9 +7331,21 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:skeleton_horse_spawn_egg";
 	}
 
+	public partial class ItemSkeletonSkull : ItemHeadBase
+	{
+		public override string Id { get; protected set; } = "minecraft:skeleton_skull";
+
+		public override Block Block { get; protected set; } = new SkeletonSkull();
+	}
+
 	public partial class ItemSkeletonSpawnEgg : ItemSpawnEggBase
 	{
 		public override string Id { get; protected set; } = "minecraft:skeleton_spawn_egg";
+	}
+
+	public partial class ItemSkull : Item
+	{
+		public override string Id { get; protected set; } = "minecraft:skull";
 	}
 
 	public partial class ItemSkullBannerPattern : Item
@@ -8627,6 +8739,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:wheat_seeds";
 	}
 
+	public partial class ItemWhiteBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:white_bundle";
+	}
+
 	public partial class ItemWhiteCandle : ItemBlock<WhiteCandle>
 	{
 		public override string Id { get; protected set; } = "minecraft:white_candle";
@@ -8712,6 +8829,13 @@ namespace MiNET.Items
 	public partial class ItemWitherRose : ItemBlock<WitherRose>
 	{
 		public override string Id { get; protected set; } = "minecraft:wither_rose";
+	}
+
+	public partial class ItemWitherSkeletonSkull : ItemHeadBase
+	{
+		public override string Id { get; protected set; } = "minecraft:wither_skeleton_skull";
+
+		public override Block Block { get; protected set; } = new WitherSkeletonSkull();
 	}
 
 	public partial class ItemWitherSkeletonSpawnEgg : ItemSpawnEggBase
@@ -8828,6 +8952,11 @@ namespace MiNET.Items
 		public override ItemType ItemType { get; set; } = ItemType.Book;
 	}
 
+	public partial class ItemYellowBundle : ItemBundleBase
+	{
+		public override string Id { get; protected set; } = "minecraft:yellow_bundle";
+	}
+
 	public partial class ItemYellowCandle : ItemBlock<YellowCandle>
 	{
 		public override string Id { get; protected set; } = "minecraft:yellow_candle";
@@ -8893,6 +9022,13 @@ namespace MiNET.Items
 	public partial class ItemZoglinSpawnEgg : ItemSpawnEggBase
 	{
 		public override string Id { get; protected set; } = "minecraft:zoglin_spawn_egg";
+	}
+
+	public partial class ItemZombieHead : ItemHeadBase
+	{
+		public override string Id { get; protected set; } = "minecraft:zombie_head";
+
+		public override Block Block { get; protected set; } = new ZombieHead();
 	}
 
 	public partial class ItemZombieHorseSpawnEgg : ItemSpawnEggBase

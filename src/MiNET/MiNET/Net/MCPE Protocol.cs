@@ -45,8 +45,8 @@ namespace MiNET.Net
 {
 	public class McpeProtocolInfo
 	{
-		public const int ProtocolVersion = 729;
-		public const string GameVersion = "1.21.30";
+		public const int ProtocolVersion = 748;
+		public const string GameVersion = "1.21.40";
 	}
 
 	public interface IMcpeMessageHandler
@@ -254,6 +254,8 @@ namespace MiNET.Net
 		void HandleMcpeCurrentStructureFeature(McpeCurrentStructureFeature message);
 		void HandleMcpeServerboundDiagnostics(McpeServerboundDiagnostics message);
 		void HandleMcpeCameraAimAssist(McpeCameraAimAssist message);
+		void HandleMcpeMovementEffect(McpeMovementEffect message);
+		void HandleMcpeSetMovementAuthority(McpeSetMovementAuthority message);
 		void HandleMcpeAlexEntityAnimation(McpeAlexEntityAnimation message);
 		void HandleFtlCreatePlayer(FtlCreatePlayer message);
 	}
@@ -679,6 +681,12 @@ namespace MiNET.Net
 				case McpeCameraAimAssist msg:
 					_messageHandler.HandleMcpeCameraAimAssist(msg);
 					break;
+				case McpeMovementEffect msg:
+					_messageHandler.HandleMcpeMovementEffect(msg);
+					break;
+				case McpeSetMovementAuthority msg:
+					_messageHandler.HandleMcpeSetMovementAuthority(msg);
+					break;
 				case McpeAlexEntityAnimation msg:
 					_messageHandler.HandleMcpeAlexEntityAnimation(msg);
 					break;
@@ -1072,6 +1080,10 @@ namespace MiNET.Net
 						return McpeCameraAimAssist.CreateObject().Decode(buffer);
 					case 0x13d:
 						return McpeContainerRegistryCleanup.CreateObject().Decode(buffer);
+					case 0x13e:
+						return McpeMovementEffect.CreateObject().Decode(buffer);
+					case 0x13f:
+						return McpeSetMovementAuthority.CreateObject().Decode(buffer);
 					case 0xe0:
 						return McpeAlexEntityAnimation.CreateObject().Decode(buffer);
 				}
@@ -2238,7 +2250,6 @@ namespace MiNET.Net
 		public bool hasAddons;
 		public bool hasScripts;
 		public ResourcePackInfos resourcePacks;
-		public CdnUrls cdnUrls;
 
 		public McpeResourcePacksInfo()
 		{
@@ -2256,7 +2267,6 @@ namespace MiNET.Net
 			Write(hasAddons);
 			Write(hasScripts);
 			Write(resourcePacks);
-			Write(cdnUrls);
 
 			AfterEncode();
 		}
@@ -2274,7 +2284,6 @@ namespace MiNET.Net
 			hasAddons = ReadBool();
 			hasScripts = ReadBool();
 			resourcePacks = ReadResourcePackInfos();
-			cdnUrls = ReadCdnUrls();
 
 			AfterDecode();
 		}
@@ -2290,7 +2299,6 @@ namespace MiNET.Net
 			hasAddons = default;
 			hasScripts = default;
 			resourcePacks = default;
-			cdnUrls = default;
 		}
 
 	}
@@ -2583,6 +2591,12 @@ namespace MiNET.Net
 
 	public partial class McpeStartGame : Packet<McpeStartGame>
 	{
+		public enum ServerAuthMovementMode
+		{
+			LegacyClientAuthoritativeV1 = 0,
+			ServerAuthoritativeV2 = 1,
+			ServerAuthoritativeV3 = 2,
+		}
 
 
 		public McpeStartGame()
@@ -3668,7 +3682,7 @@ namespace MiNET.Net
 			WriteSignedVarInt(amplifier);
 			Write(particles);
 			WriteSignedVarInt(duration);
-			Write(tick);
+			WriteUnsignedVarLong(tick);
 
 			AfterEncode();
 		}
@@ -3688,7 +3702,7 @@ namespace MiNET.Net
 			amplifier = ReadSignedVarInt();
 			particles = ReadBool();
 			duration = ReadSignedVarInt();
-			tick = ReadLong();
+			tick = ReadUnsignedVarLong();
 
 			AfterDecode();
 		}
@@ -4887,7 +4901,7 @@ namespace MiNET.Net
 		public uint inventoryId;
 		public ItemStacks input;
 		public FullContainerName containerName;
-		public uint dynamicContainerId;
+		public Item storage;
 
 		public McpeInventoryContent()
 		{
@@ -4904,7 +4918,7 @@ namespace MiNET.Net
 			WriteUnsignedVarInt(inventoryId);
 			Write(input);
 			Write(containerName);
-			WriteUnsignedVarInt(dynamicContainerId);
+			Write(storage);
 
 			AfterEncode();
 		}
@@ -4921,7 +4935,7 @@ namespace MiNET.Net
 			inventoryId = ReadUnsignedVarInt();
 			input = ReadItemStacks();
 			containerName = ReadFullContainerName();
-			dynamicContainerId = ReadUnsignedVarInt();
+			storage = ReadItem();
 
 			AfterDecode();
 		}
@@ -4936,7 +4950,7 @@ namespace MiNET.Net
 			inventoryId = default;
 			input = default;
 			containerName = default;
-			dynamicContainerId = default;
+			storage = default;
 		}
 
 	}
@@ -4947,7 +4961,7 @@ namespace MiNET.Net
 		public uint inventoryId;
 		public uint slot;
 		public FullContainerName containerName;
-		public uint dynamicContainerId;
+		public Item storage;
 		public Item item;
 
 		public McpeInventorySlot()
@@ -4965,7 +4979,7 @@ namespace MiNET.Net
 			WriteUnsignedVarInt(inventoryId);
 			WriteUnsignedVarInt(slot);
 			Write(containerName);
-			WriteUnsignedVarInt(dynamicContainerId);
+			Write(storage);
 			Write(item);
 
 			AfterEncode();
@@ -4983,7 +4997,7 @@ namespace MiNET.Net
 			inventoryId = ReadUnsignedVarInt();
 			slot = ReadUnsignedVarInt();
 			containerName = ReadFullContainerName();
-			dynamicContainerId = ReadUnsignedVarInt();
+			storage = ReadItem();
 			item = ReadItem();
 
 			AfterDecode();
@@ -4999,7 +5013,7 @@ namespace MiNET.Net
 			inventoryId = default;
 			slot = default;
 			containerName = default;
-			dynamicContainerId = default;
+			storage = default;
 			item = default;
 		}
 
@@ -9690,7 +9704,7 @@ namespace MiNET.Net
 
 		public int gameMode;
 		public ulong playerEntityUniqueId;
-		public uint tick;
+		public long tick;
 
 		public McpeUpdatePlayerGameType()
 		{
@@ -9706,7 +9720,7 @@ namespace MiNET.Net
 
 			WriteVarInt(gameMode);
 			Write(playerEntityUniqueId);
-			WriteUnsignedVarInt(tick);
+			WriteUnsignedVarLong(tick);
 
 			AfterEncode();
 		}
@@ -9722,7 +9736,7 @@ namespace MiNET.Net
 
 			gameMode = ReadVarInt();
 			playerEntityUniqueId = ReadUlong();
-			tick = ReadUnsignedVarInt();
+			tick = ReadUnsignedVarLong();
 
 			AfterDecode();
 		}
@@ -11085,6 +11099,119 @@ namespace MiNET.Net
 			base.ResetPacket();
 
 			removedContainers = default;
+		}
+
+	}
+
+	public partial class McpeMovementEffect : Packet<McpeMovementEffect>
+	{
+		public enum MovementEffectType
+		{
+			Invalid = -1,
+			GlideBoost = 0,
+		}
+
+		public long runtimeEntityId;
+		public uint effectType;
+		public uint duration;
+		public long tick;
+
+		public McpeMovementEffect()
+		{
+			Id = 0x13e;
+			IsMcpe = true;
+		}
+
+		protected override void EncodePacket()
+		{
+			base.EncodePacket();
+
+			BeforeEncode();
+
+			WriteUnsignedVarLong(runtimeEntityId);
+			WriteUnsignedVarInt(effectType);
+			WriteUnsignedVarInt(duration);
+			WriteUnsignedVarLong(tick);
+
+			AfterEncode();
+		}
+
+		partial void BeforeEncode();
+		partial void AfterEncode();
+
+		protected override void DecodePacket()
+		{
+			base.DecodePacket();
+
+			BeforeDecode();
+
+			runtimeEntityId = ReadUnsignedVarLong();
+			effectType = ReadUnsignedVarInt();
+			duration = ReadUnsignedVarInt();
+			tick = ReadUnsignedVarLong();
+
+			AfterDecode();
+		}
+
+		partial void BeforeDecode();
+		partial void AfterDecode();
+
+		protected override void ResetPacket()
+		{
+			base.ResetPacket();
+
+			runtimeEntityId = default;
+			effectType = default;
+			duration = default;
+			tick = default;
+		}
+
+	}
+
+	public partial class McpeSetMovementAuthority : Packet<McpeSetMovementAuthority>
+	{
+
+		public byte mode;
+
+		public McpeSetMovementAuthority()
+		{
+			Id = 0x13f;
+			IsMcpe = true;
+		}
+
+		protected override void EncodePacket()
+		{
+			base.EncodePacket();
+
+			BeforeEncode();
+
+			Write(mode);
+
+			AfterEncode();
+		}
+
+		partial void BeforeEncode();
+		partial void AfterEncode();
+
+		protected override void DecodePacket()
+		{
+			base.DecodePacket();
+
+			BeforeDecode();
+
+			mode = ReadByte();
+
+			AfterDecode();
+		}
+
+		partial void BeforeDecode();
+		partial void AfterDecode();
+
+		protected override void ResetPacket()
+		{
+			base.ResetPacket();
+
+			mode = default;
 		}
 
 	}

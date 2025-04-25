@@ -27,7 +27,7 @@ using log4net;
 using MiNET.Items;
 using MiNET.Utils;
 
-namespace MiNET
+namespace MiNET.Inventories
 {
 	public class CursorInventory
 	{

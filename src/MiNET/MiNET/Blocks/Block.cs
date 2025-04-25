@@ -38,6 +38,8 @@ namespace MiNET.Blocks
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Block));
 
+		public const uint UnknownRuntimeId = uint.MaxValue;
+
 		public BlockCoordinates Coordinates { get; set; }
 
 		public float Hardness { get; protected set; } = 0;

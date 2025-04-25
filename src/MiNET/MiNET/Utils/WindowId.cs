@@ -12,5 +12,6 @@
 		Hotbar = 122,
 		FixedInventory = 123,
 		UI = 124,
+		ContainerIdRegistry = 125,
 	}
 }

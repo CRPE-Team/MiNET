@@ -25,6 +25,9 @@ namespace MiNET.Worlds.Anvil
 			{ "stony_shore", "stone_beach" },
 			{ "snowy_beach", "cold_beach" },
 			{ "snowy_taiga", "cold_taiga" },
+			{ "snowy_plains", "ice_plains" },
+			{ "ice_spikes", "ice_plains_spikes" },
+			{ "windswept_gravelly_hills", "extreme_hills_mutated" }
 		};
 
 		private static readonly HashSet<string> _seaBlocks = new HashSet<string>
@@ -1037,11 +1040,6 @@ namespace MiNET.Worlds.Anvil
 					context.Properties.Clear();
 					context.Properties.Add(new NbtString("huge_mushroom_bits", faceDirection.ToString()));
 
-					if (nameOnly == "mushroom_stem")
-					{
-						return "minecraft:brown_mushroom_block";
-					}
-
 					return context.OldName;
 				});
 
@@ -1143,32 +1141,13 @@ namespace MiNET.Worlds.Anvil
 
 				var skullType = context.OldName.Replace("minecraft:", "").Replace("_head", "").Replace("_wall", "");
 
-				var skullTypeBit = skullType switch
-				{
-					"skeleton_skull" => 0,
-					"wither_skeleton_skull" => 1,
-					"zombie" => 2,
-					"player" => 3,
-					"creeper" => 4,
-					"dragon" => 5,
-					"piglin" => 6,
-					_ => -1
-				};
-
-				if (skullTypeBit == -1)
-				{
-					Log.Error($"Unknown skull type [{skullType}]");
-					skullTypeBit = 0;
-				}
-
 				context.BlockEntityTemplate = new SkullBlockEntity()
 				{
 					Rotation = rotation,
-					SkullType = (byte) skullTypeBit,
 					MouthMoving = context.Properties["powered"]?.StringValue == "true"
 				};
 
-				return "minecraft:skull";
+				return context.OldName.Replace("_wall", "");
 			},
 			oldFacingDirectionMap,
 			poweredSkipMap,

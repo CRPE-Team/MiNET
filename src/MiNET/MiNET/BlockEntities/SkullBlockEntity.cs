@@ -31,8 +31,6 @@ namespace MiNET.BlockEntities
 {
 	public class SkullBlockEntity : BlockEntity
 	{
-		public byte SkullType { get; set; }
-
 		[NbtProperty("Rot")]
 		public byte Rotation { get; set; }
 
@@ -42,11 +40,7 @@ namespace MiNET.BlockEntities
 
 		public SkullBlockEntity() : base(BlockEntityIds.Skull)
 		{
-		}
 
-		public override List<Item> GetDrops()
-		{
-			return new List<Item> { new ItemSkull() { Metadata = SkullType } };
 		}
 	}
 }

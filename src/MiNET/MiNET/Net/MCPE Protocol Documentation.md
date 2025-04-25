@@ -40,6 +40,8 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Serverbound Diagnostics | 0x13b | 19 |   
 | Camera Aim Assist | 0x13c | 19 |   
 | Container Registry Cleanup | 0x13d | 19 |   
+| Movement Effect | 0x13e | 19 |   
+| Set Movement Authority | 0x13f | 19 |   
 | Rider Jump | 0x14 | 20 |   
 | Update Block | 0x15 | 21 |   
 | Add Painting | 0x16 | 22 |   
@@ -181,7 +183,6 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | byte [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-byte) |
 | byte[] [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-byte[]) |
 | ByteArray [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ByteArray) |
-| CdnUrls [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-CdnUrls) |
 | CreativeItemStacks [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-CreativeItemStacks) |
 | DimensionDefinitions [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-DimensionDefinitions) |
 | EnchantOptions [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-EnchantOptions) |
@@ -350,7 +351,6 @@ Wiki: [Resource Packs Info](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 |Has Addons | bool |  |
 |Has Scripts | bool |  |
 |Resource Packs | ResourcePackInfos |  |
-|Cdn Urls | CdnUrls |  |
 -----------------------------------------------------------------------
 ### Resource Pack Stack (0x07)
 Wiki: [Resource Pack Stack](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ResourcePackStack)
@@ -466,6 +466,14 @@ Wiki: [Start Game](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-StartG
 **Sent from client:** false
 
 
+
+#### Server Auth Movement Mode constants
+
+| Name | Value |
+|:-----|:-----|
+|Legacy Client Authoritative V1 | 0 |
+|Server Authoritative V2 | 1 |
+|Server Authoritative V3 | 2 |
 
 
 #### Fields
@@ -825,7 +833,7 @@ Wiki: [Mob Effect](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-MobEff
 |Amplifier | SignedVarInt |  |
 |Particles | bool |  |
 |Duration | SignedVarInt |  |
-|Tick | long |  |
+|Tick | UnsignedVarLong |  |
 -----------------------------------------------------------------------
 ### Update Attributes (0x1d)
 Wiki: [Update Attributes](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-UpdateAttributes)
@@ -1263,7 +1271,7 @@ Wiki: [Inventory Content](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol
 |Inventory Id | UnsignedVarInt |  |
 |Input | ItemStacks |  |
 |Container Name | FullContainerName |  |
-|Dynamic Container Id | UnsignedVarInt |  |
+|Storage | Item |  |
 -----------------------------------------------------------------------
 ### Inventory Slot (0x32)
 Wiki: [Inventory Slot](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-InventorySlot)
@@ -1281,7 +1289,7 @@ Wiki: [Inventory Slot](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-In
 |Inventory Id | UnsignedVarInt |  |
 |Slot | UnsignedVarInt |  |
 |Container Name | FullContainerName |  |
-|Dynamic Container Id | UnsignedVarInt |  |
+|Storage | Item |  |
 |Item | Item |  |
 -----------------------------------------------------------------------
 ### Container Set Data (0x33)
@@ -2710,7 +2718,6 @@ Wiki: [Player Enchant Options](https://github.com/NiclasOlofsson/MiNET/wiki//Pro
 public const PLAYER_AUTH_INPUT_PACKET = 0x90;
 public const PLAYER_ARMOR_DAMAGE_PACKET = 0x95;
 public const CODE_BUILDER_PACKET = 0x96;
-public const UPDATE_PLAYER_GAME_TYPE_PACKET = 0x97;
 public const EMOTE_LIST_PACKET = 0x98;
 public const POSITION_TRACKING_D_B_SERVER_BROADCAST_PACKET = 0x99;
 public const POSITION_TRACKING_D_B_CLIENT_REQUEST_PACKET = 0x9a;
@@ -2792,7 +2799,7 @@ Wiki: [Update Player Game Type](https://github.com/NiclasOlofsson/MiNET/wiki//Pr
 |:-----|:-----|:-----|
 |Game Mode | VarInt |  |
 |Player Entity Unique Id | ulong |  |
-|Tick | UnsignedVarInt |  |
+|Tick | UnsignedVarLong |  |
 -----------------------------------------------------------------------
 ### Packet Violation Warning (0x9c)
 Wiki: [Packet Violation Warning](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-PacketViolationWarning)
@@ -3249,6 +3256,46 @@ Wiki: [Container Registry Cleanup](https://github.com/NiclasOlofsson/MiNET/wiki/
 | Name | Type | Size |
 |:-----|:-----|:-----|
 |Removed Containers | FullContainerName[] |  |
+-----------------------------------------------------------------------
+### Movement Effect (0x13e)
+Wiki: [Movement Effect](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-MovementEffect)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+#### Movement Effect Type constants
+
+| Name | Value |
+|:-----|:-----|
+|Invalid | -1 |
+|Glide Boost | 0 |
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Runtime Entity ID | UnsignedVarLong |  |
+|Effect Type | UnsignedVarInt |  |
+|Duration | UnsignedVarInt |  |
+|Tick | UnsignedVarLong |  |
+-----------------------------------------------------------------------
+### Set Movement Authority (0x13f)
+Wiki: [Set Movement Authority](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetMovementAuthority)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Mode | byte |  |
 -----------------------------------------------------------------------
 ### Alex Entity Animation (0xe0)
 Wiki: [Alex Entity Animation](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AlexEntityAnimation)

@@ -2844,7 +2844,7 @@ namespace MiNET
 			levelSettings.MapEnabled = false;
 			levelSettings.PermissionLevel = (byte) PermissionLevel;
 			levelSettings.GameVersion = "*";
-			levelSettings.HasEduFeaturesEnabled = true;
+			levelSettings.HasEduFeaturesEnabled = false;
 			
 			var startGame = McpeStartGame.CreateObject();
 			startGame.levelSettings = levelSettings;
@@ -2860,7 +2860,7 @@ namespace MiNET
 			startGame.isTrial = false;
 			startGame.currentTick = Level.TickTime;
 			startGame.enchantmentSeed = 123456;
-			startGame.movementType = 0;
+			startGame.movementType = (int) McpeStartGame.ServerAuthMovementMode.LegacyClientAuthoritativeV1;
 
 			//startGame.blockPalette = BlockFactory.BlockPalette;
 			startGame.itemstates = ItemFactory.ItemStates;

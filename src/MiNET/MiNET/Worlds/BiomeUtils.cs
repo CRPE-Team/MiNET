@@ -45,7 +45,6 @@ namespace MiNET.Worlds
 		public float RedSpores { get; set; }
 		public float Ash { get; set; }
 		public float WhiteAsh { get; set; }
-		public float WaterTransparency { get; set; }
 		public RgbaVector WaterColor { get; set; }
 	}
 
@@ -65,7 +64,7 @@ namespace MiNET.Worlds
 				{
 					var biome = new Biome()
 					{
-						Name = biomeTag["name_hash"].StringValue,
+						Name = biomeTag.Name,
 						Rain = biomeTag["rain"].ByteValue == 1,
 						Depth = biomeTag["depth"].FloatValue,
 						Downfall = biomeTag["downfall"].FloatValue,
@@ -75,7 +74,6 @@ namespace MiNET.Worlds
 						RedSpores = biomeTag["red_spores"].FloatValue,
 						Ash = biomeTag["ash"].FloatValue,
 						WhiteAsh = biomeTag["white_ash"].FloatValue,
-						WaterTransparency = biomeTag["waterTransparency"].FloatValue,
 						WaterColor = new RgbaVector(
 							biomeTag["waterColorR"].FloatValue, 
 							biomeTag["waterColorG"].FloatValue,
