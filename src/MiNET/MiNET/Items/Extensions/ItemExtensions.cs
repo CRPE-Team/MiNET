@@ -13,7 +13,7 @@ namespace MiNET.Items.Extensions
 		public static bool IsItemBlockOf(this Item item, Type blockType)
 		{
 			if (item is not ItemBlock) return false;
-			if (item.BlockRuntimeId == 0) return blockType == typeof(Air);
+			if (item.BlockRuntimeId == -1) return blockType == typeof(Air);
 
 			return BlockFactory.GetIdByRuntimeId(item.BlockRuntimeId)
 				.Equals(BlockFactory.GetIdByType(blockType));

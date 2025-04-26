@@ -684,6 +684,19 @@ namespace MiNET.Blocks.States
 
 	} // class
 
+	public partial class PersistentBit : BlockStateByte
+	{
+		public override string Name => "persistent_bit";
+
+		public const byte MaxValue = 1;
+
+		public static byte[] Values()
+		{
+			return [0, 1];
+		}
+
+	} // class
+
 	public partial class CardinalDirection : BlockStateString
 	{
 		public override string Name => "minecraft:cardinal_direction";
@@ -828,15 +841,24 @@ namespace MiNET.Blocks.States
 
 	} // class
 
-	public partial class PersistentBit : BlockStateByte
+	public partial class MultiFaceDirectionBits : BlockStateInt
 	{
-		public override string Name => "persistent_bit";
+		public override string Name => "multi_face_direction_bits";
 
-		public const byte MaxValue = 1;
+		public const int MaxValue = 63;
 
-		public static byte[] Values()
+		public static int[] Values()
 		{
-			return [0, 1];
+			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
 		}
 
 	} // class
@@ -1272,28 +1294,6 @@ namespace MiNET.Blocks.States
 
 	} // class
 
-	public partial class MultiFaceDirectionBits : BlockStateInt
-	{
-		public override string Name => "multi_face_direction_bits";
-
-		public const int MaxValue = 63;
-
-		public static int[] Values()
-		{
-			return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63];
-		}
-
-
-		protected override void ValidateValue(int value)
-		{
-			if (value < 0 || value > MaxValue)
-			{
-				ThrowArgumentException(value);
-			}
-		}
-
-	} // class
-
 	public partial class TwistingVinesAge : BlockStateInt
 	{
 		public override string Name => "twisting_vines_age";
@@ -1434,6 +1434,115 @@ namespace MiNET.Blocks.States
 		public static BigDripleafTilt[] Values()
 		{
 			return [None, Unstable, PartialTilt, FullTilt];
+		}
+
+	} // class
+
+	public partial class Tip : BlockStateByte
+	{
+		public override string Name => "tip";
+
+		public const byte MaxValue = 1;
+
+		public static byte[] Values()
+		{
+			return [0, 1];
+		}
+
+	} // class
+
+	public partial class PaleMossCarpetSideEast : BlockStateString
+	{
+		public override string Name => "pale_moss_carpet_side_east";
+
+		protected PaleMossCarpetSideEast(string value)
+		{
+			Value = value;
+		}
+
+		protected const string NoneValue = "none";
+		protected const string ShortValue = "short";
+		protected const string TallValue = "tall";
+
+		public static readonly PaleMossCarpetSideEast None = new PaleMossCarpetSideEast(NoneValue);
+		public static readonly PaleMossCarpetSideEast Short = new PaleMossCarpetSideEast(ShortValue);
+		public static readonly PaleMossCarpetSideEast Tall = new PaleMossCarpetSideEast(TallValue);
+
+		public static PaleMossCarpetSideEast[] Values()
+		{
+			return [None, Short, Tall];
+		}
+
+	} // class
+
+	public partial class PaleMossCarpetSideNorth : BlockStateString
+	{
+		public override string Name => "pale_moss_carpet_side_north";
+
+		protected PaleMossCarpetSideNorth(string value)
+		{
+			Value = value;
+		}
+
+		protected const string NoneValue = "none";
+		protected const string ShortValue = "short";
+		protected const string TallValue = "tall";
+
+		public static readonly PaleMossCarpetSideNorth None = new PaleMossCarpetSideNorth(NoneValue);
+		public static readonly PaleMossCarpetSideNorth Short = new PaleMossCarpetSideNorth(ShortValue);
+		public static readonly PaleMossCarpetSideNorth Tall = new PaleMossCarpetSideNorth(TallValue);
+
+		public static PaleMossCarpetSideNorth[] Values()
+		{
+			return [None, Short, Tall];
+		}
+
+	} // class
+
+	public partial class PaleMossCarpetSideSouth : BlockStateString
+	{
+		public override string Name => "pale_moss_carpet_side_south";
+
+		protected PaleMossCarpetSideSouth(string value)
+		{
+			Value = value;
+		}
+
+		protected const string NoneValue = "none";
+		protected const string ShortValue = "short";
+		protected const string TallValue = "tall";
+
+		public static readonly PaleMossCarpetSideSouth None = new PaleMossCarpetSideSouth(NoneValue);
+		public static readonly PaleMossCarpetSideSouth Short = new PaleMossCarpetSideSouth(ShortValue);
+		public static readonly PaleMossCarpetSideSouth Tall = new PaleMossCarpetSideSouth(TallValue);
+
+		public static PaleMossCarpetSideSouth[] Values()
+		{
+			return [None, Short, Tall];
+		}
+
+	} // class
+
+	public partial class PaleMossCarpetSideWest : BlockStateString
+	{
+		public override string Name => "pale_moss_carpet_side_west";
+
+		protected PaleMossCarpetSideWest(string value)
+		{
+			Value = value;
+		}
+
+		protected const string NoneValue = "none";
+		protected const string ShortValue = "short";
+		protected const string TallValue = "tall";
+
+		public static readonly PaleMossCarpetSideWest None = new PaleMossCarpetSideWest(NoneValue);
+		public static readonly PaleMossCarpetSideWest Short = new PaleMossCarpetSideWest(ShortValue);
+		public static readonly PaleMossCarpetSideWest Tall = new PaleMossCarpetSideWest(TallValue);
+
+		public static PaleMossCarpetSideWest[] Values()
+		{
+			return [None, Short, Tall];
 		}
 
 	} // class
@@ -1750,6 +1859,19 @@ namespace MiNET.Blocks.States
 		public static DripstoneThickness[] Values()
 		{
 			return [Tip, Frustum, Middle, Base, Merge];
+		}
+
+	} // class
+
+	public partial class Natural : BlockStateByte
+	{
+		public override string Name => "natural";
+
+		public const byte MaxValue = 1;
+
+		public static byte[] Values()
+		{
+			return [0, 1];
 		}
 
 	} // class

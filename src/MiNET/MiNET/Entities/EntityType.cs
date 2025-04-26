@@ -76,6 +76,9 @@ namespace MiNET.Entities
 		EvocationFangs = 103,
 		IceBomb = 106,
 		Balloon = 107,
+		WindChargeProjectile = 143,
+		OminousItemSpawner = 145,
+		ChestBoat = 218,
 
 		Zombie = 32,
 		Creeper = 33,
@@ -106,6 +109,10 @@ namespace MiNET.Entities
 		Vex = 105,
 		Drowned = 110,
 		Pillager = 114,
+		Breeze = 140,
+		BreezeWindChargeProjectile = 141,
+		Bogged = 144,
+		Creaking = 146,
 
 		Chicken = 10,
 		Cow = 11,
@@ -137,8 +144,10 @@ namespace MiNET.Entities
 		Fish = 112,
 		Panda = 113,
 		Sniffer = 139,
+		Armadillo = 142,
+		TraderLlama = 157,
 
-		Player = 63,
+		Player = 257,
 
 		Npc = 51,
 		Agent = 56,
@@ -250,6 +259,15 @@ namespace MiNET.Entities
 			{ EntityType.Camera, "minecraft:tripod_camera" },
 			{ EntityType.Pillager, "minecraft:pillager" },
 			{ EntityType.Sniffer, "minecraft:sniffer" },
+			{ EntityType.Breeze , "minecraft:breeze" },
+			{ EntityType.BreezeWindChargeProjectile , "minecraft:breeze_wind_charge_projectile" },
+			{ EntityType.Armadillo , "minecraft:armadillo" },
+			{ EntityType.WindChargeProjectile , "minecraft:wind_charge_projectile" },
+			{ EntityType.Bogged , "minecraft:bogged" },
+			{ EntityType.OminousItemSpawner , "minecraft:ominous_item_spawner" },
+			{ EntityType.Creaking , "minecraft:creaking" },
+			{ EntityType.TraderLlama , "minecraft:trader_llama" },
+			{ EntityType.ChestBoat , "minecraft:chest_boat" },
 		};
 
 		public static TStore Store<TStore>(this Entity entity) where TStore : new()

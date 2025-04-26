@@ -45,8 +45,8 @@ namespace MiNET.Net
 {
 	public class McpeProtocolInfo
 	{
-		public const int ProtocolVersion = 748;
-		public const string GameVersion = "1.21.40";
+		public const int ProtocolVersion = 766;
+		public const string GameVersion = "1.21.50";
 	}
 
 	public interface IMcpeMessageHandler
@@ -2249,6 +2249,8 @@ namespace MiNET.Net
 		public bool mustAccept;
 		public bool hasAddons;
 		public bool hasScripts;
+		public UUID worldTemplateId;
+		public string worldTemplateVersion;
 		public ResourcePackInfos resourcePacks;
 
 		public McpeResourcePacksInfo()
@@ -2266,6 +2268,8 @@ namespace MiNET.Net
 			Write(mustAccept);
 			Write(hasAddons);
 			Write(hasScripts);
+			Write(worldTemplateId);
+			Write(worldTemplateVersion);
 			Write(resourcePacks);
 
 			AfterEncode();
@@ -2283,6 +2287,8 @@ namespace MiNET.Net
 			mustAccept = ReadBool();
 			hasAddons = ReadBool();
 			hasScripts = ReadBool();
+			worldTemplateId = ReadUUID();
+			worldTemplateVersion = ReadString();
 			resourcePacks = ReadResourcePackInfos();
 
 			AfterDecode();
@@ -2298,6 +2304,8 @@ namespace MiNET.Net
 			mustAccept = default;
 			hasAddons = default;
 			hasScripts = default;
+			worldTemplateId = default;
+			worldTemplateVersion = default;
 			resourcePacks = default;
 		}
 
@@ -10998,6 +11006,7 @@ namespace MiNET.Net
 	public partial class McpeCameraAimAssist : Packet<McpeCameraAimAssist>
 	{
 
+		public string presetId;
 		public Vector2 viewAngle;
 		public float distance;
 		public byte targetMode;
@@ -11015,6 +11024,7 @@ namespace MiNET.Net
 
 			BeforeEncode();
 
+			Write(presetId);
 			Write(viewAngle);
 			Write(distance);
 			Write(targetMode);
@@ -11032,6 +11042,7 @@ namespace MiNET.Net
 
 			BeforeDecode();
 
+			presetId = ReadString();
 			viewAngle = ReadVector2();
 			distance = ReadFloat();
 			targetMode = ReadByte();
@@ -11047,6 +11058,7 @@ namespace MiNET.Net
 		{
 			base.ResetPacket();
 
+			presetId = default;
 			viewAngle = default;
 			distance = default;
 			targetMode = default;

@@ -650,6 +650,21 @@ namespace MiNET
 		RecordCreator = 527,
 		RecordCreatorMusicBox = 528,
 		RecordPrecipice = 529,
-		VaultRejectRewardedPlayer = 530
+		VaultRejectRewardedPlayer = 530,
+		ImitateDrowned = 531,
+		ImitateCreaking = 532,
+		BundleInsertFail = 533,
+		SpongeAbsorb = 534,
+
+		BlockCreakingHeartTrail = 536,
+		CreakingHeartSpawn = 537,
+		Activate = 538,
+		Deactivate = 539,
+		Freeze = 540,
+		Unfreeze = 541,
+		Open = 542,
+		OpenLong = 543,
+		Close = 544,
+		CloseLong = 545,
 	}
 }

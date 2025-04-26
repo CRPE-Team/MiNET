@@ -59,7 +59,7 @@ namespace MiNET.Utils
 		/// <summary>
 		///	The unique identifier for the pack
 		/// </summary>
-		public string UUID { get; set; }
+		public UUID PackId { get; set; }
 
 		/// <summary>
 		/// Version is the version of the pack. The client will cache packs sent by the server as
@@ -105,7 +105,7 @@ namespace MiNET.Utils
 
 		public void Write(Packet packet)
 		{
-			packet.Write(UUID);
+			packet.Write(PackId);
 			packet.Write(Version);
 			packet.Write(Size);
 			packet.Write(ContentKey);
@@ -121,7 +121,7 @@ namespace MiNET.Utils
 		{
 			return new ResourcePackInfo()
 			{
-				UUID = packet.ReadString(),
+				PackId = packet.ReadUUID(),
 				Version = packet.ReadString(),
 				Size = packet.ReadUlong(),
 				ContentKey = packet.ReadString(),
@@ -187,7 +187,7 @@ namespace MiNET.Utils
 		}
 	}
 
-	public class ResourcePackIds : List<string>, IPacketDataObject
+	public class ResourcePackIds : List<UUID>, IPacketDataObject
 	{
 		public void Write(Packet packet)
 		{
@@ -195,7 +195,7 @@ namespace MiNET.Utils
 
 			foreach (var id in this)
 			{
-				packet.Write(id);
+				packet.Write(id.ToString());
 			}
 		}
 
@@ -206,7 +206,7 @@ namespace MiNET.Utils
 			var count = packet.ReadShort();
 			for (int i = 0; i < count; i++)
 			{
-				ids.Add(packet.ReadString());
+				ids.Add(new UUID(packet.ReadString()));
 			}
 
 			return ids;

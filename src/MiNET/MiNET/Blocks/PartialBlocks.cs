@@ -5479,6 +5479,48 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class Chalkboard : Block
+	{
+		private MiNET.Blocks.States.ChalkboardDirection _direction = new MiNET.Blocks.States.ChalkboardDirection();
+
+		public override string Id => "minecraft:chalkboard";
+
+		[StateRange(0, 15)]
+		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _direction.Name:
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (Chalkboard) base.Clone();
+
+			block._direction = (MiNET.Blocks.States.ChalkboardDirection) _direction.Clone();
+
+			return block;
+		} // method
+	} // class
+
 	public partial class ChemicalHeat : Block
 	{
 		public override string Id => "minecraft:chemical_heat";
@@ -6443,6 +6485,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:chiseled_red_sandstone";
 	} // class
 
+	public partial class ChiseledResinBricks : Block
+	{
+		public override string Id => "minecraft:chiseled_resin_bricks";
+	} // class
+
 	public partial class ChiseledSandstone : Block
 	{
 		public override string Id => "minecraft:chiseled_sandstone";
@@ -6518,6 +6565,11 @@ namespace MiNET.Blocks
 	public partial class ClientRequestPlaceholderBlock : Block
 	{
 		public override string Id => "minecraft:client_request_placeholder_block";
+	} // class
+
+	public partial class ClosedEyeblossom : Block
+	{
+		public override string Id => "minecraft:closed_eyeblossom";
 	} // class
 
 	public partial class CoalBlock : Block
@@ -7567,6 +7619,66 @@ namespace MiNET.Blocks
 	public partial class CraftingTable : Block
 	{
 		public override string Id => "minecraft:crafting_table";
+	} // class
+
+	public partial class CreakingHeart : Block
+	{
+		private MiNET.Blocks.States.Active _active = new MiNET.Blocks.States.Active();
+		private MiNET.Blocks.States.Natural _natural = new MiNET.Blocks.States.Natural();
+		private MiNET.Blocks.States.PillarAxis _pillarAxis = (States.PillarAxis) MiNET.Blocks.States.PillarAxis.Y.Clone();
+
+		public override string Id => "minecraft:creaking_heart";
+
+		[StateBit]
+		public bool Active { get => Convert.ToBoolean(_active.Value); set => NotifyStateUpdate(_active, value); }
+
+		[StateBit]
+		public bool Natural { get => Convert.ToBoolean(_natural.Value); set => NotifyStateUpdate(_natural, value); }
+
+		[StateEnum("x", "y", "z")]
+		public MiNET.Blocks.States.PillarAxis PillarAxis { get => _pillarAxis; set => NotifyStateUpdate(_pillarAxis, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == _active.Name:
+						NotifyStateUpdate(_active, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _natural.Name:
+						NotifyStateUpdate(_natural, s.Value);
+						break;
+					case BlockStateString s when s.Name == _pillarAxis.Name:
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _active;
+			yield return _natural;
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _active, _natural, _pillarAxis);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (CreakingHeart) base.Clone();
+
+			block._active = (MiNET.Blocks.States.Active) _active.Clone();
+			block._natural = (MiNET.Blocks.States.Natural) _natural.Clone();
+			block._pillarAxis = (MiNET.Blocks.States.PillarAxis) _pillarAxis.Clone();
+
+			return block;
+		} // method
 	} // class
 
 	public partial class CreeperHead : HeadBase
@@ -19730,6 +19842,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class OpenEyeblossom : Block
+	{
+		public override string Id => "minecraft:open_eyeblossom";
+	} // class
+
 	public partial class OrangeCandle : Block
 	{
 		private MiNET.Blocks.States.Candles _candles = new MiNET.Blocks.States.Candles();
@@ -20258,6 +20375,888 @@ namespace MiNET.Blocks
 	public partial class PackedMud : Block
 	{
 		public override string Id => "minecraft:packed_mud";
+	} // class
+
+	public partial class PaleHangingMoss : Block
+	{
+		private MiNET.Blocks.States.Tip _tip = new MiNET.Blocks.States.Tip();
+
+		public override string Id => "minecraft:pale_hanging_moss";
+
+		[StateBit]
+		public bool Tip { get => Convert.ToBoolean(_tip.Value); set => NotifyStateUpdate(_tip, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == _tip.Name:
+						NotifyStateUpdate(_tip, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _tip;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _tip);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleHangingMoss) base.Clone();
+
+			block._tip = (MiNET.Blocks.States.Tip) _tip.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleMossBlock : Block
+	{
+		public override string Id => "minecraft:pale_moss_block";
+	} // class
+
+	public partial class PaleMossCarpet : CarpetBase
+	{
+		private MiNET.Blocks.States.PaleMossCarpetSideEast _paleMossCarpetSideEast = (States.PaleMossCarpetSideEast) MiNET.Blocks.States.PaleMossCarpetSideEast.None.Clone();
+		private MiNET.Blocks.States.PaleMossCarpetSideNorth _paleMossCarpetSideNorth = (States.PaleMossCarpetSideNorth) MiNET.Blocks.States.PaleMossCarpetSideNorth.None.Clone();
+		private MiNET.Blocks.States.PaleMossCarpetSideSouth _paleMossCarpetSideSouth = (States.PaleMossCarpetSideSouth) MiNET.Blocks.States.PaleMossCarpetSideSouth.None.Clone();
+		private MiNET.Blocks.States.PaleMossCarpetSideWest _paleMossCarpetSideWest = (States.PaleMossCarpetSideWest) MiNET.Blocks.States.PaleMossCarpetSideWest.None.Clone();
+		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
+
+		public override string Id => "minecraft:pale_moss_carpet";
+
+		[StateEnum("none", "short", "tall")]
+		public MiNET.Blocks.States.PaleMossCarpetSideEast PaleMossCarpetSideEast { get => _paleMossCarpetSideEast; set => NotifyStateUpdate(_paleMossCarpetSideEast, value.Value); }
+
+		[StateEnum("none", "short", "tall")]
+		public MiNET.Blocks.States.PaleMossCarpetSideNorth PaleMossCarpetSideNorth { get => _paleMossCarpetSideNorth; set => NotifyStateUpdate(_paleMossCarpetSideNorth, value.Value); }
+
+		[StateEnum("none", "short", "tall")]
+		public MiNET.Blocks.States.PaleMossCarpetSideSouth PaleMossCarpetSideSouth { get => _paleMossCarpetSideSouth; set => NotifyStateUpdate(_paleMossCarpetSideSouth, value.Value); }
+
+		[StateEnum("none", "short", "tall")]
+		public MiNET.Blocks.States.PaleMossCarpetSideWest PaleMossCarpetSideWest { get => _paleMossCarpetSideWest; set => NotifyStateUpdate(_paleMossCarpetSideWest, value.Value); }
+
+		[StateBit]
+		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == _paleMossCarpetSideEast.Name:
+						NotifyStateUpdate(_paleMossCarpetSideEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == _paleMossCarpetSideNorth.Name:
+						NotifyStateUpdate(_paleMossCarpetSideNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == _paleMossCarpetSideSouth.Name:
+						NotifyStateUpdate(_paleMossCarpetSideSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == _paleMossCarpetSideWest.Name:
+						NotifyStateUpdate(_paleMossCarpetSideWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _upperBlockBit.Name:
+						NotifyStateUpdate(_upperBlockBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _paleMossCarpetSideEast;
+			yield return _paleMossCarpetSideNorth;
+			yield return _paleMossCarpetSideSouth;
+			yield return _paleMossCarpetSideWest;
+			yield return _upperBlockBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _paleMossCarpetSideEast, _paleMossCarpetSideNorth, _paleMossCarpetSideSouth, _paleMossCarpetSideWest, _upperBlockBit);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleMossCarpet) base.Clone();
+
+			block._paleMossCarpetSideEast = (MiNET.Blocks.States.PaleMossCarpetSideEast) _paleMossCarpetSideEast.Clone();
+			block._paleMossCarpetSideNorth = (MiNET.Blocks.States.PaleMossCarpetSideNorth) _paleMossCarpetSideNorth.Clone();
+			block._paleMossCarpetSideSouth = (MiNET.Blocks.States.PaleMossCarpetSideSouth) _paleMossCarpetSideSouth.Clone();
+			block._paleMossCarpetSideWest = (MiNET.Blocks.States.PaleMossCarpetSideWest) _paleMossCarpetSideWest.Clone();
+			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakButton : ButtonBase
+	{
+		private MiNET.Blocks.States.ButtonPressedBit _buttonPressedBit = new MiNET.Blocks.States.ButtonPressedBit();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
+
+		public override string Id => "minecraft:pale_oak_button";
+
+		[StateBit]
+		public override bool ButtonPressedBit { get => Convert.ToBoolean(_buttonPressedBit.Value); set => NotifyStateUpdate(_buttonPressedBit, value); }
+
+		[StateRange(0, 5)]
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == _buttonPressedBit.Name:
+						NotifyStateUpdate(_buttonPressedBit, s.Value);
+						break;
+					case BlockStateInt s when s.Name == _facingDirection.Name:
+						NotifyStateUpdate(_facingDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _buttonPressedBit;
+			yield return _facingDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _buttonPressedBit, _facingDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakButton) base.Clone();
+
+			block._buttonPressedBit = (MiNET.Blocks.States.ButtonPressedBit) _buttonPressedBit.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakDoor : DoorBase
+	{
+		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
+		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
+		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
+
+		public override string Id => "minecraft:pale_oak_door";
+
+		[StateRange(0, 3)]
+		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
+
+		[StateBit]
+		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateBit]
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public override bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _direction.Name:
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _doorHingeBit.Name:
+						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _openBit.Name:
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _upperBlockBit.Name:
+						NotifyStateUpdate(_upperBlockBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _doorHingeBit;
+			yield return _openBit;
+			yield return _upperBlockBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakDoor) base.Clone();
+
+			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
+			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
+			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakDoubleSlab : DoubleWoodenSlabBase
+	{
+		private MiNET.Blocks.States.VerticalHalf _verticalHalf = (States.VerticalHalf) MiNET.Blocks.States.VerticalHalf.Bottom.Clone();
+
+		public override string Id => "minecraft:pale_oak_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override MiNET.Blocks.States.VerticalHalf VerticalHalf { get => _verticalHalf; set => NotifyStateUpdate(_verticalHalf, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == _verticalHalf.Name:
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakDoubleSlab) base.Clone();
+
+			block._verticalHalf = (MiNET.Blocks.States.VerticalHalf) _verticalHalf.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakFence : FenceBase
+	{
+		public override string Id => "minecraft:pale_oak_fence";
+	} // class
+
+	public partial class PaleOakFenceGate : FenceGateBase
+	{
+		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
+		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
+
+		public override string Id => "minecraft:pale_oak_fence_gate";
+
+		[StateRange(0, 3)]
+		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
+
+		[StateBit]
+		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateBit]
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _direction.Name:
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _inWallBit.Name:
+						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _openBit.Name:
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _inWallBit;
+			yield return _openBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakFenceGate) base.Clone();
+
+			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
+			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakHangingSign : HangingSignBase
+	{
+		private MiNET.Blocks.States.AttachedBit _attachedBit = new MiNET.Blocks.States.AttachedBit();
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
+		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
+		private MiNET.Blocks.States.Hanging _hanging = new MiNET.Blocks.States.Hanging();
+
+		public override string Id => "minecraft:pale_oak_hanging_sign";
+
+		[StateBit]
+		public override bool AttachedBit { get => Convert.ToBoolean(_attachedBit.Value); set => NotifyStateUpdate(_attachedBit, value); }
+
+		[StateRange(0, 5)]
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+
+		[StateRange(0, 15)]
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+
+		[StateBit]
+		public override bool Hanging { get => Convert.ToBoolean(_hanging.Value); set => NotifyStateUpdate(_hanging, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == _attachedBit.Name:
+						NotifyStateUpdate(_attachedBit, s.Value);
+						break;
+					case BlockStateInt s when s.Name == _facingDirection.Name:
+						NotifyStateUpdate(_facingDirection, s.Value);
+						break;
+					case BlockStateInt s when s.Name == _groundSignDirection.Name:
+						NotifyStateUpdate(_groundSignDirection, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _hanging.Name:
+						NotifyStateUpdate(_hanging, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _attachedBit;
+			yield return _facingDirection;
+			yield return _groundSignDirection;
+			yield return _hanging;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _attachedBit, _facingDirection, _groundSignDirection, _hanging);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakHangingSign) base.Clone();
+
+			block._attachedBit = (MiNET.Blocks.States.AttachedBit) _attachedBit.Clone();
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
+			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
+			block._hanging = (MiNET.Blocks.States.Hanging) _hanging.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakLeaves : LeavesBase
+	{
+		private MiNET.Blocks.States.PersistentBit _persistentBit = new MiNET.Blocks.States.PersistentBit();
+		private MiNET.Blocks.States.UpdateBit _updateBit = new MiNET.Blocks.States.UpdateBit();
+
+		public override string Id => "minecraft:pale_oak_leaves";
+
+		[StateBit]
+		public override bool PersistentBit { get => Convert.ToBoolean(_persistentBit.Value); set => NotifyStateUpdate(_persistentBit, value); }
+
+		[StateBit]
+		public override bool UpdateBit { get => Convert.ToBoolean(_updateBit.Value); set => NotifyStateUpdate(_updateBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == _persistentBit.Name:
+						NotifyStateUpdate(_persistentBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _updateBit.Name:
+						NotifyStateUpdate(_updateBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _persistentBit;
+			yield return _updateBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _persistentBit, _updateBit);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakLeaves) base.Clone();
+
+			block._persistentBit = (MiNET.Blocks.States.PersistentBit) _persistentBit.Clone();
+			block._updateBit = (MiNET.Blocks.States.UpdateBit) _updateBit.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakLog : LogBase
+	{
+		private MiNET.Blocks.States.PillarAxis _pillarAxis = (States.PillarAxis) MiNET.Blocks.States.PillarAxis.Y.Clone();
+
+		public override string Id => "minecraft:pale_oak_log";
+
+		[StateEnum("x", "y", "z")]
+		public override MiNET.Blocks.States.PillarAxis PillarAxis { get => _pillarAxis; set => NotifyStateUpdate(_pillarAxis, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == _pillarAxis.Name:
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakLog) base.Clone();
+
+			block._pillarAxis = (MiNET.Blocks.States.PillarAxis) _pillarAxis.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakPlanks : PlanksBase
+	{
+		public override string Id => "minecraft:pale_oak_planks";
+	} // class
+
+	public partial class PaleOakPressurePlate : Block
+	{
+		private MiNET.Blocks.States.RedstoneSignal _redstoneSignal = new MiNET.Blocks.States.RedstoneSignal();
+
+		public override string Id => "minecraft:pale_oak_pressure_plate";
+
+		[StateRange(0, 15)]
+		public int RedstoneSignal { get => _redstoneSignal.Value; set => NotifyStateUpdate(_redstoneSignal, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _redstoneSignal.Name:
+						NotifyStateUpdate(_redstoneSignal, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _redstoneSignal;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _redstoneSignal);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakPressurePlate) base.Clone();
+
+			block._redstoneSignal = (MiNET.Blocks.States.RedstoneSignal) _redstoneSignal.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakSapling : SaplingBase
+	{
+		private MiNET.Blocks.States.AgeBit _ageBit = new MiNET.Blocks.States.AgeBit();
+
+		public override string Id => "minecraft:pale_oak_sapling";
+
+		[StateBit]
+		public override bool AgeBit { get => Convert.ToBoolean(_ageBit.Value); set => NotifyStateUpdate(_ageBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == _ageBit.Name:
+						NotifyStateUpdate(_ageBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _ageBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _ageBit);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakSapling) base.Clone();
+
+			block._ageBit = (MiNET.Blocks.States.AgeBit) _ageBit.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakSlab : WoodenSlabBase
+	{
+		private MiNET.Blocks.States.VerticalHalf _verticalHalf = (States.VerticalHalf) MiNET.Blocks.States.VerticalHalf.Bottom.Clone();
+
+		public override string Id => "minecraft:pale_oak_slab";
+
+		[StateEnum("bottom", "top")]
+		public override MiNET.Blocks.States.VerticalHalf VerticalHalf { get => _verticalHalf; set => NotifyStateUpdate(_verticalHalf, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == _verticalHalf.Name:
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakSlab) base.Clone();
+
+			block._verticalHalf = (MiNET.Blocks.States.VerticalHalf) _verticalHalf.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakStairs : WoodenStairsBase
+	{
+		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
+		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
+
+		public override string Id => "minecraft:pale_oak_stairs";
+
+		[StateBit]
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		[StateRange(0, 3)]
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == _upsideDownBit.Name:
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+					case BlockStateInt s when s.Name == _weirdoDirection.Name:
+						NotifyStateUpdate(_weirdoDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _upsideDownBit;
+			yield return _weirdoDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakStairs) base.Clone();
+
+			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
+			block._weirdoDirection = (MiNET.Blocks.States.WeirdoDirection) _weirdoDirection.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakStandingSign : StandingSignBase
+	{
+		private MiNET.Blocks.States.GroundSignDirection _groundSignDirection = new MiNET.Blocks.States.GroundSignDirection();
+
+		public override string Id => "minecraft:pale_oak_standing_sign";
+
+		[StateRange(0, 15)]
+		public override int GroundSignDirection { get => _groundSignDirection.Value; set => NotifyStateUpdate(_groundSignDirection, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _groundSignDirection.Name:
+						NotifyStateUpdate(_groundSignDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _groundSignDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _groundSignDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakStandingSign) base.Clone();
+
+			block._groundSignDirection = (MiNET.Blocks.States.GroundSignDirection) _groundSignDirection.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakTrapdoor : TrapdoorBase
+	{
+		private MiNET.Blocks.States.OldDirection4 _direction = new MiNET.Blocks.States.OldDirection4();
+		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
+		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
+
+		public override string Id => "minecraft:pale_oak_trapdoor";
+
+		[StateRange(0, 3)]
+		public override MiNET.Blocks.States.OldDirection4 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
+
+		[StateBit]
+		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
+
+		[StateBit]
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _direction.Name:
+						NotifyStateUpdate(_direction, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _openBit.Name:
+						NotifyStateUpdate(_openBit, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _upsideDownBit.Name:
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _direction;
+			yield return _openBit;
+			yield return _upsideDownBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _direction, _openBit, _upsideDownBit);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakTrapdoor) base.Clone();
+
+			block._direction = (MiNET.Blocks.States.OldDirection4) _direction.Clone();
+			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
+			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakWallSign : WallSignBase
+	{
+		private MiNET.Blocks.States.OldFacingDirection4 _facingDirection = new MiNET.Blocks.States.OldFacingDirection4();
+
+		public override string Id => "minecraft:pale_oak_wall_sign";
+
+		[StateRange(0, 5)]
+		public override MiNET.Blocks.States.OldFacingDirection4 FacingDirection { get => _facingDirection; set => NotifyStateUpdate(_facingDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _facingDirection.Name:
+						NotifyStateUpdate(_facingDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _facingDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _facingDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakWallSign) base.Clone();
+
+			block._facingDirection = (MiNET.Blocks.States.OldFacingDirection4) _facingDirection.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class PaleOakWood : LogBase
+	{
+		private MiNET.Blocks.States.PillarAxis _pillarAxis = (States.PillarAxis) MiNET.Blocks.States.PillarAxis.Y.Clone();
+
+		public override string Id => "minecraft:pale_oak_wood";
+
+		[StateEnum("x", "y", "z")]
+		public override MiNET.Blocks.States.PillarAxis PillarAxis { get => _pillarAxis; set => NotifyStateUpdate(_pillarAxis, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == _pillarAxis.Name:
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (PaleOakWood) base.Clone();
+
+			block._pillarAxis = (MiNET.Blocks.States.PillarAxis) _pillarAxis.Clone();
+
+			return block;
+		} // method
 	} // class
 
 	public partial class PearlescentFroglight : Block
@@ -24609,6 +25608,271 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:reserved6";
 	} // class
 
+	public partial class ResinBlock : Block
+	{
+		public override string Id => "minecraft:resin_block";
+	} // class
+
+	public partial class ResinBrickDoubleSlab : DoubleSlabBase
+	{
+		private MiNET.Blocks.States.VerticalHalf _verticalHalf = (States.VerticalHalf) MiNET.Blocks.States.VerticalHalf.Bottom.Clone();
+
+		public override string Id => "minecraft:resin_brick_double_slab";
+
+		[StateEnum("bottom", "top")]
+		public override MiNET.Blocks.States.VerticalHalf VerticalHalf { get => _verticalHalf; set => NotifyStateUpdate(_verticalHalf, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == _verticalHalf.Name:
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (ResinBrickDoubleSlab) base.Clone();
+
+			block._verticalHalf = (MiNET.Blocks.States.VerticalHalf) _verticalHalf.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class ResinBrickSlab : SlabBase
+	{
+		private MiNET.Blocks.States.VerticalHalf _verticalHalf = (States.VerticalHalf) MiNET.Blocks.States.VerticalHalf.Bottom.Clone();
+
+		public override string Id => "minecraft:resin_brick_slab";
+
+		[StateEnum("bottom", "top")]
+		public override MiNET.Blocks.States.VerticalHalf VerticalHalf { get => _verticalHalf; set => NotifyStateUpdate(_verticalHalf, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == _verticalHalf.Name:
+						NotifyStateUpdate(_verticalHalf, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _verticalHalf;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _verticalHalf);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (ResinBrickSlab) base.Clone();
+
+			block._verticalHalf = (MiNET.Blocks.States.VerticalHalf) _verticalHalf.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class ResinBrickStairs : StairsBase
+	{
+		private MiNET.Blocks.States.UpsideDownBit _upsideDownBit = new MiNET.Blocks.States.UpsideDownBit();
+		private MiNET.Blocks.States.WeirdoDirection _weirdoDirection = new MiNET.Blocks.States.WeirdoDirection();
+
+		public override string Id => "minecraft:resin_brick_stairs";
+
+		[StateBit]
+		public override bool UpsideDownBit { get => Convert.ToBoolean(_upsideDownBit.Value); set => NotifyStateUpdate(_upsideDownBit, value); }
+
+		[StateRange(0, 3)]
+		public override MiNET.Blocks.States.WeirdoDirection WeirdoDirection { get => _weirdoDirection; set => NotifyStateUpdate(_weirdoDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateByte s when s.Name == _upsideDownBit.Name:
+						NotifyStateUpdate(_upsideDownBit, s.Value);
+						break;
+					case BlockStateInt s when s.Name == _weirdoDirection.Name:
+						NotifyStateUpdate(_weirdoDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _upsideDownBit;
+			yield return _weirdoDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _upsideDownBit, _weirdoDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (ResinBrickStairs) base.Clone();
+
+			block._upsideDownBit = (MiNET.Blocks.States.UpsideDownBit) _upsideDownBit.Clone();
+			block._weirdoDirection = (MiNET.Blocks.States.WeirdoDirection) _weirdoDirection.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class ResinBrickWall : Block
+	{
+		private MiNET.Blocks.States.WallConnectionTypeEast _wallConnectionTypeEast = (States.WallConnectionTypeEast) MiNET.Blocks.States.WallConnectionTypeEast.None.Clone();
+		private MiNET.Blocks.States.WallConnectionTypeNorth _wallConnectionTypeNorth = (States.WallConnectionTypeNorth) MiNET.Blocks.States.WallConnectionTypeNorth.None.Clone();
+		private MiNET.Blocks.States.WallConnectionTypeSouth _wallConnectionTypeSouth = (States.WallConnectionTypeSouth) MiNET.Blocks.States.WallConnectionTypeSouth.None.Clone();
+		private MiNET.Blocks.States.WallConnectionTypeWest _wallConnectionTypeWest = (States.WallConnectionTypeWest) MiNET.Blocks.States.WallConnectionTypeWest.None.Clone();
+		private MiNET.Blocks.States.WallPostBit _wallPostBit = new MiNET.Blocks.States.WallPostBit();
+
+		public override string Id => "minecraft:resin_brick_wall";
+
+		[StateEnum("none", "short", "tall")]
+		public MiNET.Blocks.States.WallConnectionTypeEast WallConnectionTypeEast { get => _wallConnectionTypeEast; set => NotifyStateUpdate(_wallConnectionTypeEast, value.Value); }
+
+		[StateEnum("none", "short", "tall")]
+		public MiNET.Blocks.States.WallConnectionTypeNorth WallConnectionTypeNorth { get => _wallConnectionTypeNorth; set => NotifyStateUpdate(_wallConnectionTypeNorth, value.Value); }
+
+		[StateEnum("none", "short", "tall")]
+		public MiNET.Blocks.States.WallConnectionTypeSouth WallConnectionTypeSouth { get => _wallConnectionTypeSouth; set => NotifyStateUpdate(_wallConnectionTypeSouth, value.Value); }
+
+		[StateEnum("none", "short", "tall")]
+		public MiNET.Blocks.States.WallConnectionTypeWest WallConnectionTypeWest { get => _wallConnectionTypeWest; set => NotifyStateUpdate(_wallConnectionTypeWest, value.Value); }
+
+		[StateBit]
+		public bool WallPostBit { get => Convert.ToBoolean(_wallPostBit.Value); set => NotifyStateUpdate(_wallPostBit, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == _wallConnectionTypeEast.Name:
+						NotifyStateUpdate(_wallConnectionTypeEast, s.Value);
+						break;
+					case BlockStateString s when s.Name == _wallConnectionTypeNorth.Name:
+						NotifyStateUpdate(_wallConnectionTypeNorth, s.Value);
+						break;
+					case BlockStateString s when s.Name == _wallConnectionTypeSouth.Name:
+						NotifyStateUpdate(_wallConnectionTypeSouth, s.Value);
+						break;
+					case BlockStateString s when s.Name == _wallConnectionTypeWest.Name:
+						NotifyStateUpdate(_wallConnectionTypeWest, s.Value);
+						break;
+					case BlockStateByte s when s.Name == _wallPostBit.Name:
+						NotifyStateUpdate(_wallPostBit, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _wallConnectionTypeEast;
+			yield return _wallConnectionTypeNorth;
+			yield return _wallConnectionTypeSouth;
+			yield return _wallConnectionTypeWest;
+			yield return _wallPostBit;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _wallConnectionTypeEast, _wallConnectionTypeNorth, _wallConnectionTypeSouth, _wallConnectionTypeWest, _wallPostBit);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (ResinBrickWall) base.Clone();
+
+			block._wallConnectionTypeEast = (MiNET.Blocks.States.WallConnectionTypeEast) _wallConnectionTypeEast.Clone();
+			block._wallConnectionTypeNorth = (MiNET.Blocks.States.WallConnectionTypeNorth) _wallConnectionTypeNorth.Clone();
+			block._wallConnectionTypeSouth = (MiNET.Blocks.States.WallConnectionTypeSouth) _wallConnectionTypeSouth.Clone();
+			block._wallConnectionTypeWest = (MiNET.Blocks.States.WallConnectionTypeWest) _wallConnectionTypeWest.Clone();
+			block._wallPostBit = (MiNET.Blocks.States.WallPostBit) _wallPostBit.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class ResinBricks : Block
+	{
+		public override string Id => "minecraft:resin_bricks";
+	} // class
+
+	public partial class ResinClump : Block
+	{
+		private MiNET.Blocks.States.MultiFaceDirectionBits _multiFaceDirectionBits = new MiNET.Blocks.States.MultiFaceDirectionBits();
+
+		public override string Id => "minecraft:resin_clump";
+
+		[StateRange(0, 63)]
+		public int MultiFaceDirectionBits { get => _multiFaceDirectionBits.Value; set => NotifyStateUpdate(_multiFaceDirectionBits, value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _multiFaceDirectionBits.Name:
+						NotifyStateUpdate(_multiFaceDirectionBits, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _multiFaceDirectionBits;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _multiFaceDirectionBits);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (ResinClump) base.Clone();
+
+			block._multiFaceDirectionBits = (MiNET.Blocks.States.MultiFaceDirectionBits) _multiFaceDirectionBits.Clone();
+
+			return block;
+		} // method
+	} // class
+
 	public partial class RespawnAnchor : Block
 	{
 		private MiNET.Blocks.States.RespawnAnchorCharge _respawnAnchorCharge = new MiNET.Blocks.States.RespawnAnchorCharge();
@@ -28378,6 +29642,90 @@ namespace MiNET.Blocks
 		public override object Clone()
 		{
 			var block = (StrippedOakWood) base.Clone();
+
+			block._pillarAxis = (MiNET.Blocks.States.PillarAxis) _pillarAxis.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class StrippedPaleOakLog : LogBase
+	{
+		private MiNET.Blocks.States.PillarAxis _pillarAxis = (States.PillarAxis) MiNET.Blocks.States.PillarAxis.Y.Clone();
+
+		public override string Id => "minecraft:stripped_pale_oak_log";
+
+		[StateEnum("x", "y", "z")]
+		public override MiNET.Blocks.States.PillarAxis PillarAxis { get => _pillarAxis; set => NotifyStateUpdate(_pillarAxis, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == _pillarAxis.Name:
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (StrippedPaleOakLog) base.Clone();
+
+			block._pillarAxis = (MiNET.Blocks.States.PillarAxis) _pillarAxis.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class StrippedPaleOakWood : LogBase
+	{
+		private MiNET.Blocks.States.PillarAxis _pillarAxis = (States.PillarAxis) MiNET.Blocks.States.PillarAxis.Y.Clone();
+
+		public override string Id => "minecraft:stripped_pale_oak_wood";
+
+		[StateEnum("x", "y", "z")]
+		public override MiNET.Blocks.States.PillarAxis PillarAxis { get => _pillarAxis; set => NotifyStateUpdate(_pillarAxis, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateString s when s.Name == _pillarAxis.Name:
+						NotifyStateUpdate(_pillarAxis, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _pillarAxis;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _pillarAxis);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (StrippedPaleOakWood) base.Clone();
 
 			block._pillarAxis = (MiNET.Blocks.States.PillarAxis) _pillarAxis.Clone();
 

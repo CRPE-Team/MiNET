@@ -30,11 +30,14 @@ using MiNET.Worlds;
 
 namespace MiNET.Items
 {
-	public abstract class ItemSlate : ItemBlock<Chalkboard>
+	public partial class ItemBoard : ItemBlock<Chalkboard>
 	{
-		public override string Id { get; protected set; } = "minecraft:board";
+		public ItemBoard() : this(2)
+		{
 
-		public ItemSlate(short size = 0) : base()
+		}
+
+		protected ItemBoard(short size = 0) : base()
 		{
 			Block.Size = (byte) (Metadata = size);
 			MaxStackSize = 16;
@@ -54,16 +57,9 @@ namespace MiNET.Items
 		}
 	}
 
-	public class ItemPoster : ItemSlate
+	public class ItemPoster : ItemBoard
 	{
 		public ItemPoster() : base(1)
-		{
-		}
-	}
-
-	public class ItemBoard : ItemSlate
-	{
-		public ItemBoard() : base(2)
 		{
 		}
 	}

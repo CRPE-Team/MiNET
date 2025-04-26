@@ -295,6 +295,11 @@ namespace MiNET.Test
 
 						var values = blockState.Select(s => s.GetValue());
 
+						if (blockState.Key == "direction")
+						{
+							values = values.Where(v => v is int i && i < 4);
+						}
+
 						//writer.WriteLine($"public static {stateTypeName} MinValue {{ get; }} = {values.Min()};");
 						writer.WriteLine($"public const {stateTypeName} MaxValue = {values.Max()};");
 
@@ -865,6 +870,8 @@ namespace MiNET.Test
 					_ when name.EndsWith("_door") => nameof(OldDirection3),
 
 					"trapdoor" => nameof(OldDirection2),
+
+					"chalkboard" => nameof(ChalkboardDirection),
 					_ => null
 				},
 				"vine_direction_bits" => nameof(VineDirectionBits),

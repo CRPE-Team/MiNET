@@ -37,8 +37,6 @@ namespace MiNET.Blocks
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Chalkboard));
 
-		public override string Id => "minecraft:chalkboard";
-
 		public short Size { get; set; }
 
 		public Chalkboard() : base()

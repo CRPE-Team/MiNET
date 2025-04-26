@@ -350,6 +350,8 @@ Wiki: [Resource Packs Info](https://github.com/NiclasOlofsson/MiNET/wiki//Protoc
 |Must Accept | bool |  |
 |Has Addons | bool |  |
 |Has Scripts | bool |  |
+|World Template Id | UUID |  |
+|World Template Version | string |  |
 |Resource Packs | ResourcePackInfos |  |
 -----------------------------------------------------------------------
 ### Resource Pack Stack (0x07)
@@ -3237,6 +3239,7 @@ Wiki: [Camera Aim Assist](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
+|Preset Id | string |  |
 |View Angle | Vector2 |  |
 |Distance | float |  |
 |Target Mode | byte |  |

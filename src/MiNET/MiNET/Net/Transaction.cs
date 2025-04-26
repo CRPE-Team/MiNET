@@ -664,6 +664,7 @@ namespace MiNET.Net
 		public byte Count { get; set; }
 		public int StackNetworkId { get; set; }
 		public string CustomName { get; set; }
+		public string FilteredCustomName { get; set; }
 		public int DurabilityCorrection { get; set; }
 
 		public void Write(Packet packet)
@@ -673,6 +674,7 @@ namespace MiNET.Net
 			packet.Write(Count);
 			packet.WriteSignedVarInt(StackNetworkId);
 			packet.Write(CustomName);
+			packet.Write(FilteredCustomName);
 			packet.WriteSignedVarInt(DurabilityCorrection);
 		}
 
@@ -685,6 +687,7 @@ namespace MiNET.Net
 				Count = packet.ReadByte(),
 				StackNetworkId = packet.ReadSignedVarInt(),
 				CustomName = packet.ReadString(),
+				FilteredCustomName = packet.ReadString(),
 				DurabilityCorrection = packet.ReadSignedVarInt()
 			};
 		}

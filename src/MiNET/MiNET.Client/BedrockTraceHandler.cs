@@ -78,7 +78,7 @@ namespace MiNET.Client
 			sb.AppendLine("Texture packs:");
 			foreach (var info in message.resourcePacks)
 			{
-				sb.AppendLine($"ID={info.UUID}, Version={info.Version}, Unknown={info.Size}");
+				sb.AppendLine($"ID={info.PackId}, Version={info.Version}, Unknown={info.Size}");
 			}
 
 			Log.Debug(sb.ToString());

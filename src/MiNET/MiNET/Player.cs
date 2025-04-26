@@ -369,6 +369,8 @@ namespace MiNET
 		public virtual void SendResourcePacksInfo()
 		{
 			McpeResourcePacksInfo packInfo = McpeResourcePacksInfo.CreateObject();
+			packInfo.worldTemplateId = new UUID(Guid.Empty.ToByteArray());
+
 			if (_serverHaveResources)
 			{
 				packInfo.mustAccept = false;
@@ -376,7 +378,7 @@ namespace MiNET
 				{
 					new ResourcePackInfo()
 					{
-						UUID = "5abdb963-4f3f-4d97-8482-88e2049ab149",
+						PackId = new UUID("5abdb963-4f3f-4d97-8482-88e2049ab149"),
 						Version = "0.0.1",
 						Size = 359901
 					},

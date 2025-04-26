@@ -51,7 +51,8 @@ namespace MiNET.Worlds.Anvil
 			"bamboo",
 			"crimson",
 			"warped",
-			"azalea"
+			"azalea",
+			"pale_oak"
 		];
 
 		private static readonly string[] _colorsList =
@@ -165,7 +166,8 @@ namespace MiNET.Worlds.Anvil
 			"tuff",
 			"polished_tuff",
 			"tuff_brick",
-			"petrified_oak"
+			"petrified_oak",
+			"resin_brick"
 		}
 			.Concat(_woodList)
 			.ToArray();
@@ -200,6 +202,7 @@ namespace MiNET.Worlds.Anvil
 			"acacia_sapling",
 			"cherry_sapling",
 			"dark_oak_sapling",
+			"pale_oak_sapling",
 			"red_mushroom",
 			"brown_mushroom",
 			"fern",
@@ -213,7 +216,9 @@ namespace MiNET.Worlds.Anvil
 			"crimson_roots",
 			"warped_roots",
 			"mangrove_propagule",
-			"torchflower"
+			"torchflower",
+			"open_eyeblossom",
+			"closed_eyeblossom"
 		};
 
 		static AnvilToBedrockPaletteConverter()
@@ -497,6 +502,7 @@ namespace MiNET.Worlds.Anvil
 
 			_mapper.Add("minecraft:glow_lichen", multiFaceDirectonMap);
 			_mapper.Add("minecraft:sculk_vein", multiFaceDirectonMap);
+			_mapper.Add("minecraft:resin_clump", multiFaceDirectonMap);
 
 
 			_mapper.Add(new BlockStateMapper("minecraft:bell",
@@ -713,12 +719,12 @@ namespace MiNET.Worlds.Anvil
 
 					name = name.Replace("dark_oak", "darkoak");
 
-					if (name.Replace("_sign", "").Split('_').Length == 1)
+					if (!name.Contains("_wall"))
 					{
 						name = name.Replace("_sign", "_standing_sign");
 					}
 
-					if (!name.Contains("darkoak"))
+					if (name == "oak_standing_sign" || name == "oak_wall_sign")
 					{
 						name = name.Replace("oak_", "");
 					}
@@ -1535,6 +1541,18 @@ namespace MiNET.Worlds.Anvil
 					context.Properties.Add(new NbtString("rotation", rotation));
 				}
 				, new SkipPropertyStateMapper("orientation")));
+
+			//minecraft:pale_moss_carpet
+			var paleMossCarpetLowMap = new PropertyValueStateMapper("low", "short");
+
+			_mapper.Add(new BlockStateMapper("minecraft:pale_moss_carpet",
+				new PropertyStateMapper("east", "pale_moss_carpet_side_east", paleMossCarpetLowMap),
+				new PropertyStateMapper("south", "pale_moss_carpet_side_south", paleMossCarpetLowMap),
+				new PropertyStateMapper("north", "pale_moss_carpet_side_north", paleMossCarpetLowMap),
+				new PropertyStateMapper("west", "pale_moss_carpet_side_west", paleMossCarpetLowMap),
+				new PropertyStateMapper("bottom", "upper_block_bit",
+					new PropertyValueStateMapper("true", "false"),
+					new PropertyValueStateMapper("false", "true"))));
 		}
 
 		public static int GetRuntimeIdByPalette(NbtCompound palette, out BlockEntity blockEntity)
