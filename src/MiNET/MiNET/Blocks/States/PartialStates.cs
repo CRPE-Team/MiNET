@@ -106,28 +106,6 @@ namespace MiNET.Blocks.States
 
 	} // class
 
-	public partial class OldDirection : BlockStateInt
-	{
-		public override string Name => "direction";
-
-		public const int MaxValue = 3;
-
-		public static int[] Values()
-		{
-			return [0, 1, 2, 3];
-		}
-
-
-		protected override void ValidateValue(int value)
-		{
-			if (value < 0 || value > MaxValue)
-			{
-				ThrowArgumentException(value);
-			}
-		}
-
-	} // class
-
 	public partial class DoorHingeBit : BlockStateByte
 	{
 		public override string Name => "door_hinge_bit";
@@ -137,6 +115,32 @@ namespace MiNET.Blocks.States
 		public static byte[] Values()
 		{
 			return [0, 1];
+		}
+
+	} // class
+
+	public partial class CardinalDirection : BlockStateString
+	{
+		public override string Name => "minecraft:cardinal_direction";
+
+		protected CardinalDirection(string value)
+		{
+			Value = value;
+		}
+
+		protected const string SouthValue = "south";
+		protected const string WestValue = "west";
+		protected const string NorthValue = "north";
+		protected const string EastValue = "east";
+
+		public static readonly CardinalDirection South = new CardinalDirection(SouthValue);
+		public static readonly CardinalDirection West = new CardinalDirection(WestValue);
+		public static readonly CardinalDirection North = new CardinalDirection(NorthValue);
+		public static readonly CardinalDirection East = new CardinalDirection(EastValue);
+
+		public static CardinalDirection[] Values()
+		{
+			return [South, West, North, East];
 		}
 
 	} // class
@@ -516,6 +520,28 @@ namespace MiNET.Blocks.States
 
 	} // class
 
+	public partial class OldDirection : BlockStateInt
+	{
+		public override string Name => "direction";
+
+		public const int MaxValue = 3;
+
+		public static int[] Values()
+		{
+			return [0, 1, 2, 3];
+		}
+
+
+		protected override void ValidateValue(int value)
+		{
+			if (value < 0 || value > MaxValue)
+			{
+				ThrowArgumentException(value);
+			}
+		}
+
+	} // class
+
 	public partial class SeaGrassType : BlockStateString
 	{
 		public override string Name => "sea_grass_type";
@@ -693,32 +719,6 @@ namespace MiNET.Blocks.States
 		public static byte[] Values()
 		{
 			return [0, 1];
-		}
-
-	} // class
-
-	public partial class CardinalDirection : BlockStateString
-	{
-		public override string Name => "minecraft:cardinal_direction";
-
-		protected CardinalDirection(string value)
-		{
-			Value = value;
-		}
-
-		protected const string SouthValue = "south";
-		protected const string WestValue = "west";
-		protected const string NorthValue = "north";
-		protected const string EastValue = "east";
-
-		public static readonly CardinalDirection South = new CardinalDirection(SouthValue);
-		public static readonly CardinalDirection West = new CardinalDirection(WestValue);
-		public static readonly CardinalDirection North = new CardinalDirection(NorthValue);
-		public static readonly CardinalDirection East = new CardinalDirection(EastValue);
-
-		public static CardinalDirection[] Values()
-		{
-			return [South, West, North, East];
 		}
 
 	} // class
@@ -1859,6 +1859,30 @@ namespace MiNET.Blocks.States
 		public static DripstoneThickness[] Values()
 		{
 			return [Tip, Frustum, Middle, Base, Merge];
+		}
+
+	} // class
+
+	public partial class CreakingHeartState : BlockStateString
+	{
+		public override string Name => "creaking_heart_state";
+
+		protected CreakingHeartState(string value)
+		{
+			Value = value;
+		}
+
+		protected const string UprootedValue = "uprooted";
+		protected const string DormantValue = "dormant";
+		protected const string AwakeValue = "awake";
+
+		public static readonly CreakingHeartState Uprooted = new CreakingHeartState(UprootedValue);
+		public static readonly CreakingHeartState Dormant = new CreakingHeartState(DormantValue);
+		public static readonly CreakingHeartState Awake = new CreakingHeartState(AwakeValue);
+
+		public static CreakingHeartState[] Values()
+		{
+			return [Uprooted, Dormant, Awake];
 		}
 
 	} // class

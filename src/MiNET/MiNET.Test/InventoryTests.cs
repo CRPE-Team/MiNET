@@ -64,7 +64,7 @@ namespace MiNET.Test
 		[TestMethod]
 		public void CreateiveInventoryTest()
 		{
-			var items = InventoryUtils.CreativeInventoryItems;
+			var items = InventoryUtils.Content;
 		}
 
 		[TestMethod]

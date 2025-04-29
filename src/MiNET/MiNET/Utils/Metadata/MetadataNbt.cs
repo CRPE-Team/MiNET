@@ -25,7 +25,7 @@
 
 using System.IO;
 using fNbt;
-using MiNET.Net;
+using MiNET.Utils.Nbt;
 
 namespace MiNET.Utils.Metadata
 {
@@ -54,17 +54,16 @@ namespace MiNET.Utils.Metadata
 
 		public override void FromStream(BinaryReader reader)
 		{
-			Value = (NbtCompound) Packet.ReadNbt(reader.BaseStream).NbtFile.RootTag;
+			Value = NbtExtensions.ReadNbtCompound(reader.BaseStream);
 		}
 
 		public override void WriteTo(BinaryWriter stream)
 		{
 			NbtCompound nbt = Value;
 
-			byte[] bytes = Packet.GetNbtData(nbt);
 			stream.Write((ushort) 0xffff);
 			stream.Write((byte) 0x01);
-			stream.Write(bytes);
+			NbtExtensions.Write(stream.BaseStream, nbt);
 		}
 	}
 }

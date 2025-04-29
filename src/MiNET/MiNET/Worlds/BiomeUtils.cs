@@ -26,8 +26,8 @@
 using System.Collections.Generic;
 using System.Reflection;
 using fNbt;
-using MiNET.Net;
 using MiNET.Utils;
+using MiNET.Utils.Nbt;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace MiNET.Worlds
@@ -58,7 +58,7 @@ namespace MiNET.Worlds
 
 			using (var stream = assembly.GetManifestResourceStream(typeof(Biome).Namespace + ".Data.biome_definitions.nbt"))
 			{
-				BiomesCache = Packet.ReadNbtCompound(stream, true);
+				BiomesCache = NbtExtensions.ReadNbtCompound(stream);
 
 				foreach (NbtCompound biomeTag in BiomesCache)
 				{

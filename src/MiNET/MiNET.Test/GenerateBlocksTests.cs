@@ -28,7 +28,6 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using log4net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiNET.Blocks;
@@ -470,8 +469,8 @@ namespace MiNET.Test
 						var q = blockstateGrouping.SelectMany(c => c.States);
 
 						var fieldName = $"_{GenerationUtils.CodeName(state.Name, false)}";
-						var propertyName = GenerationUtils.CodeName(state.Name, true);
-						var typeName = propertyName;
+						var typeName = GenerationUtils.CodeName(state.Name, true);
+						var propertyName = NormalizePropertyName(typeName);
 						var existingProperty = baseType.GetProperty(propertyName);
 
 						// If this is on base, skip this property. We need this to implement common functionality.
@@ -642,6 +641,17 @@ namespace MiNET.Test
 
 				writer.Flush();
 			}
+		}
+
+		private string NormalizePropertyName(string propertyName)
+		{
+			switch (propertyName)
+			{
+				case "CardinalDirection":
+					return "Direction";
+			}
+
+			return propertyName;
 		}
 
 		private string GetFieldTypeName(Type baseType, string id, IBlockState state)

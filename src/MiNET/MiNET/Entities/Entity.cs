@@ -245,8 +245,11 @@ namespace MiNET.Entities
 			PlayerHasDied = 129,
 			CollisionBox = 130,
 			VisibleMobEffects = 131,
-			Count = 132
-		}
+			FilteredName = 132,
+			BedEnterPosition = 133,
+
+			Count = 134,
+	}
 
 		public virtual MetadataDictionary GetMetadata()
 		{
@@ -553,7 +556,9 @@ namespace MiNET.Entities
 			TimerFlag2 = 116,
 			TimerFlag3 = 117,
 			BodyRotationBlocked = 118,
-			Count = 119
+			RenderWhenInvisible = 119,
+
+			Count = 120
 		}
 
 		protected virtual BitArray GetFlags()

@@ -283,7 +283,6 @@ namespace MiNET.Net
 		public int enchantmentSeed; // = null;
 		public BlockPalette blockPalette; // = null;
 		public ulong blockPaletteChecksum;
-		public ItemStates itemstates; // = null;
 		public string multiplayerCorrelationId; // = null;
 		public bool enableNewInventorySystem; // = null;
 		public string serverVersion; // = null;
@@ -320,8 +319,6 @@ namespace MiNET.Net
 			WriteSignedVarInt(enchantmentSeed);
 			
 			Write(blockPalette);
-
-			Write(itemstates);
 			
 			Write(multiplayerCorrelationId);
 			Write(enableNewInventorySystem);
@@ -367,8 +364,6 @@ namespace MiNET.Net
 				return;
 			}
 			
-			itemstates = ReadItemStates();
-			
 			multiplayerCorrelationId = ReadString();
 			enableNewInventorySystem = ReadBool();
 			serverVersion = ReadString();
@@ -399,7 +394,6 @@ namespace MiNET.Net
 			currentTick=default(long);
 			enchantmentSeed=default(int);
 			blockPalette=default(BlockPalette);
-			itemstates=default(ItemStates);
 			multiplayerCorrelationId=default(string);
 			enableNewInventorySystem=default(bool);
 			serverVersion=default(string);

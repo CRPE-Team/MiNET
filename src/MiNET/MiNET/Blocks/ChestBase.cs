@@ -36,7 +36,7 @@ namespace MiNET.Blocks
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ChestBase));
 
-		public abstract CardinalDirection CardinalDirection { get; set; }
+		public abstract CardinalDirection Direction { get; set; }
 
 		public ChestBase() : base()
 		{
@@ -49,7 +49,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			CardinalDirection = player.KnownPosition.GetDirection();
+			Direction = player.KnownPosition.GetDirection();
 
 			var blockEntity = new ChestBlockEntity();
 			blockEntity.Coordinates = Coordinates;
@@ -60,7 +60,7 @@ namespace MiNET.Blocks
 
 				if (pairBlock is ChestBase chest 
 					&& pairBlock.Id == Id
-					&& CardinalDirection == chest.CardinalDirection)
+					&& Direction == chest.Direction)
 				{
 					var pairBlockEntity = world.GetBlockEntity(coords);
 

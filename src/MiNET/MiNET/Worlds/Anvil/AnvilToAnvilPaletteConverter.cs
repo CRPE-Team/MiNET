@@ -18,6 +18,16 @@ namespace MiNET.Worlds.Anvil
 			_mappers.Add(_3693_mapper);
 
 			_3693_mapper.Mapper.Add(new BlockStateMapper("minecraft:grass", "minecraft:short_grass"));
+
+
+			var _4325_mapper = new AnvilVersionedStateMapper(4325); // Java Edition 1.21.5 ?? maybe it's worth finding a pre-release version?
+			_mappers.Add(_4325_mapper);
+
+			//minecraft:creaking_heart
+			_4325_mapper.Mapper.Add(new BlockStateMapper("minecraft:creaking_heart",
+				new PropertyStateMapper("active", "creaking_heart_state",
+					new PropertyValueStateMapper("true", "awake"),
+					new PropertyValueStateMapper("false", "dormant"))));
 		}
 
 		public static void MapStates(NbtCompound palette, int dataVersion)

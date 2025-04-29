@@ -149,7 +149,7 @@ namespace MiNET.BlockEntities
 				FurnaceBase newFurnace = lit ? new TLitFurnace() : new TFurnace();
 
 				newFurnace.Coordinates = oldFurnace.Coordinates;
-				newFurnace.CardinalDirection = oldFurnace.CardinalDirection;
+				newFurnace.Direction = oldFurnace.Direction;
 
 				level.SetBlock(newFurnace);
 			}

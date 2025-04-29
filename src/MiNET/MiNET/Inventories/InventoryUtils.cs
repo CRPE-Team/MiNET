@@ -1,55 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
+using fNbt;
 using MiNET.Blocks;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
+using MiNET.Utils.Nbt;
 
 namespace MiNET.Inventories
 {
 	public static class InventoryUtils
 	{
-		public static List<Item> CreativeInventoryItems { get; } = new List<Item>();
+		private static readonly Dictionary<CreativeInventoryCategoryType, string> DefaultCategoriesData = new()
+		{
+			{ CreativeInventoryCategoryType.CategoryConstruction, "construction.json" },
+			{ CreativeInventoryCategoryType.CategoryNature, "nature.json" },
+			{ CreativeInventoryCategoryType.CategoryEquipment, "equipment.json" },
+			{ CreativeInventoryCategoryType.CategoryItems, "items.json" }
+		};
 
-		private static McpeCreativeContent _creativeInventoryData;
+		public static CreativeInventoryContent Content { get; } = new CreativeInventoryContent();
+
+		private static McpeCreativeContent _creativeContentData;
+		private static McpeItemRegistry _itemRegistryData;
 		private static readonly bool _isEduEnabled;
 
 		static InventoryUtils()
 		{
 			_isEduEnabled = Config.GetProperty("EnableEdu", false);
 
-			var creativeItems = ResourceUtil.ReadResource<List<ExternalDataItem>>("creativeitems.json", typeof(InventoryUtils), "Data");
-
-			CreativeInventoryItems.Add(new ItemAir());
-
-			var uniqueId = 1;
-			foreach (var itemData in creativeItems)
+			foreach (var category in DefaultCategoriesData)
 			{
-				if (TryGetItemFromExternalData(itemData, out var item))
-				{
-					item.UniqueId = uniqueId++;
-					CreativeInventoryItems.Add(item);
-				}
+				var data = ResourceUtil.ReadResource<ExternalDataCategory>(category.Value, typeof(InventoryUtils), "Data");
+				Content.AppendCategory(category.Key, data);
 			}
 		}
 
 		public static McpeCreativeContent GetCreativeInventoryData()
 		{
-			if (_creativeInventoryData == null)
+			if (_creativeContentData == null)
 			{
 				var creativeContent = McpeCreativeContent.CreateObject();
-				creativeContent.input = GetCreativeMetadataSlots();
+				creativeContent.content = Content;
 				creativeContent.MarkPermanent(true);
-				_creativeInventoryData = creativeContent;
+				_creativeContentData = creativeContent;
 			}
 
-			return _creativeInventoryData;
+			return _creativeContentData;
 		}
 
-		public static CreativeItemStacks GetCreativeMetadataSlots()
+		public static McpeItemRegistry GetItemRegistryData()
 		{
-			return new CreativeItemStacks(CreativeInventoryItems.ToArray());
+			if (_itemRegistryData == null)
+			{
+				var creativeContent = McpeItemRegistry.CreateObject();
+				creativeContent.itemStates = ItemFactory.ItemStates;
+				creativeContent.MarkPermanent(true);
+				_itemRegistryData = creativeContent;
+			}
+
+			return _itemRegistryData;
 		}
 
 		public static bool TryGetItemFromExternalData(ExternalDataItem itemData, out Item result)
@@ -64,20 +73,14 @@ namespace MiNET.Inventories
 
 			if (itemData.BlockStates != null && item is ItemBlock itemBlock)
 			{
-				var bytes = Convert.FromBase64String(itemData.BlockStates);
-
-				using MemoryStream memoryStream = new MemoryStream(bytes, 0, bytes.Length);
-				var compound = Packet.ReadNbtCompound(memoryStream, false);
+				var compound = NbtExtensions.ReadNbtCompound(itemData.BlockStates, NbtFlavor.BedrockNoVarInt);
 
 				itemBlock.Block.SetStates(BlockFactory.GetBlockStates(compound));
 			}
 
 			if (itemData.ExtraData != null)
 			{
-				var bytes = Convert.FromBase64String(itemData.ExtraData);
-
-				using MemoryStream memoryStream = new MemoryStream(bytes, 0, bytes.Length);
-				item.ExtraData = Packet.ReadNbtCompound(memoryStream, false);
+				item.ExtraData = NbtExtensions.ReadNbtCompound(itemData.ExtraData, NbtFlavor.BedrockNoVarInt);
 			}
 
 			item.Metadata = itemData.Metadata;

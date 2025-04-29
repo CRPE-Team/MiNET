@@ -52,6 +52,7 @@ using MiNET.Utils;
 using MiNET.Utils.Cryptography;
 using MiNET.Utils.IO;
 using MiNET.Utils.Metadata;
+using MiNET.Utils.Nbt;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 using MiNET.Worlds.Anvil.Data;
@@ -545,7 +546,7 @@ namespace MiNET.Client
 				sb.Append(", ");
 			}
 		}
-		
+
 		public void WriteInventoryToFile(string fileName, ItemStacks slots)
 		{
 			Log.Warn($"Writing inventory to filename: {fileName}");
@@ -563,14 +564,43 @@ namespace MiNET.Client
 			}));
 		}
 
+		public void WriteCreativeCategory(string fileName, CreativeInventoryCategory category)
+		{
+			Log.Warn($"Writing inventory to filename: {fileName}");
+
+			var categoryData = new ExternalDataCategory();
+			foreach (var group in category.Groups)
+			{
+				var groupData = new ExternalDataGroup()
+				{
+					Name = group.Name,
+					IconItem = group.IconItem is ItemAir ? null : ToExternalData(group.IconItem),
+					Items = new List<ExternalDataItem>()
+				};
+
+				foreach (var item in group.Items)
+				{
+					groupData.Items.Add(ToExternalData(item));
+				}
+
+				categoryData.Add(groupData);
+			}
+
+			File.WriteAllText(fileName, JsonConvert.SerializeObject(categoryData, new JsonSerializerSettings()
+			{
+				Formatting = Formatting.Indented,
+				DefaultValueHandling = DefaultValueHandling.Ignore
+			}));
+		}
+
 		private ExternalDataItem ToExternalData(Item item)
 		{
 			return new ExternalDataItem()
 			{
 				Id = item.Id,
 				Metadata = item.Metadata,
-				ExtraData = item.ExtraData == null ? null : Convert.ToBase64String(Packet.GetNbtData(item.ExtraData, false)),
-				BlockStates = item is ItemBlock itemBlock && itemBlock.Block.States.Any() ? Convert.ToBase64String(Packet.GetNbtData(itemBlock.Block.StatesNbt, false)) : null,
+				ExtraData = item.ExtraData == null ? null : item.ExtraData.ToBytes(NbtFlavor.BedrockNoVarInt),
+				BlockStates = item is ItemBlock itemBlock && itemBlock.Block.States.Any() ? itemBlock.Block.StatesCacheNbt : null,
 				Count = 1
 			};
 		}

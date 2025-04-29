@@ -58,18 +58,18 @@ namespace MiNET.Blocks
 
 	public partial class AcaciaDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:acacia_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -83,11 +83,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -101,23 +101,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (AcaciaDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -174,17 +174,17 @@ namespace MiNET.Blocks
 
 	public partial class AcaciaFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:acacia_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -195,11 +195,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -210,22 +210,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (AcaciaFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -1105,7 +1105,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:anvil";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -1407,18 +1407,18 @@ namespace MiNET.Blocks
 
 	public partial class BambooDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:bamboo_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -1432,11 +1432,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -1450,23 +1450,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (BambooDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -1523,17 +1523,17 @@ namespace MiNET.Blocks
 
 	public partial class BambooFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:bamboo_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -1544,11 +1544,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -1559,22 +1559,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (BambooFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -2540,7 +2540,7 @@ namespace MiNET.Blocks
 		public MiNET.Blocks.States.BigDripleafTilt BigDripleafTilt { get => _bigDripleafTilt; set => NotifyStateUpdate(_bigDripleafTilt, value.Value); }
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -2638,18 +2638,18 @@ namespace MiNET.Blocks
 
 	public partial class BirchDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:birch_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -2663,11 +2663,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -2681,23 +2681,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (BirchDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -2754,17 +2754,17 @@ namespace MiNET.Blocks
 
 	public partial class BirchFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:birch_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -2775,11 +2775,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -2790,22 +2790,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (BirchFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -3742,7 +3742,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:blast_furnace";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -4928,7 +4928,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:calibrated_sculk_sensor";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateRange(0, 2)]
 		public int SculkSensorPhase { get => _sculkSensorPhase.Value; set => NotifyStateUpdate(_sculkSensorPhase, value); }
@@ -4987,7 +4987,7 @@ namespace MiNET.Blocks
 		public bool Extinguished { get => Convert.ToBoolean(_extinguished.Value); set => NotifyStateUpdate(_extinguished, value); }
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5174,7 +5174,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:carved_pumpkin";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5486,7 +5486,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:chalkboard";
 
 		[StateRange(0, 15)]
-		public int Direction { get => _direction.Value; set => NotifyStateUpdate(_direction, value); }
+		public MiNET.Blocks.States.ChalkboardDirection Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -5579,18 +5579,18 @@ namespace MiNET.Blocks
 
 	public partial class CherryDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:cherry_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -5604,11 +5604,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -5622,23 +5622,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (CherryDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -5695,17 +5695,17 @@ namespace MiNET.Blocks
 
 	public partial class CherryFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:cherry_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -5716,11 +5716,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -5731,22 +5731,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (CherryFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -6290,7 +6290,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:chest";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -6332,7 +6332,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:chipped_anvil";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -7389,18 +7389,18 @@ namespace MiNET.Blocks
 
 	public partial class CopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:copper_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -7414,11 +7414,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -7432,23 +7432,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (CopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -7623,14 +7623,14 @@ namespace MiNET.Blocks
 
 	public partial class CreakingHeart : Block
 	{
-		private MiNET.Blocks.States.Active _active = new MiNET.Blocks.States.Active();
+		private MiNET.Blocks.States.CreakingHeartState _creakingHeartState = (States.CreakingHeartState) MiNET.Blocks.States.CreakingHeartState.Uprooted.Clone();
 		private MiNET.Blocks.States.Natural _natural = new MiNET.Blocks.States.Natural();
 		private MiNET.Blocks.States.PillarAxis _pillarAxis = (States.PillarAxis) MiNET.Blocks.States.PillarAxis.Y.Clone();
 
 		public override string Id => "minecraft:creaking_heart";
 
-		[StateBit]
-		public bool Active { get => Convert.ToBoolean(_active.Value); set => NotifyStateUpdate(_active, value); }
+		[StateEnum("awake", "dormant", "uprooted")]
+		public MiNET.Blocks.States.CreakingHeartState CreakingHeartState { get => _creakingHeartState; set => NotifyStateUpdate(_creakingHeartState, value.Value); }
 
 		[StateBit]
 		public bool Natural { get => Convert.ToBoolean(_natural.Value); set => NotifyStateUpdate(_natural, value); }
@@ -7644,8 +7644,8 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateByte s when s.Name == _active.Name:
-						NotifyStateUpdate(_active, s.Value);
+					case BlockStateString s when s.Name == _creakingHeartState.Name:
+						NotifyStateUpdate(_creakingHeartState, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _natural.Name:
 						NotifyStateUpdate(_natural, s.Value);
@@ -7659,21 +7659,21 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _active;
+			yield return _creakingHeartState;
 			yield return _natural;
 			yield return _pillarAxis;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _active, _natural, _pillarAxis);
+			return HashCode.Combine(Id, _creakingHeartState, _natural, _pillarAxis);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (CreakingHeart) base.Clone();
 
-			block._active = (MiNET.Blocks.States.Active) _active.Clone();
+			block._creakingHeartState = (MiNET.Blocks.States.CreakingHeartState) _creakingHeartState.Clone();
 			block._natural = (MiNET.Blocks.States.Natural) _natural.Clone();
 			block._pillarAxis = (MiNET.Blocks.States.PillarAxis) _pillarAxis.Clone();
 
@@ -7776,18 +7776,18 @@ namespace MiNET.Blocks
 
 	public partial class CrimsonDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:crimson_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -7801,11 +7801,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -7819,23 +7819,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (CrimsonDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -7892,17 +7892,17 @@ namespace MiNET.Blocks
 
 	public partial class CrimsonFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:crimson_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -7913,11 +7913,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -7928,22 +7928,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (CrimsonFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -8865,7 +8865,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:damaged_anvil";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -8958,18 +8958,18 @@ namespace MiNET.Blocks
 
 	public partial class DarkOakDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:dark_oak_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -8983,11 +8983,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -9001,23 +9001,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (DarkOakDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -9074,17 +9074,17 @@ namespace MiNET.Blocks
 
 	public partial class DarkOakFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:dark_oak_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -9095,11 +9095,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -9110,22 +9110,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (DarkOakFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -10933,7 +10933,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:deprecated_anvil";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12271,7 +12271,7 @@ namespace MiNET.Blocks
 		public bool EndPortalEyeBit { get => Convert.ToBoolean(_endPortalEyeBit.Value); set => NotifyStateUpdate(_endPortalEyeBit, value); }
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12527,7 +12527,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:ender_chest";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -12625,18 +12625,18 @@ namespace MiNET.Blocks
 
 	public partial class ExposedCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:exposed_copper_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -12650,11 +12650,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -12668,23 +12668,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (ExposedCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -12941,17 +12941,17 @@ namespace MiNET.Blocks
 
 	public partial class FenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -12962,11 +12962,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -12977,22 +12977,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (FenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -13390,7 +13390,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:furnace";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -14784,18 +14784,18 @@ namespace MiNET.Blocks
 
 	public partial class IronDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:iron_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -14809,11 +14809,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -14827,23 +14827,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (IronDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -15025,18 +15025,18 @@ namespace MiNET.Blocks
 
 	public partial class JungleDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:jungle_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -15050,11 +15050,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -15068,23 +15068,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (JungleDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -15141,17 +15141,17 @@ namespace MiNET.Blocks
 
 	public partial class JungleFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:jungle_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -15162,11 +15162,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -15177,22 +15177,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (JungleFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -16041,7 +16041,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:lectern";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public bool PoweredBit { get => Convert.ToBoolean(_poweredBit.Value); set => NotifyStateUpdate(_poweredBit, value); }
@@ -16836,7 +16836,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:lit_blast_furnace";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -16883,7 +16883,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:lit_furnace";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -16925,7 +16925,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:lit_pumpkin";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -16977,7 +16977,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:lit_smoker";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -17292,18 +17292,18 @@ namespace MiNET.Blocks
 
 	public partial class MangroveDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:mangrove_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -17317,11 +17317,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -17335,23 +17335,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (MangroveDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -17408,17 +17408,17 @@ namespace MiNET.Blocks
 
 	public partial class MangroveFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:mangrove_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -17429,11 +17429,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -17444,22 +17444,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (MangroveFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -20095,18 +20095,18 @@ namespace MiNET.Blocks
 
 	public partial class OxidizedCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:oxidized_copper_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -20120,11 +20120,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -20138,23 +20138,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (OxidizedCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -20555,18 +20555,18 @@ namespace MiNET.Blocks
 
 	public partial class PaleOakDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:pale_oak_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -20580,11 +20580,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -20598,23 +20598,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (PaleOakDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -20671,17 +20671,17 @@ namespace MiNET.Blocks
 
 	public partial class PaleOakFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:pale_oak_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -20692,11 +20692,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -20707,22 +20707,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (PaleOakFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -21630,7 +21630,7 @@ namespace MiNET.Blocks
 		public int Growth { get => _growth.Value; set => NotifyStateUpdate(_growth, value); }
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -23505,7 +23505,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:powered_comparator";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public bool OutputLitBit { get => Convert.ToBoolean(_outputLitBit.Value); set => NotifyStateUpdate(_outputLitBit, value); }
@@ -23564,7 +23564,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:powered_repeater";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateRange(0, 3)]
 		public int RepeaterDelay { get => _repeaterDelay.Value; set => NotifyStateUpdate(_repeaterDelay, value); }
@@ -23972,7 +23972,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:pumpkin";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -26660,7 +26660,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:small_dripleaf_block";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public bool UpperBlockBit { get => Convert.ToBoolean(_upperBlockBit.Value); set => NotifyStateUpdate(_upperBlockBit, value); }
@@ -26715,7 +26715,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:smoker";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -27410,7 +27410,7 @@ namespace MiNET.Blocks
 		public bool Extinguished { get => Convert.ToBoolean(_extinguished.Value); set => NotifyStateUpdate(_extinguished, value); }
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -27649,18 +27649,18 @@ namespace MiNET.Blocks
 
 	public partial class SpruceDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:spruce_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -27674,11 +27674,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -27692,23 +27692,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (SpruceDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -27765,17 +27765,17 @@ namespace MiNET.Blocks
 
 	public partial class SpruceFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:spruce_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -27786,11 +27786,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -27801,22 +27801,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (SpruceFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -28900,7 +28900,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:stonecutter_block";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -30384,7 +30384,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:trapped_chest";
 
 		[StateEnum("east", "north", "south", "west")]
-		public override MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		public override void SetStates(IEnumerable<IBlockState> states)
 		{
@@ -31367,7 +31367,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:unpowered_comparator";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public bool OutputLitBit { get => Convert.ToBoolean(_outputLitBit.Value); set => NotifyStateUpdate(_outputLitBit, value); }
@@ -31426,7 +31426,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:unpowered_repeater";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateRange(0, 3)]
 		public int RepeaterDelay { get => _repeaterDelay.Value; set => NotifyStateUpdate(_repeaterDelay, value); }
@@ -31478,7 +31478,7 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:vault";
 
 		[StateEnum("east", "north", "south", "west")]
-		public MiNET.Blocks.States.CardinalDirection CardinalDirection { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public bool Ominous { get => Convert.ToBoolean(_ominous.Value); set => NotifyStateUpdate(_ominous, value); }
@@ -31750,18 +31750,18 @@ namespace MiNET.Blocks
 
 	public partial class WarpedDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:warped_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -31775,11 +31775,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -31793,23 +31793,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (WarpedDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -31866,17 +31866,17 @@ namespace MiNET.Blocks
 
 	public partial class WarpedFenceGate : FenceGateBase
 	{
-		private MiNET.Blocks.States.OldDirection1 _direction = new MiNET.Blocks.States.OldDirection1();
 		private MiNET.Blocks.States.InWallBit _inWallBit = new MiNET.Blocks.States.InWallBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 
 		public override string Id => "minecraft:warped_fence_gate";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection1 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool InWallBit { get => Convert.ToBoolean(_inWallBit.Value); set => NotifyStateUpdate(_inWallBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -31887,11 +31887,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _inWallBit.Name:
 						NotifyStateUpdate(_inWallBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -31902,22 +31902,22 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _inWallBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _inWallBit, _openBit);
+			return HashCode.Combine(Id, _inWallBit, _cardinalDirection, _openBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (WarpedFenceGate) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection1) _direction.Clone();
 			block._inWallBit = (MiNET.Blocks.States.InWallBit) _inWallBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 
 			return block;
@@ -32491,18 +32491,18 @@ namespace MiNET.Blocks
 
 	public partial class WaxedCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:waxed_copper_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -32516,11 +32516,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -32534,23 +32534,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (WaxedCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -32826,18 +32826,18 @@ namespace MiNET.Blocks
 
 	public partial class WaxedExposedCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:waxed_exposed_copper_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -32851,11 +32851,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -32869,23 +32869,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (WaxedExposedCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -33161,18 +33161,18 @@ namespace MiNET.Blocks
 
 	public partial class WaxedOxidizedCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:waxed_oxidized_copper_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -33186,11 +33186,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -33204,23 +33204,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (WaxedOxidizedCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -33496,18 +33496,18 @@ namespace MiNET.Blocks
 
 	public partial class WaxedWeatheredCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:waxed_weathered_copper_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -33521,11 +33521,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -33539,23 +33539,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (WaxedWeatheredCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -33831,18 +33831,18 @@ namespace MiNET.Blocks
 
 	public partial class WeatheredCopperDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:weathered_copper_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -33856,11 +33856,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -33874,23 +33874,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (WeatheredCopperDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 
@@ -34477,18 +34477,18 @@ namespace MiNET.Blocks
 
 	public partial class WoodenDoor : DoorBase
 	{
-		private MiNET.Blocks.States.OldDirection3 _direction = new MiNET.Blocks.States.OldDirection3();
 		private MiNET.Blocks.States.DoorHingeBit _doorHingeBit = new MiNET.Blocks.States.DoorHingeBit();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
 		private MiNET.Blocks.States.OpenBit _openBit = new MiNET.Blocks.States.OpenBit();
 		private MiNET.Blocks.States.UpperBlockBit _upperBlockBit = new MiNET.Blocks.States.UpperBlockBit();
 
 		public override string Id => "minecraft:wooden_door";
 
-		[StateRange(0, 3)]
-		public override MiNET.Blocks.States.OldDirection3 Direction { get => _direction; set => NotifyStateUpdate(_direction, value.Value); }
-
 		[StateBit]
 		public override bool DoorHingeBit { get => Convert.ToBoolean(_doorHingeBit.Value); set => NotifyStateUpdate(_doorHingeBit, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public override MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
 
 		[StateBit]
 		public override bool OpenBit { get => Convert.ToBoolean(_openBit.Value); set => NotifyStateUpdate(_openBit, value); }
@@ -34502,11 +34502,11 @@ namespace MiNET.Blocks
 			{
 				switch (state)
 				{
-					case BlockStateInt s when s.Name == _direction.Name:
-						NotifyStateUpdate(_direction, s.Value);
-						break;
 					case BlockStateByte s when s.Name == _doorHingeBit.Name:
 						NotifyStateUpdate(_doorHingeBit, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
 						break;
 					case BlockStateByte s when s.Name == _openBit.Name:
 						NotifyStateUpdate(_openBit, s.Value);
@@ -34520,23 +34520,23 @@ namespace MiNET.Blocks
 
 		protected override IEnumerable<IBlockState> GetStates()
 		{
-			yield return _direction;
 			yield return _doorHingeBit;
+			yield return _cardinalDirection;
 			yield return _openBit;
 			yield return _upperBlockBit;
 		} // method
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Id, _direction, _doorHingeBit, _openBit, _upperBlockBit);
+			return HashCode.Combine(Id, _doorHingeBit, _cardinalDirection, _openBit, _upperBlockBit);
 		} // method
 
 		public override object Clone()
 		{
 			var block = (WoodenDoor) base.Clone();
 
-			block._direction = (MiNET.Blocks.States.OldDirection3) _direction.Clone();
 			block._doorHingeBit = (MiNET.Blocks.States.DoorHingeBit) _doorHingeBit.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 			block._openBit = (MiNET.Blocks.States.OpenBit) _openBit.Clone();
 			block._upperBlockBit = (MiNET.Blocks.States.UpperBlockBit) _upperBlockBit.Clone();
 

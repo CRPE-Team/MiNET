@@ -12,10 +12,10 @@ namespace MiNET.Inventories
 		public short Metadata { get; set; }
 
 		[JsonProperty("block_states")]
-		public string BlockStates { get; set; }
+		public byte[] BlockStates { get; set; }
 
 		[JsonProperty("nbt")]
-		public string ExtraData { get; set; }
+		public byte[] ExtraData { get; set; }
 
 		[JsonProperty("tag")]
 		public string Tag { get; set; }

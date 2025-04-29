@@ -27,8 +27,9 @@ namespace MiNET.Net
 {
 	public partial class McpeBossEvent
 	{
-		public ushort unknown6;
+		public ushort darkenScreen;
 		public string title;
+		public string filteredTitle;
 		public float healthPercent;
 		public long playerId;
 		public uint color = 0xff00ff00;
@@ -49,14 +50,15 @@ namespace MiNET.Net
 
 				case Type.UpdateName:
 					Write(title);
+					Write(filteredTitle);
 					break;
-
 				case Type.AddBoss:
 					Write(title);
+					Write(filteredTitle);
 					Write(healthPercent);
 					goto case Type.UpdateOptions;
 				case Type.UpdateOptions:
-					Write(unknown6);
+					Write(darkenScreen);
 					goto case Type.UpdateStyle;
 				case Type.UpdateStyle:
 					WriteUnsignedVarInt(color);
@@ -89,16 +91,18 @@ namespace MiNET.Net
 				case Type.UpdateName:
 					// string
 					title = ReadString();
+					filteredTitle = ReadString();
 					break;
 				case Type.AddBoss:
 					// string
 					title = ReadString();
+					filteredTitle = ReadString();
 					// float
 					healthPercent = ReadFloat();
 					goto case Type.UpdateOptions;
 				case Type.UpdateOptions:
 					// ushort?
-					 unknown6 = ReadUshort();
+					 darkenScreen = ReadUshort();
 					goto case Type.UpdateStyle;
 				case Type.UpdateStyle:
 					// NOOP

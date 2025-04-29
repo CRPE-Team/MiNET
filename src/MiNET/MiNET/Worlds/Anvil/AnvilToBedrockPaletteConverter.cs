@@ -571,7 +571,6 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add("minecraft:big_dripleaf_stem", bigDripleafMap);
 
 			var fenceGateMap = new BlockStateMapper(
-				directionMap,
 				new BitPropertyStateMapper("in_wall"),
 				new BitPropertyStateMapper("open"));
 
@@ -800,17 +799,15 @@ namespace MiNET.Worlds.Anvil
 				_mapper.TryAdd($"minecraft:{material}_trapdoor", trapdoorMap);
 			}
 
-			var doorFacingDirectionMap = new PropertyStateMapper("facing", "direction",
-					new PropertyValueStateMapper("east", "0"),
-					new PropertyValueStateMapper("south", "1"),
-					new PropertyValueStateMapper("west", "2"),
-					new PropertyValueStateMapper("north", "3"));
-
 			var doorMap = new BlockStateMapper(
-				doorFacingDirectionMap,
 				new PropertyStateMapper("open", "open_bit"),
 				new PropertyStateMapper("hinge",
-					(name, properties, _) => new NbtString("door_hinge_bit", (int.Parse(properties["direction"]?.StringValue ?? doorFacingDirectionMap.Resolve(name, properties, properties["facing"] as NbtString).Value) % 2).ToString())));
+					(name, properties, _) =>
+					{
+						var direction = properties["direction"]?.StringValue;
+						var hinge = direction == "south" || direction == "north";
+						return new NbtString("door_hinge_bit", hinge ? "1" : "0");
+					}));
 
 			var oakDoorMap = doorMap.Clone();
 			oakDoorMap.NewName = "minecraft:wooden_door";

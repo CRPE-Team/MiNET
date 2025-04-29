@@ -160,7 +160,7 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Item Stack Response | 0x94 | 148 |   
 | Update Player Game Type | 0x97 | 151 |   
 | Packet Violation Warning | 0x9c | 156 |   
-| Item Component | 0xa2 | 162 |   
+| Item Registry | 0xa2 | 162 |   
 | Update Sub Chunk Blocks Packet | 0xac | 172 |   
 | Sub Chunk Packet | 0xae | 174 |   
 | Sub Chunk Request Packet | 0xaf | 175 |   
@@ -183,7 +183,7 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | byte [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-byte) |
 | byte[] [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-byte[]) |
 | ByteArray [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ByteArray) |
-| CreativeItemStacks [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-CreativeItemStacks) |
+| CreativeInventoryContent [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-CreativeInventoryContent) |
 | DimensionDefinitions [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-DimensionDefinitions) |
 | EnchantOptions [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-EnchantOptions) |
 | EntityAttributes [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-EntityAttributes) |
@@ -198,10 +198,10 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | IPEndPoint [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-IPEndPoint) |
 | IPEndPoint[] [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-IPEndPoint[]) |
 | Item [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-Item) |
-| ItemComponentList [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ItemComponentList) |
 | ItemStackRequests [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ItemStackRequests) |
 | ItemStackResponses [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ItemStackResponses) |
 | ItemStacks [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ItemStacks) |
+| ItemStates [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-ItemStates) |
 | long [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-long) |
 | MapInfo [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-MapInfo) |
 | MaterialReducerRecipe[] [(wiki)](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-Type-MaterialReducerRecipe[]) |
@@ -2708,7 +2708,7 @@ Wiki: [Creative Content](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
-|Input | CreativeItemStacks |  |
+|content | CreativeInventoryContent |  |
 -----------------------------------------------------------------------
 ### Player Enchant Options (0x92)
 Wiki: [Player Enchant Options](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-PlayerEnchantOptions)
@@ -2821,8 +2821,8 @@ Wiki: [Packet Violation Warning](https://github.com/NiclasOlofsson/MiNET/wiki//P
 |Packet Id | SignedVarInt |  |
 |Reason | string |  |
 -----------------------------------------------------------------------
-### Item Component (0xa2)
-Wiki: [Item Component](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ItemComponent)
+### Item Registry (0xa2)
+Wiki: [Item Registry](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-ItemRegistry)
 
 **Sent from server:** true  
 **Sent from client:** false
@@ -2834,7 +2834,7 @@ Wiki: [Item Component](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-It
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
-|Entries | ItemComponentList |  |
+|Item States | ItemStates |  |
 -----------------------------------------------------------------------
 ### Update Sub Chunk Blocks Packet (0xac)
 Wiki: [Update Sub Chunk Blocks Packet](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-UpdateSubChunkBlocksPacket)

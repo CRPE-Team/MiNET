@@ -62,6 +62,8 @@ namespace MiNET
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Player));
 
+		private static readonly UUID WorldTemplateId = new UUID(Guid.NewGuid().ToByteArray());
+
 		private MiNetServer Server { get; set; }
 		public IPEndPoint EndPoint { get; private set; }
 		public INetworkHandler NetworkHandler { get; set; }
@@ -369,7 +371,7 @@ namespace MiNET
 		public virtual void SendResourcePacksInfo()
 		{
 			McpeResourcePacksInfo packInfo = McpeResourcePacksInfo.CreateObject();
-			packInfo.worldTemplateId = new UUID(Guid.Empty.ToByteArray());
+			packInfo.worldTemplateId = WorldTemplateId;
 
 			if (_serverHaveResources)
 			{
@@ -750,6 +752,8 @@ namespace MiNET
 				case PlayerAction.MissedSwing:
 				case PlayerAction.StartCrawling:
 				case PlayerAction.StopCrawling:
+				case PlayerAction.AckEntityData:
+				case PlayerAction.StartUsingItem:
 				{
 					break;
 				}
@@ -880,6 +884,7 @@ namespace MiNET
 					Type = AbilityLayerType.Base,
 					Abilities = abilities,
 					FlySpeed = 0.05f,
+					VerticalFlySpeed = 1f,
 					WalkSpeed = 0.1f
 				}
 			};
@@ -978,6 +983,8 @@ namespace MiNET
 
 				SendStartGame();
 
+				SendItemRegistry();
+
 				SetGameMode(GameMode);
 
 				SendAvailableEntityIdentifiers();
@@ -1037,8 +1044,7 @@ namespace MiNET
 			{
 				NbtFile = new NbtFile
 				{
-					BigEndian = false,
-					UseVarInt = true,
+					Flavor = NbtFlavor.Bedrock,
 					RootTag = new NbtCompound("") {EntityHelpers.GenerateEntityIdentifiers()}
 				}
 			};
@@ -1054,8 +1060,7 @@ namespace MiNET
 			{
 				NbtFile = new NbtFile
 				{
-					BigEndian = false,
-					UseVarInt = true,
+					Flavor = NbtFlavor.Bedrock,
 					RootTag = BiomeUtils.BiomesCache,
 				}
 			};
@@ -1878,6 +1883,11 @@ namespace MiNET
 			if (!UseCreativeInventory) return;
 
 			SendPacket(InventoryUtils.GetCreativeInventoryData());
+		}
+
+		public virtual void SendItemRegistry()
+		{
+			SendPacket(InventoryUtils.GetItemRegistryData());
 		}
 
 		private void SendChunkRadiusUpdate()
@@ -2865,7 +2875,6 @@ namespace MiNET
 			startGame.movementType = (int) McpeStartGame.ServerAuthMovementMode.LegacyClientAuthoritativeV1;
 
 			//startGame.blockPalette = BlockFactory.BlockPalette;
-			startGame.itemstates = ItemFactory.ItemStates;
 
 			startGame.enableNewInventorySystem = true;
 			startGame.blockPaletteChecksum = 0;
@@ -2874,12 +2883,11 @@ namespace MiNET
 			{
 				NbtFile = new NbtFile
 				{
-					BigEndian = false,
-					UseVarInt = true,
+					Flavor = NbtFlavor.Bedrock,
 					RootTag = new NbtCompound("")
 				}
 			};
-			startGame.worldTemplateId = new UUID(Guid.Empty.ToByteArray());
+			startGame.worldTemplateId = WorldTemplateId;
 
 			SendPacket(startGame);
 		}
@@ -3765,7 +3773,7 @@ namespace MiNET
 		{
 			Log.Debug($"BossEvent: bossEntityId={message.bossEntityId}, eventType={message.eventType}, " +
 				$"playerId={message.playerId}, title={message.title}, " +
-				$"unknown6={message.unknown6}, healthPercent={message.healthPercent}, " +
+				$"unknown6={message.darkenScreen}, healthPercent={message.healthPercent}, " +
 				$"overlay={message.overlay}, color={message.color}");
 		}
 

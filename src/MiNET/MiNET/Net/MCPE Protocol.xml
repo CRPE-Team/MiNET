@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<protocol gameVersion="1.21.50" protocolVersion="766">
+<protocol gameVersion="1.21.60" protocolVersion="776">
 
 	<constants>
 		<constant id="OFFLINE_MESSAGE_DATA_ID" type="byte[]"
@@ -1141,7 +1141,7 @@
 	</pdu>
 
 	<pdu id="0x91" online="false" client="false" server="true" name="MCPE_CREATIVE_CONTENT">
-		<field name="Input" type="CreativeItemStacks" />
+		<field name="content" type="CreativeInventoryContent" />
 	</pdu>
 
 	<!--
@@ -1198,8 +1198,8 @@
 		<field name="Reason" type="string" />
 	</pdu>
 
-	<pdu id="0xa2" online="false" client="false" server="true" name="MCPE_ITEM_COMPONENT">
-		<field name="Entries" type="ItemComponentList" />
+	<pdu id="0xa2" online="false" client="false" server="true" name="MCPE_ITEM_REGISTRY">
+		<field name="Item States" type="ItemStates" />
 	</pdu>
 	
 	<pdu id="0xac" online="false" client="true" server="true" name="MCPE_UPDATE_SUB_CHUNK_BLOCKS_PACKET">

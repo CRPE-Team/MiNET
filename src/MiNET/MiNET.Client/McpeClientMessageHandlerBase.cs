@@ -675,7 +675,7 @@ namespace MiNET.Client
 		}
 
 		/// <inheritdoc />
-		public virtual void HandleMcpeItemComponent(McpeItemComponent message)
+		public virtual void HandleMcpeItemRegistry(McpeItemRegistry message)
 		{
 			
 		}

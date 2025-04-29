@@ -181,10 +181,13 @@ namespace MiNET.Client
 
 		public override void HandleMcpeCreativeContent(McpeCreativeContent message)
 		{
-			var slots = message.input;
+			var content = message.content;
 
-			string fileName = Path.GetTempPath() + "creativeitems_" + Guid.NewGuid() + ".txt";
-			Client.WriteInventoryToFile(fileName, slots);
+			foreach (var category in content.GetCategories())
+			{
+				string fileName = Path.Combine(Path.GetTempPath(), $"creative_{category.Key.ToString().ToLower().Replace("category", "")}_{Guid.NewGuid()}.txt");
+				Client.WriteCreativeCategory(fileName, category.Value);
+			}
 		}
 
 		public override void HandleMcpeAddItemEntity(McpeAddItemEntity message)
@@ -218,9 +221,6 @@ namespace MiNET.Client
 				DefaultValueHandling = DefaultValueHandling.Include
 			};
 
-			var fileNameItemstates = Path.GetTempPath() + "itemstates_" + Guid.NewGuid() + ".json";
-			File.WriteAllText(fileNameItemstates, JsonConvert.SerializeObject(message.itemstates, settings));
-			Log.Warn($"itemstates_ Filename:\n{fileNameItemstates}");
 			string fileName = Path.GetTempPath() + "MissingBlocks_" + Guid.NewGuid() + ".txt";
 			using(FileStream file = File.OpenWrite(fileName))
 			{
@@ -935,6 +935,22 @@ namespace MiNET.Client
 			//{
 			//	Log.Warn($"Received command output: {msg}");
 			//}
+		}
+
+		public override void HandleMcpeItemRegistry(McpeItemRegistry message)
+		{
+			var settings = new JsonSerializerSettings
+			{
+				PreserveReferencesHandling = PreserveReferencesHandling.Arrays,
+				TypeNameHandling = TypeNameHandling.Auto,
+				Formatting = Formatting.Indented,
+				DefaultValueHandling = DefaultValueHandling.Include,
+				NullValueHandling = NullValueHandling.Ignore
+			};
+
+			var fileNameItemstates = Path.GetTempPath() + "itemstates_" + Guid.NewGuid() + ".json";
+			File.WriteAllText(fileNameItemstates, JsonConvert.SerializeObject(new Dictionary<string, ItemState>(message.itemStates.OrderBy(s => s.Key)), settings));
+			Log.Warn($"itemstates_ Filename:\n{fileNameItemstates}");
 		}
 	}
 }

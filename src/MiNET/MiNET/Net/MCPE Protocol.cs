@@ -31,9 +31,10 @@ using System;
 using System.Net;
 using System.Numerics;
 using System.Threading;
+using MiNET.Inventories;
+using MiNET.Items;
 using MiNET.Utils; 
 using MiNET.Utils.Skins;
-using MiNET.Items;
 using MiNET.Crafting;
 using MiNET.Net.RakNet;
 using MiNET.Utils.Metadata;
@@ -45,8 +46,8 @@ namespace MiNET.Net
 {
 	public class McpeProtocolInfo
 	{
-		public const int ProtocolVersion = 766;
-		public const string GameVersion = "1.21.50";
+		public const int ProtocolVersion = 776;
+		public const string GameVersion = "1.21.60";
 	}
 
 	public interface IMcpeMessageHandler
@@ -236,7 +237,7 @@ namespace MiNET.Net
 		void HandleMcpeCreativeContent(McpeCreativeContent message);
 		void HandleMcpePlayerEnchantOptions(McpePlayerEnchantOptions message);
 		void HandleMcpeItemStackResponse(McpeItemStackResponse message);
-		void HandleMcpeItemComponent(McpeItemComponent message);
+		void HandleMcpeItemRegistry(McpeItemRegistry message);
 		void HandleMcpeUpdateSubChunkBlocksPacket(McpeUpdateSubChunkBlocksPacket message);
 		void HandleMcpeSubChunkPacket(McpeSubChunkPacket message);
 		void HandleMcpeDimensionData(McpeDimensionData message);
@@ -627,8 +628,8 @@ namespace MiNET.Net
 				case McpeItemStackResponse msg:
 					_messageHandler.HandleMcpeItemStackResponse(msg);
 					break;
-				case McpeItemComponent msg:
-					_messageHandler.HandleMcpeItemComponent(msg);
+				case McpeItemRegistry msg:
+					_messageHandler.HandleMcpeItemRegistry(msg);
 					break;
 				case McpeUpdateSubChunkBlocksPacket msg:
 					_messageHandler.HandleMcpeUpdateSubChunkBlocksPacket(msg);
@@ -1035,7 +1036,7 @@ namespace MiNET.Net
 					case 0x9c:
 						return McpePacketViolationWarning.CreateObject().Decode(buffer);
 					case 0xa2:
-						return McpeItemComponent.CreateObject().Decode(buffer);
+						return McpeItemRegistry.CreateObject().Decode(buffer);
 					case 0xac:
 						return McpeUpdateSubChunkBlocksPacket.CreateObject().Decode(buffer);
 					case 0xae:
@@ -9497,7 +9498,7 @@ namespace MiNET.Net
 	public partial class McpeCreativeContent : Packet<McpeCreativeContent>
 	{
 
-		public CreativeItemStacks input;
+		public CreativeInventoryContent content;
 
 		public McpeCreativeContent()
 		{
@@ -9511,7 +9512,7 @@ namespace MiNET.Net
 
 			BeforeEncode();
 
-			Write(input);
+			Write(content);
 
 			AfterEncode();
 		}
@@ -9525,7 +9526,7 @@ namespace MiNET.Net
 
 			BeforeDecode();
 
-			input = ReadCreativeItemStacks();
+			content = ReadCreativeInventoryContent();
 
 			AfterDecode();
 		}
@@ -9537,7 +9538,7 @@ namespace MiNET.Net
 		{
 			base.ResetPacket();
 
-			input = default;
+			content = default;
 		}
 
 	}
@@ -9823,12 +9824,12 @@ namespace MiNET.Net
 
 	}
 
-	public partial class McpeItemComponent : Packet<McpeItemComponent>
+	public partial class McpeItemRegistry : Packet<McpeItemRegistry>
 	{
 
-		public ItemComponentList entries;
+		public ItemStates itemStates;
 
-		public McpeItemComponent()
+		public McpeItemRegistry()
 		{
 			Id = 0xa2;
 			IsMcpe = true;
@@ -9840,7 +9841,7 @@ namespace MiNET.Net
 
 			BeforeEncode();
 
-			Write(entries);
+			Write(itemStates);
 
 			AfterEncode();
 		}
@@ -9854,7 +9855,7 @@ namespace MiNET.Net
 
 			BeforeDecode();
 
-			entries = ReadItemComponentList();
+			itemStates = ReadItemStates();
 
 			AfterDecode();
 		}
@@ -9866,7 +9867,7 @@ namespace MiNET.Net
 		{
 			base.ResetPacket();
 
-			entries = default;
+			itemStates = default;
 		}
 
 	}

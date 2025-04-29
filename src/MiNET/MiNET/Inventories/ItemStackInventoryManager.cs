@@ -601,7 +601,7 @@ namespace MiNET.Inventories
 			recipe = null;
 			if (_player.GameMode != GameMode.Creative) return false;
 
-			var creativeItem = InventoryUtils.CreativeInventoryItems[(int) action.CreativeItemNetworkId];
+			var creativeItem = InventoryUtils.Content.GetItemById(action.CreativeItemNetworkId);
 			if (creativeItem == null)
 			{
 				throw new Exception($"Failed to find inventory item with unique id: {action.CreativeItemNetworkId}");

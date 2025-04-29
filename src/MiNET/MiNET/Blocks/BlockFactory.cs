@@ -31,8 +31,8 @@ using System.Reflection;
 using System.Text;
 using fNbt;
 using log4net;
-using MiNET.Net;
 using MiNET.Utils;
+using MiNET.Utils.Nbt;
 
 namespace MiNET.Blocks
 {
@@ -93,7 +93,7 @@ namespace MiNET.Blocks
 				{
 					do
 					{
-						var compound = Packet.ReadNbtCompound(stream, true);
+						var compound = NbtExtensions.ReadNbtCompound(stream);
 						var container = GetBlockStateContainer(compound);
 
 						// TODO
@@ -132,7 +132,7 @@ namespace MiNET.Blocks
 						stream.Read(bytes, 0, bytes.Length);
 						var meta = BitConverter.ToInt16(bytes);
 
-						var compound = Packet.ReadNbtCompound(stream, true);
+						var compound = NbtExtensions.ReadNbtCompound(stream);
 
 						var state = GetBlockStateContainer(compound);
 
@@ -220,7 +220,7 @@ namespace MiNET.Blocks
 
 					var nbt = new NbtFile()
 					{
-						Flavor = NbtFlavor.Bedrock,
+						Flavor = NbtFlavor.BedrockNoVarInt,
 						RootTag = record.StatesNbt
 					};
 

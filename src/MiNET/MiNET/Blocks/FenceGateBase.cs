@@ -29,7 +29,7 @@ namespace MiNET.Blocks
 {
 	public abstract class FenceGateBase : Block
 	{
-		public abstract OldDirection1 Direction { get; set; }
+		public abstract CardinalDirection Direction { get; set; }
 		public abstract bool InWallBit { get; set; }
 		public abstract bool OpenBit { get; set; }
 

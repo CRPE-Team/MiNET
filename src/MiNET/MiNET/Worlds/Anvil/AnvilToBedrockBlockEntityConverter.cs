@@ -95,7 +95,7 @@ namespace MiNET.Worlds.Anvil
 					{
 						text["has_glowing_text"].Name = "IgnoreLighting";
 
-						var lines = (text["messages"] as NbtList).Select(t => t.StringValue.Substring(1, t.StringValue.Length - 2));
+						var lines = (text["messages"] as NbtList).Select(t => string.IsNullOrEmpty(t.StringValue) ? string.Empty : t.StringValue.Substring(1, t.StringValue.Length - 2));
 						text["Text"] = new NbtString("Text", string.Join("\n", lines.Where(l => !string.IsNullOrEmpty(l))));
 
 						if (SignColor.TryParse(text["color"].StringValue, out var color))

@@ -37,8 +37,8 @@ using System.Text;
 using System.Threading;
 using fNbt;
 using log4net;
-using log4net.Appender;
 using Microsoft.IO;
+using MiNET.Inventories;
 using MiNET.Items;
 using MiNET.Net.Crafting;
 using MiNET.Net.RakNet;
@@ -653,49 +653,36 @@ namespace MiNET.Net
 			return uuid;
 		}
 
+		public void Write(NbtCompound tag, NbtFlavor flavor = null)
+		{
+			NbtExtensions.Write(_writer.BaseStream, tag, flavor);
+		}
+
+		public void Write(NbtFile nbt)
+		{
+			NbtExtensions.Write(_writer.BaseStream, nbt);
+		}
+
+		[Obsolete]
 		public void Write(Nbt nbt)
 		{
-			Write(nbt, _writer.BaseStream, nbt.NbtFile.UseVarInt || this is McpeBlockEntityData || this is McpeUpdateEquipment);
+			NbtExtensions.Write(_writer.BaseStream, nbt.NbtFile);
 		}
 
-		public static void Write(Nbt nbt, Stream stream, bool useVarInt)
+		public NbtCompound ReadNbtCompound(NbtFlavor flavor = null)
 		{
-			NbtFile file = nbt.NbtFile;
-			file.BigEndian = false;
-			file.UseVarInt = useVarInt;
-
-			byte[] saveToBuffer = file.SaveToBuffer(NbtCompression.None);
-			stream.Write(saveToBuffer, 0, saveToBuffer.Length);
+			return NbtExtensions.ReadNbtCompound(_reader, flavor);
 		}
 
+		//public NbtFile ReadNbt(NbtFlavor flavor = null)
+		//{
+		//	return NbtExtensions.ReadNbt(_reader, flavor);
+		//}
 
+		[Obsolete]
 		public Nbt ReadNbt()
 		{
-			return ReadNbt(_reader);
-		}
-
-		public static Nbt ReadNbt(Stream stream, bool useVarInt = true)
-		{
-			Nbt nbt = new Nbt();
-			NbtFile nbtFile = new NbtFile();
-			nbtFile.BigEndian = false;
-			nbtFile.UseVarInt = useVarInt;
-
-			nbt.NbtFile = nbtFile;
-			nbtFile.LoadFromStream(stream, NbtCompression.None);
-
-			return nbt;
-		}
-
-		public static NbtCompound ReadNbtCompound(Stream stream, bool useVarInt = false)
-		{
-			NbtFile file = new NbtFile();
-			file.BigEndian = false;
-			file.UseVarInt = useVarInt;
-
-			file.LoadFromStream(stream, NbtCompression.None);
-
-			return (NbtCompound) file.RootTag;
+			return new Nbt() { NbtFile = NbtExtensions.ReadNbt(_reader) };
 		}
 
 		public void Write(MetadataInts metadata)
@@ -755,11 +742,6 @@ namespace MiNET.Net
 		{
 			return ItemStackResponses.Read(this);
 		}
-		
-		public ItemComponentList ReadItemComponentList()
-		{
-			return ItemComponentList.Read(this);
-		}
 
 		public EnchantOptions ReadEnchantOptions()
 		{
@@ -769,6 +751,11 @@ namespace MiNET.Net
 		public FullContainerName ReadFullContainerName()
 		{
 			return FullContainerName.Read(this);
+		}
+
+		public CreativeInventoryContent ReadCreativeInventoryContent()
+		{
+			return CreativeInventoryContent.Read(this);
 		}
 
 		public FullContainerName[] ReadFullContainerNames()
@@ -830,8 +817,8 @@ namespace MiNET.Net
 					{
 						binaryWriter.Write((ushort) 0xffff);
 						binaryWriter.Write((byte)1);
-						var nbtData = GetNbtData(stack.ExtraData, false);
-						binaryWriter.Write(nbtData);
+
+						NbtExtensions.Write(binaryWriter.BaseStream, stack.ExtraData, NbtFlavor.BedrockNoVarInt);
 					}
 					else
 					{
@@ -894,7 +881,7 @@ namespace MiNET.Net
 						}
 
 						var beforeRead = ms.Position;
-						stack.ExtraData = ReadNbtCompound(ms, false);
+						stack.ExtraData = NbtExtensions.ReadNbtCompound(ms, NbtFlavor.BedrockNoVarInt);
 						var afterRead = ms.Position;
 						var nbtCompoundLength = afterRead - beforeRead;
 					}
@@ -923,17 +910,6 @@ namespace MiNET.Net
 				}
 			}
 			return stack;
-		}
-
-
-		public static byte[] GetNbtData(NbtCompound nbtCompound, bool useVarInt = true)
-		{
-			nbtCompound.Name = string.Empty;
-			var file = new NbtFile(nbtCompound);
-			file.BigEndian = false;
-			file.UseVarInt = useVarInt;
-
-			return file.SaveToBuffer(NbtCompression.None);
 		}
 
 		public void Write(MetadataDictionary metadata)
@@ -1000,10 +976,8 @@ namespace MiNET.Net
 				record.RuntimeId = runtimeId;
 				record.Id = ReadString();
 
-				var nbt = ReadNbt(_reader);
-				var rootTag = nbt.NbtFile.RootTag;
-
-				foreach (var state in GetBlockStates(rootTag))
+				var nbt = ReadNbtCompound();
+				foreach (var state in GetBlockStates(nbt))
 				{
 					record.AddState(state);
 				}

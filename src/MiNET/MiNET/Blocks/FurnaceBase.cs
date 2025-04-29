@@ -33,7 +33,7 @@ namespace MiNET.Blocks
 {
 	public abstract class FurnaceBase : Block
 	{
-		public abstract CardinalDirection CardinalDirection { get; set; }
+		public abstract CardinalDirection Direction { get; set; }
 
 		protected FurnaceBase()
 		{
@@ -43,7 +43,7 @@ namespace MiNET.Blocks
 
 		public override bool PlaceBlock(Level world, Player player, BlockCoordinates blockCoordinates, BlockFace face, Vector3 faceCoords)
 		{
-			CardinalDirection = player.KnownPosition.GetDirection();
+			Direction = player.KnownPosition.GetDirection();
 
 			var blockEntity = CreateBlockEntity();
 			world.SetBlockEntity(blockEntity);

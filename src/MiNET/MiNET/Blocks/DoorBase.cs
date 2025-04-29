@@ -32,7 +32,7 @@ namespace MiNET.Blocks
 {
 	public abstract class DoorBase : Block
 	{
-		public abstract OldDirection3 Direction { get; set; }
+		public abstract CardinalDirection Direction { get; set; }
 		public abstract bool DoorHingeBit { get; set; }
 		public abstract bool OpenBit { get; set; }
 		public abstract bool UpperBlockBit { get; set; }

@@ -54,13 +54,15 @@ namespace MiNET.Net
 
 	public class AbilityLayer : IPacketDataObject
 	{
-		public const int AbilityCount = 19;
+		public const int AbilityCount = 20;
 
 		public AbilityLayerType Type { get; set; }
 
 		public Dictionary<PlayerAbility, bool> Abilities { get; set; }
 
 		public float FlySpeed { get; set; }
+
+		public float VerticalFlySpeed { get; set; }
 
 		public float WalkSpeed { get; set; }
 
@@ -78,11 +80,13 @@ namespace MiNET.Net
 			}
 
 			if (FlySpeed > 0) abilities |= PlayerAbility.FlySpeed;
+			if (VerticalFlySpeed > 0) abilities |= PlayerAbility.AbilityVerticalFlySpeed;
 			if (WalkSpeed > 0) abilities |= PlayerAbility.WalkSpeed;
 
 			packet.Write((uint) abilities);
 			packet.Write((uint) values);
 			packet.Write(FlySpeed);
+			packet.Write(VerticalFlySpeed);
 			packet.Write(WalkSpeed);
 		}
 
@@ -96,7 +100,9 @@ namespace MiNET.Net
 			for (var i = 0; i < AbilityCount; i++)
 			{
 				var ability = (PlayerAbility) (1 << i);
-				if (ability == PlayerAbility.FlySpeed || ability == PlayerAbility.WalkSpeed)
+				if (ability == PlayerAbility.FlySpeed
+					|| ability == PlayerAbility.AbilityVerticalFlySpeed
+					|| ability == PlayerAbility.WalkSpeed)
 				{
 					continue;
 				}
@@ -112,6 +118,7 @@ namespace MiNET.Net
 				Type = type,
 				Abilities = abilityValues,
 				FlySpeed = packet.ReadFloat(),
+				VerticalFlySpeed = packet.ReadFloat(),
 				WalkSpeed = packet.ReadFloat()
 			};
 		}
@@ -150,6 +157,7 @@ namespace MiNET.Net
 		Muted = 1 << 15,
 		WorldBuilder = 1 << 16,
 		NoClip = 1 << 17,
-		PrivilegedBuilder = 1 << 18
+		PrivilegedBuilder = 1 << 18,
+		AbilityVerticalFlySpeed = 1 << 19
 	}
 }
