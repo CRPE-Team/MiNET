@@ -88,12 +88,13 @@ namespace MiNET.Entities.Projectiles
 			KnownPosition.Yaw = (float) Velocity.GetYaw();
 			KnownPosition.Pitch = (float) Velocity.GetPitch();
 
-			var sound = McpeLevelSoundEventOld.CreateObject();
-			sound.soundId = 55;
-			sound.blockId = -1;
-			sound.entityType = 1;
-			sound.position = KnownPosition;
-			Level.RelayBroadcast(sound);
+			// TODO
+			//var sound = McpeLevelSoundEvent.CreateObject();
+			//sound.soundId = 55;
+			//sound.blockId = -1;
+			//sound.entityType = 1;
+			//sound.position = KnownPosition;
+			//Level.RelayBroadcast(sound);
 
 			base.SpawnEntity();
 		}
@@ -108,12 +109,13 @@ namespace MiNET.Entities.Projectiles
 
 			base.DespawnEntity();
 
-			var sound = McpeLevelSoundEventOld.CreateObject();
-			sound.soundId = 56;
-			sound.blockId = -1;
-			sound.entityType = 1;
-			sound.position = KnownPosition;
-			Level.RelayBroadcast(sound);
+			// TODO
+			//var sound = McpeLevelSoundEvent.CreateObject();
+			//sound.soundId = 56;
+			//sound.blockId = -1;
+			//sound.entityType = 1;
+			//sound.position = KnownPosition;
+			//Level.RelayBroadcast(sound);
 		}
 
 		public override void OnTick(Entity[] entities)

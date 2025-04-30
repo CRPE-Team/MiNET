@@ -106,12 +106,13 @@ namespace MiNET.Inventories
 			{
 				item = new ItemAir();
 
-				var sound = McpeLevelSoundEventOld.CreateObject();
-				sound.soundId = 5;
-				sound.blockId = -1;
-				sound.entityType = 1;
-				sound.position = Player.KnownPosition;
-				Player.Level.RelayBroadcast(sound);
+				// TODO
+				//var sound = McpeLevelSoundEvent.CreateObject();
+				//sound.soundId = 5;
+				//sound.blockId = -1;
+				//sound.entityType = 1;
+				//sound.position = Player.KnownPosition;
+				//Player.Level.RelayBroadcast(sound);
 			}
 
 			return item;

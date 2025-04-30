@@ -2,9 +2,9 @@
 {
 	public enum CreativeInventoryCategoryType
 	{
-		CategoryConstruction = 1,
-		CategoryNature = 2,
-		CategoryEquipment = 3,
-		CategoryItems = 4,
+		Construction = 1,
+		Nature = 2,
+		Equipment = 3,
+		Items = 4
 }
 }

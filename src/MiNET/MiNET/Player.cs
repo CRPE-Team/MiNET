@@ -2130,18 +2130,6 @@ namespace MiNET
 			return false;
 		}
 
-		public virtual void HandleMcpeLevelSoundEventOld(McpeLevelSoundEventOld message)
-		{
-			var sound = McpeLevelSoundEventOld.CreateObject();
-			sound.soundId = message.soundId;
-			sound.position = message.position;
-			sound.blockId = message.blockId;
-			sound.entityType = message.entityType;
-			sound.isBabyMob = message.isBabyMob;
-			sound.isGlobal = message.isGlobal;
-			Level.RelayBroadcast(sound);
-		}
-
 		public virtual void HandleMcpeLevelSoundEvent(McpeLevelSoundEvent message)
 		{
 			//TODO: This will require that sounds are sent by the server.
@@ -3746,10 +3734,6 @@ namespace MiNET
 			packet.timestamp = message.timestamp; // don't know what is it
 			packet.unknownFlag = 1;
 			SendPacket(packet);
-		}
-
-		public virtual void HandleMcpeLevelSoundEventV2(McpeLevelSoundEventV2 message)
-		{
 		}
 
 		public virtual void HandleMcpePlayerToggleCrafterSlotRequest(McpePlayerToggleCrafterSlotRequest message)

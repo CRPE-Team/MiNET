@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using fNbt;
+﻿using fNbt;
 using MiNET.Blocks;
 using MiNET.Items;
 using MiNET.Net;
@@ -10,13 +9,13 @@ namespace MiNET.Inventories
 {
 	public static class InventoryUtils
 	{
-		private static readonly Dictionary<CreativeInventoryCategoryType, string> DefaultCategoriesData = new()
-		{
-			{ CreativeInventoryCategoryType.CategoryConstruction, "construction.json" },
-			{ CreativeInventoryCategoryType.CategoryNature, "nature.json" },
-			{ CreativeInventoryCategoryType.CategoryEquipment, "equipment.json" },
-			{ CreativeInventoryCategoryType.CategoryItems, "items.json" }
-		};
+		private static readonly CreativeInventoryCategoryType[] DefaultCategories =
+		[
+			CreativeInventoryCategoryType.Construction,
+			CreativeInventoryCategoryType.Nature,
+			CreativeInventoryCategoryType.Equipment,
+			CreativeInventoryCategoryType.Items,
+		];
 
 		public static CreativeInventoryContent Content { get; } = new CreativeInventoryContent();
 
@@ -28,10 +27,10 @@ namespace MiNET.Inventories
 		{
 			_isEduEnabled = Config.GetProperty("EnableEdu", false);
 
-			foreach (var category in DefaultCategoriesData)
+			foreach (var category in DefaultCategories)
 			{
-				var data = ResourceUtil.ReadResource<ExternalDataCategory>(category.Value, typeof(InventoryUtils), "Data");
-				Content.AppendCategory(category.Key, data);
+				var data = ResourceUtil.ReadResource<ExternalDataCategory>($"{category.ToString().ToLower()}.json", typeof(InventoryUtils), "Data");
+				Content.AppendCategory(category, data);
 			}
 		}
 

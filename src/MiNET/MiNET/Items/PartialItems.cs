@@ -707,6 +707,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:blue_dye";
 	}
 
+	public partial class ItemBlueEgg : Item
+	{
+		public override string Id { get; protected set; } = "minecraft:blue_egg";
+	}
+
 	public partial class ItemBlueGlazedTerracotta : ItemBlock<BlueGlazedTerracotta>
 	{
 		public override string Id { get; protected set; } = "minecraft:blue_glazed_terracotta";
@@ -921,6 +926,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:brown_dye";
 	}
 
+	public partial class ItemBrownEgg : Item
+	{
+		public override string Id { get; protected set; } = "minecraft:brown_egg";
+	}
+
 	public partial class ItemBrownGlazedTerracotta : ItemBlock<BrownGlazedTerracotta>
 	{
 		public override string Id { get; protected set; } = "minecraft:brown_glazed_terracotta";
@@ -1011,9 +1021,19 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:burn_pottery_sherd";
 	}
 
+	public partial class ItemBush : ItemBlock<Bush>
+	{
+		public override string Id { get; protected set; } = "minecraft:bush";
+	}
+
 	public partial class ItemCactus : ItemBlock<Cactus>
 	{
 		public override string Id { get; protected set; } = "minecraft:cactus";
+	}
+
+	public partial class ItemCactusFlower : ItemBlock<CactusFlower>
+	{
+		public override string Id { get; protected set; } = "minecraft:cactus_flower";
 	}
 
 	public partial class ItemCalcite : ItemBlock<Calcite>
@@ -3470,6 +3490,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:fire_coral_wall_fan";
 	}
 
+	public partial class ItemFireflyBush : ItemBlock<FireflyBush>
+	{
+		public override string Id { get; protected set; } = "minecraft:firefly_bush";
+	}
+
 	public partial class ItemFireworkRocket : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:firework_rocket";
@@ -4813,6 +4838,11 @@ namespace MiNET.Items
 	public partial class ItemLead : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:lead";
+	}
+
+	public partial class ItemLeafLitter : ItemBlock<LeafLitter>
+	{
+		public override string Id { get; protected set; } = "minecraft:leaf_litter";
 	}
 
 	public partial class ItemLeather : Item
@@ -7478,6 +7508,11 @@ namespace MiNET.Items
 		public override string Id { get; protected set; } = "minecraft:shield";
 	}
 
+	public partial class ItemShortDryGrass : ItemBlock<ShortDryGrass>
+	{
+		public override string Id { get; protected set; } = "minecraft:short_dry_grass";
+	}
+
 	public partial class ItemShortGrass : ItemBlock<ShortGrass>
 	{
 		public override string Id { get; protected set; } = "minecraft:short_grass";
@@ -8238,6 +8273,11 @@ namespace MiNET.Items
 	public partial class ItemTadpoleSpawnEgg : ItemSpawnEggBase
 	{
 		public override string Id { get; protected set; } = "minecraft:tadpole_spawn_egg";
+	}
+
+	public partial class ItemTallDryGrass : ItemBlock<TallDryGrass>
+	{
+		public override string Id { get; protected set; } = "minecraft:tall_dry_grass";
 	}
 
 	public partial class ItemTallGrass : ItemBlock<TallGrass>
@@ -9016,6 +9056,11 @@ namespace MiNET.Items
 	public partial class ItemWildArmorTrimSmithingTemplate : Item
 	{
 		public override string Id { get; protected set; } = "minecraft:wild_armor_trim_smithing_template";
+	}
+
+	public partial class ItemWildflowers : ItemBlock<Wildflowers>
+	{
+		public override string Id { get; protected set; } = "minecraft:wildflowers";
 	}
 
 	public partial class ItemWindCharge : Item

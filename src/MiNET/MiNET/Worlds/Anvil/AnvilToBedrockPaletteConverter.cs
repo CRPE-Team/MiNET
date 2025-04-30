@@ -324,6 +324,12 @@ namespace MiNET.Worlds.Anvil
 				new SkipPropertyStateMapper("snowy"),
 				poweredSkipMap));
 
+			// java only
+			_mapper.Add(new BlockStateMapper("minecraft:test_block", "minecraft:air",
+				new SkipPropertyStateMapper("mode")));
+			_mapper.Add(new BlockStateMapper("minecraft:test_instance_block", "minecraft:air"));
+
+			// common
 			_mapper.Add(new BlockStateMapper("minecraft:magma_block", "minecraft:magma"));
 			_mapper.Add(new BlockStateMapper("minecraft:cobweb", "minecraft:web"));
 			_mapper.Add(new BlockStateMapper("minecraft:cave_air", "minecraft:air"));
@@ -963,6 +969,9 @@ namespace MiNET.Worlds.Anvil
 			var attachedGrowthMap = new BlockStateMapper(context => context.OldName.Replace("attached_", ""),
 				oldFacingDirectionMap,
 				new AdditionalPropertyStateMapper("growth", "7"));
+			var flowerAmountMap = new PropertyStateMapper("flower_amount", (_, _, property) => new NbtString("growth", (int.Parse(property.StringValue) - 1).ToString()));
+			var segmentAmount = flowerAmountMap.Clone();
+			segmentAmount.OldName = "segment_amount";
 
 			_mapper.Add("minecraft:wheat", growthMap);
 			_mapper.Add("minecraft:carrots", growthMap);
@@ -974,6 +983,10 @@ namespace MiNET.Worlds.Anvil
 			_mapper.Add("minecraft:sweet_berry_bush", growthMap);
 
 			_mapper.Add(new BlockStateMapper("minecraft:beetroots", "minecraft:beetroot", ageGrowthMap));
+
+			_mapper.Add(new BlockStateMapper("minecraft:pink_petals", flowerAmountMap));
+			_mapper.Add(new BlockStateMapper("minecraft:wildflowers", flowerAmountMap));
+			_mapper.Add(new BlockStateMapper("minecraft:leaf_litter", segmentAmount));
 
 			#endregion
 
@@ -1496,10 +1509,6 @@ namespace MiNET.Worlds.Anvil
 			//minecraft:sea_pickle
 			_mapper.Add(new BlockStateMapper("minecraft:sea_pickle",
 				new PropertyStateMapper("pickles", (_, _, property) => new NbtString("cluster_count", (int.Parse(property.StringValue) - 1).ToString()))));
-
-			//minecraft:pink_petals
-			_mapper.Add(new BlockStateMapper("minecraft:pink_petals",
-				new PropertyStateMapper("flower_amount", (_, _, property) => new NbtString("growth", (int.Parse(property.StringValue) - 1).ToString()))));
 
 			//minecraft:trial_spawner
 			_mapper.Add(new BlockStateMapper("minecraft:trial_spawner",

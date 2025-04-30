@@ -4831,6 +4831,11 @@ namespace MiNET.Blocks
 		public override string Id => "minecraft:budding_amethyst";
 	} // class
 
+	public partial class Bush : Block
+	{
+		public override string Id => "minecraft:bush";
+	} // class
+
 	public partial class Cactus : Block
 	{
 		private MiNET.Blocks.States.Age _age = new MiNET.Blocks.States.Age();
@@ -4871,6 +4876,11 @@ namespace MiNET.Blocks
 
 			return block;
 		} // method
+	} // class
+
+	public partial class CactusFlower : Block
+	{
+		public override string Id => "minecraft:cactus_flower";
 	} // class
 
 	public partial class Cake : Block
@@ -13140,6 +13150,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class FireflyBush : Block
+	{
+		public override string Id => "minecraft:firefly_bush";
+	} // class
+
 	public partial class FletchingTable : Block
 	{
 		public override string Id => "minecraft:fletching_table";
@@ -16028,6 +16043,57 @@ namespace MiNET.Blocks
 			var block = (Lava) base.Clone();
 
 			block._liquidDepth = (MiNET.Blocks.States.LiquidDepth) _liquidDepth.Clone();
+
+			return block;
+		} // method
+	} // class
+
+	public partial class LeafLitter : Block
+	{
+		private MiNET.Blocks.States.Growth _growth = new MiNET.Blocks.States.Growth();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
+
+		public override string Id => "minecraft:leaf_litter";
+
+		[StateRange(0, 7)]
+		public int Growth { get => _growth.Value; set => NotifyStateUpdate(_growth, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _growth.Name:
+						NotifyStateUpdate(_growth, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _growth;
+			yield return _cardinalDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _growth, _cardinalDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (LeafLitter) base.Clone();
+
+			block._growth = (MiNET.Blocks.States.Growth) _growth.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
 
 			return block;
 		} // method
@@ -26511,6 +26577,11 @@ namespace MiNET.Blocks
 		} // method
 	} // class
 
+	public partial class ShortDryGrass : Block
+	{
+		public override string Id => "minecraft:short_dry_grass";
+	} // class
+
 	public partial class ShortGrass : Block
 	{
 		public override string Id => "minecraft:short_grass";
@@ -30132,6 +30203,11 @@ namespace MiNET.Blocks
 
 			return block;
 		} // method
+	} // class
+
+	public partial class TallDryGrass : Block
+	{
+		public override string Id => "minecraft:tall_dry_grass";
 	} // class
 
 	public partial class TallGrass : DoublePlantBase
@@ -34375,6 +34451,57 @@ namespace MiNET.Blocks
 	public partial class WhiteWool : WoolBase
 	{
 		public override string Id => "minecraft:white_wool";
+	} // class
+
+	public partial class Wildflowers : Block
+	{
+		private MiNET.Blocks.States.Growth _growth = new MiNET.Blocks.States.Growth();
+		private MiNET.Blocks.States.CardinalDirection _cardinalDirection = (States.CardinalDirection) MiNET.Blocks.States.CardinalDirection.South.Clone();
+
+		public override string Id => "minecraft:wildflowers";
+
+		[StateRange(0, 7)]
+		public int Growth { get => _growth.Value; set => NotifyStateUpdate(_growth, value); }
+
+		[StateEnum("east", "north", "south", "west")]
+		public MiNET.Blocks.States.CardinalDirection Direction { get => _cardinalDirection; set => NotifyStateUpdate(_cardinalDirection, value.Value); }
+
+		public override void SetStates(IEnumerable<IBlockState> states)
+		{
+			foreach (var state in states)
+			{
+				switch (state)
+				{
+					case BlockStateInt s when s.Name == _growth.Name:
+						NotifyStateUpdate(_growth, s.Value);
+						break;
+					case BlockStateString s when s.Name == _cardinalDirection.Name:
+						NotifyStateUpdate(_cardinalDirection, s.Value);
+						break;
+				} // switch
+			} // foreach
+		} // method
+
+		protected override IEnumerable<IBlockState> GetStates()
+		{
+			yield return _growth;
+			yield return _cardinalDirection;
+		} // method
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Id, _growth, _cardinalDirection);
+		} // method
+
+		public override object Clone()
+		{
+			var block = (Wildflowers) base.Clone();
+
+			block._growth = (MiNET.Blocks.States.Growth) _growth.Clone();
+			block._cardinalDirection = (MiNET.Blocks.States.CardinalDirection) _cardinalDirection.Clone();
+
+			return block;
+		} // method
 	} // class
 
 	public partial class WitherRose : Block

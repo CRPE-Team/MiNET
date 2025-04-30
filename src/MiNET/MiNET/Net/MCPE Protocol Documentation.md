@@ -43,9 +43,10 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Movement Effect | 0x13e | 19 |   
 | Set Movement Authority | 0x13f | 19 |   
 | Rider Jump | 0x14 | 20 |   
+| Update Client Options | 0x143 | 20 |   
+| Player Update Entity Overrides | 0x145 | 20 |   
 | Update Block | 0x15 | 21 |   
 | Add Painting | 0x16 | 22 |   
-| Level Sound Event Old | 0x18 | 24 |   
 | Level Event | 0x19 | 25 |   
 | Block Event | 0x1a | 26 |   
 | Entity Event | 0x1b | 27 |   
@@ -137,7 +138,6 @@ Read more about packets and this specification on the [Protocol Wiki](https://gi
 | Script Custom Event | 0x75 | 117 |   
 | Spawn Particle Effect | 0x76 | 118 |   
 | Available Entity Identifiers | 0x77 | 119 |   
-| Level Sound Event V2 | 0x78 | 120 |   
 | Network Chunk Publisher Update | 0x79 | 121 |   
 | Biome Definition List | 0x7a | 122 |   
 | Level Sound Event | 0x7b | 123 |   
@@ -744,26 +744,6 @@ Wiki: [Add Painting](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AddP
 |Coordinates | BlockCoordinates |  |
 |Direction | SignedVarInt |  |
 |Title | string |  |
------------------------------------------------------------------------
-### Level Sound Event Old (0x18)
-Wiki: [Level Sound Event Old](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-LevelSoundEventOld)
-
-**Sent from server:** true  
-**Sent from client:** true
-
-
-
-
-#### Fields
-
-| Name | Type | Size |
-|:-----|:-----|:-----|
-|Sound ID | byte |  |
-|Position | Vector3 |  |
-|Block Id | SignedVarInt |  |
-|Entity Type | SignedVarInt |  |
-|Is baby mob | bool |  |
-|Is global | bool |  |
 -----------------------------------------------------------------------
 ### Level Event (0x19)
 Wiki: [Level Event](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-LevelEvent)
@@ -2419,26 +2399,6 @@ Wiki: [Available Entity Identifiers](https://github.com/NiclasOlofsson/MiNET/wik
 |:-----|:-----|:-----|
 |NamedTag | Nbt |  |
 -----------------------------------------------------------------------
-### Level Sound Event V2 (0x78)
-Wiki: [Level Sound Event V2](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-LevelSoundEventV2)
-
-**Sent from server:** true  
-**Sent from client:** true
-
-
-
-
-#### Fields
-
-| Name | Type | Size |
-|:-----|:-----|:-----|
-|Sound ID | byte |  |
-|Position | Vector3 |  |
-|Block Id | SignedVarInt |  |
-|Entity Type | string |  |
-|Is baby mob | bool |  |
-|Is global | bool |  |
------------------------------------------------------------------------
 ### Network Chunk Publisher Update (0x79)
 Wiki: [Network Chunk Publisher Update](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-NetworkChunkPublisherUpdate)
 
@@ -2490,6 +2450,7 @@ Wiki: [Level Sound Event](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol
 |Entity Type | string |  |
 |Is baby mob | bool |  |
 |Is global | bool |  |
+|Runtime Entity ID | long |  |
 -----------------------------------------------------------------------
 ### Level Event Generic (0x7c)
 Wiki: [Level Event Generic](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-LevelEventGeneric)
@@ -3117,8 +3078,6 @@ Wiki: [Set Hud](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-SetHud)
 
 | Name | Type | Size |
 |:-----|:-----|:-----|
-|Hud Elements | ByteArray |  |
-|Hud Visibility | byte |  |
 -----------------------------------------------------------------------
 ### Award Achievement (0x135)
 Wiki: [Award Achievement](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AwardAchievement)
@@ -3299,6 +3258,58 @@ Wiki: [Set Movement Authority](https://github.com/NiclasOlofsson/MiNET/wiki//Pro
 | Name | Type | Size |
 |:-----|:-----|:-----|
 |Mode | byte |  |
+-----------------------------------------------------------------------
+### Update Client Options (0x143)
+Wiki: [Update Client Options](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-UpdateClientOptions)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+#### Graphics Mode constants
+
+| Name | Value |
+|:-----|:-----|
+|Simple | 0 |
+|Fancy | 1 |
+|Advanced | 2 |
+|Ray Traced | 3 |
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Graphics Mode | byte |  |
+-----------------------------------------------------------------------
+### Player Update Entity Overrides (0x145)
+Wiki: [Player Update Entity Overrides](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-PlayerUpdateEntityOverrides)
+
+**Sent from server:** true  
+**Sent from client:** false
+
+
+
+#### Override Update Type constants
+
+| Name | Value |
+|:-----|:-----|
+|Clearoverrides | 0 |
+|Removeoverride | 1 |
+|Setintoverride | 2 |
+|Setfloatoverride | 3 |
+
+
+#### Fields
+
+| Name | Type | Size |
+|:-----|:-----|:-----|
+|Runtime Entity ID | UnsignedVarLong |  |
+|Property Index | UnsignedVarLong |  |
+|Update Type | byte |  |
+|Int Override Value | int |  |
+|Float Override Value | float |  |
 -----------------------------------------------------------------------
 ### Alex Entity Animation (0xe0)
 Wiki: [Alex Entity Animation](https://github.com/NiclasOlofsson/MiNET/wiki//Protocol-AlexEntityAnimation)

@@ -238,10 +238,6 @@ namespace MiNET.Client
 		{
 		}
 
-		public virtual void HandleMcpeLevelSoundEventOld(McpeLevelSoundEventOld message)
-		{
-		}
-
 		public virtual void HandleMcpeLevelEvent(McpeLevelEvent message)
 		{
 		}
@@ -598,10 +594,6 @@ namespace MiNET.Client
 		{
 		}
 
-		public virtual void HandleMcpeLevelSoundEventV2(McpeLevelSoundEventV2 message)
-		{
-		}
-
 		public virtual void HandleMcpeNetworkChunkPublisherUpdate(McpeNetworkChunkPublisherUpdate message)
 		{
 		}
@@ -790,6 +782,16 @@ namespace MiNET.Client
 		}
 
 		public void HandleMcpeSetMovementAuthority(McpeSetMovementAuthority message)
+		{
+
+		}
+
+		public void HandleMcpeUpdateClientOptions(McpeUpdateClientOptions message)
+		{
+
+		}
+
+		public void HandleMcpePlayerUpdateEntityOverrides(McpePlayerUpdateEntityOverrides message)
 		{
 
 		}

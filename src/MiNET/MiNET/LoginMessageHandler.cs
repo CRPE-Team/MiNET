@@ -755,15 +755,7 @@ namespace MiNET
 		{
 		}
 
-		public void HandleMcpeLevelSoundEventOld(McpeLevelSoundEventOld message)
-		{
-		}
-
 		public void HandleMcpeNetworkStackLatency(McpeNetworkStackLatency message)
-		{
-		}
-
-		public void HandleMcpeLevelSoundEventV2(McpeLevelSoundEventV2 message)
 		{
 		}
 

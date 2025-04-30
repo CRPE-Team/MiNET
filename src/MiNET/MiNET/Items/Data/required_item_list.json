@@ -382,7 +382,7 @@
         "version": 2
     },
     "minecraft:banner_pattern": {
-        "runtime_id": 793,
+        "runtime_id": 795,
         "component_based": false,
         "version": 2
     },
@@ -727,6 +727,11 @@
         "component_based": false,
         "version": 2
     },
+    "minecraft:blue_egg": {
+        "runtime_id": 749,
+        "component_based": false,
+        "version": 2
+    },
     "minecraft:blue_glazed_terracotta": {
         "runtime_id": 231,
         "component_based": false,
@@ -773,7 +778,7 @@
         "version": 2
     },
     "minecraft:boat": {
-        "runtime_id": 791,
+        "runtime_id": 793,
         "component_based": false,
         "version": 2
     },
@@ -945,6 +950,11 @@
         "component_based": false,
         "version": 2
     },
+    "minecraft:brown_egg": {
+        "runtime_id": 750,
+        "component_based": false,
+        "version": 2
+    },
     "minecraft:brown_glazed_terracotta": {
         "runtime_id": 232,
         "component_based": false,
@@ -1036,8 +1046,18 @@
         "component_based": false,
         "version": 2
     },
+    "minecraft:bush": {
+        "runtime_id": -1023,
+        "component_based": false,
+        "version": 2
+    },
     "minecraft:cactus": {
         "runtime_id": 81,
+        "component_based": false,
+        "version": 2
+    },
+    "minecraft:cactus_flower": {
+        "runtime_id": -1030,
         "component_based": false,
         "version": 2
     },
@@ -1083,7 +1103,7 @@
         "version": 2
     },
     "minecraft:carpet": {
-        "runtime_id": 750,
+        "runtime_id": 752,
         "component_based": false,
         "version": 2
     },
@@ -1189,7 +1209,7 @@
         "version": 2
     },
     "minecraft:chemistry_table": {
-        "runtime_id": 785,
+        "runtime_id": 787,
         "component_based": false,
         "version": 2
     },
@@ -1527,7 +1547,7 @@
         "version": 2
     },
     "minecraft:colored_torch_bp": {
-        "runtime_id": 789,
+        "runtime_id": 791,
         "component_based": false,
         "version": 2
     },
@@ -1547,7 +1567,7 @@
         "version": 2
     },
     "minecraft:colored_torch_rg": {
-        "runtime_id": 788,
+        "runtime_id": 790,
         "component_based": false,
         "version": 2
     },
@@ -1576,23 +1596,23 @@
         "component_based": false,
         "version": 2
     },
-    "minecraft:compound": {
-        "runtime_id": 615,
-        "component_based": false,
-        "version": 2
-    },
+	"minecraft:compound": {
+		"runtime_id": 615,
+		"component_based": false,
+		"version": 2
+	},
     "minecraft:compound_creator": {
         "runtime_id": 238,
         "component_based": false,
         "version": 2
     },
     "minecraft:concrete": {
-        "runtime_id": 776,
+        "runtime_id": 778,
         "component_based": false,
         "version": 2
     },
     "minecraft:concrete_powder": {
-        "runtime_id": 777,
+        "runtime_id": 779,
         "component_based": false,
         "version": 2
     },
@@ -1685,22 +1705,22 @@
         "version": 2
     },
     "minecraft:coral": {
-        "runtime_id": 772,
+        "runtime_id": 774,
         "component_based": false,
         "version": 2
     },
     "minecraft:coral_block": {
-        "runtime_id": 754,
+        "runtime_id": 756,
         "component_based": false,
         "version": 2
     },
     "minecraft:coral_fan": {
-        "runtime_id": 763,
+        "runtime_id": 765,
         "component_based": false,
         "version": 2
     },
     "minecraft:coral_fan_dead": {
-        "runtime_id": 764,
+        "runtime_id": 766,
         "component_based": false,
         "version": 2
     },
@@ -2491,27 +2511,27 @@
         "version": 2
     },
     "minecraft:double_plant": {
-        "runtime_id": 770,
+        "runtime_id": 772,
         "component_based": false,
         "version": 2
     },
     "minecraft:double_stone_block_slab": {
-        "runtime_id": 759,
-        "component_based": false,
-        "version": 2
-    },
-    "minecraft:double_stone_block_slab2": {
-        "runtime_id": 760,
-        "component_based": false,
-        "version": 2
-    },
-    "minecraft:double_stone_block_slab3": {
         "runtime_id": 761,
         "component_based": false,
         "version": 2
     },
-    "minecraft:double_stone_block_slab4": {
+    "minecraft:double_stone_block_slab2": {
         "runtime_id": 762,
+        "component_based": false,
+        "version": 2
+    },
+    "minecraft:double_stone_block_slab3": {
+        "runtime_id": 763,
+        "component_based": false,
+        "version": 2
+    },
+    "minecraft:double_stone_block_slab4": {
+        "runtime_id": 764,
         "component_based": false,
         "version": 2
     },
@@ -2562,7 +2582,7 @@
         "version": 2
     },
     "minecraft:dye": {
-        "runtime_id": 792,
+        "runtime_id": 794,
         "component_based": false,
         "version": 2
     },
@@ -3233,7 +3253,7 @@
         "version": 2
     },
     "minecraft:end_crystal": {
-        "runtime_id": 795,
+        "runtime_id": 797,
         "component_based": false,
         "version": 2
     },
@@ -3388,7 +3408,7 @@
         "version": 2
     },
     "minecraft:fence": {
-        "runtime_id": 752,
+        "runtime_id": 754,
         "component_based": false,
         "version": 2
     },
@@ -3447,6 +3467,11 @@
         "component_based": false,
         "version": 2
     },
+    "minecraft:firefly_bush": {
+        "runtime_id": -1025,
+        "component_based": false,
+        "version": 2
+    },
     "minecraft:firework_rocket": {
         "runtime_id": 552,
         "component_based": false,
@@ -3482,11 +3507,11 @@
         "component_based": false,
         "version": 2
     },
-	"minecraft:flow_banner_pattern": {
-		"runtime_id": 638,
-		"component_based": false,
-		"version": 2
-	},
+    "minecraft:flow_banner_pattern": {
+        "runtime_id": 638,
+        "component_based": false,
+        "version": 2
+    },
     "minecraft:flow_pottery_sherd": {
         "runtime_id": 701,
         "component_based": false,
@@ -3593,7 +3618,7 @@
         "version": 2
     },
     "minecraft:glow_berries": {
-        "runtime_id": 796,
+        "runtime_id": 798,
         "component_based": false,
         "version": 0,
         "component_nbt": "CgAKCmNvbXBvbmVudHMKDm1pbmVjcmFmdDpmb29kAQ5jYW5fYWx3YXlzX2VhdAADDWNvb2xkb3duX3RpbWUACA1jb29sZG93bl90eXBlAAMJbnV0cml0aW9uBAMNb25fdXNlX2FjdGlvbgEJDG9uX3VzZV9yYW5nZQUGAAAAQQAAAEEAAABBBRNzYXR1cmF0aW9uX21vZGlmaWVympmZPggRdXNpbmdfY29udmVydHNfdG8AAAoObWluZWNyYWZ0OnNlZWQIC2Nyb3BfcmVzdWx0FG1pbmVjcmFmdDpjYXZlX3ZpbmVzCQhwbGFudF9hdAgECmNhdmVfdmluZXMcY2F2ZV92aW5lc19oZWFkX3dpdGhfYmVycmllcwEacGxhbnRfYXRfYW55X3NvbGlkX3N1cmZhY2UBCA1wbGFudF9hdF9mYWNlBGRvd24AAxZtaW5lY3JhZnQ6dXNlX2R1cmF0aW9uQAAA"
@@ -3618,11 +3643,11 @@
         "component_based": false,
         "version": 2
     },
-    "minecraft:glow_stick": {
-        "runtime_id": 622,
-        "component_based": false,
-        "version": 2
-    },
+	"minecraft:glow_stick": {
+		"runtime_id": 622,
+		"component_based": false,
+		"version": 2
+	},
     "minecraft:glowingobsidian": {
         "runtime_id": 246,
         "component_based": false,
@@ -4088,12 +4113,12 @@
         "version": 2
     },
     "minecraft:hard_stained_glass": {
-        "runtime_id": 786,
+        "runtime_id": 788,
         "component_based": false,
         "version": 2
     },
     "minecraft:hard_stained_glass_pane": {
-        "runtime_id": 787,
+        "runtime_id": 789,
         "component_based": false,
         "version": 2
     },
@@ -4233,11 +4258,11 @@
         "component_based": false,
         "version": 2
     },
-    "minecraft:ice_bomb": {
-        "runtime_id": 616,
-        "component_based": false,
-        "version": 2
-    },
+	"minecraft:ice_bomb": {
+		"runtime_id": 616,
+		"component_based": false,
+		"version": 2
+	},
     "minecraft:infested_chiseled_stone_bricks": {
         "runtime_id": -862,
         "component_based": false,
@@ -4693,6 +4718,11 @@
         "component_based": false,
         "version": 2
     },
+    "minecraft:leaf_litter": {
+        "runtime_id": -1026,
+        "component_based": false,
+        "version": 2
+    },
     "minecraft:leather": {
         "runtime_id": 407,
         "component_based": false,
@@ -4724,12 +4754,12 @@
         "version": 2
     },
     "minecraft:leaves": {
-        "runtime_id": 766,
+        "runtime_id": 768,
         "component_based": false,
         "version": 2
     },
     "minecraft:leaves2": {
-        "runtime_id": 767,
+        "runtime_id": 769,
         "component_based": false,
         "version": 2
     },
@@ -4744,7 +4774,7 @@
         "version": 2
     },
     "minecraft:light_block": {
-        "runtime_id": 790,
+        "runtime_id": 792,
         "component_based": false,
         "version": 2
     },
@@ -5097,12 +5127,12 @@
         "version": 2
     },
     "minecraft:log": {
-        "runtime_id": 751,
+        "runtime_id": 753,
         "component_based": false,
         "version": 2
     },
     "minecraft:log2": {
-        "runtime_id": 774,
+        "runtime_id": 776,
         "component_based": false,
         "version": 2
     },
@@ -5307,11 +5337,11 @@
         "component_based": false,
         "version": 2
     },
-    "minecraft:medicine": {
-        "runtime_id": 620,
-        "component_based": false,
-        "version": 2
-    },
+	"minecraft:medicine": {
+		"runtime_id": 620,
+		"component_based": false,
+		"version": 2
+	},
     "minecraft:medium_amethyst_bud": {
         "runtime_id": -331,
         "component_based": false,
@@ -5365,7 +5395,7 @@
         "version": 2
     },
     "minecraft:monster_egg": {
-        "runtime_id": 775,
+        "runtime_id": 777,
         "component_based": false,
         "version": 2
     },
@@ -5526,12 +5556,12 @@
         "version": 2
     },
     "minecraft:music_disc_creator": {
-        "runtime_id": 782,
+        "runtime_id": 784,
         "component_based": true,
         "version": 2
     },
     "minecraft:music_disc_creator_music_box": {
-        "runtime_id": 783,
+        "runtime_id": 785,
         "component_based": true,
         "version": 2
     },
@@ -5561,7 +5591,7 @@
         "version": 2
     },
     "minecraft:music_disc_precipice": {
-        "runtime_id": 784,
+        "runtime_id": 786,
         "component_based": true,
         "version": 2
     },
@@ -6179,11 +6209,11 @@
         "component_based": false,
         "version": 2
     },
-	"minecraft:piglin_banner_pattern": {
-		"runtime_id": 636,
-		"component_based": false,
-		"version": 2
-	},
+    "minecraft:piglin_banner_pattern": {
+        "runtime_id": 636,
+        "component_based": false,
+        "version": 2
+    },
     "minecraft:piglin_brute_spawn_egg": {
         "runtime_id": 527,
         "component_based": false,
@@ -6307,7 +6337,7 @@
         "component_nbt": "CgAKCmNvbXBvbmVudHMKDm1pbmVjcmFmdDpzZWVkCAtjcm9wX3Jlc3VsdBZtaW5lY3JhZnQ6cGl0Y2hlcl9jcm9wCQhwbGFudF9hdAgCEm1pbmVjcmFmdDpmYXJtbGFuZAEacGxhbnRfYXRfYW55X3NvbGlkX3N1cmZhY2UACA1wbGFudF9hdF9mYWNlAnVwAAAA"
     },
     "minecraft:planks": {
-        "runtime_id": 771,
+        "runtime_id": 773,
         "component_based": false,
         "version": 2
     },
@@ -6922,7 +6952,7 @@
         "version": 2
     },
     "minecraft:red_flower": {
-        "runtime_id": 769,
+        "runtime_id": 771,
         "component_based": false,
         "version": 2
     },
@@ -7189,7 +7219,7 @@
         "version": 2
     },
     "minecraft:sapling": {
-        "runtime_id": 765,
+        "runtime_id": 767,
         "component_based": false,
         "version": 2
     },
@@ -7278,6 +7308,11 @@
         "component_based": false,
         "version": 2
     },
+    "minecraft:short_dry_grass": {
+        "runtime_id": -1028,
+        "component_based": false,
+        "version": 2
+    },
     "minecraft:short_grass": {
         "runtime_id": 31,
         "component_based": false,
@@ -7289,7 +7324,7 @@
         "version": 2
     },
     "minecraft:shulker_box": {
-        "runtime_id": 780,
+        "runtime_id": 782,
         "component_based": false,
         "version": 2
     },
@@ -7539,7 +7574,7 @@
         "version": 2
     },
     "minecraft:spawn_egg": {
-        "runtime_id": 794,
+        "runtime_id": 796,
         "component_based": false,
         "version": 2
     },
@@ -7685,12 +7720,12 @@
         "version": 2
     },
     "minecraft:stained_glass": {
-        "runtime_id": 778,
+        "runtime_id": 780,
         "component_based": false,
         "version": 2
     },
     "minecraft:stained_glass_pane": {
-        "runtime_id": 779,
+        "runtime_id": 781,
         "component_based": false,
         "version": 2
     },
@@ -7735,22 +7770,22 @@
         "version": 2
     },
     "minecraft:stone_block_slab": {
-        "runtime_id": 755,
-        "component_based": false,
-        "version": 2
-    },
-    "minecraft:stone_block_slab2": {
-        "runtime_id": 756,
-        "component_based": false,
-        "version": 2
-    },
-    "minecraft:stone_block_slab3": {
         "runtime_id": 757,
         "component_based": false,
         "version": 2
     },
-    "minecraft:stone_block_slab4": {
+    "minecraft:stone_block_slab2": {
         "runtime_id": 758,
+        "component_based": false,
+        "version": 2
+    },
+    "minecraft:stone_block_slab3": {
+        "runtime_id": 759,
+        "component_based": false,
+        "version": 2
+    },
+    "minecraft:stone_block_slab4": {
+        "runtime_id": 760,
         "component_based": false,
         "version": 2
     },
@@ -7815,7 +7850,7 @@
         "version": 2
     },
     "minecraft:stonebrick": {
-        "runtime_id": 753,
+        "runtime_id": 755,
         "component_based": false,
         "version": 2
     },
@@ -8021,13 +8056,18 @@
         "component_based": false,
         "version": 2
     },
+    "minecraft:tall_dry_grass": {
+        "runtime_id": -1029,
+        "component_based": false,
+        "version": 2
+    },
     "minecraft:tall_grass": {
         "runtime_id": -864,
         "component_based": false,
         "version": 2
     },
     "minecraft:tallgrass": {
-        "runtime_id": 773,
+        "runtime_id": 775,
         "component_based": false,
         "version": 2
     },
@@ -8806,6 +8846,11 @@
         "component_based": false,
         "version": 2
     },
+    "minecraft:wildflowers": {
+        "runtime_id": -1024,
+        "component_based": false,
+        "version": 2
+    },
     "minecraft:wind_charge": {
         "runtime_id": 277,
         "component_based": true,
@@ -8848,7 +8893,7 @@
         "version": 2
     },
     "minecraft:wood": {
-        "runtime_id": 781,
+        "runtime_id": 783,
         "component_based": false,
         "version": 2
     },
@@ -8888,7 +8933,7 @@
         "version": 2
     },
     "minecraft:wooden_slab": {
-        "runtime_id": 768,
+        "runtime_id": 770,
         "component_based": false,
         "version": 2
     },
@@ -8898,7 +8943,7 @@
         "version": 2
     },
     "minecraft:wool": {
-        "runtime_id": 749,
+        "runtime_id": 751,
         "component_based": false,
         "version": 2
     },
