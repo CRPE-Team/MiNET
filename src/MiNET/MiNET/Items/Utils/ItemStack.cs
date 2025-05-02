@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using log4net;
-using MiNET.Items;
 using MiNET.Net;
 
-namespace MiNET.Utils
+namespace MiNET.Items
 {
 	public class ItemStacks : IEnumerable<Item>, IPacketDataObject
 	{

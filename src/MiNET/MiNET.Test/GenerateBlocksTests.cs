@@ -33,7 +33,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiNET.Blocks;
 using MiNET.Blocks.States;
 using MiNET.Items;
-using MiNET.Utils;
 
 namespace MiNET.Test
 {
@@ -188,6 +187,7 @@ namespace MiNET.Test
 				.SelectMany(blockState => blockState.States/*.Where(s => s is not BlockStateByte)*/)
 				.DistinctBy(pair => $"{pair.Name}_{pair.GetValue()}")
 				.GroupBy(pair => pair.Name)
+				.OrderBy(pair => pair.Key)
 				.ToArray();
 
 			var fileName = Path.GetTempPath() + "MissingBlockStates_" + Guid.NewGuid() + ".txt";
@@ -198,9 +198,6 @@ namespace MiNET.Test
 				Console.WriteLine($"Directory:\n{Path.GetTempPath()}");
 				Console.WriteLine($"Filename:\n{fileName}");
 				Log.Warn($"Writing blocks to filename:\n{fileName}");
-
-				writer.WriteLine("using MiNET.Utils;");
-				writer.WriteLineNoTabs($"");
 
 				writer.WriteLine($"namespace MiNET.Blocks.States");
 				writer.WriteLine($"{{");
@@ -370,7 +367,6 @@ namespace MiNET.Test
 
 				writer.WriteLine("using System;");
 				writer.WriteLine("using System.Collections.Generic;");
-				writer.WriteLine("using MiNET.Utils;");
 				writer.WriteLineNoTabs($"");
 
 				writer.WriteLine($"namespace MiNET.Blocks");

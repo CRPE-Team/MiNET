@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using fNbt;
-using fNbt.Serialization;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Utils;

@@ -6,7 +6,7 @@ using MiNET.Net;
 using MiNET.Utils.Nbt;
 using Newtonsoft.Json;
 
-namespace MiNET.Utils
+namespace MiNET.Items
 {
 	public class ItemStates : Dictionary<string, ItemState>, IPacketDataObject
 	{

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using MiNET.Crafting;
+using MiNET.Inventories;
 using MiNET.Items;
-using MiNET.Net.Crafting;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 namespace MiNET.Net
 {

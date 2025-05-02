@@ -25,7 +25,6 @@
 
 using System.Numerics;
 using MiNET.Inventories;
-using MiNET.Utils;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 

@@ -30,6 +30,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using Jose;
 using log4net;
+using MiNET.Blocks;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Utils.Cryptography;

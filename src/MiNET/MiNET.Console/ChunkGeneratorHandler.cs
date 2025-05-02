@@ -35,8 +35,6 @@ using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Client;
 using MiNET.Net;
-using MiNET.Utils;
-using MiNET.Utils.Nbt;
 using MiNET.Utils.Vectors;
 using MiNET.Worlds;
 

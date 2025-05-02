@@ -25,15 +25,14 @@
 
 using log4net;
 using MiNET.Items;
-using MiNET.Utils;
 
 namespace MiNET.Inventories
 {
-	public class CursorInventory
+	public class UiInventory
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(CursorInventory));
+		private static readonly ILog Log = LogManager.GetLogger(typeof(UiInventory));
 
-		public ItemStacks Slots { get; } = ItemStacks.CreateAir((byte) UIInventorySlot.SlotsCount);
+		public ItemStacks Slots { get; } = ItemStacks.CreateAir((byte) UiInventorySlot.SlotsCount);
 
 		public Item Cursor
 		{
@@ -41,7 +40,7 @@ namespace MiNET.Inventories
 			set => Slots[0] = value;
 		}
 
-		public CursorInventory()
+		public UiInventory()
 		{
 
 		}

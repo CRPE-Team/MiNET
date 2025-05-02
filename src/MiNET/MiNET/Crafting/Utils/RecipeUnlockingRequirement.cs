@@ -1,4 +1,6 @@
-﻿namespace MiNET.Net.Crafting
+﻿using MiNET.Net;
+
+namespace MiNET.Crafting
 {
 	public class RecipeUnlockingRequirement : IPacketDataObject
 	{

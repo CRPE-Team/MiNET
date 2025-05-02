@@ -1,4 +1,4 @@
-﻿namespace MiNET.Net.Crafting
+﻿namespace MiNET.Crafting
 {
 	public enum RecipeType
 	{

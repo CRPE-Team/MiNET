@@ -26,6 +26,7 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Blocks\Data\block_id_to_item_id_map.json" />
+    <EmbeddedResource Include="Blocks\Data\block_properties_table.json" />
     <EmbeddedResource Include="Blocks\Data\canonical_block_states.nbt" />
     <EmbeddedResource Include="Blocks\Data\r12_to_current_block_map.bin" />
     <EmbeddedResource Include="Crafting\Data\shaped_chemistry_asymmetric.json" />
@@ -62,7 +63,6 @@
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Crafting\Data\shaped_chemistry_asymmetric.json" />
     <None Remove="Net\MCPE Protocol.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -95,8 +95,5 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MCPE Protocol.tt</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Net\Items\" />
   </ItemGroup>
 </Project>

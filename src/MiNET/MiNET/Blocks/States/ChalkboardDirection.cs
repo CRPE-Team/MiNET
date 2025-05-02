@@ -1,6 +1,4 @@
-﻿using MiNET.Utils;
-
-namespace MiNET.Blocks.States
+﻿namespace MiNET.Blocks.States
 {
 	public class ChalkboardDirection : BlockStateInt
 	{

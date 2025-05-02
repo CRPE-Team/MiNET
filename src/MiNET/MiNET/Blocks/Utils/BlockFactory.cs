@@ -31,6 +31,7 @@ using System.Reflection;
 using System.Text;
 using fNbt;
 using log4net;
+using MiNET.Blocks.Utils;
 using MiNET.Utils;
 using MiNET.Utils.Nbt;
 
@@ -73,6 +74,7 @@ namespace MiNET.Blocks
 		public static Dictionary<Type, string> TypeToId { get; private set; } = new Dictionary<Type, string>();
 		public static Dictionary<string, Func<Block>> IdToFactory { get; private set; } = new Dictionary<string, Func<Block>>();
 		public static Dictionary<string, string> ItemToBlock { get; private set; }
+		public static Dictionary<string, BlockProperties> IdToProperties { get; private set; }
 
 		public static List<string> Ids { get; set; }
 		public static BlockPalette BlockPalette { get; } = new BlockPalette();
@@ -86,6 +88,8 @@ namespace MiNET.Blocks
 
 			lock (_lockObj)
 			{
+				IdToProperties = ResourceUtil.ReadResource<Dictionary<string, BlockProperties>>("block_properties_table.json", typeof(BlockFactory), "Data");
+
 				int runtimeId = 0;
 				var ids = new HashSet<string>();
 
@@ -106,6 +110,8 @@ namespace MiNET.Blocks
 						//else
 						{
 							container.RuntimeId = runtimeId++;
+							container.StatesNbt = compound["states"] as NbtCompound;
+							container.StatesCacheNbt = container.StatesNbt.ToBytes(NbtFlavor.BedrockNoVarInt);
 							BlockPalette.Add(container);
 						}
 
@@ -144,9 +150,9 @@ namespace MiNET.Blocks
 					}
 				}
 
-				Dictionary<string, List<int>> idToStatesMap = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
+				var idToStatesMap = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
 
-				Dictionary<string, string> blockIdItemIdMap = ResourceUtil.ReadResource<Dictionary<string, string>>("block_id_to_item_id_map.json", typeof(BlockFactory), "Data");
+				var blockIdItemIdMap = ResourceUtil.ReadResource<Dictionary<string, string>>("block_id_to_item_id_map.json", typeof(BlockFactory), "Data");
 				ItemToBlock = blockIdItemIdMap.ToDictionary(pair => pair.Value, pair => pair.Key);
 
 				for (var index = 0; index < BlockPalette.Count; index++)
@@ -195,39 +201,6 @@ namespace MiNET.Blocks
 
 				foreach (PaletteBlockStateContainer record in BlockPalette)
 				{
-					var states = new List<NbtTag>();
-					foreach (IBlockState state in record.States)
-					{
-						NbtTag stateTag = null;
-						switch (state)
-						{
-							case BlockStateByte blockStateByte:
-								stateTag = new NbtByte(state.Name, blockStateByte.Value);
-								break;
-							case BlockStateInt blockStateInt:
-								stateTag = new NbtInt(state.Name, blockStateInt.Value);
-								break;
-							case BlockStateString blockStateString:
-								stateTag = new NbtString(state.Name, blockStateString.Value);
-								break;
-							default:
-								throw new ArgumentOutOfRangeException(nameof(state));
-						}
-						states.Add(stateTag);
-					}
-
-					record.StatesNbt = new NbtCompound("states", states);
-
-					var nbt = new NbtFile()
-					{
-						Flavor = NbtFlavor.BedrockNoVarInt,
-						RootTag = record.StatesNbt
-					};
-
-					byte[] nbtBinary = nbt.SaveToBuffer(NbtCompression.None);
-
-					record.StatesCacheNbt = nbtBinary;
-
 					MetaBlockNameToState.TryAdd(GetMetaBlockName(record.Id, record.Data), record);
 				}
 

@@ -33,14 +33,13 @@ using System.Numerics;
 using System.Threading;
 using MiNET.Inventories;
 using MiNET.Items;
-using MiNET.Utils; 
+using MiNET.Utils;
 using MiNET.Utils.Skins;
 using MiNET.Crafting;
 using MiNET.Net.RakNet;
 using MiNET.Utils.Metadata;
 using MiNET.Utils.Vectors;
 using MiNET.Utils.Nbt;
-using MiNET.Net.Crafting;
 
 namespace MiNET.Net
 {

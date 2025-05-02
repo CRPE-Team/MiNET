@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using MiNET.Items;
+using MiNET.Net;
 using MiNET.Utils;
 
-namespace MiNET.Net.Crafting
+namespace MiNET.Crafting
 {
 	public class Recipes : List<Recipe>, IPacketDataObject
 	{
@@ -12,9 +13,7 @@ namespace MiNET.Net.Crafting
 			packet.WriteLength(Count);
 
 			foreach (var recipe in this)
-			{
 				recipe.Write(packet);
-			}
 		}
 
 		public static Recipes Read(Packet packet)
@@ -23,9 +22,7 @@ namespace MiNET.Net.Crafting
 
 			var count = packet.ReadLength();
 			for (var i = 0; i < count; i++)
-			{
 				recipes.Add(Recipe.Read(packet));
-			}
 
 			return recipes;
 		}
@@ -445,7 +442,7 @@ namespace MiNET.Net.Crafting
 	public class SmeltingDataRecipe : SmeltingRecipeBase
 	{
 		public override RecipeType Type => RecipeType.FurnaceData;
-		
+
 		internal static Recipe ReadData(Packet packet)
 		{
 			var recipe = new SmeltingDataRecipe();
@@ -485,9 +482,7 @@ namespace MiNET.Net.Crafting
 			packet.WriteSignedVarInt(Input.RuntimeId);
 
 			if (Type == RecipeType.FurnaceData)
-			{
 				packet.WriteSignedVarInt(Input.Metadata);
-			}
 
 			packet.Write(Output, false);
 			packet.Write(Block);
@@ -698,7 +693,7 @@ namespace MiNET.Net.Crafting
 
 		public void Write(Packet packet)
 		{
-			packet.WriteVarInt((Input << 16) | InputMeta);
+			packet.WriteVarInt(Input << 16 | InputMeta);
 			packet.WriteLength(Output.Length);
 
 			foreach (var output in Output)

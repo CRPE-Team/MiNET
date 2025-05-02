@@ -1,4 +1,4 @@
-﻿namespace MiNET.Utils
+﻿namespace MiNET.Inventories
 {
 	public enum WindowId
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MiNET.Utils
+namespace MiNET.Inventories
 {
 	public enum ContainerId
 	{
@@ -76,7 +76,7 @@ namespace MiNET.Utils
 	{
 		public static WindowId ToWindowId(this ContainerId containerId)
 		{
-			return ToWindowId(containerId, WindowId.None);
+			return containerId.ToWindowId(WindowId.None);
 		}
 
 		public static WindowId ToWindowId(this ContainerId containerId, WindowId currentWindowId)

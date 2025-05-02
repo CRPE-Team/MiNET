@@ -1726,7 +1726,7 @@ namespace MiNET.Worlds
 			return rules;
 		}
 
-		public void BroadcastSound(Vector3 position, LevelSoundEventType sound, int blockId = 0, long runtimeEntityId = 0, string entityTypeId = null, Player sender = null)
+		public void BroadcastSound(Vector3 position, LevelSoundEventType sound, int blockId = 0, long runtimeEntityId = EntityManager.EntityIdUndefined, string entityTypeId = null, Player sender = null)
 		{
 			var packet = McpeLevelSoundEvent.CreateObject();
 			packet.position = position;

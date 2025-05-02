@@ -2,6 +2,7 @@
 using fNbt;
 using fNbt.Serialization;
 using fNbt.Serialization.Converters;
+using MiNET.Blocks;
 
 namespace MiNET.Utils.Nbt.Converter
 {

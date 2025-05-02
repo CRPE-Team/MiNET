@@ -24,15 +24,16 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using fNbt;
 using fNbt.Serialization;
-using MiNET.Blocks;
 using Newtonsoft.Json;
 
-namespace MiNET.Utils
+namespace MiNET.Blocks
 {
 	public class BlockPalette : List<IBlockStateContainer>
 	{
@@ -174,11 +175,12 @@ namespace MiNET.Utils
 
 	public class BlockStateContainer : IBlockStateContainer
 	{
-		private static readonly Dictionary<string, IBlockStateContainer> _defaultStates = new();
+		private static readonly ConcurrentDictionary<string, IBlockStateContainer> _defaultStates = new();
 
 		private IBlockStateContainer _cache;
-		private bool _changed = false;
-		private bool _factoryState = false;
+		private volatile bool _changed = true;
+		private volatile int _lockState = 0;
+		private bool _defaultState = true;
 
 		[NbtProperty("name")]
 		public virtual string Id { get; }
@@ -196,60 +198,109 @@ namespace MiNET.Utils
 
 		public BlockStateContainer()
 		{
-			if (!_defaultStates.TryGetValue(Id, out _cache))
-			{
-				BlockFactory.BlockStates.TryGetValue(this, out _cache);
-				_defaultStates.TryAdd(Id, _cache);
-			}
+
 		}
 
 		private IBlockStateContainer GetPaletteContainer()
 		{
-			if (_changed)
+			if (!_changed) return _cache;
+			if (!SpinLock() && !_changed)
 			{
-				if (_factoryState)
-				{
-					SpinWait spinWait = default;
-					while (_factoryState)
-					{
-						spinWait.SpinOnce();
-					}
-
-					return _cache;
-				}
-
-				_factoryState = true;
-				BlockFactory.BlockStates.TryGetValue(this, out _cache);
-
-				_factoryState = false;
-				_changed = false;
+				var c = _cache;
+				Unlock();
+				return c;
 			}
 
-			return _cache;
+			try
+			{
+				if (_defaultState)
+				{
+					_cache = _defaultStates.GetOrAdd(Id, id =>
+					{
+						BlockFactory.BlockStates.TryGetValue(this, out var c);
+						return c;
+					});
+				}
+				else
+				{
+					BlockFactory.BlockStates.TryGetValue(this, out _cache);
+				}
+
+				_changed = false;
+				return _cache;
+			}
+			finally
+			{
+				Unlock();
+			}
 		}
 
 		protected void NotifyStateUpdate(BlockStateString state, string value)
 		{
+			SpinLock();
+
 			state.Value = value;
 			_changed = true;
+			_defaultState = false;
+
+			Unlock();
 		}
 
 		protected void NotifyStateUpdate(BlockStateInt state, int value)
 		{
+			SpinLock();
+
 			state.Value = value;
 			_changed = true;
+			_defaultState = false;
+
+			Unlock();
 		}
 
 		protected void NotifyStateUpdate(BlockStateByte state, byte value)
 		{
+			SpinLock();
+
 			state.Value = value;
 			_changed = true;
+			_defaultState = false;
+
+			Unlock();
 		}
 
 		protected void NotifyStateUpdate(BlockStateByte state, bool value)
 		{
+			SpinLock();
+
 			state.Value = Convert.ToByte(value);
 			_changed = true;
+			_defaultState = false;
+
+			Unlock();
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private bool SpinLock()
+		{
+			if (Interlocked.Exchange(ref _lockState, 1) == 1)
+			{
+				SpinWait spinWait = default;
+
+				while (Interlocked.Exchange(ref _lockState, 1) == 1)
+				{
+					spinWait.SpinOnce();
+				}
+
+				return false;
+			}
+
+			return true;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void Unlock()
+		{
+			Interlocked.Exchange(ref _lockState, 0);
 		}
 
 		public void SetStates(IBlockStateContainer blockstate)
@@ -271,7 +322,7 @@ namespace MiNET.Utils
 		{
 			return Id == obj?.Id && GetStates().SequenceEqual(obj.States);
 		}
-		
+
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj)) return false;

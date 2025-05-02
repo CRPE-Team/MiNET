@@ -590,12 +590,15 @@ namespace MiNET
 						float tooltypeFactor = drops == null || drops.Length == 0 ? 5f : 1.5f; // 1.5 if proper tool
 						double breakTime = Math.Ceiling(target.Hardness * tooltypeFactor * 20);
 
-						McpeLevelEvent breakEvent = McpeLevelEvent.CreateObject();
-						breakEvent.eventId = 3600;
-						breakEvent.position = message.coordinates;
-						breakEvent.data = (int) (65535 / breakTime);
-						Log.Debug("Break speed: " + breakEvent.data);
-						Level.RelayBroadcast(breakEvent);
+						if (breakTime > 0)
+						{
+							McpeLevelEvent breakEvent = McpeLevelEvent.CreateObject();
+							breakEvent.eventId = 3600;
+							breakEvent.position = message.coordinates;
+							breakEvent.data = (int) (65535 / breakTime);
+							Log.Debug("Break speed: " + breakEvent.data);
+							Level.RelayBroadcast(breakEvent);
+						}
 					}
 
 					break;

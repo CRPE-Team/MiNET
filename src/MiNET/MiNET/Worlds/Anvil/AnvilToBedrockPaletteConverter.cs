@@ -5,7 +5,6 @@ using fNbt;
 using log4net;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
-using MiNET.Utils;
 using MiNET.Worlds.Anvil.Mapping;
 
 namespace MiNET.Worlds.Anvil
@@ -20,14 +19,27 @@ namespace MiNET.Worlds.Anvil
 
 		private static readonly Dictionary<string, string> _anvilBedrockBiomesMap = new Dictionary<string, string>
 		{
-			{ "old_growth_pine_taiga", "mega_taiga" },
-			{ "old_growth_spruce_taiga", "redwood_taiga_mutated" },
-			{ "stony_shore", "stone_beach" },
-			{ "snowy_beach", "cold_beach" },
-			{ "snowy_taiga", "cold_taiga" },
 			{ "snowy_plains", "ice_plains" },
 			{ "ice_spikes", "ice_plains_spikes" },
-			{ "windswept_gravelly_hills", "extreme_hills_mutated" }
+			{ "swamp", "swampland" },
+			{ "dark_forest", "roofed_forest" },
+			{ "old_growth_birch_forest", "birch_forest_mutated" },
+			{ "old_growth_pine_taiga", "mega_taiga" },
+			{ "old_growth_spruce_taiga", "redwood_taiga_mutated" },
+			{ "snowy_taiga", "cold_taiga" },
+			{ "windswept_hills", "extreme_hills" },
+			{ "windswept_gravelly_hills", "extreme_hills_mutated" },
+			{ "windswept_forest", "extreme_hills_plus_trees" },
+			{ "windswept_savanna", "savanna_mutated" },
+			{ "sparse_jungle", "jungle_edge" },
+			{ "badlands", "mesa" },
+			{ "eroded_badlands", "mesa_bryce" },
+			{ "wooded_badlands", "mesa_plateau_stone" },
+			{ "snowy_beach", "cold_beach" },
+			{ "stony_shore", "stone_beach" },
+			{ "mushroom_fields", "mushroom_island" },
+			{ "nether_wastes", "hell" },
+			{ "soul_sand_valley", "soulsand_valley" }
 		};
 
 		private static readonly HashSet<string> _seaBlocks = new HashSet<string>

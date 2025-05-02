@@ -23,7 +23,7 @@
 
 #endregion
 
-using MiNET.Utils;
+using MiNET.Inventories;
 
 namespace MiNET.BlockEntities
 {

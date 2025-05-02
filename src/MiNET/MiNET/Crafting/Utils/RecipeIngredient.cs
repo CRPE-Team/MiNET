@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using MiNET.Items;
+using MiNET.Net;
 
-namespace MiNET.Net.Crafting
+namespace MiNET.Crafting
 {
 	public abstract class RecipeIngredient : IPacketDataObject
 	{
@@ -68,8 +69,8 @@ namespace MiNET.Net.Crafting
 		}
 
 		protected RecipeItemIngredient()
-		{ 
-		
+		{
+
 		}
 
 		protected override void WriteData(Packet packet)
@@ -81,7 +82,7 @@ namespace MiNET.Net.Crafting
 		internal static RecipeIngredient ReadData(Packet packet)
 		{
 			return new RecipeItemIngredient(ItemFactory.GetItem(
-				packet.ReadString(), 
+				packet.ReadString(),
 				packet.ReadShort()));
 		}
 
