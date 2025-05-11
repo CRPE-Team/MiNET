@@ -31,12 +31,12 @@ namespace MiNET.Utils.Nbt.Converter
 
 		public override object FromNbt(NbtTag tag, Type type, object value, NbtSerializerSettings settings)
 		{
-			var states = BlockFactory.GetBlockStateContainer(tag);
+			var states = BlockUtils.GetBlockStateContainer(tag);
 			var existingBlock = value as Block;
 
 			if (existingBlock == null || existingBlock.Id != states.Id)
 			{
-				if (BlockFactory.BlockStates.TryGetValue(states, out var blockState))
+				if (BlockFactory.GetStateContainer(states, out var blockState))
 				{
 					return BlockFactory.GetBlockByRuntimeId(blockState.RuntimeId);
 				}

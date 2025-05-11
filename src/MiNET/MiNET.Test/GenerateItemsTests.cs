@@ -25,7 +25,7 @@ namespace MiNET.Test
 			var itemStates = ResourceUtil.ReadResource<ItemStates>("required_item_list.json", typeof(ItemFactory), "Data");
 
 			var maxRuntimeId = itemStates.Max(state => state.Value.RuntimeId);
-			foreach (var blockId in BlockFactory.ItemToBlock.Values)
+			foreach (var blockId in BlockFactory.FactoryProfile.ItemIdToBlockId.Values)
 			{
 				itemStates.TryAdd(blockId, new ItemState() { RuntimeId = ++maxRuntimeId });
 			};

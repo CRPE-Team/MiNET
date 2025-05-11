@@ -1100,7 +1100,7 @@ namespace MiNET.Worlds.Anvil
 			{
 				var slabName = $"minecraft:{material}_slab";
 				var doubleSlabName = SlabBase.SlabToDoubleSlabMap.GetValueOrDefault(slabName);
-				if (BlockFactory.Ids.Contains(slabName) && BlockFactory.Ids.Contains(doubleSlabName))
+				if (BlockFactory.FactoryProfile.Ids.Contains(slabName) && BlockFactory.FactoryProfile.Ids.Contains(doubleSlabName))
 				{
 					_mapper.Add(slabName, new BlockStateMapper(
 						context => slabMapFunc(slabName, doubleSlabName, context.Properties),
@@ -1603,7 +1603,7 @@ namespace MiNET.Worlds.Anvil
 				}
 
 				var container = new PaletteBlockStateContainer(block.Id, states);
-				if (!BlockFactory.BlockStates.TryGetValue(container, out var blockstate))
+				if (!BlockFactory.GetStateContainer(container, out var blockstate))
 				{
 					Log.Warn($"Did not find block state for {block}, {container}");
 					return new InfoUpdate().RuntimeId;

@@ -32,6 +32,14 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
+	public abstract class Flowing<TStationary> : Flowing where TStationary : Stationary
+	{
+		protected Flowing() : base(BlockFactory.GetIdByType<TStationary>())
+		{
+
+		}
+	}
+
 	public abstract class Flowing : Block
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Flowing));
@@ -44,7 +52,7 @@ namespace MiNET.Blocks
 		private int[] _flowCost = new int[4];
 		private bool[] _optimalFlowDirections = new bool[4];
 
-		protected Flowing(string stationeryId) : base()
+		protected Flowing(string stationeryId)
 		{
 			StationeryId = stationeryId;
 

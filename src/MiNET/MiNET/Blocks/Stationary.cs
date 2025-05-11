@@ -29,6 +29,14 @@ using MiNET.Worlds;
 
 namespace MiNET.Blocks
 {
+	public abstract class Stationary<TFlowing> : Stationary where TFlowing : Flowing
+	{
+		protected Stationary() : base(BlockFactory.GetIdByType<TFlowing>())
+		{
+
+		}
+	}
+
 	public abstract class Stationary : Block
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Stationary));
@@ -37,7 +45,7 @@ namespace MiNET.Blocks
 
 		public string FlowingId { get; }
 
-		internal Stationary(string flowingId) : base()
+		internal Stationary(string flowingId)
 		{
 			FlowingId = flowingId;
 

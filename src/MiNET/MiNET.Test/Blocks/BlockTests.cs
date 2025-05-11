@@ -12,14 +12,14 @@ namespace MiNET.Blocks.Tests
 		{
 			int runtimeId = 917;
 
-			var blocStateFromPick = BlockFactory.BlockPalette[runtimeId];
-			var block = BlockFactory.GetBlockById(blocStateFromPick.Id);
+			var blockFromPick = BlockFactory.GetBlockByRuntimeId(runtimeId);
+			var block = BlockFactory.GetBlockById(blockFromPick.Id);
 			Assert.IsNotNull(block);
-			block.SetStates(blocStateFromPick.States);
+			block.SetStates(blockFromPick.States);
 
 			Item item = block.GetItem(null);
 
-			Assert.AreEqual(blocStateFromPick.Id, item.Id);
+			Assert.AreEqual(blockFromPick.Id, item.Id);
 			Assert.AreEqual(0, item.Metadata);
 		}
 

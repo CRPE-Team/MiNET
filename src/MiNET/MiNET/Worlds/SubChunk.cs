@@ -125,7 +125,7 @@ namespace MiNET.Worlds
 		public void SetBlock(int bx, int by, int bz, Block block, int layer = 0)
 		{
 			int runtimeId = block.RuntimeId;
-			if (runtimeId < 0) return;
+			if (runtimeId == Block.UnknownRuntimeId) return;
 
 			SetBlockByRuntimeId(bx, by, bz, runtimeId, layer);
 		}

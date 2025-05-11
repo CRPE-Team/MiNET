@@ -151,9 +151,7 @@ namespace MiNET.Entities.World
 
 				DespawnEntity();
 
-				var blockState = BlockFactory.BlockPalette[_original];
-				var block = BlockFactory.GetBlockById(blockState.Id);
-				block.SetStates(blockState.States);
+				var block = BlockFactory.GetBlockByRuntimeId(_original);
 				block.Coordinates = (BlockCoordinates) KnownPosition;
 
 				Level.SetBlock(block, false);

@@ -48,7 +48,7 @@ namespace MiNET.Client
 
 		private static object _chunkRead = new object();
 
-		public static ChunkColumn DecodeChunkColumn(int subChunkCount, byte[] buffer, BlockPalette bedrockPalette = null, HashSet<IBlockStateContainer> internalBlockPallet = null)
+		public static ChunkColumn DecodeChunkColumn(int subChunkCount, byte[] buffer, IBlockPalette bedrockPalette = null, HashSet<IBlockStateContainer> internalBlockPallet = null)
 		{
 			//lock (_chunkRead)
 			{
@@ -457,7 +457,7 @@ namespace MiNET.Client
 			return states;
 		}
 
-		private static int GetServerRuntimeId(BlockPalette bedrockPalette, HashSet<IBlockStateContainer> internalBlockPallet, int runtimeId)
+		private static int GetServerRuntimeId(IBlockPalette bedrockPalette, HashSet<IBlockStateContainer> internalBlockPallet, int runtimeId)
 		{
 			if (runtimeId < 0 || runtimeId >= bedrockPalette.Count) Log.Error($"RuntimeId = {runtimeId}");
 

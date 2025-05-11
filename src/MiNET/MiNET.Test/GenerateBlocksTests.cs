@@ -135,10 +135,10 @@ namespace MiNET.Test
 
 
 		[TestMethod]
-		public void BlcoksWithBlockstates()
+		public void BlocksWithBlockstates()
 		{
-			List<string> blocksWithStates = new List<string>();
-			BlockPalette blockPalette = BlockFactory.BlockPalette;
+			var blocksWithStates = new List<string>();
+			var blockPalette = BlockFactory.BlockPalette;
 			foreach (var stateContainer in blockPalette)
 			{
 				if (stateContainer.States.Any())
@@ -156,24 +156,6 @@ namespace MiNET.Test
 					if (state.Name.Contains("direction")) Console.WriteLine($"\t{state.Name}");
 					if (state.Name.Contains("face")) Console.WriteLine($"\t{state.Name}");
 				}
-			}
-		}
-
-		[TestMethod]
-		public void GenerateMissingBlocks()
-		{
-			foreach (var block in BlockFactory.BlockStates)
-			{
-				var b = BlockFactory.GetBlockById(block.Id);
-				if (b == null)
-				{
-					Console.WriteLine($"Missing {block.Id}");
-					continue;
-				}
-
-
-				b.SetStates(block.States);
-				//block.RuntimeId
 			}
 		}
 

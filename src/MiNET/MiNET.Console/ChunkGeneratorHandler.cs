@@ -44,7 +44,7 @@ namespace MiNET.Console
 	{
 		private readonly IWorldProvider _worldProvider;
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ChunkGeneratorHandler));
-		private BlockPalette BlockPalette;
+		private IBlockPalette BlockPalette;
 		private HashSet<IBlockStateContainer> _internalStates;
 
 		public ChunkGeneratorHandler(MiNetClient client, IWorldProvider worldProvider) : base(client)

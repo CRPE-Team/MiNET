@@ -39,7 +39,7 @@ namespace MiNET.Blocks
 
 		static SlabBase()
 		{
-			foreach (var id in BlockFactory.Ids)
+			foreach (var id in BlockFactory.FactoryProfile.Ids)
 			{
 				if (id.Contains("_slab") && id.Contains("double_"))
 				{

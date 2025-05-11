@@ -510,13 +510,13 @@ namespace MiNET.Worlds
 			stream.Write(count);
 			foreach (int runtimeId in palette)
 			{
-				var blockState = BlockFactory.BlockPalette[runtimeId];
-				var file = new NbtFile
-				{
-					BigEndian = false,
-					UseVarInt = false
+				var blockState = BlockFactory.GetStateContainer(runtimeId);
+				var file = new NbtFile() 
+				{ 
+					Flavor = NbtFlavor.BedrockNoVarInt,
+					RootTag = WriteBlockState(blockState)
 				};
-				file.RootTag = WriteBlockState(blockState);
+
 				byte[] bytes = file.SaveToBuffer(NbtCompression.None);
 				stream.Write(bytes);
 			}

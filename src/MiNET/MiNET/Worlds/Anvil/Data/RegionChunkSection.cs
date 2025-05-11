@@ -64,11 +64,11 @@ namespace MiNET.Worlds.Anvil.Data
 				waterloggedIds.Add(
 					p["Properties"]?["waterlogged"]?.StringValue == "true"
 					|| AnvilToBedrockPaletteConverter.IsSeaBlock(BlockFactory.GetIdByRuntimeId(id))
-						? id : -1);
+						? id : Block.UnknownRuntimeId);
 
 				//snowyIds.Add(
 				//	p["Properties"]?["snowy"]?.StringValue == "true" 
-				//		? id : -1);
+				//		? id : Block.UnknownRuntimeId);
 
 				blockEntities.Add(blockEntity);
 				runtimeIds.Add(id);
@@ -84,11 +84,11 @@ namespace MiNET.Worlds.Anvil.Data
 
 			var namedRuntimeIds = runtimeIds.Select(id => BlockFactory.GetIdByRuntimeId((short) id)).ToList();
 
-			if (waterloggedIds.Any(id => id >= 0))
+			if (waterloggedIds.Any(id => id != Block.UnknownRuntimeId))
 			{
 				waterChunkId = layer1.AppedPalette(WaterBlockRuntimeId);
 			}
-			//if (snowyIds.Any(id => id >= 0))
+			//if (snowyIds.Any(id => id != Block.UnknownRuntimeId))
 			//{
 			//	snowChunkId = layer1.AppedPalette(SnowLayerBlockRuntimeId);
 			//}
@@ -112,7 +112,7 @@ namespace MiNET.Worlds.Anvil.Data
 				for (var i = 0; i != layer0Data.BlocksCount; i++)
 				{
 					var block = layer0Data[i];
-					if (waterloggedIds[block] != -1)
+					if (waterloggedIds[block] != Block.UnknownRuntimeId)
 					{
 						layer1Data[i] = waterChunkId;
 					}

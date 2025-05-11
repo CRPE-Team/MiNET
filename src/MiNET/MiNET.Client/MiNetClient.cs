@@ -100,7 +100,7 @@ namespace MiNET.Client
 		public LevelInfo LevelInfo { get; } = new LevelInfo();
 
 		public ConcurrentDictionary<long, Entity> Entities { get; private set; } = new ConcurrentDictionary<long, Entity>();
-		public BlockPalette BlockPalette { get; set; } = new BlockPalette();
+		public IBlockPalette BlockPalette { get; set; } = new ListBlockPalette();
 
 		public PlayerLocation CurrentLocation { get; set; }
 

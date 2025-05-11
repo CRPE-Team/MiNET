@@ -170,7 +170,7 @@ namespace MiNET.Client
 			client.SpawnPoint = message.spawn;
 			client.CurrentLocation = new PlayerLocation(client.SpawnPoint, message.rotation.X, message.rotation.X, message.rotation.Y);
 
-			BlockPalette blockPalette = message.blockPalette;
+			var blockPalette = message.blockPalette;
 			client.BlockPalette = blockPalette;
 			client.LevelInfo.LevelName = message.worldName;
 			client.LevelInfo.NbtVersion = 19133;

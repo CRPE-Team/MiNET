@@ -371,8 +371,8 @@ namespace MiNET.Worlds
 					isInAir = false;
 
 					int bid = GetBlockRuntimeId(x, y, z);
-					if (bid < 0 || bid >= BlockFactory.TransparentBlocks.Length) Log.Warn($"{bid}");
-					if (bid == 0 || (BlockFactory.TransparentBlocks[bid] == 1 && bid != 18 && bid != 30 && bid != 8 && bid != 9))
+					// TODO - runtime ID comparison?!
+					if (BlockFactory.IsBlock<Air>(bid) || (BlockFactory.IsTransparent(bid) && bid != 18 && bid != 30 && bid != 8 && bid != 9))
 					{
 						SetSkyLight(x, y, z, 15);
 					}
@@ -408,7 +408,8 @@ namespace MiNET.Worlds
 					isInAir = false;
 
 					int bid = GetBlockRuntimeId(x, y, z);
-					if (bid == 0 || (BlockFactory.TransparentBlocks[bid] == 1 && bid != 18 && bid != 30))
+					// TODO - runtime ID comparison?!
+					if (BlockFactory.IsBlock<Air>(bid) || (BlockFactory.IsTransparent(bid) && bid != 18 && bid != 30))
 					{
 						continue;
 					}

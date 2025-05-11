@@ -302,14 +302,14 @@ namespace MiNET.Client
 		private void ExecuteWritePallet(BedrockTraceHandler caller)
 		{
 			var client = caller.Client;
-			BlockPalette palette = client.BlockPalette;
+			var palette = client.BlockPalette;
 
 			_runningBlockMetadataDiscovery = false;
 
 			WritePaletteToJson(palette);
 		}
 
-		private static void WritePaletteToJson(BlockPalette palette)
+		private static void WritePaletteToJson(IBlockPalette palette)
 		{
 			var jsonSerializerSettings = new JsonSerializerSettings
 			{
@@ -629,9 +629,9 @@ namespace MiNET.Client
 			//Report($"Finished setting blocks.");
 		}
 
-		HashSet<IBlockStateContainer> _internalStates = new HashSet<IBlockStateContainer>(BlockFactory.BlockPalette);
+		//HashSet<IBlockStateContainer> _internalStates = new HashSet<IBlockStateContainer>(BlockFactory.BlockPalette);
 
-		private static IBlockStateContainer GetServerRuntimeId(BlockPalette bedrockPalette, HashSet<IBlockStateContainer> internalBlockPallet, int runtimeId)
+		private static IBlockStateContainer GetServerRuntimeId(IBlockPalette bedrockPalette, HashSet<IBlockStateContainer> internalBlockPallet, int runtimeId)
 		{
 			if (runtimeId < 0 || runtimeId >= bedrockPalette.Count)
 				Log.Error($"RuntimeId = {runtimeId}");

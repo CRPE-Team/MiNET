@@ -25,9 +25,9 @@
 
 namespace MiNET.Blocks
 {
-	public partial class FlowingWater : Flowing
+	public partial class FlowingWater : Flowing<Water>
 	{
-		public FlowingWater() : base(BlockFactory.GetIdByType<Water>())
+		public FlowingWater()
 		{
 			BlastResistance = 500;
 			Hardness = 100;

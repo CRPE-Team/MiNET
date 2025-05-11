@@ -196,6 +196,9 @@ namespace MiNET.Client
 
 		public override void HandleMcpeUpdateBlock(McpeUpdateBlock message)
 		{
+			var block = BlockFactory.GetBlockByRuntimeId((int) message.blockRuntimeId);
+			block.Coordinates = message.coordinates;
+
 			CallPacketHandlers(message);
 		}
 
@@ -206,8 +209,22 @@ namespace MiNET.Client
 			Client.SpawnPoint = message.spawn;
 			Client.CurrentLocation = new PlayerLocation(Client.SpawnPoint, message.rotation.X, message.rotation.X, message.rotation.Y);
 
-			BlockPalette blockPalette = message.blockPalette;
+			var blockPalette = message.blockPalette;
 			Client.BlockPalette = message.blockPalette;
+
+			if (message.blockNetworkIdsAreHashes != BlockFactory.FactoryProfile.BlockRuntimeIdsAreHashes)
+			{
+				if (message.blockNetworkIdsAreHashes)
+				{
+					BlockFactory.FactoryProfile = new HashBlockFactoryProfile();
+				}
+				else
+				{
+					BlockFactory.FactoryProfile = new DefaultBlockFactoryProfile();
+				}
+
+				BlockFactory.FactoryProfile.Load();
+			}
 
 			//var blockPalette = BlockFactory.BlockStates;
 			Log.Warn($"Got position from startgame packet: {Client.CurrentLocation}");

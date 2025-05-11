@@ -35,15 +35,18 @@ namespace MiNET.Worlds.Anvil
 		{
 			get
 			{
-				lock (_sync)
+				if (!_biomesResolved)
 				{
-					if (!_biomesResolved)
+					lock (_sync)
 					{
-						ResolveBiomes();
+						if (!_biomesResolved)
+						{
+							ResolveBiomes();
+						}
 					}
-
-					return base.Biomes;
 				}
+
+				return base.Biomes;
 			}
 		}
 
@@ -187,7 +190,7 @@ namespace MiNET.Worlds.Anvil
 			}
 		}
 
-		private int GetNoiseIndex(int x, int y, int z)
+		private static int GetNoiseIndex(int x, int y, int z)
 		{
 			return (y << 2 | z) << 2 | x;
 		}
@@ -196,6 +199,7 @@ namespace MiNET.Worlds.Anvil
 		{
 			private const long MULTIPLIER = 6364136223846793005L;
 			private const long INCREMENT = 1442695040888963407L;
+			private const double INV_SCALE = 0.9D / 1024.0D;
 
 			public static double GetFiddledDistance(long seed, int x, int y, int z, double distX, double distY, double distZ)
 			{
@@ -208,11 +212,11 @@ namespace MiNET.Worlds.Anvil
 					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + x;
 					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + y;
 					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + z;
-					double rDistX = ((__7 >> 24 & 1023) - 512) / (1024.0D / 0.9D) + distX;
+					double rDistX = ((__7 >> 24 & 1023) - 512) * INV_SCALE + distX;
 					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + seed;
-					double rDistY = ((__7 >> 24 & 1023) - 512) / (1024.0D / 0.9D) + distY;
+					double rDistY = ((__7 >> 24 & 1023) - 512) * INV_SCALE + distY;
 					__7 = __7 * (__7 * MULTIPLIER + INCREMENT) + seed;
-					double rDistZ = ((__7 >> 24 & 1023) - 512) / (1024.0D / 0.9D) + distZ;
+					double rDistZ = ((__7 >> 24 & 1023) - 512) * INV_SCALE + distZ;
 					return rDistX * rDistX + rDistY * rDistY + rDistZ * rDistZ;
 				}
 			}

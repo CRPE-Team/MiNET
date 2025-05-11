@@ -1114,7 +1114,7 @@ namespace MiNET.Worlds
 			if (chunk == null) return true;
 
 			int bid = chunk.GetBlockRuntimeId(blockCoordinates.X & 0x0f, blockCoordinates.Y, blockCoordinates.Z & 0x0f);
-			return BlockFactory.TransparentBlocks[bid] == 1;
+			return BlockFactory.IsTransparent(bid);
 		}
 
 		public int GetHeight(BlockCoordinates blockCoordinates)

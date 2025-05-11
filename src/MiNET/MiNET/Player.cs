@@ -2866,6 +2866,7 @@ namespace MiNET
 			startGame.movementType = (int) McpeStartGame.ServerAuthMovementMode.LegacyClientAuthoritativeV1;
 
 			//startGame.blockPalette = BlockFactory.BlockPalette;
+			startGame.blockNetworkIdsAreHashes = BlockFactory.FactoryProfile.BlockRuntimeIdsAreHashes;
 
 			startGame.enableNewInventorySystem = true;
 			startGame.blockPaletteChecksum = 0;

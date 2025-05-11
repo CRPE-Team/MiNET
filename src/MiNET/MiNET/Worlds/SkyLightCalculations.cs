@@ -615,7 +615,7 @@ namespace MiNET.Worlds
 
 			int bid = chunk.GetBlockRuntimeId(blockCoordinates.X & 0x0f, blockCoordinates.Y, blockCoordinates.Z & 0x0f);
 			return BlockFactory.IsBlock<Air>(bid) 
-				|| (BlockFactory.TransparentBlocks[bid] == 1 
+				|| (BlockFactory.IsTransparent(bid)
 				&& !BlockFactory.IsBlock<LeavesBase>(bid)
 				&& !BlockFactory.IsBlock<Web>(bid)
 				&& !BlockFactory.IsBlock<FlowingWater>(bid) 
@@ -648,7 +648,7 @@ namespace MiNET.Worlds
 			int bz = blockCoordinates.Z & 0x0f;
 
 			int bid = section.GetBlockRuntimeId(bx, by - 16 * (by >> 4), bz);
-			return BlockFactory.IsBlock<Air>(bid) || BlockFactory.TransparentBlocks[bid] == 1;
+			return BlockFactory.IsTransparent(bid);
 		}
 
 		public static byte GetSkyLight(BlockCoordinates blockCoordinates, SubChunk chunk)

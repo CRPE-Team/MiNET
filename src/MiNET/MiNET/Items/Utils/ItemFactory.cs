@@ -33,7 +33,7 @@ namespace MiNET.Items
 			ItemStates = ResourceUtil.ReadResource<ItemStates>("required_item_list.json", typeof(ItemFactory), "Data");
 
 			var maxRuntimeId = ItemStates.Max(state => state.Value.RuntimeId);
-			foreach (var blockId in BlockFactory.ItemToBlock.Values)
+			foreach (var blockId in BlockFactory.FactoryProfile.ItemIdToBlockId.Values)
 			{
 				ItemStates.TryAdd(blockId, new ItemState() { RuntimeId = ++maxRuntimeId });
 			}

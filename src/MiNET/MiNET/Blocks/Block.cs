@@ -37,7 +37,7 @@ namespace MiNET.Blocks
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(Block));
 
-		public const uint UnknownRuntimeId = uint.MaxValue;
+		public const int UnknownRuntimeId = -1; // uint.MaxValue;
 
 		public BlockCoordinates Coordinates { get; set; }
 

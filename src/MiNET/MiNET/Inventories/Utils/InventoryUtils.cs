@@ -74,7 +74,7 @@ namespace MiNET.Inventories
 			{
 				var compound = NbtExtensions.ReadNbtCompound(itemData.BlockStates, NbtFlavor.BedrockNoVarInt);
 
-				itemBlock.Block.SetStates(BlockFactory.GetBlockStates(compound));
+				itemBlock.Block.SetStates(BlockUtils.GetBlockStates(compound));
 			}
 
 			if (itemData.ExtraData != null)

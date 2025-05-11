@@ -282,7 +282,7 @@ namespace MiNET.Net
 		public bool enableNewBlockBreakSystem; // = null;
 		public long currentTick; // = null;
 		public int enchantmentSeed; // = null;
-		public BlockPalette blockPalette; // = null;
+		public IBlockPalette blockPalette; // = null;
 		public ulong blockPaletteChecksum;
 		public string multiplayerCorrelationId; // = null;
 		public bool enableNewInventorySystem; // = null;
@@ -394,7 +394,7 @@ namespace MiNET.Net
 			enableNewBlockBreakSystem=default(bool);
 			currentTick=default(long);
 			enchantmentSeed=default(int);
-			blockPalette=default(BlockPalette);
+			blockPalette=default(IBlockPalette);
 			multiplayerCorrelationId=default(string);
 			enableNewInventorySystem=default(bool);
 			serverVersion=default(string);

@@ -64,7 +64,7 @@ namespace MiNET.Items
 		[NbtProperty]
 		public virtual Block Block { get; protected set; }
 
-		public override int BlockRuntimeId => Block?.RuntimeId ?? -1;
+		public override int BlockRuntimeId => Block?.RuntimeId ?? Block.UnknownRuntimeId;
 
 		public override bool Edu { get => base.Edu || (Block?.Edu ?? false); protected set => base.Edu = value; }
 

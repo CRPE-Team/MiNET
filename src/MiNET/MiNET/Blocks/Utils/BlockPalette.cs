@@ -31,69 +31,140 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using fNbt;
 using fNbt.Serialization;
+using MiNET.Net;
+using MiNET.Utils.Nbt;
 using Newtonsoft.Json;
 
 namespace MiNET.Blocks
 {
-	public class BlockPalette : List<IBlockStateContainer>
+	public class ListBlockPalette : List<IBlockStateContainer>, IBlockPalette
 	{
-		public static int Version => 17694723;
-
-		public static BlockPalette FromJson(string json)
+		public void Write(Packet packet)
 		{
-			var pallet = new BlockPalette();
+			packet.WriteLength(Count);
 
-			dynamic result = JsonConvert.DeserializeObject<dynamic>(json);
-			int runtimeId = 0;
-			foreach (dynamic obj in result)
+			foreach (var record in this)
 			{
-				var record = new PaletteBlockStateContainer();
-				record.Id = obj.Id;
-				record.Data = obj.Data;
-				record.RuntimeId = runtimeId++;
+				packet.Write(record.Id);
+				packet.Write(record.StatesCacheNbt);
+			}
+		}
 
-				foreach (dynamic stateObj in obj.States)
-				{
-					switch ((int) stateObj.Type)
-					{
-						case 1:
-						{
-							record.AddState(new BlockStateByte()
-							{
-								Name = stateObj.Name,
-								Value = stateObj.Value
-							});
-							break;
-						}
-						case 3:
-						{
-							record.AddState(new BlockStateInt()
-							{
-								Name = stateObj.Name,
-								Value = stateObj.Value
-							});
-							break;
-						}
-						case 8:
-						{
-							record.AddState(new BlockStateString()
-							{
-								Name = stateObj.Name,
-								Value = stateObj.Value
-							});
-							break;
-						}
-					}
-				}
+		public static ListBlockPalette Read(Packet packet)
+		{
+			var result = new ListBlockPalette();
+			var count = packet.ReadLength();
 
-				pallet.Add(record);
+			for (int runtimeId = 0; runtimeId < count; runtimeId++)
+			{
+				var id = packet.ReadString();
+				var nbt = packet.ReadNbtCompound();
+
+				var record = new PaletteBlockStateContainer(
+					id,
+					BlockUtils.GetBlockStates(nbt));
+
+				record.RuntimeId = runtimeId;
+				record.StatesNbt = nbt;
+				record.StatesCacheNbt = nbt.ToBytes();
 			}
 
-			return pallet;
+			return result;
+		}
+
+		public IBlockStateContainer GetContainer(int runtimeId)
+		{
+			if (runtimeId < 0 || runtimeId >= Count) return null;
+
+			return this[runtimeId];
 		}
 	}
 
-	[JsonObject(MemberSerialization.OptIn)]
+
+	public class HashBlockPalette : Dictionary<int, IBlockStateContainer>, IBlockPalette
+	{
+		public bool IsReadOnly => false;
+
+		public void Write(Packet packet)
+		{
+			packet.WriteLength(Count);
+
+			foreach (var record in this.Values)
+			{
+				packet.Write(record.Id);
+				packet.Write(record.StatesCacheNbt);
+			}
+		}
+
+		public static HashBlockPalette Read(Packet packet)
+		{
+			var result = new HashBlockPalette();
+			var count = packet.ReadLength();
+
+			for (int i = 0; i < count; i++)
+			{
+				var id = packet.ReadString();
+				var nbt = packet.ReadNbtCompound();
+
+				var record = new PaletteBlockStateContainer(
+					id,
+					BlockUtils.GetBlockStates(nbt));
+
+				var runtimeId = NbtConvert.ToNbt<NbtCompound>(record).GetFnvHash(NbtFlavor.Bedrock);
+
+				record.RuntimeId = (int) runtimeId;
+				record.StatesNbt = nbt;
+				record.StatesCacheNbt = nbt.ToBytes();
+			}
+
+			return result;
+		}
+
+		public IBlockStateContainer GetContainer(int runtimeId)
+		{
+			TryGetValue(runtimeId, out var state);
+
+			return state;
+		}
+
+		public void Add(IBlockStateContainer item)
+		{
+			Add(item.RuntimeId, item);
+		}
+
+		public bool Contains(IBlockStateContainer item)
+		{
+			return ContainsValue(item);
+		}
+
+		public void CopyTo(IBlockStateContainer[] array, int arrayIndex)
+		{
+			Values.CopyTo(array, arrayIndex);
+		}
+
+		public bool Remove(IBlockStateContainer item)
+		{
+			return Remove(item.RuntimeId);
+		}
+
+		IEnumerator<IBlockStateContainer> IEnumerable<IBlockStateContainer>.GetEnumerator()
+		{
+			return Values.GetEnumerator();
+		}
+	}
+
+	public interface IBlockPalette : ICollection<IBlockStateContainer>, IPacketDataObject
+	{
+		IBlockStateContainer this[int runtimeId] { get; set; }
+
+		IBlockStateContainer GetContainer(int runtimeId);
+
+		public static IBlockPalette Read(Packet packet)
+		{
+			return ListBlockPalette.Read(packet);
+		}
+	}
+
 	public interface IBlockStateContainer : IEquatable<IBlockStateContainer>
 	{
 		[JsonProperty]
@@ -119,11 +190,14 @@ namespace MiNET.Blocks
 
 		public int RuntimeId { get; set; }
 
+		[NbtProperty("name")]
 		public string Id { get; set; }
 		public short Data { get; set; }
 		public IEnumerable<IBlockState> States => _states;
 
 		public byte[] StatesCacheNbt { get; set; }
+
+		[NbtProperty("states")]
 		public NbtCompound StatesNbt { get; set; }
 
 		public PaletteBlockStateContainer()
@@ -184,7 +258,7 @@ namespace MiNET.Blocks
 
 		[NbtProperty("name")]
 		public virtual string Id { get; }
-		public int RuntimeId => GetPaletteContainer()?.RuntimeId ?? -1;
+		public int RuntimeId => GetPaletteContainer()?.RuntimeId ?? Block.UnknownRuntimeId;
 		public short Data => GetPaletteContainer()?.Data ?? 0;
 
 		public bool IsValidStates => GetPaletteContainer() != null;
@@ -217,13 +291,13 @@ namespace MiNET.Blocks
 				{
 					_cache = _defaultStates.GetOrAdd(Id, id =>
 					{
-						BlockFactory.BlockStates.TryGetValue(this, out var c);
+						BlockFactory.GetStateContainer(this, out var c);
 						return c;
 					});
 				}
 				else
 				{
-					BlockFactory.BlockStates.TryGetValue(this, out _cache);
+					BlockFactory.GetStateContainer(this, out _cache);
 				}
 
 				_changed = false;
